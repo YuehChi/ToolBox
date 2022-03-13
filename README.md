@@ -10,13 +10,13 @@ Note: This has been tested against Django 4.0.3 (and may not work or be "optimal
 
 Assuming you have Python setup, run the following commands (if you're on Windows you may use py or py -3 instead of python to start Python):
 
-Remember manage.py in the toolcase folder ， so you need to cd toolcase
-1. pip3 install -r requirements.txt
-2. python3 manage.py makemigrations
-3. python3 manage.py migrate
-4. python3 manage.py collectstatic
-5. python3 manage.py createsuperuser # Create a superuser
-6. python3 manage.py runserver
+Remember manage.py in the toolcase folder ， so you need to `cd toolcase`
+1. `pip3 install -r requirements.txt`
+2. `python3 manage.py makemigrations`
+3. `python3 manage.py migrate`
+4. `python3 manage.py collectstatic`
+5. `python3 manage.py createsuperuser # Create a superuser`
+6. `python3 manage.py runserver`
 
 Open a browser to http://127.0.0.1:8000/admin/ to open the admin site
 Create a few test objects of each type.
