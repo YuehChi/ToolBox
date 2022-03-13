@@ -9,6 +9,8 @@ Set up the Python development environment. We recommend using a Python virtual e
 Note: This has been tested against Django 4.0.3 (and may not work or be "optimal" for other versions).
 
 Assuming you have Python setup, run the following commands (if you're on Windows you may use py or py -3 instead of python to start Python):
+
+Remember manage.py in the toolcase folder ， so you need to cd toolcase
 1. pip3 install -r requirements.txt
 2. python3 manage.py makemigrations
 3. python3 manage.py migrate
