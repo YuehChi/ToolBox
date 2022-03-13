@@ -19,3 +19,23 @@ Assuming you have Python setup, run the following commands (if you're on Windows
 Open a browser to http://127.0.0.1:8000/admin/ to open the admin site
 Create a few test objects of each type.
 Open tab to http://127.0.0.1:8000 to see the main site, with your new objects.
+
+## Clone
+### clone的指令
+`git clone https://github.com/YuehChi/ToolBox.git/`
+
+### Possible error
+如果遇到以下error...  
+Cloning into 'ToolBox'...
+remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
+remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
+fatal: Authentication failed for 'https://github.com/YuehChi/ToolBox.git/'
+
+##### 解決方法：
+1. 到 GitHub>>個人頭像>>Settings>>(左下)Developer Settings>>Personal access tokens>>Generate new token
+2. Expiration可以設長一點，下面要勾repo，然後就可以Generate token，之後就會得到一串token
+3. 再執行一次指令，會被要求輸入使用者名稱跟token：  
+`git clone https://github.com/YuehChi/ToolBox.git/`  
+Username: your_username //輸入使用者名稱  
+Password: your_token //輸入token
+
