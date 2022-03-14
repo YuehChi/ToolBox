@@ -102,6 +102,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# change user class
+# AUTH_USER_MODEL = 'toolfamily.Account'  # 為了修改使用者的欄位
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 

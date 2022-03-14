@@ -1,0 +1,22 @@
+如何設定 django
+
+1. 下載 github 上的 master 分支
+
+2. 下載所需套件 (django等)
+   - 先嘗試運行，然後看著錯誤訊息，缺什麼補什麼
+
+3. 依據過往的修改，建立資料庫：指令 python manage.py migrate
+
+4. 到 \toolcase 裡面，確認 setting.py 存在
+
+5. 建立新的 super user
+   - 參考 https://djangogirlstaipei.gitbooks.io/django-girls-taipei-tutorial/content/django/admin.html
+   - 指令 python manage.py createsuperuser
+
+6. 用 super user 登入，進入後台 (/admin/)
+
+7. 到後台新增 ToolboxUser，並連結到 super user 帳號
+   - 到這裡才算是有了一個完整的帳號
+   - 這是小聰明做法。實際上可以直接改預設的 user，但是會跟範例的 catalog 打架所以作罷
+
+8. 完成！

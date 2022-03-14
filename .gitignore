@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+*.pyc
+__pycache__/
+toolcase/catalog
+# db.sqlite3
+# toolfamily/migrations/*.py
