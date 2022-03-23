@@ -4,45 +4,85 @@ from .models import *
 # Register your models here.
 
 
-class ToolBoxUserAdmin(admin.ModelAdmin):
+class UserDetailAdmin(admin.ModelAdmin):
     save_as = True
     list_display = (
         '__str__',
-        'account',
-        'takeTaskPermission',
-        'uploadTaskPermission',
-        'isActive'
+        'account_mail',
+        'gender',
+        'department',
+        'rate',
+        'created_datetime'
     )
-admin.site.register(ToolBoxUser, ToolBoxUserAdmin)
+admin.site.register(UserDetail, UserDetailAdmin)
 
 
-class TaskApplyAdmin(admin.ModelAdmin):
+
+class CaseAdmin(admin.ModelAdmin):
     save_as = True
     list_display = (
-        'applyer',
-        'task',
-        'createAt',
-        'isAccept',
-        'isCancel'
-    )
-admin.site.register(TaskApply, TaskApplyAdmin)
-
-
-class TaskAdmin(admin.ModelAdmin):
-    save_as = True
-    list_display = (
+        'case_id',
         'title',
-        'creator',
-        'solution',
+        'publisher',
         'reward',
         'location',
-        'createAt',
+        'ended_datetime',
+        'status',
+        'shown_public'
     )
-admin.site.register(Task, TaskAdmin)
+admin.site.register(Case, CaseAdmin)
 
 
-# 這邊是不做處理、直接用預設介面的後台的
-admin.site.register(TaskState)
+
+class CaseWillingnessAdmin(admin.ModelAdmin):
+    save_as = True
+    list_display = (
+        'casewillingness_id',
+        'case',
+        'created_datetime'
+    )
+admin.site.register(CaseWillingness, CaseWillingnessAdmin)
 
 
-# admin.site.register(Account)
+
+class CommissionRecordAdmin(admin.ModelAdmin):
+    save_as = True
+    list_display = (
+        'commissionrecord_id',
+        'case',
+        'commissioned_user',
+        'status',
+        'rate_toolman',
+        'rate_case_publisher',
+        'created_datetime',
+        'finish_datetime'
+    )
+admin.site.register(CommissionRecord)
+
+
+
+class ReportAdmin(admin.ModelAdmin):
+    save_as = True
+    list_display = (
+        'report_id',
+        'report_type',
+        'reporter',
+        'reported_case',
+        'reported_user',
+        'status',
+        'confirmed'
+    )
+admin.site.register(Report, ReportAdmin)
+
+
+
+# 這邊是不做處理、直接用預設介面的後台
+admin.site.register(Status)
+admin.site.register(CasePhoto)
+admin.site.register(Type)
+admin.site.register(Case_Type)
+admin.site.register(Field)
+admin.site.register(Case_Field)
+admin.site.register(FollowUser)
+admin.site.register(FollowCase)
+admin.site.register(ReportType)
