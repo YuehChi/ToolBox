@@ -28,7 +28,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),#Add Django site authentication urls (for login, logout, password management)
     path('toolfamily/', include('toolfamily.urls')),
     path('', RedirectView.as_view(url='/toolfamily/', permanent=True)),#Add URL maps to redirect the base URL to our application
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 urlpatterns += [
