@@ -136,3 +136,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+
+# time format
+# USE_L10N = True  # 允許依地區採用不同時間日期格式(會覆蓋其他設定)
+DATETIME_FORMAT = 'Y/m/d H:i:s'  # 指定時間日期格式
+SHORT_DATETIME_FORMAT = 'm/d H:i'  # 指定縮寫的時間日期格式

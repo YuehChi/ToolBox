@@ -12,8 +12,9 @@ class UserDetailAdmin(admin.ModelAdmin):
         'gender',
         'department',
         'rate',
-        'created_datetime'
+        'last_login'
     )
+    readonly_fields = ('created_datetime', 'user_id')
 admin.site.register(UserDetail, UserDetailAdmin)
 
 
@@ -27,9 +28,10 @@ class CaseAdmin(admin.ModelAdmin):
         'reward',
         'location',
         'ended_datetime',
-        'status',
+        'case_status',
         'shown_public'
     )
+    readonly_fields = ('created_datetime', 'last_change', 'case_id')
 admin.site.register(Case, CaseAdmin)
 
 
@@ -38,9 +40,11 @@ class CaseWillingnessAdmin(admin.ModelAdmin):
     save_as = True
     list_display = (
         'casewillingness_id',
-        'case',
+        'willing_user',
+        'apply_case',
         'created_datetime'
     )
+    readonly_fields = ('created_datetime', 'casewillingness_id')
 admin.site.register(CaseWillingness, CaseWillingnessAdmin)
 
 
@@ -51,12 +55,13 @@ class CommissionRecordAdmin(admin.ModelAdmin):
         'commissionrecord_id',
         'case',
         'commissioned_user',
-        'status',
-        'rate_toolman',
-        'rate_case_publisher',
+        'user_status',
+        'rate_publisher_to_worker',
+        'rate_worker_to_publisher',
         'created_datetime',
         'finish_datetime'
     )
+    readonly_fields = ('created_datetime', 'commissionrecord_id')
 admin.site.register(CommissionRecord)
 
 
@@ -69,9 +74,10 @@ class ReportAdmin(admin.ModelAdmin):
         'reporter',
         'reported_case',
         'reported_user',
-        'status',
-        'confirmed'
+        'is_treated',
+        'is_valid'
     )
+    readonly_fields = ('created_datetime', 'report_id')
 admin.site.register(Report, ReportAdmin)
 
 
