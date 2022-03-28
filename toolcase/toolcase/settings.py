@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -102,6 +102,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# change user class
+# AUTH_USER_MODEL = 'toolfamily.Account'  # 為了修改使用者的欄位
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -119,6 +123,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+#設定上傳檔案存放的目錄
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -128,3 +136,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+
+# time format
+# USE_L10N = True  # 允許依地區採用不同時間日期格式(會覆蓋其他設定)
+DATETIME_FORMAT = 'Y/m/d H:i:s'  # 指定時間日期格式
+SHORT_DATETIME_FORMAT = 'm/d H:i'  # 指定縮寫的時間日期格式

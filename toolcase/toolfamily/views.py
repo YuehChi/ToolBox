@@ -11,3 +11,4 @@ def index(request):
     return render(
         request,'index.html',context={'num_visits': num_visits},
     )
+

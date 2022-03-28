@@ -1,0 +1,14 @@
+如何更改 Django 資料庫
+
+1. 找新的改動 (提交)
+打開命令列，前往有 manage.py 的資料夾
+下指令 python manage.py makemigrations
+
+2. 推上去 (實現改變)
+下指令 python manage.py migrate
+
+3. 到 admin.py 檔案內調整後台要出現的項目
+沒有要調整細項的話，加入下面一行即可：
+admin.site.register(<你model.py中的新table的名字>)
+
+4. 完成！
