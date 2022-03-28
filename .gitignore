@@ -4,5 +4,5 @@
 __pycache__/
 toolcase/catalog
 toolcase/catalog/*
-# db.sqlite3
+db.sqlite3
 # toolfamily/migrations/*.py
