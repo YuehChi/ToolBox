@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required, permission_required
 from .models import Status,Case,CasePhoto,Type,Case_Type,Field,Case_Field
 
 # Create your views here.
@@ -26,10 +30,16 @@ def case_new(request):
     
     else:
 
+        if request.method == "POST":
+
+
+            
+            return render(request,'case/new.html',context=context)
 
         context ={
 
         }
+
 
         return render(request,'case/new.html',context=context)
 
@@ -53,10 +63,11 @@ def case_profile_edit(request):
     return render(request,'case/profile_edit.html',context=context)
 
 # #======CASE資訊搜尋============
+@login_required
 def case_search(request):
 
-    context ={
+    list_case = Case.objects.all()
 
-    }
-    return render(request,'case/search.html',context=context)
+    #list_case = Case.objects.select_related('case_status')
+    return render(request,'case/search.html',locals())
 

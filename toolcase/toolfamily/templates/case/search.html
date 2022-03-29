@@ -3,4 +3,38 @@
 {% block content %}
 <h1>case_search</h1>
 
+     <table class="table">
+        <thead>
+            <tr>
+                <th>case_id</th>
+                <th>title</th>
+                <th>委託人</th>
+                <th>報酬方式</th>
+                <th>地點</th>
+                <th>內容說明</th>
+                <th>偏好條件</th>
+                <th>開始時間</th>
+                <th>結束時間</th>
+                <th>狀態</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for case in list_case%}
+                <tr>
+                  <td>{{case.case_id}}</td>
+                  <td>{{case.title}}</td>
+                  <td>{{case.publisher}}</td>
+                  <td>{{case.reward}}</td>
+                  <td>{{case.location}}</td>
+                  <td>{{case.description}}</td>
+                  <td>{{case.constraint}}</td>
+                  <td>{{case.started_datetime}}</td>
+                  <td>{{case.ended_datetime}}</td>
+                  <td>{{case.case_status}}</td>
+                </tr>
+  
+            {% endfor%}
+        <tbody>
+        </table>
+
 {% endblock %}
