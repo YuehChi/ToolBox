@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import django
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -23,7 +24,8 @@ def index(request):
         request,
         'index.html',
         context={'num_visits': num_visits,
-                 'user_name': user_name},
+                #  'user_name': user_name
+                 },
     )
 
 #########################################
@@ -55,7 +57,7 @@ def login(request):
 
         # create session
         request.session['user'] = user.pk
-        
+
         return HttpResponseRedirect('/toolfamily/home/')
 
     # send error message
@@ -77,3 +79,39 @@ class CustomizeUserBackend(auth.backends.ModelBackend):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/')
+
+# ----------------register------------------
+def register(request):
+    if request.method == 'POST':
+        pwd_error = False  # password is not equal to confirm
+        email_error = False  # email doesn't exist
+
+        username = request.POST.get('username')
+        account = request.POST.get('account')
+        password = request.POST.get('password')
+        confirm = request.POST.get('confirm')
+
+        # 帳號已經存在
+
+        # check password is equal to confirm pwd or not
+        if password != confirm:
+            pwd_error = True
+            return render(request, 'register.html', locals())
+
+        # insert user detail into User
+        user = User.objects.create(username=username, password=password)
+        user.save()
+
+        # insert user detail into UserDetail
+        djangoUser = User.objects.get(Q(username=username) & Q(password=password))
+        userDetail = UserDetail.objects.create(name=username,
+                                               django_user=djangoUser,
+                                               account_mail=account,
+                                               salt=password)
+        userDetail.save()
+
+        # 寄送密碼驗證信
+
+        # return HttpResponseRedirect('/')
+
+    return render(request, 'register.html', locals())

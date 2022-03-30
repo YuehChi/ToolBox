@@ -22,14 +22,18 @@
         {% elif error %}
             <p>使用者帳號或密碼錯誤</p>
         {% endif %}
-
+        
         <form action="" method="post">
             {% csrf_token %}
+
             <label for="username">email: </label>
-            <input type="text" name="username" value="" id="username"> <br/>
+            <input type="text" name="username" value="" id="username" required=true> <br/>
             <label for="password">password: </label>
-            <input type="password" name="password" value="" id="password"> <br/>
+            <input type="password" name="password" value="" id="password" required=true> <br/>
+
             <input type="submit" value="Login">
         </form>
+
+        <a href='/toolfamily/register/'>Sign Up</a>
     </body>
 </html>
