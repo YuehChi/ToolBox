@@ -24,8 +24,7 @@ def index(request):
         request,
         'index.html',
         context={'num_visits': num_visits,
-                #  'user_name': user_name
-                 },
+                 'user_name': user_name},
     )
 
 #########################################
@@ -39,7 +38,7 @@ def login(request):
 
     # already login
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/toolfamily/home/')
+        return HttpResponseRedirect('home/')
 
     account = request.POST.get('username', '')
     password = request.POST.get('password', '')
@@ -58,7 +57,7 @@ def login(request):
         # create session
         request.session['user'] = user.pk
 
-        return HttpResponseRedirect('/toolfamily/home/')
+        return HttpResponseRedirect('home/')
 
     # send error message
     elif account != "":
