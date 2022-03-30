@@ -1,0 +1,35 @@
+{% comment %}
+- 登入介面
+- url: /toolfamily/
+- 前端丟到後端的東西 (名稱要對上)
+    - username: 使用者帳號
+    - password: 使用者密碼
+- 後端丟回來的東西 (名稱要對上)
+    - suspended: 如果是 true，代表該帳號被停權，無法登入
+    - error: 如果是 true，代表帳號或密碼錯誤，無法登入
+{% endcomment %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+    </head>
+    <body>
+        {% if suspended %}
+            <p>帳號已停權</p>
+        {% elif error %}
+            <p>使用者帳號或密碼錯誤</p>
+        {% endif %}
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="username">email: </label>
+            <input type="text" name="username" value="" id="username"> <br/>
+            <label for="password">password: </label>
+            <input type="password" name="password" value="" id="password"> <br/>
+            <input type="submit" value="Login">
+        </form>
+    </body>
+</html>

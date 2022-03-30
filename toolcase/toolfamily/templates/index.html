@@ -1,32 +1,20 @@
 {% extends "base_generic.html" %}
 
+{% comment %}
+- 首頁
+- url: /toolfamily/home/
+- 後端丟回來的東西 (名稱要對上)
+    - user_name: 登入的使用者名稱，是回傳 UserDetail 裡面的"使用者" (應該是真實姓名吧我猜)
+                 之後看顯示什麼比較好可以再改
+    - num_visits: 訪問首頁的次數
+{% endcomment %}
+
+{% block title %}<title>Home Page</title>{% endblock %}
+
 {% block content %}
-<h1>Local ToolFamily Home</h1>
 
-<p>
-    <strong>測試用帳號（超級使用者）：</strong><br>
-    &nbsp&nbsp&nbsp<strong>帳號 TestUser，密碼 test5678</strong><br>
-    <strong>測試用帳號（普通使用者）：</strong><br>
-    &nbsp&nbsp&nbsp<strong>帳號 TestUser2，密碼 test56789</strong><br>
-    &nbsp&nbsp&nbsp<strong>帳號 TestUser3，密碼 test567890</strong><br>
-</p>
-
-
-<p>Welcome to <em>ToolFamily</em>, a very basic Django website developed as a <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website">tutorial example</a> on the Mozilla Developer Network.</p>
-<p>The tutorial demonstrates how to create a Django skeleton website and application, define URL mappings, views (including Generic List and Detail Views), models and templates.</p>
-
-
-
-
-<div>
-{% load static %}
-<img src="{% static 'images/cat.png' %}" alt="cat" style="width: 70px;;height: 100px;">
-</div>
-
-
-<h2>Dynamic content</h2>
-
-
+<h1>Home Page</h1>
+<h2>Welcome! {{ user_name }}.</h2>
 <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
 
 {% endblock %}

@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'toolfamily.apps.ToolfamilyConfig', ##將應用添加進INSTALLED_APPS
-    'catalog.apps.CatalogConfig', ##將應用添加進INSTALLED_APPS ************************到時候可以刪掉
 ]
 
 MIDDLEWARE = [
@@ -100,7 +99,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+AUTHENTICATION_BACKENDS = ['toolfamily.views.CustomizeUserBackend']
 
 # change user class
 # AUTH_USER_MODEL = 'toolfamily.Account'  # 為了修改使用者的欄位
