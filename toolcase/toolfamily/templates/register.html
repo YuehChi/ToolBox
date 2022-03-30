@@ -16,9 +16,9 @@
         <h1>註冊新帳號</h1>
 
         {% if pwd_error %}
-            <p>密碼不相符</p>
+            <p>與確認密碼不相符</p>
         {% elif email_error %}
-            <p>信箱不存在</p>
+            <p>信箱格式錯誤或已註冊</p>
         {% endif %}
 
         <form action="" method="post">

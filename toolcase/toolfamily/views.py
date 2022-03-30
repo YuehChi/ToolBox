@@ -47,6 +47,8 @@ def login(request):
     if user is not None:
         auth.login(request, user)
 
+        # 確認是否經過信箱認證
+
         # check suspended or not
         userDetail = UserDetail.objects.get(Q(account_mail=account))
         isActive = userDetail.isActive
@@ -83,36 +85,40 @@ def logout(request):
 def register(request):
     if request.method == 'POST':
         pwd_error = False  # password is not equal to confirm
-        email_error = False  # email doesn't exist
+        email_error = False  # email doesn't exist or already registered
 
         username = request.POST.get('username')
         account = request.POST.get('account')
         password = request.POST.get('password')
         confirm = request.POST.get('confirm')
 
-        # 帳號已經存在
-
-
-        # 帳號格式不對
-
-
         # check password is equal to confirm pwd or not
         if password != confirm:
             pwd_error = True
             return render(request, 'register.html', locals())
 
+        # check email format
+        emailFormat = account.split('@')
+        if len(emailFormat) != 2:
+            email_error = True
+            return render(request, 'register.html', locals())
+        elif emailFormat[1] != "ntu.edu.tw":
+            email_error = True
+            return render(request, 'register.html', locals())
+
         # insert user detail into User
-        user = User.objects.create_user(username=username, password=password, email=account)
-        user.save()
+        try:
+            user = User.objects.create_user(username=username, password=password, email=account)
+            user.save()
+        except:
+            email_error = True
+            return render(request, 'register.html', locals())
 
         # insert user detail into UserDetail
-        userDetail = UserDetail.objects.create(name=username,
-                                               django_user=user,
-                                               account_mail=account,
-                                               salt=password)
+        userDetail = UserDetail.objects.create(name=username, django_user=user, account_mail=account, salt=password)
         userDetail.save()
 
-        # 寄送密碼驗證信
+        # 寄送密碼驗證信、確認該信箱是否存在
 
         return HttpResponseRedirect('/')
 
