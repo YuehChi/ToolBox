@@ -93,25 +93,28 @@ def register(request):
 
         # 帳號已經存在
 
+
+        # 帳號格式不對
+
+
         # check password is equal to confirm pwd or not
         if password != confirm:
             pwd_error = True
             return render(request, 'register.html', locals())
 
         # insert user detail into User
-        user = User.objects.create(username=username, password=password)
+        user = User.objects.create_user(username=username, password=password, email=account)
         user.save()
 
         # insert user detail into UserDetail
-        djangoUser = User.objects.get(Q(username=username) & Q(password=password))
         userDetail = UserDetail.objects.create(name=username,
-                                               django_user=djangoUser,
+                                               django_user=user,
                                                account_mail=account,
                                                salt=password)
         userDetail.save()
 
         # 寄送密碼驗證信
 
-        # return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/')
 
     return render(request, 'register.html', locals())
