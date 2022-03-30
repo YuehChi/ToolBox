@@ -1,0 +1,44 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>case_new</h1>
+
+     {% comment %} action="/toolfamily/case/new/" 注意 在new 頁面要是這個action {% endcomment %}
+    <form class = "from"  action="/toolfamily/case/new_temp/" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+
+       
+        <label>title </label> 
+        <input type="text" name ="title" placeholder="Enter Your title" ><br><br>
+        <label>description  </label> 
+        <input type="text" name ="description" placeholder="Enter Your description" ><br><br>
+        <label>reward </label>  
+        <input type="text" name ="reward" placeholder="Enter Your reward" ><br><br>
+        <label>location  </label> 
+        <input type="text" name ="location" placeholder="Enter Your location" ><br><br>
+        <label>constraint  </label> 
+        <input type="text" name ="constraint" placeholder="Enter Your constraint" ><br><br>
+        <label>started_datetime  </label> 
+        <input type="date" name ="started_datetime" ><br><br>
+        <label>ended_datetime </label>  
+        <input type="date" name ="ended_datetime"  ><br><br>
+        <label>委託照片</label>       
+        <input type="file" name ="photo_image"  ><br><br>
+        <label>類型 </label><br>
+        <label><input type="checkbox" value="1" name="case_type"> 諮詢</label>
+        <label><input type="checkbox" value="2" name="case_type"> 家教</label>
+        <label><input type="checkbox" value="3" name="case_type"> 勞力</label>
+        <label><input type="checkbox" value="4" name="case_type"> 實驗</label>
+        <label><input type="checkbox" value="5" name="case_type"> 其他</label><br>
+        <label> 領域 </label><br>
+        <label><input type="checkbox" value="1" name="case_field"> 電資</label>
+        <label><input type="checkbox" value="2" name="case_field"> 數理</label>
+        <label><input type="checkbox" value="3" name="case_field"> 人文科學</label>
+        <label><input type="checkbox" value="4" name="case_field"> 藝術設計</label>
+        <label><input type="checkbox" value="5" name="case_field"> 其他</label><br>
+
+        <label>送出</label><br>
+        <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}
