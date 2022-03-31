@@ -77,19 +77,19 @@
 
     <!----------Form---------->
     <form>
-        <div class="card cn_font" id="case_new_form">
+        <div class="container" style="height: 1050px;background: #ffffff;border-radius: 2rem;width: 909px;box-shadow: 1px 3px 4px #5e4949;margin-bottom: 25px;">
         
             <!----------Rules---------->
             <div class="row" style="height: 47px;">
                 <div class="col-1 d-lg-flex justify-content-lg-center align-items-lg-center" style="margin-top: 32px;padding-left: 57px;margin-right: 1px;"><i class="material-icons d-lg-flex" style="color: #a58d8d;margin: 0px;font-size: 16px;">info_outline</i></div>
                 <div class="col d-lg-flex justify-content-lg-start align-items-lg-center" style="width: 441px;margin-top: 32px;margin-left: 1px;padding-right: 12px;padding-left: 1px;">
-                    <p style="font-size: 14px;color: #a58d8d;margin-bottom: 0px;">請勿張貼違反法律之委託貼文，如經發現，將立即將帳號停權並通報相關單位！</p>
+                    <p style="font-size: 12px;color: #a58d8d;margin-bottom: 0px;">請勿張貼違反法律之委託貼文，如經發現，將立即將帳號停權並通報相關單位！</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-1 d-lg-flex justify-content-lg-center align-items-lg-center" style="margin-top: 0px;padding-left: 57px;margin-right: 1px;"><i class="material-icons d-lg-flex" style="color: #a58d8d;margin: 0px;font-size: 16px;margin-top: 6px;">info_outline</i></div>
                 <div class="col d-lg-flex justify-content-lg-start align-items-lg-center" style="width: 441px;margin-top: 6px;margin-left: 1px;padding-right: 12px;padding-left: 1px;">
-                    <p style="font-size: 14px;color: #a58d8d;margin-bottom: 0px;">委託契約成立即受契約法保護，取消或完成委託需經雙方確認，請確實履行契約內容，如遇問題請通知管理員。</p>
+                    <p style="font-size: 12px;color: #a58d8d;margin-bottom: 0px;">委託契約成立即受契約法保護，取消或完成委託需經雙方確認，請確實履行契約內容，如遇問題請通知管理員。</p>
                 </div>
             </div>
             <div class="row" style="height: 29px;">
@@ -100,7 +100,7 @@
             
             <!----------Title---------->
             <div class="row" style="margin-right: 40px;margin-left: 40px;margin-top: 10px;">
-                <div class="col-12 form-group" style="margin-left: 0px;margin-right: 0px;">
+                <div class="col form-group" style="margin-left: 0px;margin-right: 0px;">
                     <label class="form-label" style="font-weight: bold;">
                         委託標題
                         <span class="text-danger">*</span></label>
@@ -108,55 +108,60 @@
                 </div>
             </div>
             
-            <div class="form-row">
-
+            <div class="form-row input-group">
+            <div class="row" style="margin-left: 40px;margin-right: 40px;margin-top: 30px;">
                 <!----------Field---------->
-                <div class="form-group input-group-lg col-md-6">
-                    <label class="form-label" for="select_field" style="font-weight: bold;">
-                        領域
-                        <span class="text-danger">*</span></label></label>
+                <div class="col">
                     <div class="row">
                         <div class="col">
-                            <select class="select form-select-lg" id="select_field">
-                                <option value="0" disabled selected>請選擇（可複選）</option>
-                                    <option value="1">電資</option>
-                                    <option value="2">數理</option>
-                                    <option value="3">人文科學</option>
-                                    <option value="4">藝術設計</option>
-                                    <option value="5">其他</option>
-                                </optgroup>
-                            </select>
+                            <label class="form-label" for="select_field" style="font-weight: bold;">
+                                領域
+                                <span class="text-danger">*</span></label></label>
+                            <div class="row">
+                                <div class="col">
+                                        <select class="select form-select-lg" id="select_field">
+                                            <option value="0" disabled selected>請選擇（可複選）</option>
+                                            <option value="1">電資</option>
+                                            <option value="2">數理</option>
+                                            <option value="3">人文科學</option>
+                                            <option value="4">藝術設計</option>
+                                            <option value="5">其他</option>
+                                        </optgroup>
+                                    </select></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!----------Type---------->
-                <div class="form-group input-group-lg col-md-6">
-                    <label class="form-label" style="font-weight: bold;">
-                        類型
-                        <span class="text-danger">*</span></label>
+                <div class="col">
                     <div class="row">
-                        <div class="col">
-                            <select class="select form-select-lg">
-                                <div class="options">
-                                    <option class="item" value="0" disabled selected>請選擇（可複選）</option>
-                                    <option class="item option" value="1">諮詢</option>
-                                    <option class="item" value="2">家教</option>
-                                    <option class="item" value="3">勞力</option>
-                                    <option class="item" value="4">實驗</option>
-                                    <option class="item" value="5">其他</option>
-                                </div>
-                            </select>
+                        <div class="col"><label class="form-label" style="font-weight: bold;">
+                            類型
+                            <span class="text-danger">*</span></label>
+                            <div class="row">
+                                <div class="col">
+                                    <select class="select form-select-lg">
+                                        <div class="options">
+                                            <option class="item" value="0" disabled selected>請選擇（可複選）</option>
+                                            <option class="item option" value="1">諮詢</option>
+                                            <option class="item" value="2">家教</option>
+                                            <option class="item" value="3">勞力</option>
+                                            <option class="item" value="4">實驗</option>
+                                            <option class="item" value="5">其他</option>
+                                        </div>
+                                    </select></div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row" style="margin-top: 30px;margin-right: 40px;margin-left: 40px;">
 
-                
                 <!----------End Date---------->
-                <div class="form-group input-group-lg col-md-6" style="height: 114px;">
+                <div class="col-6" style="height: 114px;">
                     <div class="row">
-                        <div class="col">
-                            <label class="col-form-label" style="font-weight: bold;">
+                        <div class="col"><label class="col-form-label" style="font-weight: bold;">
                             徵求結束時間
                             <span class="text-danger">*</span></label>
                         </div>
@@ -172,7 +177,7 @@
                 </div>
 
                 <!----------Required NPER---------->
-                <div class="form-group col-md-2">
+                <div class="col-2">
                     <div class="row">
                         <div class="col"><label class="col-form-label" style="font-weight: bold;">
                             人數<span class="text-danger">*</span></label>
@@ -184,7 +189,7 @@
                 </div>
 
                 <!----------Work Mode---------->
-                <div class="form-group col-md-4">
+                <div class="col">
                     <div class="row">
                         <div class="col"><label class="col-form-label" style="font-weight: bold;">
                             工作方式
@@ -200,11 +205,11 @@
                         </div>
                     </div>
                 </div>
-                <!----------End of row 3---------->
-            
-            
+            </div>
+
+            <div class="row" style="margin-top: 10px;margin-right: 40px;margin-left: 40px;">
                 <!----------Location---------->
-                <div class="form-group input-group-lg col-md-6">
+                <div class="col">
                     <div class="row">
                         <div class="col"><label class="col-form-label" style="font-weight: bold;">
                             地點
@@ -224,7 +229,7 @@
                 </div>
 
                 <!----------Preference---------->
-                <div class="form-group input-group-lg col-md-6">
+                <div class="col">
                     <div class="row">
                         <div class="col"><label class="col-form-label" style="font-weight: bold;">偏好條件</label></div>
                     </div>
