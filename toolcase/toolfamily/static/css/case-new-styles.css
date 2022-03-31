@@ -5,6 +5,7 @@ input[type="text"] {
     border-color: #7B6363;
 }
 
+
 .cn_font {
     font-family: Microsoft JhengHei;
 }
@@ -23,15 +24,20 @@ input[type="text"] {
 .text-danger {
     color: #dc3545!important;
 }
+
+.notify {
+    margin-left: 40px;
+    margin-right: 40px;
+}
 .text-notify {
-    font-size: 14px;
+    font-size: 12px;
     color: #a58d8d;
     margin-bottom: 0px;
     display: inline-block;
 }
-.row {
-    display: flex;
-    flex-wrap: wrap;
+.icon-notify {
+    color: #a58d8d;
+    font-size: 14px;
 }
 .form-row {
     display: flex;
@@ -42,8 +48,6 @@ input[type="text"] {
 .form-group {
     margin-top: 20px;
 }
-
-
 
 .select {
     width: 95%;

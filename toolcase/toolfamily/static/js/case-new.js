@@ -7,7 +7,15 @@ $(document).ready(function() {
 
   $('.option').hover(function(){
     console.log("1")
-    
-    
   })
+
+  $('.datepicker').datepicker({
+    startDate:'1d'
+
+  });
+
+  // var selector = $(location).prop("href").split("/").slice(0,-3).join("/");
+  // var selector = selector + "/static/plugin/multiselect-02/colorlib-selector.html"
+  // $('.multi-selector').load(selector); 
+
 });
