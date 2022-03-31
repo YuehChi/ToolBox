@@ -21,49 +21,48 @@ def index(request):
 #           USER VIEWS              #
 #####################################
 # 使用者資料頁面
-# @login_required
+@login_required
 def viewUser(request):
-    client = request.user
+    print('viewUser')
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
-        django_user=client,
+        django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
+    userDataForm = ''  # 預計要傳 html 表單；非 POST 或 GET 則為空
 
-    # 取得使用者資料
-    dataCol = [  # 要取得哪些欄位
-        'name',
-        'nickname',
-        'account_mail',
-        'gender',
-        'department',
-        'work',
-        'information',
-        'icon',
-        'rate',
-        'rate_num',
-        'commissioned_status',
-        'commissioning_status',
-        'verification',
-        'created_datetime',
-        'last_login_datetime'
-        ]
-    print(user, user.name)
+    # POST: 更改使用者資料
+    if request.method == 'POST':
+        formPost = UserDetailModelForm(request.POST, instance=user)
+        if formPost.is_valid():
+            formPost.save()
+            print('update in view!gogo!')
+            return redirect('user-profile')
+        else:
+            print('The form is not valid.')
+            userDataForm = formPost  # 保留剛剛POST的分析結果，以顯示錯誤訊息
 
-    # 更改使用者資料的表單
-    userDataForm = UserDetailModelForm()
+    # GET: 取得使用者資料
+    elif request.method == 'GET':
+        # 更改使用者資料的表單
+        userDataForm = UserDetailModelForm(instance=user)
+        print(f'get data of {user}')
+        # 取得使用者資料
+        dataCol = [  # 要取得哪些欄位
+            'name',
+            'nickname',
+            'account_mail',
+            'gender',
+            'department',
+            'work',
+            'information',
+            'icon',
+            'rate',
+            'rate_num',
+            'commissioned_status',
+            'commissioning_status',
+            'verification',
+            'created_datetime',
+            'last_login_datetime'
+            ]
 
     return render(request, 'user.html', locals())
-
-
-
-# 更改使用者資料 (這是個只接受 POST 的 API)
-# @login_required
-def updateUser(request):
-    userDetail = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
-        UserDetail,
-        django_user = request.user,
-        isActive=True)  # 若是被停權的 user，一樣 404
-
-    form = UserDetailModelForm(instance=userDetail)
-
-    return redirect('user-profile')

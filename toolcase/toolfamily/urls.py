@@ -14,5 +14,4 @@ urlpatterns = [
 #####################################
 urlpatterns += [
     path('user/profile/', views.viewUser, name='user-profile'),
-    path('user/profile/update/', views.viewUser, name='user-profile-update'),
 ]
