@@ -8,7 +8,7 @@ from django.db.models import Q
 from .models import *
 
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.backends import ModelBackend
 
 import base64
@@ -205,20 +205,67 @@ def active(request, token):
 
 # --------------forget password----------------
 def forget(request):
-    account = request.POST.get['account']
+    if request.method == 'POST':
+        error = False  # account doesn't exist
+        account = request.POST.get('account')
+        print(account)
+        try:
+            user = UserDetail.objects.get(Q(account_mail=account))
+            print(user)
+            username = user.name
 
-    # 比對失敗，該帳號不存在
+            # send reset-pwd url to user email
+            token = token_confirm.generate_validate_token(username)
+            url = 'http://127.0.0.1:8000/toolfamily/reset/' + token
 
+            title = "NTU TOOLBOX 重新設定密碼"
+            msg = "請點選下方連結重新設定密碼。\n" + url
+            email_from = django_settings.DEFAULT_FROM_EMAIL
+            receiver = [account]
+            send_mail(title, msg, email_from, receiver, fail_silently=False)
 
-    # 比對成功，寄信附上重設連結
+            request.session['messages'] = "請查看信箱點擊連結並重新設定密碼。\n連結有效期為1個小時。"
+            return HttpResponseRedirect('/')
+
+        except:
+            error = True
+            return render(request, 'forget_pwd.html', locals())
 
     return render(request, 'forget_pwd.html', locals())
 
 # --------------reset password----------------
-def reset(request):
+def reset(request, token):
+    # timeout
+    try:
+        username = token_confirm.confirm_validate_token(token)
+    except:
+        username = token_confirm.remove_validate_token(token)
+        user = User.objects.get(Q(username=username))
+        user.delete()
+        request.session['messages'] = "對不起，重新設定密碼連結已過期。"
+        return HttpResponseRedirect('/')
 
-    # 密碼與確認不相符
+    # reset password
+    if request.method == 'POST':
+        error = False
+        password = request.POST.get('password')
+        confirm = request.POST.get('confirm')
 
-    # 重設成功，導回登入頁面
+        # check password is equal to confirm pwd or not
+        if password != confirm:
+            error = True
+            return render(request, 'reset_pwd.html', locals())
+
+        # update datebase
+        user = User.objects.get(Q(username=username))
+        user.password = make_password(password)
+        user.save()
+
+        userDetail = UserDetail.objects.get(Q(django_user=user))
+        userDetail.salt = user.password
+        userDetail.save()
+
+        request.session['messages'] = "密碼更改成功！"
+        return HttpResponseRedirect('/')
 
     return render(request, 'reset_pwd.html', locals())

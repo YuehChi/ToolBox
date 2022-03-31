@@ -7,11 +7,9 @@
     <body>
         <h1>忘記密碼</h1>
 
-        {% comment %} {% if pwd_error %}
-            <p>與確認密碼不相符</p>
-        {% elif email_error %}
-            <p>信箱格式錯誤或已註冊</p>
-        {% endif %} {% endcomment %}
+        {% if error %}
+            <p>該帳號不存在</p>
+        {% endif %}
 
         <form action="" method="post">
             {% csrf_token %}
