@@ -3,4 +3,66 @@
 {% block content %}
 <h1>case_profile</h1>
 
+
+<h1>case</h1>
+
+     <table class="table">
+        <thead>
+            <tr>
+                <th>case_id</th>
+                <th>title</th>
+                <th>委託人</th>
+                <th>報酬方式</th>
+                <th>地點</th>
+                <th>內容說明</th>
+                <th>偏好條件</th>
+                <th>開始時間</th>
+                <th>結束時間</th>
+                <th>狀態</th>
+                <th>領域</th>
+                <th>類型</th>
+                <th>照片</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for case in list_case%}
+                <tr>
+                  <td><a href="{% url 'case-profile' case.case_id %}">{{case.case_id}}</a></td>
+                  <td>{{case.title}}</td>
+                  <td>{{case.publisher}}</td>
+                  <td>{{case.reward}}</td>
+                  <td>{{case.location}}</td>
+                  <td>{{case.description}}</td>
+                  <td>{{case.constraint}}</td>
+                  <td>{{case.started_datetime}}</td>
+                  <td>{{case.ended_datetime}}</td>
+                  <td>{{case.case_status.status_name}}</td>
+                  <td>
+                  {% for case_field in case_fields %}
+                    {% if case_field.case_id == case.case_id%}
+                        {{case_field.case_field.field_name}}
+                    {%endif%}
+                  {% endfor %}
+                  </td>
+                  <td>
+                  {% for case_type in case_types %}
+                    {% if case_type.case_id == case.case_id%}
+                        {{case_type.case_type.type_name}}
+                    {%endif%}
+                  {% endfor %}
+                  </td>
+                  <td>
+                  {% for photo in case_photo %}
+                    {% if photo.case_id == case.case_id%}
+                        <img src="{{photo.image.url}}" alt="照片" style="width: 100px; height: 100px">
+                    {%endif%}
+                  {% endfor %}
+                  </td>
+                </tr>
+  
+            {% endfor%}
+        <tbody>
+        </table>
+
+
 {% endblock %}

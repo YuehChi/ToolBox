@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import *
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
@@ -81,20 +82,30 @@ def case_new(request):
             case_field = Case_Field(case_field = field ,case = case)
             case_field.save()
 
-        return render(request,'case/case_all_temp.html') 
 
+        pk_key = case.case_id
+
+        list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
+        case_fields = Case_Field.objects.filter(case = pk_key)  
+        case_types = Case_Type.objects.filter(case = pk_key)   
+        case_photo = CasePhoto.objects.filter(case = pk_key)   
+
+        return render(request,'case/profile.html',locals())
    
 
     return render(request,'case/new.html')
 
 #-------------詳細CASE資訊-------------
-def case_profile(request):
+def case_profile(request ,case_id):
 
-    context ={
+    pk_key = case_id
 
-    }
+    list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
+    case_fields = Case_Field.objects.filter(case = pk_key)  
+    case_types = Case_Type.objects.filter(case = pk_key)   
+    case_photo = CasePhoto.objects.filter(case = pk_key)   
 
-    return render(request,'case/profile.html',context=context)
+    return render(request,'case/profile.html',locals())
 
 
 #-------------編輯CASE資訊-------------
@@ -121,8 +132,10 @@ def case_search(request):
 
 
 
-#---------------temp--------------
 
+
+#---------------temp--------------
+#======================================================================================
 #-------------新增CASE---------------
 @login_required
 def case_new_temp(request):
@@ -180,9 +193,16 @@ def case_new_temp(request):
             case_field = Case_Field(case_field = field ,case = case)
             case_field.save()
 
-        return render(request,'case/case_all_temp.html') 
+        
+        pk_key = case.case_id
 
-   
+        list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
+        case_fields = Case_Field.objects.filter(case = pk_key)  
+        case_types = Case_Type.objects.filter(case = pk_key)   
+        case_photo = CasePhoto.objects.filter(case = pk_key)   
+
+        return render(request,'case/profile.html',locals())
+
 
     return render(request,'case/new_temp.html')
 

@@ -24,7 +24,7 @@
         <tbody>
             {% for case in list_case%}
                 <tr>
-                  <td>{{case.case_id}}</td>
+                  <td><a href="{% url 'case-profile' case.case_id %}">{{case.case_id}}</a></td>
                   <td>{{case.title}}</td>
                   <td>{{case.publisher}}</td>
                   <td>{{case.reward}}</td>
