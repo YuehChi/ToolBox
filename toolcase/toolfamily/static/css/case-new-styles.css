@@ -12,13 +12,26 @@ input[type="text"] {
 #case_new_form {
     background: #ffffff;
     border-radius: 2rem;
-    width: 909px;
+    width: 80%;
     box-shadow: 1px 3px 4px #5e4949;
     margin-bottom: 25px;
     margin:auto;
+    display: flex;
+    flex-direction: column
 }
+
 .text-danger {
     color: #dc3545!important;
+}
+.text-notify {
+    font-size: 14px;
+    color: #a58d8d;
+    margin-bottom: 0px;
+    display: inline-block;
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
 }
 .form-row {
     display: flex;
