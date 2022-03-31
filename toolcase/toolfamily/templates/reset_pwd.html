@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Forget pwd</title>
+    </head>
+    <body>
+        <h1>重設密碼</h1>
+
+        {% comment %} {% if pwd_error %}
+            <p>與確認密碼不相符</p>
+        {% elif email_error %}
+            <p>信箱格式錯誤或已註冊</p>
+        {% endif %} {% endcomment %}
+
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <label for="password">新密碼: </label>
+            <input type="password" name="password" value="" id="password" required=true> <br/>
+            <label for="confirm">請再次輸入新密碼: </label>
+            <input type="password" name="confirm" value="" id="confirm" required=true> <br/>
+
+            <input type="submit" value="確認">
+        </form>
+    </body>
+</html>

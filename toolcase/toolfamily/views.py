@@ -4,13 +4,14 @@ from django.dispatch import receiver
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib import auth
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.hashers import check_password
-from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from .models import *
 
-import base64, re
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.backends import ModelBackend
+
+import base64
 from itsdangerous import URLSafeTimedSerializer as utsr
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
@@ -60,7 +61,6 @@ def login(request):
     user = auth.authenticate(username=account, password=password)
 
     if user is not None:
-        auth.login(request, user)
         userDetail = UserDetail.objects.get(Q(account_mail=account))
 
         # check email is verified or not
@@ -75,7 +75,8 @@ def login(request):
             suspended = True
             return render(request, 'login.html', locals())
 
-        # create session
+        # login and create session
+        auth.login(request, user)
         request.session['user'] = user.pk
 
         return HttpResponseRedirect('home/')
@@ -197,7 +198,27 @@ def active(request, token):
 
         request.session['messages'] = "驗證成功！\n登入並開始使用 NTU TOOLBOX！"
         return HttpResponseRedirect('/')
-        
+     
     except User.DoesNotExist: # user doesn't exist
         request.session['messages'] = "對不起，您所驗證的帳號不存在。\n請重新註冊。"
         return HttpResponseRedirect('/')
+
+# --------------forget password----------------
+def forget(request):
+    account = request.POST.get['account']
+
+    # 比對失敗，該帳號不存在
+
+
+    # 比對成功，寄信附上重設連結
+
+    return render(request, 'forget_pwd.html', locals())
+
+# --------------reset password----------------
+def reset(request):
+
+    # 密碼與確認不相符
+
+    # 重設成功，導回登入頁面
+
+    return render(request, 'reset_pwd.html', locals())
