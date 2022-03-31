@@ -15,12 +15,21 @@
     <head>
         <meta charset="UTF-8">
         <title>Login</title>
+
+        {% if alert %}
+            <script type="text/javascript">
+                alert({{ sign_up_message|safe }});
+            </script>
+        {% endif %}
     </head>
+
     <body>
         {% if suspended %}
             <p>帳號已停權</p>
         {% elif error %}
             <p>使用者帳號或密碼錯誤</p>
+        {% elif valid %}
+            <p>帳號尚未啟用</p>
         {% endif %}
         
         <form action="" method="post">
