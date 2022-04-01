@@ -1,7 +1,305 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h1>case_new</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>case-new</title>
+    <link rel="stylesheet" href="\static\bootstrap\css\bootstrap.min.css" type="text/css" >
+    <link rel="stylesheet" href="\static\css\Material%20Design%20Icons.css" type="text/css">
+    <link rel="stylesheet" href="\static\fonts\material-icons.min.css" type="text/css">
+    <link rel="stylesheet" href="\static\css\materialdesignicons.min.css" type="text/css">
+    <link rel="stylesheet" href="\static\css\case-new-styles.css" type="text/css">
+    <link rel="stylesheet" href="\static\css\icon.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+
+    
+    <script src="\static\bootstrap\js\bootstrap.min.js" type="text/javascript"></script>
+    <script src="\static\js\case-new.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRzRKKhkCD3eUpoC-hAMJ0fXRSW7Mjoww&libraries=places"></script>
+</head>
+
+<body style="background: #f4f4f3;">
+
+    
+    <!----------Image Board---------->
+    <div class="container" style="margin-top: 50PX;height: 100px;width: 100%;margin-right: 0px;margin-left: 0px;padding-right: 0px;padding-left: 0px;max-width: none;">
+        <div class="row" style="height: 100px;width: 100%;margin: 0px;">
+            <div class="col" style="height: 100px;width: 100%;padding: 0px;"><img src="\static\images\ntu_1.png" style="width: 100%;height: 100px;"></div>
+        </div>
+    </div>
+
+    <!----------NavBar Search---------->
+    <div class="container d-md-flex justify-content-md-end" style="margin-top: 10px;">
+        <nav class="navbar navbar-light navbar-expand-md d-md-flex d-lg-flex">
+            <div class="container-fluid"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end" id="navcol-2"><a href="#" style="margin-right: 35px;">全部案件</a>
+                    <ul class="navbar-nav">
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item dropdown" style="margin-right: 35px;"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="margin-right: 0px;">找領域</a>
+                            <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                        </li>
+                        <li class="nav-item dropdown" style="margin-right: 35px;"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="margin-right: 20px;">找類型</a>
+                            <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                        </li>
+                    </ul>
+                </div><input type="search" style="width: 220px;">
+            </div>
+        </nav>
+    </div>
+    <hr class="d-lg-flex" style="width: 95%;margin: auto;margin-right: 20px;margin-left: 20px;margin-top: 0px;opacity: 1;border-color: #5e4949;color: #5e4949;">
+
+    <!----------Post a Commision Icon---------->
+    <div class="container" style="height: 88px;margin-top: 20px;margin-bottom: 10px;">
+        <div class="row" style="height: 88px;">
+            <div class="col-4"></div>
+            <div class="col-4 d-md-flex d-lg-flex justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center"><img src="\static\images\title_1.png" style="width: 209px;"></div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+
+    <!----------Form---------->
+    <form>
+        <div class="row"><div class="col-12">
+        <div class="card cn_font" id="case_new_form">
+        <div class="card-body">
+        
+            <!----------Rules---------->
+            <p class="small notify mt-4">
+                <i class="material-icons d-inline icon-notify">info_outline</i>
+                <span class="text-notify d-inline">
+                請勿張貼違反法律之委託貼文，如經發現，將立即將帳號停權並通報相關單位！
+                </span>
+            </p>
+            <p class="small notify" style="margin-top: -10px;">
+                <i class="material-icons d-inline icon-notify">info_outline</i>
+                <span class="text-notify d-inline">
+                委託契約成立即受契約法保護，取消或完成委託需經雙方確認，請確實履行契約內容，如遇問題請通知管理員。
+                </span>
+            </p>
+
+
+            <hr style="width: 90%;opacity: 0.72;color: #a58d8d;margin: auto;">
+
+            
+            <!----------Title---------->
+            <div class="row form-row" style="margin-top: 10px;margin-left: 28px;">
+                <div class="col-12 form-group">
+                    <label class="form-label" style="font-weight: bold;">
+                    委託標題
+                    <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" style="width: 100%;" placeholder="限20字">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <!----------Field---------->
+                <div class="form-group input-group-lg col-md-6 col-sm-12 col-12">
+                    <label class="form-label" for="select_field" style="font-weight: bold;">
+                        領域
+                    <span class="text-danger">*</span></label></label>
+                    <div class="multi-selector">
+                        <div class="row">
+                            <div class="col">
+                                <select class="select form-select-lg" id="select_field">
+                                    <option value="0" disabled selected>請選擇（可複選）</option>
+                                        <option value="1">電資</option>
+                                        <option value="2">數理</option>
+                                        <option value="3">人文科學</option>
+                                        <option value="4">藝術設計</option>
+                                        <option value="5">其他</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+                <!----------Type---------->
+                <div class="form-group input-group-lg col-md-6 col-sm-12 col-12">
+                    <label class="form-label" style="font-weight: bold;">
+                        類型
+                    <span class="text-danger">*</span></label>
+                    <div class="row">
+                        <div class="col">
+                            <select class="select form-select-lg">
+                                <div class="options">
+                                    <option class="item" value="0" disabled selected>請選擇（可複選）</option>
+                                    <option class="item option" value="1">諮詢</option>
+                                    <option class="item" value="2">家教</option>
+                                    <option class="item" value="3">勞力</option>
+                                    <option class="item" value="4">實驗</option>
+                                    <option class="item" value="5">其他</option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!---------------End of row 2--------------->
+
+                
+                <!----------End Date---------->
+                <div class="form-group input-group-lg col-md-6 col-sm-12 col-12" style="height: 114px;">
+                    <div class="row">
+                        <div class="col">
+                            <label class="col-form-label" style="font-weight: bold;">
+                            委託結束時間
+                            <span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="height: 39px;">
+                            <input type="text" id="input-enddate" name="date" class="form-control datepicker" placeholder="年/月/日" style="width: 95%;height: 100%"></div>
+                    </div>
+                    <div class="row" style="height: 38px;">
+                        <div class="col" style="height: 38px;">
+                            <div class="" style="padding-top: 5px;">
+                                <img src="/static/images/check-circle-outline.png" class="radio-check" id="radio-check-enddate">
+                                <span class="text-notify d-inline">
+                                不限期
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!----------Required NPER---------->
+                <div class="form-group col-md-2 col-sm-12 col-12">
+                    <div class="row">
+                        <div class="col"><label class="col-form-label" style="font-weight: bold;">
+                            人數<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="height: 39px;">
+                        <input class="input-number form-control" type="number" id="input-required-NPER" max="100" min="1"></div>
+                    </div>
+                </div>
+
+                <!----------Work Mode---------->
+                <div class="form-group col-md-4 col-sm-12 col-12">
+                    <div class="row">
+                        <div class="col"><label class="col-form-label" style="font-weight: bold;">
+                            工作方式
+                            <span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="">
+                                <img src="/static/images/check-circle.png" class="radio-check radio-workmode" id="radio-check-onsite">
+                                <span class="text-notify d-inline">需到現場</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="">
+                                <img src="/static/images/check-circle-outline.png" class="radio-check radio-workmode" id="radio-check-online">
+                                <span class="text-notify d-inline">線上</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!---------------End of row 3--------------->
+            
+            
+                <!----------Location---------->
+                <div class="form-group input-group-lg col-md-6">
+                    <div class="row">
+                        <div class="col d-block">
+                            <label class="col-form-label" style="font-weight: bold;">
+                            地點
+                            <span class="text-danger">*</span></label>
+                            <input class="d-block form-control type="text" ref="site" v-model="site">
+                            <div class="" style="padding-top: 5px;">
+                                <img src="/static/images/check-circle-outline.png" class="radio-check" id="radio-check-location">
+                                <span class="text-notify d-inline">
+                                不限期
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!----------Preference---------->
+                <div class="form-group input-group-lg col-md-6">
+                    <div class="row">
+                        <div class="col"><label class="col-form-label" style="font-weight: bold;">偏好條件</label></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><input class="form-control" type="text" style="width: 95%;height: 38px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 20px;margin-right: 40px;margin-left: 40px;">
+
+                <!----------Description---------->
+                <div class="col"><label class="form-label" style="font-weight: bold;">委託描述</label>
+                    <div class="row">
+                        <div class="col" style="height: 200px;">
+                            <div id="summernote" style="height: 200px;"><textarea id="summernote" class="editordata" style="height: 95%;width: 100%;"></textarea></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 20px;margin-right: 40px;margin-left: 40px;">
+
+                <!----------Image---------->
+                <div class="col"><label class="form-label" style="font-weight: bold;">委託圖片</label>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-1 d-lg-flex justify-content-lg-center align-items-lg-center" style="margin-top: 0px;padding-left: 20px;margin-right: 1px;width: 39px;"><i class="material-icons d-lg-flex" style="color: #5e4949;margin: 0px;font-size: 16px;">info_outline</i></div>
+                                <div class="col d-lg-flex justify-content-lg-start align-items-lg-center" style="width: 441px;margin-top: 0px;margin-left: 1px;padding-right: 12px;padding-left: 1px;">
+                                    <p style="font-size: 12px;color: rgb(94,73,73);margin-bottom: 0px;margin-top: 1px;">檔案格式 jpg / jpeg / png，大小限制 3MB 內。<br></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <input type="file" style="color: #5e4949;margin-top: 10px;margin-left: 8px;" multiple>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!----------Submiy Buttons---------->
+            <div class="row" style="margin-top: 20px;margin-right: 40px;margin-left: 40px;">
+                <div class="col">
+                    <hr style="opacity: 1;color: #7B6363;/*border-color: #5e4949;*//*background: #5e4949;*/">
+                    <div class="row">
+                        <div class="col-8"></div>
+                        <div class="col-2"><button class="btn" type="submit" style="background: rgb(255,255,255);color: #865140;--bs-primary: #865140;--bs-primary-rgb: 134,81,64;border-color: #865140;width: 95%;">預覽</button></div>
+                        <div class="col-2"><button class="btn" type="button" style="background: #865140;color: rgb(255,255,255);width: 98%;">發佈</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </form>
+
+</body>
+
+</html>
 
   
 

@@ -1,0 +1,143 @@
+@import 'bootstrap/bootstrap';
+@import 'bootstrap/variables';
+@import 'bootstrap/mixins';
+
+$font-primary: 'Lato',Arial, sans-serif;
+$primary: #e8647c;
+
+body{
+	font-family: $font-primary;
+	font-size: 16px;
+	line-height: 1.8;
+	font-weight: normal;
+	background: #fff;
+	color: lighten($black,50%);
+}
+a {
+	transition: .3s all ease;
+	color: $primary;
+	&:hover, &:focus {
+		text-decoration: none !important;
+		outline: none !important;
+		box-shadow: none;
+	}
+}
+h1, h2, h3, h4, h5,
+.h1, .h2, .h3, .h4, .h5 {
+	line-height: 1.5;
+	font-weight: 400;
+	font-family: $font-primary;
+	color: $black;
+}
+
+.bg-primary{
+	background: $primary !important;
+}
+
+.ftco-section{
+	padding: 7em 0;
+}
+
+.ftco-no-pt{
+	padding-top: 0;
+}
+.ftco-no-pb{
+	padding-bottom: 0;
+}
+//HEADING SECTION
+.heading-section{
+	font-size: 28px;
+	color: $black;
+}
+
+//COVER BG
+.img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.ui.fluid.dropdown {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  position: relative;
+}
+
+.ui.selection.active.dropdown {
+	border-color: lighten($black,90%) !important;
+	.menu{
+	  border-color: lighten($black,90%);
+	  -webkit-box-shadow: 0px 3px 19px -15px rgba(0,0,0,0.41);
+		-moz-box-shadow: 0px 3px 19px -15px rgba(0,0,0,0.41);
+		box-shadow: 0px 3px 19px -15px rgba(0,0,0,0.41);
+	}
+	&:hover{
+		border-color: lighten($black,90%);
+    -webkit-box-shadow: 0px 3px 19px -15px rgba(0,0,0,0.41);
+		-moz-box-shadow: 0px 3px 19px -15px rgba(0,0,0,0.41);
+		box-shadow: 0px 3px 19px -15px rgba(0,0,0,0.41);
+		.menu{
+			border-color: lighten($black,90%);
+	    -webkit-box-shadow: 0px 3px 19px -15px rgba(0,0,0,0.41);
+			-moz-box-shadow: 0px 3px 19px -15px rgba(0,0,0,0.41);
+			box-shadow: 0px 3px 19px -15px rgba(0,0,0,0.41);
+		}
+	}
+}
+
+.ui.selection{
+	&.dropdown{
+		&:focus {
+	    border-color: lighten($black,90%);
+	    box-shadow: none;
+	  }
+  }
+}
+
+.ui.selection.dropdown{
+	padding: 10px;
+	position: relative;
+}
+
+.ui.selection.dropdown>.dropdown.icon{
+	top: 15px;
+}
+
+.ui.multiple.dropdown>.label{
+	box-shadow: none;
+}
+
+.ui.label{
+	background: $primary;
+	a{
+		opacity: 1;
+		color: $white;
+		padding: 8px 10px !important;
+		@include transition(.3s);
+		border: none !important;
+		&:hover, &:focus, &.active{
+			background: $primary;
+			color: $white;
+		}
+	}
+	>.delete.icon{
+		opacity: 1;
+	}
+}
+
+
+.ui.selection.dropdown .menu>.item{
+	border-top: 1px solid lighten($black,90%);
+}
+
+.ui.dropdown .menu>.item{
+	@include transition(.3s);
+	&:hover{
+		background: $primary;
+		color: $white;
+	}
+}
+
+
+
