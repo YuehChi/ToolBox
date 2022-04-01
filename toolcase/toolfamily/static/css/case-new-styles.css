@@ -2,7 +2,7 @@ input::-webkit-input-placeholder {
     font-size: 14px;
 }
 input[type="text"] {
-    border-color: #7B6363;
+    border-color: #7B6363 !important;
 }
 
 
@@ -15,14 +15,24 @@ input[type="text"] {
     border-radius: 2rem;
     width: 80%;
     box-shadow: 1px 3px 4px #5e4949;
-    margin-bottom: 25px;
+    margin-bottom: 25px !important;
     margin:auto;
     display: flex;
     flex-direction: column
 }
 
-.text-danger {
-    color: #dc3545!important;
+#input-location {
+    width:95%;
+    border-color: #7B6363 !important;
+}
+
+#input-preference {
+    width:95%;
+    border-color: #7B6363 !important;
+}
+
+#input-description {
+    border-color: #7B6363 !important;
 }
 
 .notify {
@@ -86,4 +96,12 @@ options {
 }
 .highlight {
     background-color: #d8d2d0 !important;
+}
+
+.text-danger {
+    color: #dc3545!important;
+}
+
+.valid-error {
+    border-color: #dc3545!important;
 }
