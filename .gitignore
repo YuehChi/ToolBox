@@ -6,3 +6,4 @@ toolcase/catalog
 toolcase/catalog/*
 db.sqlite3
 # toolfamily/migrations/*.py
+toolcase/db.sqlite3
