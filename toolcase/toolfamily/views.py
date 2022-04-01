@@ -54,8 +54,14 @@ def case_new(request):
         started_datetime = request.POST.get('started_datetime')  # 任務開始時間（預設為空）
         ended_datetime = request.POST.get('ended_datetime')
 
+        # 新增 人數 、工作方式
+
+        num = request.POST.get('num')
+        work = request.POST.get('work')
+
         case = Case(title = title ,publisher = publisher, description = description , reward = reward, location = location , 
-        constraint = constraint, started_datetime = started_datetime , ended_datetime = ended_datetime,case_status =case_status)
+        constraint = constraint, started_datetime = started_datetime , ended_datetime = ended_datetime,case_status =case_status,
+        num = num , work = work)
         case.save()
 
 
@@ -64,9 +70,15 @@ def case_new(request):
 
         # 照片
             
-        image = request.FILES.get('photo_image')
-        casephoto = CasePhoto(image = image , case = case)
-        casephoto.save()
+        # image = request.FILES.get('photo_image')
+        # casephoto = CasePhoto(image = image , case = case)
+        # casephoto.save()
+
+        image = request.FILES.getlist('photo_image')
+        for f in image:
+            file = CasePhoto(image=f, case = case)
+            file.save()
+
 
         # 類型
         type_temp = request.POST.getlist('case_type')
@@ -95,7 +107,7 @@ def case_new(request):
 
     return render(request,'case/new.html')
 
-#-------------詳細CASE資訊-------------
+#-------------一個CASE的詳細資訊-------------
 def case_profile(request ,case_id):
 
     pk_key = case_id
@@ -110,31 +122,58 @@ def case_profile(request ,case_id):
 
 
 
-#-------------編輯CASE資訊-------------
+#-------------一個CASE的編輯資訊-------------
 def case_profile_edit(request,case_id):
 
     pk_key = case_id
 
     if request.method == "POST" :
 
-        # post 接值 委託資訊
+        # post 接值case委託資訊
         title = request.POST.get('title')
         description = request.POST.get('description')
         reward = request.POST.get('reward')
         location = request.POST.get('location')
         constraint = request.POST.get('constraint')
 
-
         # 找出哪一筆case
         update_case = Case.objects.get(case_id=pk_key)
   
-        # update 參數
+        # update case table 參數
         update_case.title = title
         update_case.description = description
         update_case.reward = reward
         update_case.location = location
         update_case.constraint = constraint
         update_case.save()
+
+
+        # 照片 
+        image = request.FILES.get('photo_image')
+        casephoto = CasePhoto(case = pk_key)
+        casephoto.image = image
+        casephoto.save()
+
+        # 類型
+        type_temp = request.POST.getlist('case_type')
+        for i in range(len(type_temp)):
+            type = Type.objects.get(type_id = type_temp[i])
+            case_type = Case_Type(case = pk_key)
+            case_type = type
+            case_type.save()
+
+        # 領域 
+        field_temp = request.POST.getlist('case_field')
+        for i in range(len(field_temp)):
+            field = Field.objects.get(field_id = field_temp[i])
+            case_field = Case_Field(case = pk_key)
+            case_field = field
+            case_field.save()
+
+
+
+
+
 
         # 顯示的data
         list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
@@ -203,9 +242,16 @@ def case_new_temp(request):
         started_datetime = request.POST.get('started_datetime')  # 任務開始時間（預設為空）
         ended_datetime = request.POST.get('ended_datetime')
 
+        # 新增 人數 、工作方式
+
+        num = request.POST.get('num')
+        work = request.POST.get('work')
+
         case = Case(title = title ,publisher = publisher, description = description , reward = reward, location = location , 
-        constraint = constraint, started_datetime = started_datetime , ended_datetime = ended_datetime,case_status =case_status)
+        constraint = constraint, started_datetime = started_datetime , ended_datetime = ended_datetime,case_status =case_status,
+        num = num , work = work)
         case.save()
+
 
 
         # 外部鍵 case (抓最新一筆關聯)
@@ -213,9 +259,10 @@ def case_new_temp(request):
 
         # 照片
             
-        image = request.FILES.get('photo_image')
-        casephoto = CasePhoto(image = image , case = case)
-        casephoto.save()
+        image = request.FILES.getlist('photo_image')
+        for f in image:
+            file = CasePhoto(image=f, case = case)
+            file.save()
 
         # 類型
         type_temp = request.POST.getlist('case_type')

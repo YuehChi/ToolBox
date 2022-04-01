@@ -19,6 +19,8 @@
                 <th>領域</th>
                 <th>類型</th>
                 <th>照片</th>
+                <th>徵求人數</th>
+                <th>工作偏好</th>
             </tr>
         </thead>
         <tbody>
@@ -55,6 +57,8 @@
                     {%endif%}
                   {% endfor %}
                   </td>
+                  <td>{{case.num}}</td>
+                  <td>{{case.work}}</td>
                 </tr>
   
             {% endfor%}
