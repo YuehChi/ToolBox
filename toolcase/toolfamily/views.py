@@ -56,34 +56,37 @@ def login(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('home/')
 
-    account = request.POST.get('username', '')
-    password = request.POST.get('password', '')
-    user = auth.authenticate(username=account, password=password)
+    if request.method == 'POST':
+        account = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        user = auth.authenticate(username=account, password=password)
 
-    if user is not None:
-        userDetail = UserDetail.objects.get(Q(account_mail=account))
+        if user is not None:
+            userDetail = UserDetail.objects.get(Q(account_mail=account))
 
-        # check email is verified or not
-        isValid = userDetail.verification
-        if not isValid:
-            valid = True
-            return render(request, 'login.html', locals())
+            # check email is verified or not
+            isValid = userDetail.verification
+            if not isValid:
+                valid = True
+                return render(request, 'login.html', locals())
 
-        # check suspended or not
-        isActive = userDetail.isActive
-        if not isActive:
-            suspended = True
-            return render(request, 'login.html', locals())
+            # check suspended or not
+            isActive = userDetail.isActive
+            if not isActive:
+                suspended = True
+                return render(request, 'login.html', locals())
 
-        # login and create session
-        auth.login(request, user)
-        request.session['user'] = user.pk
+            # login and create session
+            auth.login(request, user)
+            request.session['user'] = user.pk
 
-        return HttpResponseRedirect('home/')
+            return HttpResponseRedirect('home/')
 
-    # send error message
-    elif account != "":
-        error = True
+        # send error message
+        elif account != "":
+            error = True
+        return render(request, 'login.html', locals())
+
     return render(request, 'login.html', locals())
 
 # -----------customize authentication-----------
@@ -174,7 +177,7 @@ def register(request):
 
     return render(request, 'register.html', locals())
 
-# -----------email verification-------------
+# ------------email verification-------------
 def active(request, token):
     # timeout
     try:
