@@ -103,19 +103,57 @@ def case_profile(request ,case_id):
     list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
     case_fields = Case_Field.objects.filter(case = pk_key)  
     case_types = Case_Type.objects.filter(case = pk_key)   
-    case_photo = CasePhoto.objects.filter(case = pk_key)   
+    case_photo = CasePhoto.objects.filter(case = pk_key)
 
     return render(request,'case/profile.html',locals())
 
 
+
+
 #-------------編輯CASE資訊-------------
-def case_profile_edit(request):
+def case_profile_edit(request,case_id):
 
-    context ={
+    pk_key = case_id
 
-    }
+    if request.method == "POST" :
 
-    return render(request,'case/profile_edit.html',context=context)
+        # post 接值 委託資訊
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        reward = request.POST.get('reward')
+        location = request.POST.get('location')
+        constraint = request.POST.get('constraint')
+
+
+        # 找出哪一筆case
+        update_case = Case.objects.get(case_id=pk_key)
+  
+        # update 參數
+        update_case.title = title
+        update_case.description = description
+        update_case.reward = reward
+        update_case.location = location
+        update_case.constraint = constraint
+        update_case.save()
+
+        # 顯示的data
+        list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
+        case_fields = Case_Field.objects.filter(case = pk_key)  
+        case_types = Case_Type.objects.filter(case = pk_key)   
+        case_photo = CasePhoto.objects.filter(case = pk_key)   
+        
+        return render(request,'case/profile.html',locals())
+
+
+    list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
+    case_fields = Case_Field.objects.filter(case = pk_key)  
+    case_types = Case_Type.objects.filter(case = pk_key)   
+    case_photo = CasePhoto.objects.filter(case = pk_key)
+
+    nolist_case = Case.objects.get(Q(case_id=pk_key) & Q(shown_public=True)) 
+    title = nolist_case.title 
+
+    return render(request,'case/profile_edit.html',locals())
 
 # -------------CASE資訊搜尋-------------
 @login_required

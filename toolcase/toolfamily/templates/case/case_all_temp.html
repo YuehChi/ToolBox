@@ -50,7 +50,7 @@
                   </td>
                   <td>
                   {% for photo in case_photo %}
-                    {% if photo.case_id == case.case_id%}
+                    {% if photo.case_id == case.case_id and photo.image.url != None%}
                         <img src="{{photo.image.url}}" alt="照片" style="width: 100px; height: 100px">
                     {%endif%}
                   {% endfor %}

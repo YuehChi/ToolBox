@@ -2,10 +2,6 @@
 
 {% block content %}
 <h1>case_profile</h1>
-
-
-<h1>case</h1>
-
      <table class="table">
         <thead>
             <tr>
@@ -27,7 +23,7 @@
         <tbody>
             {% for case in list_case%}
                 <tr>
-                  <td><a href="{% url 'case-profile' case.case_id %}">{{case.case_id}}</a></td>
+                  <td>{{case.case_id}}</a></td>
                   <td>{{case.title}}</td>
                   <td>{{case.publisher}}</td>
                   <td>{{case.reward}}</td>
@@ -53,7 +49,7 @@
                   </td>
                   <td>
                   {% for photo in case_photo %}
-                    {% if photo.case_id == case.case_id%}
+                    {% if photo.case_id == case.case_id and photo.image.url != None%}
                         <img src="{{photo.image.url}}" alt="照片" style="width: 100px; height: 100px">
                     {%endif%}
                   {% endfor %}
@@ -63,6 +59,9 @@
             {% endfor%}
         <tbody>
         </table>
+
+ 
+      <button><a href="/toolfamily/case/profile/{{case_id}}/edit/"> 編輯</a></button>
 
 
 {% endblock %}
