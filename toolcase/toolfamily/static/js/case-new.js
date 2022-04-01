@@ -4,15 +4,17 @@ $(document).ready(function() {
       tabsize: 2,
       height: 100
   });
+  $('.datepicker').datepicker({
+    startDate:'1d'
+    
+
+  });
 
   $('.option').hover(function(){
     console.log("1")
   })
 
-  $('.datepicker').datepicker({
-    startDate:'1d'
 
-  });
 
   $('#radio-check-enddate').click(function(){
     var source = $(this).attr('src').split("/");
@@ -33,6 +35,19 @@ $(document).ready(function() {
     }
   });
 
+  $('.radio-workmode').click(function(){
+    var source = $(this).attr('src').split("/");
+    if(source[source.length -1] == 'check-circle-outline.png'){
+      if($(this).attr('id') == 'radio-check-onsite'){
+        $('#radio-check-onsite').attr('src', '/static/images/check-circle.png')
+        $('#radio-check-online').attr('src', '/static/images/check-circle-outline.png')
+      }
+      else{
+        $('#radio-check-online').attr('src', '/static/images/check-circle.png')
+        $('#radio-check-onsite').attr('src', '/static/images/check-circle-outline.png')
+      }
+    }
+  });
 
 
 
