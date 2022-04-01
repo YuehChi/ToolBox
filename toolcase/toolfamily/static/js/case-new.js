@@ -6,11 +6,12 @@ $(document).ready(function() {
     $('#forminput-casetype').val($('#select-casefield').val())        // Case Field
     $('#forminput-casefield').val($('#select-casetype').val())        // Case Type
 
-
-    //var enddate = new Date($('#input-enddate').val().replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
-    var date = $('#input-enddate').val().split('/')
-    var date = date[2] + '-' + date[0] + '-' + date[1]
-    $('#forminput-enddate').val(date)                             // Ended Datetime
+    var startdate = new Date();
+    startdate = startdate.getFullYear() + '-' + startdate.getMonth() + '-' + startdate.getDay() +' '+ startdate.getHours() + ":" + startdate.getMinutes() + ":" + startdate.getSeconds();
+    var enddate = $('#input-enddate').val().split('/')
+    enddate = enddate[2] + '-' + enddate[0] + '-' + enddate[1]
+    $('#forminput-enddate').val(enddate)                                 // Ended Datetime
+    $('#forminput-startdate').val(startdate)
     $('#forminput-num').val($('#input-num').val())                    // Required Num
     $('#forminput-work').val($('#input-work').val())                  // Work Mode
     $('#forminput-constraint').val($('#input-preference').val())      // Constraint
@@ -21,6 +22,7 @@ $(document).ready(function() {
     console.log($('#forminput-casefield').val())
     console.log($('#forminput-num').val())
     console.log($('#forminput-work').val())
+    console.log($('#forminput-startdate').val())
     console.log($('#forminput-enddate').val())
     console.log($('#forminput-constraint').val())
     console.log($('#forminput-location').val())
