@@ -2,7 +2,7 @@ from asyncio.windows_events import NULL
 import django, json, smtplib
 from django.dispatch import receiver
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import auth
 from django.db.models import Q
 from .models import *
@@ -56,34 +56,37 @@ def login(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('home/')
 
-    account = request.POST.get('username', '')
-    password = request.POST.get('password', '')
-    user = auth.authenticate(username=account, password=password)
+    if request.method == 'POST':
+        account = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        user = auth.authenticate(username=account, password=password)
 
-    if user is not None:
-        userDetail = UserDetail.objects.get(Q(account_mail=account))
+        if user is not None:
+            userDetail = UserDetail.objects.get(Q(account_mail=account))
 
-        # check email is verified or not
-        isValid = userDetail.verification
-        if not isValid:
-            valid = True
-            return render(request, 'login.html', locals())
+            # check email is verified or not
+            isValid = userDetail.verification
+            if not isValid:
+                valid = True
+                return render(request, 'login.html', locals())
 
-        # check suspended or not
-        isActive = userDetail.isActive
-        if not isActive:
-            suspended = True
-            return render(request, 'login.html', locals())
+            # check suspended or not
+            isActive = userDetail.isActive
+            if not isActive:
+                suspended = True
+                return render(request, 'login.html', locals())
 
-        # login and create session
-        auth.login(request, user)
-        request.session['user'] = user.pk
+            # login and create session
+            auth.login(request, user)
+            request.session['user'] = user.pk
 
-        return HttpResponseRedirect('home/')
+            return HttpResponseRedirect('home/')
 
-    # send error message
-    elif account != "":
-        error = True
+        # send error message
+        elif account != "":
+            error = True
+        return render(request, 'login.html', locals())
+
     return render(request, 'login.html', locals())
 
 # -----------customize authentication-----------
@@ -118,29 +121,15 @@ class Token:
 token_confirm = Token(django_settings.SECRET_KEY)
 
 # ----------------register------------------
+# @csrf_exempt
 def register(request):
     if request.method == 'POST':
-        pwd_error = False  # password is not equal to confirm
-        email_error = False  # email doesn't exist or already registered
+        email_send_error = False  # fail to send mail
 
         username = request.POST.get('username')
         account = request.POST.get('account')
         password = request.POST.get('password')
         confirm = request.POST.get('confirm')
-
-        # check password is equal to confirm pwd or not
-        if password != confirm:
-            pwd_error = True
-            return render(request, 'register.html', locals())
-
-        # check email format
-        emailFormat = account.split('@')
-        if len(emailFormat) != 2:
-            email_error = True
-            return render(request, 'register.html', locals())
-        elif emailFormat[1] != "ntu.edu.tw":
-            email_error = True
-            return render(request, 'register.html', locals())
 
         # send verification url to user email
         token = token_confirm.generate_validate_token(username)
@@ -162,7 +151,7 @@ def register(request):
             user = User.objects.create_user(username=username, password=password, email=account, is_active=False)
             user.save()
         except:
-            email_error = True
+            email_send_error = True
             return render(request, 'register.html', locals())
 
         # insert user detail into UserDetail
@@ -172,9 +161,22 @@ def register(request):
         request.session['messages'] = "請查看信箱點擊連結以完成註冊驗證。\n連結有效期為1個小時。"
         return HttpResponseRedirect('/')
 
+    # check the email is used or not
+    if request.is_ajax():
+        email_used_error = False
+        account = request.POST.get("account")
+
+        try:
+            user = UserDetail.objects.get(Q(account_mail=account))
+            email_used_error = True
+        except:
+            email_used_error = False
+
+        return JsonResponse({'email_used_error': email_used_error}, safe=False)
+
     return render(request, 'register.html', locals())
 
-# -----------email verification-------------
+# ------------email verification-------------
 def active(request, token):
     # timeout
     try:
