@@ -112,10 +112,21 @@ def case_profile(request ,case_id):
 
     pk_key = case_id
 
+    #瀏覽人數+1
+    temp_case = Case.objects.get(case_id=pk_key)
+    temp_case.pageviews += 1
+    temp_case.save()
+
+    # 讀出case 資訊
     list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
     case_fields = Case_Field.objects.filter(case = pk_key)  
     case_types = Case_Type.objects.filter(case = pk_key)   
     case_photo = CasePhoto.objects.filter(case = pk_key)
+
+    # 讀出使用者資訊
+    temp_user = Case.objects.get(Q(case_id=pk_key) & Q(shown_public=True))  
+    user_id = temp_user.publisher.user_id
+    user_detail = UserDetail.objects.filter(user_id = user_id)
 
     return render(request,'case/profile.html',locals())
 
@@ -169,11 +180,6 @@ def case_profile_edit(request,case_id):
             case_field = Case_Field(case = pk_key)
             case_field = field
             case_field.save()
-
-
-
-
-
 
         # 顯示的data
         list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  

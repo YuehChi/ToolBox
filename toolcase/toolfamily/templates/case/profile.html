@@ -20,6 +20,7 @@
                 <th>照片</th>
                 <th>徵求人數</th>
                 <th>工作偏好</th>
+                <th>瀏覽人數</th>
             </tr>
         </thead>
         <tbody>
@@ -58,14 +59,42 @@
                   </td>
                   <td>{{case.num}}</td>
                   <td>{{case.work}}</td>
+                  <td>{{case.pageviews}}</td>
                 </tr>
   
             {% endfor%}
         <tbody>
         </table>
+        <button><a href="/toolfamily/case/profile/{{case_id}}/edit/"> 編輯</a></button>
+        <div>
+          <h1>case_user_detail</h1>
+           {% for user in user_detail%}
+              {% if user.icon != "" %}
+                  <img src="{{user.icon.url}}" alt="頭貼" style="width: 100px; height: 100px">
+              {% else %} 
+                  <p> no phote</p>
+              {%endif%}
+           <p>name : {{user.name}}</p>
+           <p>nickname : {{user.nickname}}</p>
+           {% if user.gender == 0 %}
+              <p>gender : 不願透露</p>
+           {% elif user.gender == 1 %}
+              <p>gender : 男</p>
+           {% elif user.gender == 2 %}
+              <p>gender : 女</p>
+           {% endif %}
+           <p>department : {{user.department}}</p>
+           <p>rate : {{user.rate}}</p>
+           <p>last_login_datetime : {{user.last_login_datetime}}</p>
+          
+           {% endfor%}
+
+
+
+        </div>
 
  
-      <button><a href="/toolfamily/case/profile/{{case_id}}/edit/"> 編輯</a></button>
+      
 
 
 {% endblock %}
