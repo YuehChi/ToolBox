@@ -1,8 +1,8 @@
 from asyncio.windows_events import NULL
 import django, json, smtplib
 from django.dispatch import receiver
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, HttpResponse
+from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.db.models import Q
 from .models import *
@@ -34,6 +34,32 @@ def index(request):
         context={'num_visits': num_visits,
                  'user_name': user_name},
     )
+
+#########################################
+#                 TOOLS                 #
+#########################################
+# ---------------def Token-----------------
+class Token:
+    def __init__(self, security_key):
+        self.security_key = security_key
+        self.salt = base64.b64encode(security_key.encode('UTF-8'))
+    def generate_validate_token(self, username):
+        serializer = utsr(self.security_key)
+        return serializer.dumps(username, self.salt)
+    def confirm_validate_token(self, token, expiration=3600):
+        serializer = utsr(self.security_key)
+        return serializer.loads(token, salt=self.salt, max_age=expiration)
+    def remove_validate_token(self, token):
+        serializer = utsr(self.security_key)
+        return serializer.loads(token, salt=self.salt)
+token_confirm = Token(django_settings.SECRET_KEY)
+
+# ----------------def ajax response----------------
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+
 
 #########################################
 #              AUTH MODULE              #
@@ -104,22 +130,6 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/')
 
-# ---------------def Token-----------------
-class Token:
-    def __init__(self, security_key):
-        self.security_key = security_key
-        self.salt = base64.b64encode(security_key.encode('UTF-8'))
-    def generate_validate_token(self, username):
-        serializer = utsr(self.security_key)
-        return serializer.dumps(username, self.salt)
-    def confirm_validate_token(self, token, expiration=3600):
-        serializer = utsr(self.security_key)
-        return serializer.loads(token, salt=self.salt, max_age=expiration)
-    def remove_validate_token(self, token):
-        serializer = utsr(self.security_key)
-        return serializer.loads(token, salt=self.salt)
-token_confirm = Token(django_settings.SECRET_KEY)
-
 # ----------------register------------------
 # @csrf_exempt
 def register(request):
@@ -158,7 +168,7 @@ def register(request):
         return HttpResponseRedirect('/')
 
     # check the email is used or not
-    if request.is_ajax():
+    if is_ajax(request=request):
         email_used_error = False
         account = request.POST.get("account")
 
@@ -168,7 +178,7 @@ def register(request):
         except:
             email_used_error = False
 
-        return JsonResponse({'email_used_error': email_used_error}, safe=False)
+        return HttpResponse(email_used_error)
 
     return render(request, 'register.html', locals())
 
