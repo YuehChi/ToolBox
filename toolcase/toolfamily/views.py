@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render ,redirect
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -102,12 +102,13 @@ def case_new(request):
         case_types = Case_Type.objects.filter(case = pk_key)   
         case_photo = CasePhoto.objects.filter(case = pk_key)   
 
-        return render(request,'case/profile.html',locals())
+        return redirect('case-profile',case_id = pk_key)
    
 
     return render(request,'case/new.html')
 
 #-------------一個CASE的詳細資訊-------------
+@login_required
 def case_profile(request ,case_id):
 
     pk_key = case_id
@@ -134,6 +135,7 @@ def case_profile(request ,case_id):
 
 
 #-------------一個CASE的編輯資訊-------------
+@login_required
 def case_profile_edit(request,case_id):
 
     pk_key = case_id
@@ -292,10 +294,11 @@ def case_new_temp(request):
         case_types = Case_Type.objects.filter(case = pk_key)   
         case_photo = CasePhoto.objects.filter(case = pk_key)   
 
-        return render(request,'case/profile.html',locals())
+        return redirect('case-profile',case_id = pk_key)
+      
 
 
-    return render(request,'case/new_temp.html')
+    return render(request,'case/new_temp.html',locals())
 
 
 
