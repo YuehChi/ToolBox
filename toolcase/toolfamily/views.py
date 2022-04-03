@@ -143,16 +143,12 @@ def register(request):
         try:
             send_mail(title, msg, email_from, receiver, fail_silently=False)
         except:
-            email_error = True
+            email_send_error = True
             return render(request, 'register.html', locals())
 
         # insert user detail into User
-        try:
-            user = User.objects.create_user(username=username, password=password, email=account, is_active=False)
-            user.save()
-        except:
-            email_send_error = True
-            return render(request, 'register.html', locals())
+        user = User.objects.create_user(username=username, password=password, email=account, is_active=False)
+        user.save()
 
         # insert user detail into UserDetail
         userDetail = UserDetail.objects.create(name=username, django_user=user, account_mail=account, salt=password)
