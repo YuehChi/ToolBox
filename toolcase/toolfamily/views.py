@@ -9,10 +9,22 @@ def index(request):
     # Number of visits to this view, as counted in the session variable.
     num_visits = request.session.get('num_visits', 1)
     request.session['num_visits'] = num_visits+1
+    # user data
+    userData = {'nickname': '您尚未登入'}
+    if request.user.is_authenticated:  # if the user has login
+        userData = {
+            'nickname': request.user.user_detail.nickname,
+            'icon': request.user.user_detail.icon,
+            }
+    print('userData:', userData)
 
     # Render the HTML template index.html with the data in the context variable.
     return render(
-        request,'index.html', context={'num_visits': num_visits},
+        request,
+        'index.html',
+        context = {
+            'num_visits': num_visits,
+            'user': userData,},
     )
 
 
@@ -23,23 +35,26 @@ def index(request):
 # 使用者資料頁面
 @login_required
 def viewUser(request):
-    print('viewUser')
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
     userDataForm = ''  # 預計要傳 html 表單；非 POST 或 GET 則為空
+    content = {}  # 要傳入模板的資訊
 
     # POST: 更改使用者資料
     if request.method == 'POST':
+        print('\n\n\nrequest.POST:', request.POST)
         formPost = UserDetailModelForm(request.POST, instance=user)
         if formPost.is_valid():
-            formPost.save()
-            print('update in view!gogo!')
+            userUpdate = formPost.save(commit=False)  # 先暫存，還不更改資料庫
+            userUpdate.account_mail = user.account_mail  # 自動填入email
+            userUpdate.save()  # 實際更改資料庫
+            print('User data has been update.')
             return redirect('user-profile')
         else:
             print('The form is not valid.')
-            userDataForm = formPost  # 保留剛剛POST的分析結果，以顯示錯誤訊息
+            userDataForm = userUpdate  # 保留剛剛POST的分析結果，以顯示錯誤訊息
 
     # GET: 取得使用者資料
     elif request.method == 'GET':
@@ -47,7 +62,7 @@ def viewUser(request):
         userDataForm = UserDetailModelForm(instance=user)
         print(f'get data of {user}')
         # 取得使用者資料
-        dataCol = [  # 要取得哪些欄位
+        dataCol = [  # 要取得哪些欄位 #目前沒作用
             'name',
             'nickname',
             'account_mail',
@@ -65,4 +80,8 @@ def viewUser(request):
             'last_login_datetime'
             ]
 
-    return render(request, 'user/user.html', locals())
+    content = {
+        'user': user,
+        'userDataForm': userDataForm,
+        }
+    return render(request, 'user/user.html', content)
