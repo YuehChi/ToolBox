@@ -1,9 +1,9 @@
 from asyncio.windows_events import NULL
 import django, json, smtplib
 from django.dispatch import receiver
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import redirect, render, HttpResponse
 from django.http import HttpResponseRedirect
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.db.models import Q
 from .models import *
 
@@ -25,8 +25,7 @@ def index(request):
     request.session['num_visits'] = num_visits+1
 
     # return user name
-    if 'user' in request.session:
-        user_name = UserDetail.objects.get(Q(django_user=request.session['user']))
+    user_name = UserDetail.objects.get(Q(django_user=request.user))
 
     return render(
         request,
@@ -38,6 +37,7 @@ def index(request):
 #########################################
 #                 TOOLS                 #
 #########################################
+
 # ---------------def Token-----------------
 class Token:
     def __init__(self, security_key):
@@ -67,11 +67,6 @@ def is_ajax(request):
 
 # ----------------login------------------
 def login(request):
-    error = False  # wrong account or pwd 
-    suspended = False  # is active or not
-    valid = False  # email is verified or not
-    alert = False  # show message for register
-
     # show message for register
     if 'messages' in request.session:
         alert = True
@@ -93,25 +88,23 @@ def login(request):
             # check email is verified or not
             isValid = userDetail.verification
             if not isValid:
-                valid = True
-                return render(request, 'login.html', locals())
+                messages.warning(request,'帳號尚未啟用')
+                return redirect('login')
 
             # check suspended or not
             isActive = userDetail.isActive
             if not isActive:
-                suspended = True
-                return render(request, 'login.html', locals())
+                messages.warning(request,'帳號已停權')
+                return redirect('login')
 
             # login and create session
             auth.login(request, user)
-            request.session['user'] = user.pk
-
             return HttpResponseRedirect('home/')
 
         # send error message
         elif account != "":
-            error = True
-        return render(request, 'login.html', locals())
+            messages.warning(request,'使用者帳號或密碼錯誤')
+        return redirect('login')
 
     return render(request, 'login.html', locals())
 
@@ -134,12 +127,9 @@ def logout(request):
 # @csrf_exempt
 def register(request):
     if request.method == 'POST':
-        email_send_error = False  # fail to send mail
-
         username = request.POST.get('username')
         account = request.POST.get('account')
         password = request.POST.get('password')
-        confirm = request.POST.get('confirm')
 
         # send verification url to user email
         token = token_confirm.generate_validate_token(username)
@@ -153,8 +143,8 @@ def register(request):
         try:
             send_mail(title, msg, email_from, receiver, fail_silently=False)
         except:
-            email_send_error = True
-            return render(request, 'register.html', locals())
+            messages.warning(request,'信箱格式錯誤或已註冊')
+            return redirect('register')
 
         # insert user detail into User
         user = User.objects.create_user(username=username, password=password, email=account, is_active=False)

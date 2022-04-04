@@ -26,8 +26,12 @@
     <section class="d-flex justify-content-center align-items-center align-content-center align-self-center me-auto portfolio" id="portfolio" style="--bs-primary: #18BC9C;--bs-primary-rgb: 24,188,156;margin-top: 54px;">
         {% if pwd_error %}
             <p>與確認密碼不相符</p>
-        {% elif email_error %}
-            <p>信箱格式錯誤或已註冊</p>
+        {% endif %}
+
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
         {% endif %}
         
         <div class="row justify-content-center align-items-center" style="height: 600px;">

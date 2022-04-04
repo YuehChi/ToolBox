@@ -28,13 +28,11 @@
     </nav>
     
     <section class="d-flex justify-content-center align-items-center align-content-center align-self-center me-auto portfolio" id="portfolio" style="--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 24,188,156;margin-top: 54px;">
-        <!-- {% if suspended %}
-            <p>帳號已停權</p>
-        {% elif error %}
-            <p>使用者帳號或密碼錯誤</p>
-        {% elif valid %}
-            <p>帳號尚未啟用</p>
-        {% endif %} -->
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
 
         <div class="row justify-content-center align-items-center">
             <div class="col-md-8 col-lg-6" style="width: 600px;">
@@ -49,7 +47,7 @@
                     {% load static %}
                     <h1 style="font-family: Montserrat, sans-serif;text-align: center;color: rgb(123, 99, 99);font-size: 50px;margin-right: -150px;">會員登入</h1><img class="img-fluid mb-5" src="{% static 'images/人頭1.png' %}" style="margin-left: 142px;margin-right: 0px;margin-top: 20px;height: 93px;">
                     <div style="margin-right: -48px;height: 210px;margin-top: -19px;margin-left: 24px;">
-                        <form action="/toolfamily/?yes" method="post" style="width: 252px;height: 156px;margin-left: 82px;">
+                        <form action="" method="post" style="width: 252px;height: 156px;margin-left: 82px;">
                             {% csrf_token %}
                             {% load static %}
                             <div class="mb-0 form-floating controls pb-2" style="border-bottom-width: 0px;height: 131px;"><img src="{% static 'images/Rectangle%207.png' %}" style="margin: -38px;margin-top: -14px;border-radius: 0px;margin-left: -38px;">
@@ -58,7 +56,7 @@
                                     {% load static %}
                                 </div><img src="{% static 'images/Rectangle%207.png' %}" style="margin: -38px;margin-top: -11px;border-radius: 0px;margin-left: -38px;">
                                 <div class="row" style="margin-top: -15px;">
-                                    <div class="col" style="height: 36px;"><input class="form-control form-control-sm" type="password" id="password" placeholder="輸入密碼" style="font-size: 16px;padding-top: 6px;height: 36px;width: 216px;text-align: center;" required=true /></div>
+                                    <div class="col" style="height: 36px;"><input class="form-control form-control-sm" type="password" id="password" name="password" placeholder="輸入密碼" style="font-size: 16px;padding-top: 6px;height: 36px;width: 216px;text-align: center;" required=true /></div>
                                 </div>
                             </div><a href="/toolfamily/forget/" style="color: rgb(123, 99, 99);margin-left: -34px;">忘記密碼？</a>
                             <div class="control-group" style="height: 60px;width: 191px;margin-left: -2px;"><button class="btn btn-primary" type="submit" style="background: rgb(245, 197, 72);border-top-color: rgb(245, 197, 72);border-right-color: rgb(245, 197, 72);border-bottom-color: rgb(245, 197, 72);border-left-color: rgb(245, 197, 72);width: 189.9844px;border-radius: 8px;margin-left: 0px;margin-top: 14px;height: 32px;text-align: center;font-size: 19px;line-height: 17.5px;">登入</button></div>
