@@ -3,11 +3,11 @@ $(document).ready(function() {
     console.log('click')
     $('#forminput-title').val($('#input-title').val())                // Title
     $('#forminput-reward').val($('#input-reward').val())              // Reward
-    $('#forminput-casetype').val($('#select-casefield').val())        // Case Field
-    $('#forminput-casefield').val($('#select-casetype').val())        // Case Type
+    $('#forminput-casetype').val($('#select-casetype').val())        // Case Field
+    $('#forminput-casefield').val($('#select-casefield').val())        // Case Type
 
     var startdate = new Date();
-    startdate = startdate.getFullYear() + '-' + startdate.getMonth() + '-' + startdate.getDay() +' '+ startdate.getHours() + ":" + startdate.getMinutes() + ":" + startdate.getSeconds();
+    startdate = startdate.getFullYear() + '-' + String(startdate. getMonth() + 1). padStart(2, '0') + '-' + String(startdate. getDate()). padStart(2, '0') +' '+ startdate.getHours() + ":" + startdate.getMinutes() + ":" + startdate.getSeconds();
     var enddate = $('#input-enddate').val().split('/')
     enddate = enddate[2] + '-' + enddate[0] + '-' + enddate[1]
     $('#forminput-enddate').val(enddate)                                 // Ended Datetime
@@ -16,7 +16,10 @@ $(document).ready(function() {
     $('#forminput-work').val($('#input-work').val())                  // Work Mode
     $('#forminput-constraint').val($('#input-preference').val())      // Constraint
     $('#forminput-location').val($('#input-location').val())          // Location
-    $('#forminput-description').val($('#textarea-description').val()) //Description
+    
+    var description = $('#textarea-description').val()
+   // description = description.replaceAll('\n', '<br>')
+    $('#forminput-description').val(description) //Description
     console.log($('#forminput-title').val())
     console.log($('#forminput-casetype').val())
     console.log($('#forminput-casefield').val())

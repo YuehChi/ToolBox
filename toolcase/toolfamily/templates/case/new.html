@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Simonetta">
 
     
     <script src="\static\bootstrap\js\bootstrap.min.js" type="text/javascript"></script>
@@ -71,10 +72,10 @@
 
     <!----------Form---------->
     
-    <form class="form" id="case-new-form" action="/toolfamily/case/new_temp/" enctype="multipart/form-data" method="POST">
+    <form class="form" id="case-new-form" action="/toolfamily/case/new/" enctype="multipart/form-data" method="POST">
         {% csrf_token %}
         <div class="row"><div class="col-12">
-        <div class="card cn_font" id="case_new_form">
+        <div class="card cn_font en_font" id="case_new_form">
         <div class="card-body">
         
             <!----------Notification---------->
@@ -267,10 +268,10 @@
             <!----------Submiy Buttons---------->
             <div class="row" style="margin-top: 20px;margin-right: 40px;margin-left: 40px;">
                 <div class="d-flex justify-content-md-end justify-content-center">
-                <div class=""><button class="btn" type="button" id="button-preview" style="background: rgb(255,255,255);color: #865140;--bs-primary: #865140;--bs-primary-rgb: 134,81,64;border-color: #865140;width: 80px;margin-right: 10px;">
+                <div><button class="btn" type="button" id="button-preview" style="background: rgb(255,255,255);color: #865140;--bs-primary: #865140;--bs-primary-rgb: 134,81,64;border-color: #865140;width: 80px;margin-right: 10px;">
                 預覽
                 </button></div>
-                <div class=""><button class="btn" type="button" id="button-post" style="background: #865140;color: rgb(255,255,255);width: 80px;">
+                <div><button class="btn" type="button" id="button-post" style="background: #865140;color: rgb(255,255,255);width: 80px;">
                 發佈
                 </button></div>
             </div></div>

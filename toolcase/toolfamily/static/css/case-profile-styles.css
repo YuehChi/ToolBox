@@ -1,0 +1,58 @@
+@font-face {
+  font-family: mix-font;
+  src:  url(https://fonts.gstatic.com/s/notosanstc/v24/-nFlOG829Oofr2wohFbTp9i9WyEKSehbzKSBjgyYqEML3A_ajbajwVJ5kTuPLNzqyAbPohbs.114.woff2) format('woff2');
+  unicode-range: U+4E00-9FFF;
+}
+
+@font-face {
+  font-family: mix-font;
+  src: url(https://fonts.gstatic.com/s/simonetta/v21/x3dickHVYrCU5BU15c4xdfoDjy8.woff2) format('woff2');
+  unicode-range: U+00-024F;
+}
+
+.cn_font {
+  font-family: mix-font;
+
+}
+
+.padding-none {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+
+
+.caseinfo-title-color {
+  color: #865140;
+}
+
+.caseinfo-content-color {
+  color: #261d1d;
+}
+
+.star-color {
+  color: #f5c548;
+  font-size: 16px;
+}
+
+
+.genderless-color {
+  color: #b8b3b3;
+}
+
+.type-field-tag {
+  text-decoration: none;
+  color: #f4f4f3;
+  background: #7b6363;
+  margin-right: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+a:hover {
+  color: #261d1d;
+}
+

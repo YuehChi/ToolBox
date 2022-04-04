@@ -10,6 +10,10 @@ input[type="text"] {
     font-family: Microsoft JhengHei;
 }
 
+.en_font{
+    font-family: Simonetta;
+  }
+
 #case_new_form {
     background: #ffffff;
     border-radius: 2rem;
