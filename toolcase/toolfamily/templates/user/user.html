@@ -44,14 +44,14 @@
                     <div class="col-md-4" style="border-width: 0px;">
                         <div class="border rounded" style="border: 1px solid #EEEEEE ;">
                             <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;">接案數量</p>
-                            <p style="text-align: center;font-size: 70px;color: rgb(134, 81, 64);">0</p>
+                            <p style="text-align: center;font-size: 70px;color: rgb(134, 81, 64);">{{ user.work_num }}</p>
                             <p style="text-align: right;padding-right: 20px;">件</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="border rounded" style="border-style: solid;border-color: #EEEEEE;">
                             <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;">發案數量</p>
-                            <p style="text-align: center;font-size: 70px;color: rgb(134, 81, 64);">0</p>
+                            <p style="text-align: center;font-size: 70px;color: rgb(134, 81, 64);">{{ user.publish_num }}</p>
                             <p style="text-align: right;padding-right: 20px;">件</p>
                         </div>
                     </div>
@@ -83,17 +83,17 @@
                                 <p style="color:  rgb(38, 29, 29);">性別：</p>
                                 <div class="form-check">
                                 {% if user.gender == 0 %}
-                                    <input  type="radio" name="sex" value="1">男
-                                    <input  type="radio" name="sex" value="2">女
-                                    <input  type="radio" name="sex" value="0" checked="checked">不願透漏
+                                    <input  type="radio" name="gender" value="1">男
+                                    <input  type="radio" name="gender" value="2">女
+                                    <input  type="radio" name="gender" value="0" checked="checked">不願透漏
                                 {% elif user.gender == 1 %}
-                                    <input  type="radio" name="sex" value="1" checked="checked">男
-                                    <input  type="radio" name="sex" value="2">女
-                                    <input  type="radio" name="sex" value="0">不願透漏
+                                    <input  type="radio" name="gender" value="1" checked="checked">男
+                                    <input  type="radio" name="gender" value="2">女
+                                    <input  type="radio" name="gender" value="0">不願透漏
                                 {% elif user.gender == 2 %}
-                                    <input  type="radio" name="sex" value="1">男
-                                    <input  type="radio" name="sex" value="2" checked="checked">女
-                                    <input  type="radio" name="sex" value="0">不願透漏     
+                                    <input  type="radio" name="gender" value="1">男
+                                    <input  type="radio" name="gender" value="2" checked="checked">女
+                                    <input  type="radio" name="gender" value="0">不願透漏
                                 {% endif %}                        
                                     <!-- <input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2">男</label>
                                     <input class="form-check-input" type="radio" id="formCheck-1">女

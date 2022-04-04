@@ -154,8 +154,19 @@ class UserDetail(models.Model):
 
     @property
     def last_login(self):  # 從預設 User 的最後登入紀錄直接取值
-
         return self.django_user.last_login
+
+    @property
+    def work_num(self):  # 接案數量
+        count = CommissionRecord.objects.filter(
+            commissioned_user = self
+            ).count()
+        return count
+
+    @property
+    def publish_num(self):  # 發案數量
+        count = Case.objects.filter(publisher = self).count()
+        return count
 
 
 

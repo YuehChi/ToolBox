@@ -11,10 +11,17 @@ class UserDetailAdmin(admin.ModelAdmin):
         'account_mail',
         'gender',
         'department',
-        'rate',
+        'rate_shown',
         'last_login'
     )
-    readonly_fields = ('created_datetime', 'user_id')
+    readonly_fields = (
+        'user_id',
+        'created_datetime',
+        'last_login',
+        'work_num',
+        'publish_num')
+    def rate_shown(self, obj):
+        return round(obj.rate, 2)
 admin.site.register(UserDetail, UserDetailAdmin)
 
 

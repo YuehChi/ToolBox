@@ -60,7 +60,7 @@ def viewUser(request):
     elif request.method == 'GET':
         # 更改使用者資料的表單
         userDataForm = UserDetailModelForm(instance=user)
-        print(f'get data of {user}')
+        print(f'get data of {user}:', userDataForm)
         # 取得使用者資料
         dataCol = [  # 要取得哪些欄位 #目前沒作用
             'name',
@@ -73,6 +73,8 @@ def viewUser(request):
             'icon',
             'rate',
             'rate_num',
+            'work_num',
+            'publish_num',
             'commissioned_status',
             'commissioning_status',
             'verification',
