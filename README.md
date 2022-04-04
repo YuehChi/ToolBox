@@ -41,3 +41,14 @@ fatal: Authentication failed for 'https://github.com/YuehChi/ToolBox.git/'
 Username: your_username //輸入使用者名稱  
 Password: your_token //輸入token
 
+## Test
+### Superuser
+- 帳號：TestUser，密碼：test5678，信箱：12345@ntu.edu.tw
+### User
+- 帳號：TestUser2，密碼：test56789，信箱：123456@ntu.edu.tw
+- 帳號：TestUser3，密碼：test567890，信箱：1234567@ntu.edu.tw
+### Gmail
+- 帳號：ntutoolbox@gmail.com
+- 密碼：ntutoolbox123
+- 應用程式密碼：ixbdessacfgleknl
+
