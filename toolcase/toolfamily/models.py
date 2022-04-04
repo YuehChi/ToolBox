@@ -44,7 +44,14 @@ def daysAfter(n=7):
     return timezone.now() + datetime.timedelta(days=n)
 
 
-
+# 對大頭照檔案重新命名，並放到 images/userIcon/ 下
+def user_icon_path(instance, filename):
+  # 生成新的圖片名
+  file_type = filename.split('.')[-1]
+  time_stamp = str(datetime.datetime.now()).replace('.','-')
+  file_name = ('images/userIcon/'
+        f'user{instance.user_id}_icon_{time_stamp}.{file_type}')
+  return file_name
 
 
 
@@ -117,7 +124,7 @@ class UserDetail(models.Model):
         default='', blank=True,
         verbose_name='自我介紹')
     icon = models.ImageField(
-        upload_to='images/userIcon/',
+        upload_to=user_icon_path,
         null=True, blank=True)
 
     # 評價

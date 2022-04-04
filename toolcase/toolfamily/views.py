@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from .forms import *
+from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
+import os  # 為了在上傳新檔時刪除舊檔
 
 
 
@@ -39,57 +41,77 @@ def viewUser(request):
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
-    userDataForm = ''  # 預計要傳 html 表單；非 POST 或 GET 則為空
-    content = {}  # 要傳入模板的資訊
+
+    # 更改使用者資料的表單
+    userDataForm = UserDetailModelForm(instance=user)
+    print(f'get data of {user}.')
+
+    # 取得使用者資料
+    dataCol = [  # 要取得哪些欄位 #目前沒作用
+        'name',
+        'nickname',
+        'account_mail',
+        'gender',
+        'department',
+        'work',
+        'information',
+        'icon',
+        'rate',
+        'rate_num',
+        'work_num',
+        'publish_num',
+        'commissioned_status',
+        'commissioning_status',
+        'verification',
+        'created_datetime',
+        'last_login_datetime'
+        ]
+
+    # 整理資訊並回傳
+    content = {  # 要傳入模板的資訊
+        'user': user,
+        'userDataForm': userDataForm,
+        }
+    return render(request, 'user/user.html', content)
+
+
+
+@login_required
+def updateUser(request):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+    userDataForm = ''  # 預計要傳 html 表單；非 POST 則為空
 
     # POST: 更改使用者資料
     if request.method == 'POST':
-        print('\n\n\nrequest.POST:', request.POST)
+        print('\n\nrequest.POST:', request.POST)
+        print('request.FILES:', request.FILES)
         formPost = UserDetailModelForm(request.POST, instance=user)
         if formPost.is_valid():
             userUpdate = formPost.save(commit=False)  # 先暫存，還不更改資料庫
             userUpdate.account_mail = user.account_mail  # 自動填入email
             if request.FILES:  # 若有上傳圖片
                 try:
-                    oldIconUrl = userUpdate.icon.url
+                    if userUpdate.icon:  # 若有舊檔，就刪除
+                        oldUrl = userUpdate.icon.url[1:]  # 去掉最前面的斜線
+                        oldUrl = os.path.join(settings.BASE_DIR, oldUrl)
+                        print('find old icon and remove file', oldUrl)
+                        os.remove(oldUrl)
                     userUpdate.icon = request.FILES['icon']
                 except Exception as ex:
                     print('Can not save user icon:', ex)
             userUpdate.save()  # 實際更改資料庫
             print('User data has been update.')
-            return redirect('user-profile')
+            return redirect('user-profile')  # 重定向並刷新個資分頁的資訊
         else:
             print('The form is not valid.')
             userDataForm = userUpdate  # 保留剛剛POST的分析結果，以顯示錯誤訊息
 
-    # GET: 取得使用者資料
-    elif request.method == 'GET':
-        # 更改使用者資料的表單
-        userDataForm = UserDetailModelForm(instance=user)
-        print(f'get data of {user}:', userDataForm)
-        # 取得使用者資料
-        dataCol = [  # 要取得哪些欄位 #目前沒作用
-            'name',
-            'nickname',
-            'account_mail',
-            'gender',
-            'department',
-            'work',
-            'information',
-            'icon',
-            'rate',
-            'rate_num',
-            'work_num',
-            'publish_num',
-            'commissioned_status',
-            'commissioning_status',
-            'verification',
-            'created_datetime',
-            'last_login_datetime'
-            ]
-
-    content = {
+    # 整理資訊並回傳
+    content = {  # 要傳入模板的資訊
         'user': user,
         'userDataForm': userDataForm,
         }
-    return render(request, 'user/user.html', content)
+    return render(request, 'user/user.html/#tab-2', content)
