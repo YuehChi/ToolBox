@@ -1,11 +1,19 @@
 {% extends "base_generic.html" %}
 
 <div class="row">
+<<<<<<< HEAD
         {% block sidebar %}
         <div style="margin-top: 20px;">
             <ul class="tab-list" style="text-align: center;display:block;list-style:none;">
                 <li class="list-group-item" m="1"><a href="javascript:void(0)" style="color: rgb(134, 81, 64);">會員中心</a></li>
                 <li class="list-group-item" m="2"><a href="javascript:void(0)" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li>
+=======
+    {% block sidebar %}
+        <div class="border rounded" style="background: var(--bs-white);margin-left: 20px;margin-top: 20px;">
+            <ul class="tab-list" style="text-align: center;">
+                <li class="list-group-item"><a href="#tab01" style="color: rgb(134, 81, 64);">會員中心</a></li>
+                <li class="list-group-item"><a href="#tab02" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li>
+>>>>>>> b9d9dc9524cfc614f31b6d1d52cfb29f9eb25f03
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的委託</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">接案紀錄</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的追蹤</a></li>
@@ -74,6 +82,7 @@
                         <div style="text-align: center;"><button class="btn btn-primary border rounded" type="button" style="background: rgb(134,81,64);">上傳圖片</button></div>
                     </div>
                     <div class="col-md-6" style="margin-top: 10px;">
+<<<<<<< HEAD
                         <form action="" method="POST">
                             {% csrf_token %}
                             <div>
@@ -96,11 +105,35 @@
                             <div style="text-align: center;margin-bottom: 20px;">
                                 <button class="btn btn-primary border rounded" type="button" style="background: rgb(255,255,255);color: rgb(134,81,64);border: 2px solid rgb(134,81,64) ;">取消</button>
                                 <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交">
+=======
+                        <form action="" method="POST">  {# 不寫action, 好讓表單資訊POST到當前的url下 #}
+                            {% csrf_token %}
+                            <div>
+                                <p style="color:  rgb(38, 29, 29);">email：{{ user.account_mail}}</p>
+                                <p style="color:  rgb(38, 29, 29);">姓名：<input class="border rounded" type="text" name="name" value="{{ user.name }}"></p>
+                                <p style="color:  rgb(38, 29, 29);">暱稱：<input class="border rounded" type="text" name="nickname" value="{{ user.nickname }}"></p>
+                                <p style="color:  rgb(38, 29, 29);">性別:</p>
+                                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2">男</label></div>
+                                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1">女</label></div>
+                                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-3"><label class="form-check-label" for="formCheck-3">不透漏</label></div>
+                                <p style="color:  rgb(38, 29, 29);">系所:&nbsp;<input class="border rounded" type="text" name="department" value="{{ user.department }}"></p>
+                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);">自我介紹:<textarea class="form-control-lg" name="information">{{ user.information }}</textarea></p>
+>>>>>>> b9d9dc9524cfc614f31b6d1d52cfb29f9eb25f03
                             </div>
+                            <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;" value="提交"> {#按鈕要放在 form 裡面才有效#}
                         </form>
+<<<<<<< HEAD
                         {# <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"> #} {#按鈕要放在form裡面才有效#}
                         {{ userDataForm.errors }}<br>  <!-- 顯示錯誤訊息 ex.必填項目未填 -->
                         {{ userDataForm.non_field_errors }}<br>  <!-- 顯示錯誤訊息 ex.必填項目未填 -->
+=======
+                        <div style="text-align: center;margin-bottom: 20px;">
+                            <button class="btn btn-primary border rounded" type="button" style="background: rgb(255,255,255);color: rgb(134,81,64);border: 2px solid rgb(134,81,64) ;">取消</button>
+                            {# <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"> #} {#按鈕要放在form裡面才有效#}
+                            {{ userDataForm.errors }}<br>  <!-- 顯示錯誤訊息 ex.必填項目未填 -->
+                            {{ userDataForm.non_field_errors }}<br>  <!-- 顯示錯誤訊息 ex.必填項目未填 -->
+                        </div>
+>>>>>>> b9d9dc9524cfc614f31b6d1d52cfb29f9eb25f03
                     </div>
                 </div>
             </div>
