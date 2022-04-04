@@ -68,15 +68,24 @@
         <div c="2"  class="tab-inner hide" style="background: #ffffff;height: 500px;margin-top: 20px;margin-right: 10px;">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6" style="max-width: 70%;width: 250px;">
+                    <!-- <div class="col-md-6" style="max-width: 70%;width: 250px;">
                         {% load static %}
                         <div><img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="{% static 'images/collie-beach-bokeh.jpg' %}"></div>
                         <div style="text-align: center;"><button class="btn btn-primary border rounded" type="button" style="background: rgb(134,81,64);">上傳圖片</button></div>
-                    </div>
+                    </div> -->
                     <div class="col-md-6" style="margin-top: 10px;">
-                        <form action="" method="POST">
+                        <form action="" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div>
+                                {% if user.icon %}  {#有圖片才顯示#}
+                                    <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="{{ user.icon.url }}">
+                                {% else %}
+                                    <span>尚未上傳大頭照<span>
+                                {% endif %}
+                                <p>  {# 圖片上傳 #}
+                                    <label for="id_icon" class="btn btn-primary border rounded" style="background: rgb(134,81,64);">上傳圖片</label>
+                                    <input type="file" name="icon" accept="image/*" id="id_icon" style="display:none;">
+                                </p>
                                 <p style="color:  rgb(38, 29, 29);">email：{{ user.account_mail}}</p>
                                 <p style="color:  rgb(38, 29, 29);">姓名：<input class="border rounded form-control" type="text" name="name" value="{{ user.name }}"></p>
                                 <p style="color:  rgb(38, 29, 29);">匿名：<input class="border rounded form-control" type="text" name="nickname" value="{{ user.nickname }}"></p>

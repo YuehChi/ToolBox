@@ -9,7 +9,7 @@ class UserDetailAdmin(admin.ModelAdmin):
     list_display = (
         '__str__',
         'account_mail',
-        'gender',
+        'gender_shown',
         'department',
         'rate_shown',
         'last_login'
@@ -20,6 +20,16 @@ class UserDetailAdmin(admin.ModelAdmin):
         'last_login',
         'work_num',
         'publish_num')
+    def gender_shown(self, obj):
+        g = obj.gender
+        if g == 0:
+            return '不願透露'
+        elif g == 1:
+            return '男'
+        elif g == 2:
+            return '女'
+        else:
+            return '其他'
     def rate_shown(self, obj):
         return round(obj.rate, 2)
 admin.site.register(UserDetail, UserDetailAdmin)

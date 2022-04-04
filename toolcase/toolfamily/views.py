@@ -49,6 +49,11 @@ def viewUser(request):
         if formPost.is_valid():
             userUpdate = formPost.save(commit=False)  # 先暫存，還不更改資料庫
             userUpdate.account_mail = user.account_mail  # 自動填入email
+            if request.FILES:  # 若有上傳圖片
+                print('request.FILES')
+                print(request.FILES)
+                print(request.FILES['icon'])
+                userUpdate.icon = request.FILES['icon']
             userUpdate.save()  # 實際更改資料庫
             print('User data has been update.')
             return redirect('user-profile')
