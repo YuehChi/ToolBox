@@ -1,7 +1,7 @@
 from asyncio.windows_events import NULL
 import django, json, smtplib
 from django.dispatch import receiver
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import redirect, render, HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.db.models import Q
@@ -38,6 +38,7 @@ def index(request):
 #########################################
 #                 TOOLS                 #
 #########################################
+
 # ---------------def Token-----------------
 class Token:
     def __init__(self, security_key):
