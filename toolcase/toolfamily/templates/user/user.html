@@ -1,13 +1,11 @@
 {% extends "base_generic.html" %}
 
-
-
 <div class="row">
         {% block sidebar %}
-        <div class="border rounded" style="background: var(--bs-white);margin-left: 20px;margin-top: 20px;">
-            <ul class="tab-list" style="text-align: center;">
-                <li class="list-group-item"><a href="#tab01" style="color: rgb(134, 81, 64);">會員中心</a></li>
-                <li class="list-group-item"><a href="#tab02" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li>
+        <div style="margin-top: 20px;">
+            <ul class="tab-list" style="text-align: center;display:block;list-style:none;">
+                <li class="list-group-item" m="1"><a href="javascript:void(0)" style="color: rgb(134, 81, 64);">會員中心</a></li>
+                <li class="list-group-item" m="2"><a href="javascript:void(0)" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的委託</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">接案紀錄</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的追蹤</a></li>
@@ -17,18 +15,18 @@
         </div>
     {% endblock %}
 {% block content %}
-    <div id="tab">
-        <div id="tab01" style="background: #ffffff; height: 500px;margin-top: 20px;margin-right: 10px;">
+    <div class="tab">
+        <div c="1" class="" style="background: #ffffff; height: 500px;margin-top: 20px;margin-right: 10px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6" style="max-width: 70%;width: 250px;">
-                        <div><img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="assets/img/collie-beach-bokeh.jpg"></div>
+                        {% load static %}
+                        <div><img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="{% static 'images/collie-beach-bokeh.jpg' %}"></div>
                     </div>
                     <div class="col-md-6" style="margin-top: 10px;">
                         <div>
-                            <p style="color:  rgb(38, 29, 29);">{{user.name}}</p>
-                            <p style="color:  rgb(38, 29, 29);">{{user.nickname}}</p>
-                            {% if user.gender == 0%}
+                            <p style="color:  rgb(38, 29, 29);">{{user.name}}|{{user.nickname}}</p>
+                            {% if user.gender == 0 %}
                                 <p style="color:  rgb(38, 29, 29);">不願透漏</p>
                             {% elif user.gender == 1 %}
                                 <p style="color:  rgb(38, 29, 29);">男</p>
@@ -36,7 +34,7 @@
                                 <p style="color:  rgb(38, 29, 29);">女</p>
                             {% endif %}
                             <p style="color:  rgb(38, 29, 29);">{{user.department}}</p>
-                            <p style="color:  rgb(38, 29, 29);">{{user.introduction}}</p>
+                            <p style="color:  rgb(38, 29, 29);"><pre>{{user.information}}</pre></p>
                         </div>
                     </div>
                 </div>
@@ -46,50 +44,63 @@
                     <div class="col-md-4" style="border-width: 0px;">
                         <div class="border rounded" style="border: 1px solid #EEEEEE ;">
                             <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;">接案數量</p>
-                            <p></p>
+                            <p style="text-align: center;font-size: 70px;color: rgb(134, 81, 64);">0</p>
+                            <p style="text-align: right;padding-right: 20px;">件</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="border rounded" style="border-style: solid;border-color: #EEEEEE;">
                             <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;">發案數量</p>
-                            <p></p>
+                            <p style="text-align: center;font-size: 70px;color: rgb(134, 81, 64);">0</p>
+                            <p style="text-align: right;padding-right: 20px;">件</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="border rounded" style="border: 1px solid #EEEEEE ;">
                             <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;border-width: 0px;">評價分數</p>
-                            <p></p>
+                            <p style="color: rgb(134, 81, 64);font-size: 70px;text-align: center;">0.0</p>
+                            <p style="text-align: right;padding-right: 20px;">分</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="tab02" style="background: #ffffff;height: 500px;margin-top: 20px;margin-right: 10px;">
+        <div c="2"  class="tab-inner hide" style="background: #ffffff;height: 500px;margin-top: 20px;margin-right: 10px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6" style="max-width: 70%;width: 250px;">
                         {% load static %}
-                        <div><img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="{% static 'images/collie-beach-bokeh.png' %}"></div>
+                        <div><img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="{% static 'images/collie-beach-bokeh.jpg' %}"></div>
                         <div style="text-align: center;"><button class="btn btn-primary border rounded" type="button" style="background: rgb(134,81,64);">上傳圖片</button></div>
                     </div>
                     <div class="col-md-6" style="margin-top: 10px;">
-                        <form action="/toolfamily/viewUser" method="POST">
+                        <form action="" method="POST">
                             {% csrf_token %}
                             <div>
-                                <p style="color:  rgb(38, 29, 29);">姓名：<input class="border rounded" type="text" name="name"></p>
-                                <p style="color:  rgb(38, 29, 29);">匿名：<input class="border rounded" type="text" name="nickname"></p>
-                                <p style="color:  rgb(38, 29, 29);">性別:</p>
-                                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2">男</label></div>
-                                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1">女</label></div>
-                                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-3"><label class="form-check-label" for="formCheck-3">不透漏</label></div>
-                                <p style="color:  rgb(38, 29, 29);">系所:&nbsp;<input class="border rounded" type="text" name="department"></p>
-                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);">自我介紹:<textarea class="form-control-lg" name="information"></textarea></p>
+                                <p style="color:  rgb(38, 29, 29);">email：{{ user.account_mail}}</p>
+                                <p style="color:  rgb(38, 29, 29);">姓名：<input class="border rounded form-control" type="text" name="name" value="{{ user.name }}"></p>
+                                <p style="color:  rgb(38, 29, 29);">匿名：<input class="border rounded form-control" type="text" name="nickname" value="{{ user.nickname }}"></p>
+                                <p style="color:  rgb(38, 29, 29);">性別：</p>
+                                <div class="form-check">
+                                    <input  type="radio" name="sex" value="1">男
+                                    <input  type="radio" name="sex" value="2">女
+                                    <input  type="radio" name="sex" value="0">不願透漏
+                                    <!-- <input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2">男</label>
+                                    <input class="form-check-input" type="radio" id="formCheck-1">女
+                                    <input class="form-check-input" type="radio" id="formCheck-3"><label class="form-check-label" for="formCheck-3">不透漏</label> -->
+                                </div>
+                                <p style="color:  rgb(38, 29, 29);">系所：<input class="border rounded form-control" type="text" name="department" value="{{ user.department }}"></p>
+                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);">自我介紹：</p>
+                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);"></p><textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;" name="information">{{ user.information }}</textarea></p>
+                            </div>
+                            <div style="text-align: center;margin-bottom: 20px;">
+                                <button class="btn btn-primary border rounded" type="button" style="background: rgb(255,255,255);color: rgb(134,81,64);border: 2px solid rgb(134,81,64) ;">取消</button>
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交">
                             </div>
                         </form>
-                        <div style="text-align: center;margin-bottom: 20px;">
-                            <button class="btn btn-primary border rounded" type="button" style="background: rgb(255,255,255);color: rgb(134,81,64);border: 2px solid rgb(134,81,64) ;">取消</button>
-                            <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;">
-                        </div>
+                        {# <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"> #} {#按鈕要放在form裡面才有效#}
+                        {{ userDataForm.errors }}<br>  <!-- 顯示錯誤訊息 ex.必填項目未填 -->
+                        {{ userDataForm.non_field_errors }}<br>  <!-- 顯示錯誤訊息 ex.必填項目未填 -->
                     </div>
                 </div>
             </div>

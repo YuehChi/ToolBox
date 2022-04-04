@@ -11,7 +11,7 @@ class UserDetailModelForm(forms.ModelForm):
         fields = (  # 可以改那些欄位
             'name',  # 本名在這裡設置成可以改
             'nickname',
-            'account_mail',
+            # 'account_mail',  # 這是帳號名，不可更改
             'gender',
             'department',
             'work',
