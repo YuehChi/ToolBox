@@ -65,4 +65,4 @@ def viewUser(request):
             'last_login_datetime'
             ]
 
-    return render(request, 'user.html', locals())
+    return render(request, 'user/user.html', locals())
