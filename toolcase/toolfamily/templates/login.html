@@ -28,12 +28,6 @@
     </nav>
     
     <section class="d-flex justify-content-center align-items-center align-content-center align-self-center me-auto portfolio" id="portfolio" style="--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 24,188,156;margin-top: 54px;">
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        {% endif %}
-
         <div class="row justify-content-center align-items-center">
             <div class="col-md-8 col-lg-6" style="width: 600px;">
                 {% load static %}
@@ -47,6 +41,13 @@
                     {% load static %}
                     <h1 style="font-family: Montserrat, sans-serif;text-align: center;color: rgb(123, 99, 99);font-size: 50px;margin-right: -150px;">會員登入</h1><img class="img-fluid mb-5" src="{% static 'images/人頭1.png' %}" style="margin-left: 142px;margin-right: 0px;margin-top: 20px;height: 93px;">
                     <div style="margin-right: -48px;height: 210px;margin-top: -19px;margin-left: 24px;">
+                        <span style="color: red; margin-left: 82px;">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {{ message }}
+                                {% endfor %}
+                            {% endif %}
+                        </span>
                         <form action="" method="post" style="width: 252px;height: 156px;margin-left: 82px;">
                             {% csrf_token %}
                             {% load static %}

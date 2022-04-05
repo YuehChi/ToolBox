@@ -12,6 +12,108 @@
 </head>
 
 <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="72" style="background: rgb(244, 244, 243);">
+    <script>
+        // 密碼2次確認--------------------------------------------------------------------
+        function validate() {
+            var pwd1 = document.getElementById("pwd").value;
+            var pwd2 = document.getElementById("confirm").value;
+           if(pwd1 == pwd2) {
+               document.getElementById("notice").innerHTML="<font color='green'>兩次密碼相同</font>";
+               document.getElementById("mySubmit").disabled = false;
+            }else {
+                document.getElementById("notice").innerHTML="<font color='red'>兩次密碼不同</font>";
+                document.getElementById("mySubmit").disabled = true;
+            }
+        }
+
+        // 密碼強度--------------------------------------------------------------------
+        var m_strUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var m_strLowerCase = "abcdefghijklmnopqrstuvwxyz";
+        var m_strNumber = "0123456789";
+        var m_strCharacters = "!@#$%^&*?_~";
+
+        function checkPwdStrength() {
+            var pwd = document.getElementById("pwd").value;
+            len = pwd.length;
+            var comp = "";
+
+            if (len == 0) {
+                comp = "<span style='font-size: 12px;'>密碼強度</span>";
+            }else {
+                // <span style='font-size: 12px;'>&nbsp> strong</span>
+                scr = parseInt(getPwdScore(pwd));
+                if(scr >= 60) {
+                    comp = "<table><tr><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:#12E183;'></td><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:#12E183;'></td><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:#12E183;'></td></tr></table>";
+                }else if(scr >= 40) {
+                    comp = "<table><tr><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:#F3C92B;'></td><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:#F3C92B;'></td></tr></table>";
+                }else if(scr >= 0) {
+                    comp = "<table><tr><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:Tomato;'></td></tr></table>";
+                }
+            }
+            document.getElementById('complexity').innerHTML = comp;
+            return false;
+        }
+        
+        function getPwdScore(strPassword) {
+            // Reset combination count
+            var nScore = 0;
+        
+            // Password length
+            if (strPassword.length < 5) {// -- Less than 4 characters
+                nScore += 5;
+            }else if (strPassword.length > 4 && strPassword.length < 8) {// -- 5 to 7 characters
+                nScore += 10;
+            }else if (strPassword.length > 7) {// -- 8 or more
+                nScore += 25;
+            }
+        
+            // Letters
+            var nUpperCount = countContain(strPassword, m_strUpperCase);
+            var nLowerCount = countContain(strPassword, m_strLowerCase);
+            var nLowerUpperCount = nUpperCount + nLowerCount;
+            // -- Letters are all lower case
+            if (nUpperCount == 0 && nLowerCount != 0) {
+                nScore += 10;
+            }else if (nUpperCount != 0 && nLowerCount != 0) { // -- Letters are upper case and lower case
+                nScore += 20;
+            }
+        
+            // Numbers
+            var nNumberCount = countContain(strPassword, m_strNumber);
+            if (nNumberCount == 1) // -- 1 number
+                nScore += 10;
+            if (nNumberCount >= 3)// -- 3 or more numbers
+                nScore += 20;
+        
+            // Characters
+            var nCharacterCount = countContain(strPassword, m_strCharacters);
+            if (nCharacterCount == 1) // -- 1 character
+                nScore += 10;
+            if (nCharacterCount > 1) // -- More than 1 character
+                nScore += 25;
+    
+            // Bonus
+            if (nNumberCount != 0 && nLowerUpperCount != 0)// -- Letters and numbers
+                nScore += 2;
+            if (nNumberCount != 0 && nLowerUpperCount != 0 && nCharacterCount != 0)// -- Letters, numbers, and characters
+                nScore += 3;
+            if (nNumberCount != 0 && nUpperCount != 0 && nLowerCount != 0 && nCharacterCount != 0) // -- Mixed case letters, numbers, and characters
+                nScore += 5;
+            return nScore;
+        }
+        
+        // Checks a string for a list of characters
+        function countContain(strPassword, strCheck) {
+            // Declare variables
+            var nCount = 0;
+            for (i = 0; i < strPassword.length; i++) {
+                if (strCheck.indexOf(strPassword.charAt(i)) > -1) {
+                    nCount++;
+                }
+            }
+            return nCount;
+        }
+    </script>
     <nav class="navbar navbar-light navbar-expand-md fixed-top" style="background: rgb(244,244,243);height: 50px;color: rgb(165, 141, 141);border-radius: 0px;border-style: outset;border-top-style: none;border-right-style: none;border-bottom-width: 1px;border-bottom-style: solid;border-left-style: none;border-left-color: rgb(165, 141, 141);">
         <div class="container-fluid"><a class="navbar-brand" href="#">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse d-md-flex d-lg-flex justify-content-md-end align-items-md-center justify-content-lg-end align-items-lg-center" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
@@ -45,7 +147,10 @@
                                 <div class="col" style="width: 16px;">
                                     <h1 style="color: var(--bs-red);font-size: 25px;text-align: center;width: 16px;margin-bottom: 0px;margin-left: -16px;">*</h1>
                                 </div>
-                                <div class="col" style="height: 36px;"><input class="form-control" type="password" name="password" id="password" required=true style="font-size: 16px;text-align: center;width: 216px;" placeholder="請輸入新密碼"><small class="form-text text-danger help-block"></small></div>
+                                <div class="col" style="height: 36px;">
+                                    <input onkeyup="return checkPwdStrength();" onblur="validate()" class="form-control" type="password" name="password" id="pwd" required=true style="font-size: 16px;text-align: center;width: 216px;" placeholder="請輸入新密碼"><small class="form-text text-danger help-block"></small>
+                                    <div id="complexity"></div>
+                                </div>
                             </div>
                             <div class="row" style="height: 60px;margin-top: 0px;width: 400px;margin-left: 0px;margin-right: 0px;">
                                 <div class="col">
@@ -54,13 +159,20 @@
                                 <div class="col" style="width: 16px;">
                                     <h1 style="color: var(--bs-red);font-size: 25px;text-align: center;width: 16px;margin-bottom: 0px;margin-left: -16px;">*</h1>
                                 </div>
-                                <div class="col" style="height: 36px;"><input class="form-control" type="password" id="confirm" name="confirm" required=true style="font-size: 16px;text-align: center;width: 216px;" placeholder="請再次輸入新密碼"><small class="form-text text-danger help-block"></small></div>
+                                <div class="col" style="height: 36px;">
+                                    <input onkeyup="validate()" class="form-control" type="password" id="confirm" name="confirm" required=true style="font-size: 16px;text-align: center;width: 216px;" placeholder="請再次輸入新密碼"><small class="form-text text-danger help-block"></small>
+                                    <span id="notice"></span>
+                                </div>
                             </div>
                             <div class="row" style="margin-left: 0px;height: 60px;">
-                                <div class="col text-center" style="padding-right: 27px;padding-left: 0px;width: 240px;height: 53px;"><button class="btn btn-primary" type="submit" style="background: rgb(245, 197, 72);border-top-color: rgb(245, 197, 72);border-right-color: rgb(245, 197, 72);border-bottom-color: rgb(245, 197, 72);border-left-color: rgb(245, 197, 72);width: 189.9844px;border-radius: 8px;margin-left: 0px;margin-top: 0px;height: 32px;text-align: center;font-size: 19px;line-height: 17.5px;--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 245,197,72;">確定變更</button></div>
+                                <div class="col text-center" style="padding-right: 27px;padding-left: 0px;width: 240px;height: 53px;">
+                                    <button class="btn btn-primary" type="submit" id="mySubmit" style="background: rgb(245, 197, 72);border-top-color: rgb(245, 197, 72);border-right-color: rgb(245, 197, 72);border-bottom-color: rgb(245, 197, 72);border-left-color: rgb(245, 197, 72);width: 189.9844px;border-radius: 8px;margin-left: 0px;margin-top: 0px;height: 32px;text-align: center;font-size: 19px;line-height: 17.5px;--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 245,197,72;">確定變更</button>
+                                </div>
                             </div>
                             <div class="row" style="margin-left: 0px;margin-top: 7px;">
-                                <div class="col"><span>請使用新密碼，再次登入！</span></div>
+                                <div class="col">
+                                    <span>請使用新密碼，再次登入！</span>
+                                </div>
                             </div>
                         </div>
                     </form>

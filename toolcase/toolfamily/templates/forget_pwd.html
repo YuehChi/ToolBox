@@ -24,11 +24,6 @@
     </nav>
     <div></div>
     <section class="d-flex justify-content-center align-items-center align-content-center align-self-center me-auto portfolio" id="portfolio" style="--bs-primary: #18BC9C;--bs-primary-rgb: 24,188,156;margin-top: 54px;">
-        
-        {% if error %}
-            <p>該帳號不存在</p>
-        {% endif %}
-        
         <div class="row justify-content-center align-items-center" style="height: 600px;">
             <div class="col-md-8 col-lg-6" style="width: 600px;padding-right: 0px;padding-left: 0px;">
                 <h1 style="font-family: Montserrat, sans-serif;text-align: center;color: rgb(123, 99, 99);font-size: 75px;margin-right: -150px;width: 564px;font-weight: bold;">忘記密碼</h1>
@@ -54,7 +49,11 @@
                                 <div class="col text-center" style="padding-right: 27px;padding-left: 0px;width: 240px;height: 53px;"><button class="btn btn-primary" type="submit" style="background: rgb(245, 197, 72);border-top-color: rgb(245, 197, 72);border-right-color: rgb(245, 197, 72);border-bottom-color: rgb(245, 197, 72);border-left-color: rgb(245, 197, 72);width: 189.9844px;border-radius: 8px;margin-left: 0px;margin-top: 0px;height: 32px;text-align: center;font-size: 19px;line-height: 17.5px;--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 245,197,72;">發送驗證</button></div>
                             </div>
                             <div class="row" style="margin-left: 0px;margin-top: 7px;">
-                                <div class="col"><span>請到您所填的信箱中收取驗證，並重新設定密碼</span></div>
+                                <div class="col" style="color: red;">
+                                    {% if error %}
+                                        <p>該帳號不存在</p>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </form>
