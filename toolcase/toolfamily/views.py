@@ -5,19 +5,18 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import *
 from django.db.models import Q
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
-   
-    # Number of visits to this view, as counted in the session variable.
-    num_visits = request.session.get('num_visits', 1)
-    request.session['num_visits'] = num_visits+1
+    list_case = Case.objects.filter(shown_public=True)
+    case_fields = Case_Field.objects.all()
+    case_types = Case_Type.objects.all()
+    case_photo = CasePhoto.objects.all()
 
-    # Render the HTML template index.html with the data in the context variable.
-    return render(
-        request,'index.html',context={'num_visits': num_visits},
-    )
 
+    #list_case = Case.objects.select_related('case_status')
+    return render(request,'index.html',locals()) #之後要改
 
 
 
@@ -29,16 +28,11 @@ def index(request):
 @login_required
 def case_new(request):
 
-    ### 登入權限判斷
-    # if not request.user.is_authenticated:
-    #    return render(request,'index.html')
-    
-    # else:
-
     if request.method == "POST" :
 
         #委託人-外部鍵
-        publisher = UserDetail.objects.get(user_id = "4")
+        user_id = request.user.user_detail.user_id
+        publisher = UserDetail.objects.get(user_id = user_id)
 
         #狀態-外部鍵
         case_status = Status.objects.get(status_id = "1")
@@ -135,68 +129,99 @@ def case_profile(request ,case_id):
 def case_profile_edit(request,case_id):
 
     pk_key = case_id
+    user_id = request.user.user_detail.user_id
+    # 找出哪一筆case
+    case = Case.objects.get(case_id=pk_key)
 
-    if request.method == "POST" :
+    # 確認是不是case的發布人
+    if case.publisher.user_id == user_id:
 
-        # post 接值case委託資訊
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        reward = request.POST.get('reward')
-        location = request.POST.get('location')
-        constraint = request.POST.get('constraint')
+        if request.method == "POST" :
 
-        # 找出哪一筆case
-        update_case = Case.objects.get(case_id=pk_key)
-  
-        # update case table 參數
-        update_case.title = title
-        update_case.description = description
-        update_case.reward = reward
-        update_case.location = location
-        update_case.constraint = constraint
-        update_case.save()
+            # post 接值case委託資訊
+            title = request.POST.get('title')
+            description = request.POST.get('description')
+            reward = request.POST.get('reward')
+            num = request.POST.get('num')
+            work = request.POST.get('work')
+            location = request.POST.get('location')
+            constraint = request.POST.get('constraint')
+            ended_datetime = request.POST.get('ended_datetime')
+
+            # 找出哪一筆case
+            update_case = Case.objects.get(case_id=pk_key)
+    
+            # update case table 參數
+            update_case.title = title
+            update_case.description = description
+            update_case.reward = reward
+            update_case.num = num
+            update_case.work = work
+            update_case.location = location
+            update_case.constraint = constraint
+            update_case.ended_datetime = ended_datetime
+            update_case.save()
 
 
-        # 照片 
-        image = request.FILES.get('photo_image')
-        casephoto = CasePhoto(case = pk_key)
-        casephoto.image = image
-        casephoto.save()
+            # update casephote & Case_Type & Case_Field
+            # 外部鍵:多對多: 抓取哪一筆資料
+            case = Case.objects.get(case_id=pk_key)
 
-        # 類型
-        type_temp = request.POST.getlist('case_type')
-        for i in range(len(type_temp)):
-            type = Type.objects.get(type_id = type_temp[i])
-            case_type = Case_Type(case = pk_key)
-            case_type = type
-            case_type.save()
+            # 直接刪除 類型 原本的資料
+            CasePhoto.objects.filter(case = pk_key).delete()
 
-        # 領域 
-        field_temp = request.POST.getlist('case_field')
-        for i in range(len(field_temp)):
-            field = Field.objects.get(field_id = field_temp[i])
-            case_field = Case_Field(case = pk_key)
-            case_field = field
-            case_field.save()
+            image = request.FILES.getlist('photo_image')
+            for f in image:
+                file = CasePhoto(image=f, case = case)
+                file.save()
 
-        # 顯示的data
+
+            # 直接刪除 類型 原本的資料
+            Case_Type.objects.filter(case = pk_key).delete()
+            # 類型
+            type_temp = request.POST.getlist('case_type')
+            for i in range(len(type_temp)):
+                type = Type.objects.get(type_id = type_temp[i])
+                case_type = Case_Type(case_type = type, case = case )
+                case_type.save()
+
+
+            # 直接刪除 領域 的資料
+            Case_Field.objects.filter(case = pk_key).delete()
+            # 領域 
+            field_temp = request.POST.getlist('case_field')
+            for i in range(len(field_temp)):
+                field = Field.objects.get(field_id = field_temp[i])
+                case_field = Case_Field(case_field = field ,case = case)
+                case_field.save()
+
+
+            # 顯示的data
+            list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
+            case_fields = Case_Field.objects.filter(case = pk_key)  
+            case_types = Case_Type.objects.filter(case = pk_key)   
+            case_photo = CasePhoto.objects.filter(case = pk_key)   
+            
+            return redirect('case-profile',case_id = pk_key)
+
+
         list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
         case_fields = Case_Field.objects.filter(case = pk_key)  
         case_types = Case_Type.objects.filter(case = pk_key)   
-        case_photo = CasePhoto.objects.filter(case = pk_key)   
-        
-        return render(request,'case/profile.html',locals())
+        case_photo = CasePhoto.objects.filter(case = pk_key)
+
+        nolist_case = Case.objects.get(Q(case_id=pk_key) & Q(shown_public=True)) 
+        title = nolist_case.title 
+
+        return render(request,'case/profile_edit.html',locals())
+    
+
+    # 不是該case的發布人無權限編輯
+    else :
+        messages.warning(request, "You don't have right to edit the case.")
+        return redirect('index')
 
 
-    list_case = Case.objects.filter(Q(case_id=pk_key) & Q(shown_public=True))  
-    case_fields = Case_Field.objects.filter(case = pk_key)  
-    case_types = Case_Type.objects.filter(case = pk_key)   
-    case_photo = CasePhoto.objects.filter(case = pk_key)
-
-    nolist_case = Case.objects.get(Q(case_id=pk_key) & Q(shown_public=True)) 
-    title = nolist_case.title 
-
-    return render(request,'case/profile_edit.html',locals())
 
 # -------------CASE資訊搜尋-------------
 @login_required
