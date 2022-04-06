@@ -47,7 +47,7 @@
                     document.getElementById("notice2").innerHTML="<span style='font-size: 12px; color:green;'>帳號可以使用</span>";
                     isEmailCheck = true;
                 } else {
-                    document.getElementById("notice2").innerHTML="<span style='font-size: 12px; color:green;'>帳號已被使用</span>";
+                    document.getElementById("notice2").innerHTML="<span style='font-size: 12px; color:Tomato;'>帳號已被使用</span>";
                     isEmailCheck = false;
                 }
             }
@@ -64,7 +64,7 @@
                isPwdCheck = true;
                
             }else if (pwd1 != pwd2){
-                document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:red;'>兩次密碼不同</span>";
+                document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:Tomato;'>兩次密碼不同</span>";
                 isPwdCheck = false;
             }
             allCheck()
