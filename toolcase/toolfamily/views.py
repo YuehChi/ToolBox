@@ -2,11 +2,12 @@ from asyncio.windows_events import NULL
 import django, json, smtplib
 from django.dispatch import receiver
 from django.shortcuts import redirect, render, HttpResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import auth, messages
 from django.db.models import Q
 from .models import *
 
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.backends import ModelBackend
@@ -124,7 +125,6 @@ def logout(request):
     return HttpResponseRedirect('/')
 
 # ----------------register------------------
-# @csrf_exempt
 def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -156,19 +156,6 @@ def register(request):
 
         request.session['messages'] = "請查看信箱點擊連結以完成註冊驗證。\n連結有效期為1個小時。"
         return HttpResponseRedirect('/')
-
-    # check the email is used or not
-    if is_ajax(request=request):
-        email_used_error = False
-        account = request.POST.get("account")
-
-        try:
-            user = UserDetail.objects.get(Q(account_mail=account))
-            email_used_error = True
-        except:
-            email_used_error = False
-
-        return HttpResponse(email_used_error)
 
     return render(request, 'register.html', locals())
 
@@ -267,3 +254,16 @@ def reset(request, token):
         return HttpResponseRedirect('/')
 
     return render(request, 'reset_pwd.html', locals())
+
+# -----------check register email-------------
+@csrf_exempt
+def check_mail_used(request):
+
+    # parse json
+    account = json.loads(request.body).get('email')
+
+    try:
+        user = UserDetail.objects.get(Q(account_mail=account))
+        return JsonResponse({"message": ""})
+    except:
+        return JsonResponse({"message": "帳號未被使用"})
