@@ -133,7 +133,10 @@ def register(request):
 
         # send verification url to user email
         token = token_confirm.generate_validate_token(username)
-        url = 'http://127.0.0.1:8000/toolfamily/activate/' + token
+        if request.META['HTTP_HOST'] == "127.0.0.1:8000":
+            url = 'http://' + request.META['HTTP_HOST'] + '/toolfamily/activate/' + token
+        else:
+            url = 'https://' + request.META['HTTP_HOST'] + '/toolfamily/activate/' + token
 
         title = "NTU TOOLBOX 註冊驗證"
         msg = "歡迎加入 NTU TOOLBOX! 請點選下方連結完成註冊驗證。\n" + url
@@ -200,7 +203,10 @@ def forget(request):
 
             # send reset-pwd url to user email
             token = token_confirm.generate_validate_token(username)
-            url = 'http://127.0.0.1:8000/toolfamily/reset/' + token
+            if request.META['HTTP_HOST'] == "127.0.0.1:8000":
+                url = 'http://' + request.META['HTTP_HOST'] + '/toolfamily/reset/' + token
+            else:
+                url = 'https://' + request.META['HTTP_HOST'] + '/toolfamily/reset/' + token
 
             title = "NTU TOOLBOX 重新設定密碼"
             msg = "請點選下方連結重新設定密碼。\n" + url
@@ -251,7 +257,6 @@ def reset(request, token):
 # -----------check register email-------------
 @csrf_exempt
 def check_mail_used(request):
-
     # parse json
     account = json.loads(request.body).get('email')
 
