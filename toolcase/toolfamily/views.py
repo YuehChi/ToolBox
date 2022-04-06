@@ -191,7 +191,6 @@ def active(request, token):
 # --------------forget password----------------
 def forget(request):
     if request.method == 'POST':
-        error = False  # account doesn't exist
         account = request.POST.get('account')
         print(account)
         try:
@@ -213,8 +212,8 @@ def forget(request):
             return HttpResponseRedirect('/')
 
         except:
-            error = True
-            return render(request, 'forget_pwd.html', locals())
+            messages.warning(request,'帳號不存在')
+            return redirect('forget')
 
     return render(request, 'forget_pwd.html', locals())
 
@@ -232,14 +231,8 @@ def reset(request, token):
 
     # reset password
     if request.method == 'POST':
-        error = False
         password = request.POST.get('password')
         confirm = request.POST.get('confirm')
-
-        # check password is equal to confirm pwd or not
-        if password != confirm:
-            error = True
-            return render(request, 'reset_pwd.html', locals())
 
         # update datebase
         user = User.objects.get(Q(username=username))

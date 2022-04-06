@@ -50,8 +50,10 @@
                             </div>
                             <div class="row" style="margin-left: 0px;margin-top: 7px;">
                                 <div class="col" style="color: red;">
-                                    {% if error %}
-                                        <p>該帳號不存在</p>
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            {{ message }}
+                                        {% endfor %}
                                     {% endif %}
                                 </div>
                             </div>
