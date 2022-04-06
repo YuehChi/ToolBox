@@ -72,11 +72,11 @@
             </div>
         </div>
         <div c="2"  class="tab-inner hide" style="background: #ffffff;height: 500px;margin-top: 20px;margin-right: 10px;">
-            <form action="{% url 'user-profile-update' %}" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6" style="max-width: 70%;width: 250px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6" style="max-width: 70%;width: 250px;">
+                        <form action="{% url 'user-icon-update' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
                             <div>
                             {% if user.icon %}  {#有圖片才顯示#}
                                 <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="{{ user.icon.url }}">
@@ -88,8 +88,12 @@
                                 <label for="id_icon" class="btn btn-primary border rounded" style="background: rgb(134,81,64);">上傳圖片</label>
                                 <input type="file" name="icon" accept="image/*" id="id_icon" style="display:none;">
                             </div>
-                        </div>
-                        <div class="col-md-6" style="margin-top: 10px;">
+                            <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交">
+                        </form>
+                    </div>
+                    <div class="col-md-6" style="margin-top: 10px;">
+                        <form action="{% url 'user-profile-update' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
                             <div>
                                 <p style="color:  rgb(38, 29, 29);">email：{{ user.account_mail}}</p>
                                 <p style="color:  rgb(38, 29, 29);">姓名：<input class="border rounded form-control" type="text" name="name" value="{{ user.name }}"></p>
@@ -123,10 +127,10 @@
                                 <div>{{ userDataForm.errors }}</div>  <!-- 顯示錯誤訊息 ex.資料格式錯誤 -->
                                 <div>{{ userDataForm.non_field_errors }}</div>  <!-- 顯示錯誤訊息 ex.必填項目未填 -->
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

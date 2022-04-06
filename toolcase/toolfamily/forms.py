@@ -8,7 +8,7 @@ class UserDetailModelForm(forms.ModelForm):
     class Meta:
         # 表單欄位
         model = UserDetail
-        fields = (  # 可以改那些欄位
+        fields = (  # 可以改哪些欄位
             'name',  # 本名在這裡設置成可以改
             'nickname',
             # 'account_mail',  # 這是帳號名，不可更改
@@ -17,7 +17,7 @@ class UserDetailModelForm(forms.ModelForm):
             'work',
             'contact',
             'information',
-            'icon',
+            # 'icon',  # 這部分功能切到 UserIconForm()
             )
 
     def clean_account_mail(self, *args, **kwargs):
@@ -26,3 +26,12 @@ class UserDetailModelForm(forms.ModelForm):
             print('email not end with @ntu.edu.tw')
             raise forms.ValidationError('請使用 NTU 電子郵件')
         return email
+
+
+
+# 更改使用者大頭貼
+class UserIconForm(forms.ModelForm):
+    class Meta:
+        # 表單欄位
+        model = UserDetail
+        fields = ('icon',)  # 這邊只能改頭像圖檔
