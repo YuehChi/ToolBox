@@ -170,7 +170,7 @@ def active(request, token):
     except:
         username = token_confirm.remove_validate_token(token)
         user = User.objects.get(Q(username=username))
-        userDetail = UserDetail.get(Q(django_user=user))
+        userDetail = UserDetail.objects.get(Q(django_user=user))
         userDetail.delete()
         user.delete()
         request.session['messages'] = "對不起，驗證連結已過期。\n請重新註冊。"
