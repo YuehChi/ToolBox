@@ -32,10 +32,10 @@
             var emailStr = document.getElementById('account').value;
             var info = {}; //輸入的資料，填入空物件
             info.email = emailStr; //填入的 email
-            isEmailCheck = true; //<------------------------------------------這開了就不管後端有沒有確認了，只要是＠ntu.edu.tw就可以
+            // isEmailCheck = true; //<------------------------------------------這開了就不管後端有沒有確認了，只要是＠ntu.edu.tw就可以
 
             var xhr = new XMLHttpRequest();
-            xhr.open('post', '{% url 'check-mail-used'%}', true);
+            xhr.open('post', "{% url 'check-mail-used'%}", true);
             xhr.setRequestHeader('Content-type', 'application/json');
             var data = JSON.stringify(info); //因為格式是 JSON，所以要轉字串
             xhr.send(data);
