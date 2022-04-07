@@ -56,3 +56,29 @@ a:hover {
   color: #261d1d;
 }
 
+.button-case {
+  width:150px;
+  display: block;
+  color: #3d2d27;
+  background: rgba(13,110,253,0);
+  border-color: #86514000;
+  height: 85%;
+  max-width: 300px;
+  font-size: 14px;
+}
+
+.button-case:hover {
+  width:150px;
+  display: block;
+  color: #3d2d27;
+  background: rgba(13,110,253,0);
+  border-color: #86514000;
+  height: 85%;
+  max-width: 300px;
+  font-size: 14px;
+}
+
+.carousel-item img {
+  height: 150px !important;
+  width: 100% !important;
+}

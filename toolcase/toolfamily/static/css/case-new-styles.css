@@ -2,7 +2,7 @@ input::-webkit-input-placeholder {
     font-size: 14px;
 }
 input[type="text"] {
-    border-color: #7B6363 !important;
+    border-color: #7B6363 ;
 }
 
 
@@ -14,6 +14,10 @@ input[type="text"] {
     font-family: Simonetta;
   }
 
+.error {
+    color: #dc3545;
+    border-color: #dc3545 !important;
+ }
 #case_new_form {
     background: #ffffff;
     border-radius: 2rem;
@@ -27,7 +31,7 @@ input[type="text"] {
 
 #input-location {
     width:95%;
-    border-color: #7B6363 !important;
+    border-color: #7B6363;
 }
 
 #input-preference {
@@ -84,7 +88,6 @@ input[type="text"] {
     font-size: 16px;
     background: #ebe7e6;
     color: #5e4949;
-    height: 100%;
 }
 .select:hover {
     background: #d8d2d0;

@@ -36,13 +36,19 @@ $(document).ready(function() {
 
   });
 
-  function validation(){
-    $('#case-new-form').validate({
+ var validator = $('#case-new-form').validate({
         rules:{
-
+          input_title:{required: true, maxlength:30},
+          input_reward:{required: true, maxlength:30},
+          input_enddate:{required: true, date:true},
+          input_num:{required: true, min:1, max:100, digits:true, number:true},
+          input_location:{required: true, maxlength:20},
+          select_casefield:{required: true},
+          select_casetype:{required: true}
+        },
+        messages:{
         }
-    })
-  }
+    });
 
   $('.datepicker').datepicker({
     startDate:'1d',

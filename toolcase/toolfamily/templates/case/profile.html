@@ -50,7 +50,7 @@
     </div>
     <hr class="d-lg-flex" style="width: 95%;margin: auto;margin-right: 20px;margin-left: 20px;margin-top: 0px;opacity: 1;border-color: #5e4949;color: #5e4949;">
 
-    <div class="container">
+    <div class="container" style="margin-bottom: 80px;">
         <div class="row" style="flex-wrap: wrap;">
             <!----------Case---------->
             {% for case in list_case%}
@@ -58,16 +58,28 @@
                 <!----------Case Card---------->
                 <div class="card" style="margin-top: 80px;border-radius: 1rem;box-shadow: 1px 6px 10px #cbbcbc;">
                     <div class="card-body">
-                        <img class="d-md-none d-lg-none d-xl-none" src="\static\images\clipboard-image.png" style="width: 100px;height: 90px;margin-top: -45px;position: absolute;right: 2%;margin-left: -10px;">
-                        <img class="d-none d-md-block d-xl-none" src="\static\images\clipboard-image.png" style="width: 110px;height: 100px;margin-top: -45px;position: absolute;right: 4%;margin-left: -10px;">
+                        <img class="d-lg-none d-xl-none" src="\static\images\clipboard-image.png" style="width: 100px;height: 90px;margin-top: -45px;position: absolute;right: 2%;margin-left: -10px;">
+                        <img class="d-none d-lg-block d-xl-none" src="\static\images\clipboard-image.png" style="width: 110px;height: 100px;margin-top: -45px;position: absolute;right: 4%;margin-left: -10px;">
                         <img class="d-none d-xl-block" src="\static\images\clipboard-image.png" style="width: 120px;height: 110px;margin-top: -45px;position: absolute;right: 5%;margin-left: -10px;">
-                        <span class="d-md-none d-lg-none d-xl-none" style="position: absolute;right: 6%;bottom: 94%;text-align: center;color: #f4f4f3;">
-                            <font size="5">15</font>
+                        <span class="d-sm-none d-md-none d-lg-none d-xl-none" style="position: absolute;right: 8%;bottom: 94%;text-align: center;color: #f4f4f3;">
+                            <font size="6">15</font>
                             <br>
-                            應徵中
+                            <font size="2">應徵中</font>
                         </span>
 
-                        <span class="d-none d-md-block" style="position: absolute;right: 9%;bottom: 93%;text-align: center;color: #f4f4f3;">
+                        <span class="d-none d-sm-block d-md-none" style="position: absolute;right: 8%;bottom: 94%;text-align: center;color: #f4f4f3;">
+                            <font size="6">15</font>
+                            <br>
+                            <font size="2">應徵中</font>
+                        </span>
+
+                        <span class="d-none d-md-block d-lg-none" style="position: absolute;right: 7%;bottom: 94%;text-align: center;color: #f4f4f3;">
+                            <font size="6">15</font>
+                            <br>
+                            <font size="2">應徵中</font>
+                        </span>
+
+                        <span class="d-none d-lg-block" style="position: absolute;right: 9%;bottom: 92%;text-align: center;color: #f4f4f3;">
                             <font size="6">15</font>
                             <br>
                             <font size="3">應徵中</font>
@@ -108,33 +120,32 @@
                         </div>
                         <!----------Case Detail---------->
                         <div class="row">
+                            <div class="col-12 col-md-9">
+                            <div class="row">
                             <!----------Case Reward---------->
-                            <div class="col-3 col-md-2 col-xl-2 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 19px;">
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 19px;">
                                 <i class="material-icons" style="display: inline;font-size: 20px;">attach_money</i>
                                 <span style="display: inline;font-size: 18px;">
                                 報酬
                                 </span>
                             </div>
-                            <div class="col-8 col-sm-8 col-md-7 d-flex align-items-center caseinfo-content-color" style="margin-top: 20px;">
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 20px;">
                                 <span id="case-reward" style="display: inline;font-size: 20px;">
                                 {{case.reward}}
                                 </span>
-                                <span style="display: inline;font-size: 20px;margin-left: 10px;">
-                                NTD
-                                </span>
                             </div>
                            
-                            <div class="col-11 d-flex align-items-center col-md-9 offset-1" style="height: 1px;opacity: 0.50;">
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
                                 <hr style="width: 100%;opacity: 1;color: #a58d8d;">
                             </div>
 
                             <!----------Case Required Num---------->
-                            <div class="col-3 col-sm-3 col-md-2 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
                                 <i class="material-icons" style="display: inline;font-size: 16px;">people</i>
                                 <span style="display: inline;font-size: 14px;margin-left: 5px;">
                                 人數</span>
                             </div>
-                            <div class="col-8 col-sm-8 col-md-7 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;">
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;">
                                 <span id="case-num" style="display: inline;">
                                 1
                                 </span>
@@ -143,52 +154,52 @@
                                 </span>
                             </div>
 
-                            <div class="col-11 d-flex align-items-center col-md-9 offset-1" style="height: 1px;opacity: 0.50;">
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
                                 <hr style="width: 100%;opacity: 1;color: #a58d8d;">
                             </div>
 
                             <!----------Case Location---------->
-                            <div class="col-3 col-sm-3 col-md-2 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
                                 <i class="material-icons" style="display: inline;font-size: 16px;">location_on</i>
                                 <span style="display: inline;font-size: 14px;margin-left: 5px;">
                                 地點
                                 </span>
                             </div>
-                            <div class="col-8 col-sm-8 col-md-7 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;font-size: 15px;">
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;font-size: 15px;">
                                 <span id="case-location">
                                 {{case.location}}
                                 </span>
                             </div>
 
-                            <div class="col-11 d-flex align-items-center col-md-9 offset-1" style="height: 1px;opacity: 0.50;">
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
                                 <hr style="width: 100%;opacity: 1;color: #a58d8d;">
                             </div>
 
                             <!----------Case Work Mode---------->
-                            <div class="col-3 col-sm-3 col-md-2 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
                                 <i class="material-icons" style="display: inline;font-size: 16px;">build</i>
                                 <span style="display: inline;font-size: 14px;margin-left: 5px;">
                                 工作方式
                                 </span>
                             </div>
-                            <div class="col-8 col-sm-8 col-md-7 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;font-size: 15px;">
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;font-size: 15px;">
                                 <span id="case-work">
                                 需到現場
                                 </span>
                             </div>
 
-                            <div class="col-11 d-flex align-items-center col-md-9 offset-1" style="height: 1px;opacity: 0.50;">
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
                                 <hr style="width: 100%;opacity: 1;color: #a58d8d;">
                             </div>
 
                             <!----------Case Field & Type---------->
-                            <div class="col-3 col-sm-3 col-md-2 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
                                 <i class="material-icons" style="display: inline;font-size: 16px;">loyalty</i>
                                 <span style="display: inline;font-size: 14px;margin-left: 5px;">
                                 領域/類型
                                 </span>
                             </div>
-                            <div class="col-8 col-sm-8 col-md-7 d-flex align-items-center justify-content-start" style="margin-top: 5px;margin-bottom: 5px;">
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center justify-content-start" style="margin-top: 5px;margin-bottom: 5px;">
                                 <div id="case-type-field">
                                     {% for case_field in case_fields %}
                                         {% if case_field.case_id == case.case_id%}
@@ -203,24 +214,24 @@
                                 </div>
                             </div>
 
-                            <div class="col-11 d-flex align-items-center col-md-9 offset-1" style="height: 1px;opacity: 0.50;">
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
                                 <hr style="width: 100%;opacity: 1;color: #a58d8d;">
                             </div>
 
                             <!----------Case Preference---------->
-                            <div class="col-3 col-sm-3 col-md-2 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
                                 <i class="material-icons" style="display: inline;font-size: 16px;">favorite</i>
                                 <span style="display: inline;font-size: 14px;margin-left: 5px;">
                                 偏好條件
                                 </span>
                             </div>
-                            <div class="col-8 col-sm-8 col-md-7 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;font-size: 15px;">
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;font-size: 15px;">
                                 <span id="case-preference">
                                 {{case.constraint}}
                                 </span>
                             </div>
 
-                            <div class="col-11 d-flex align-items-center col-md-9 offset-1" style="height: 1px;opacity: 0.50;">
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
                                 <hr style="width: 100%;opacity: 1;color: #a58d8d;">
                             </div>
 
@@ -237,7 +248,7 @@
                             </div>
 
                             <!----------Case Image---------->
-                            <div class="col-11 col-md-9 offset-1">
+                            <div class="col-11 col-md-11 offset-1" style="margin-top: 50px;">
                                 <div class="carousel slide" data-bs-ride="carousel" id="carousel-case-images">
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
@@ -283,10 +294,42 @@
                                 </div>
                             </div>
 
-
-                            <div class="col-11 d-flex align-items-center col-md-9 offset-1" style="height: 1px;opacity: 0.50;margin-top: 10px;">
+                            <div class="col-11 d-flex align-items-center col-md-11 offset-1" style="height: 1px;opacity: 0.50;margin-top: 10px;">
                                 <hr style="width: 100%;opacity: 1;color: #a58d8d;">
                             </div>
+                            </div>
+                            </div>
+
+                            <!----------Case Buttons---------->
+                            <div class="col-0 col-md-3 justify-content-end align-content-end" style="position: relative;">
+
+                                <div class="row">
+                                    <!----------Follow Button---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 10px;">
+                                        <button class="btn btn-primary d-flex justify-content-center align-items-center button-case" id="button-case-follow" type="button">
+                                        <i class="material-icons" style="font-size: 16px;">bookmark_border</i>
+                                        追蹤委託
+                                        </button>
+                                    </div>
+                                    <!----------Report Button---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 6px;">
+                                        <button class="btn btn-primary d-flex justify-content-center align-items-center button-case" id="button-case-report" type="button">
+                                        <i class="material-icons" style="font-size: 16px;">report_problem</i>
+                                        檢舉委託
+                                        </button>
+                                    </div>
+                                    <!----------Profile Button---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center" style="height: 50px;margin-top: 6px;">
+                                        <button class="btn btn-primary d-flex justify-content-center align-items-center" id="button-case-commission" type="button" style="height: 150px;width:150px;display: block;color: #3d2d27;background: #f5c548;border-color: #86514000;height: 85%;max-width: 300px">
+                                        我有意願
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
                         </div>
                     </div>
                 </div>

@@ -102,7 +102,7 @@
                     <label class="form-label" style="font-weight: bold;">
                     委託標題
                     <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" id="input-title" name="input-title" style="width: 100%;" placeholder="限20字">
+                    <input class="form-control" type="text" id="input-title" name="input_title" style="width: 100%;" placeholder="限30字">
                 </div>
             </div>
 
@@ -112,7 +112,7 @@
                     <label class="form-label" style="font-weight: bold;">
                     報酬
                     <span class="text-danger">*</span></label>
-                    <input class="form-control" type="number" id="input-reward" name="input-reward" style="width: 100%;border-color: #7B6363;" placeholder="新臺幣">
+                    <input class="form-control" type="text" id="input-reward" name="input_reward" style="width: 100%;border-color: #7B6363;" placeholder="限30字">
                 </div>
             </div>
 
@@ -126,7 +126,7 @@
                     <div class="multi-selector">
                         <div class="row">
                             <div class="col">
-                                <select class="select form-select-lg" id="select-casefield" name="select-casefield">
+                                <select class="select form-select-lg" id="select-casefield" name="select_casefield">
                                     <option value="0" disabled selected>請選擇（可複選）</option>
                                         <option value="1">電資</option>
                                         <option value="2">數理</option>
@@ -149,7 +149,7 @@
                     <span class="text-danger">*</span></label>
                     <div class="row">
                         <div class="col">
-                            <select class="select form-select-lg" id="select-casetype" name="selected-casefield">
+                            <select class="select form-select-lg" id="select-casetype" name="select_casetype">
                                 <div class="options">
                                     <option class="item" value="0" disabled selected>請選擇（可複選）</option>
                                     <option class="item option" value="1">諮詢</option>
@@ -172,7 +172,7 @@
                             <label class="col-form-label" style="font-weight: bold;">
                             委託結束時間
                             <span class="text-danger">*</span></label>
-                            <input type="text" id="input-enddate" name="input-enddate" class="form-control datepicker" placeholder="月/日/年" style="width: 95%;height: 39px;padding-left: 0.6rem"></div>
+                            <input type="text" id="input-enddate" name="input_enddate" class="form-control datepicker" placeholder="月/日/年" style="width: 95%;height: 39px;padding-left: 0.6rem"></div>
                     </div>
                 </div>
 
@@ -185,7 +185,7 @@
                     </div>
                     <div class="row">
                         <div class="col" style="height: 39px;">
-                        <input class="input-number form-control" type="number" id="input-num" max="100" min="1" value="1"></div>
+                        <input class="input-number form-control" type="number" id="input-num" name="input_num" max="100" min="1" value="1"></div>
                     </div>
                 </div>
 
@@ -219,7 +219,7 @@
                             <label class="col-form-label" style="font-weight: bold;">
                             地點
                             <span class="text-danger">*</span></label>
-                            <input class="d-block form-control type="text" id="input-location" placeholder="限20字">
+                            <input class="d-block form-control" type="text" id="input-location" name="input_location" placeholder="限20字">
                             <div class="" style="padding-top: 5px;">
                                 <img src="/static/images/check-circle-outline.png" class="radio-check" id="radio-check-location">
                                 <span class="text-notify d-inline">
