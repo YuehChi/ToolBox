@@ -12,7 +12,7 @@ $(document).ready(function() {
             reader.readAsDataURL(input.files[0]);
         }
     }
-    $('.tab-list li').click(function(){
+    $('.member').click(function(){
         var target = $(this).attr('m');
         $('.tab').children("[c='"+target+"']").removeClass('hide').siblings().addClass('hide')
     });
