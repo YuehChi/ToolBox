@@ -1,0 +1,470 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>case-profile</title>
+    <link rel="stylesheet" href="\static\bootstrap\css\bootstrap.min.css">
+    <link rel="stylesheet" href="\static\fonts\font-awesome.min.css">
+    <link rel="stylesheet" href="\static\fonts\material-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Simonetta">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto Serif TC">
+    <link rel="stylesheet" href="\static\css\case-profile-styles.css">
+
+
+
+</head>
+
+<body class="cn_font" style="background: #f4f4f3;">
+        
+    <!----------Image Board---------->
+    <div class="container" style="margin-top: 50PX;height: 100px;width: 100%;margin-right: 0px;margin-left: 0px;padding-right: 0px;padding-left: 0px;max-width: none;">
+        <div class="row" style="height: 100px;width: 100%;margin: 0px;">
+            <div class="col" style="height: 100px;width: 100%;padding: 0px;"><img src="\static\images\ntu_1.png" style="width: 100%;height: 100px;"></div>
+        </div>
+    </div>
+
+    <!----------NavBar Search---------->
+    <div class="container d-md-flex justify-content-md-end" style="margin-top: 10px;">
+        <nav class="navbar navbar-light navbar-expand-md d-md-flex d-lg-flex">
+            <div class="container-fluid"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end" id="navcol-2"><a href="#" style="margin-right: 35px;">全部案件</a>
+                    <ul class="navbar-nav">
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item dropdown" style="margin-right: 35px;"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="margin-right: 0px;">找領域</a>
+                            <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                        </li>
+                        <li class="nav-item dropdown" style="margin-right: 35px;"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="margin-right: 20px;">找類型</a>
+                            <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                        </li>
+                    </ul>
+                </div><input type="search" style="width: 220px;">
+            </div>
+        </nav>
+    </div>
+    <hr class="d-lg-flex" style="width: 95%;margin: auto;margin-right: 20px;margin-left: 20px;margin-top: 0px;opacity: 1;border-color: #5e4949;color: #5e4949;">
+
+    <div class="container" style="margin-bottom: 80px;">
+        <div class="row" style="flex-wrap: wrap;">
+            <!----------Case---------->
+            {% for case in list_case%}
+            <div class="col-12 col-lg-9">
+                <!----------Case Card---------->
+                <div class="card" style="margin-top: 80px;border-radius: 1rem;box-shadow: 1px 6px 10px #cbbcbc;">
+                    <div class="card-body">
+                        <img class="d-lg-none d-xl-none" src="\static\images\clipboard-image.png" style="width: 100px;height: 90px;margin-top: -45px;position: absolute;right: 2%;margin-left: -10px;">
+                        <img class="d-none d-lg-block d-xl-none" src="\static\images\clipboard-image.png" style="width: 110px;height: 100px;margin-top: -45px;position: absolute;right: 4%;margin-left: -10px;">
+                        <img class="d-none d-xl-block" src="\static\images\clipboard-image.png" style="width: 120px;height: 110px;margin-top: -45px;position: absolute;right: 5%;margin-left: -10px;">
+                        <span class="d-sm-none d-md-none d-lg-none d-xl-none" style="position: absolute;right: 8%;bottom: 94%;text-align: center;color: #f4f4f3;">
+                            <font size="6">15</font>
+                            <br>
+                            <font size="2">應徵中</font>
+                        </span>
+
+                        <span class="d-none d-sm-block d-md-none" style="position: absolute;right: 8%;bottom: 94%;text-align: center;color: #f4f4f3;">
+                            <font size="6">15</font>
+                            <br>
+                            <font size="2">應徵中</font>
+                        </span>
+
+                        <span class="d-none d-md-block d-lg-none" style="position: absolute;right: 7%;bottom: 94%;text-align: center;color: #f4f4f3;">
+                            <font size="6">15</font>
+                            <br>
+                            <font size="2">應徵中</font>
+                        </span>
+
+                        <span class="d-none d-lg-block" style="position: absolute;right: 9%;bottom: 92%;text-align: center;color: #f4f4f3;">
+                            <font size="6">15</font>
+                            <br>
+                            <font size="3">應徵中</font>
+                        </span>
+
+
+                        <img src="\static\images\clipboard-image-1.png" style="width: 180px;margin-top: -105px;margin-left: -85px;position: absolute;">
+                        <!----------Case Main Info---------->
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-1"></div>
+                            <div class="col-9" style="margin-left: 0px;">
+                                <!----------Case ID & Title---------->
+                                <div class="row">
+                                    <div class="col" style="padding-left: 0px;">
+                                        <span style="display: inline;width: auto;color: rgb(165,141,141);">
+                                        #案件編號</span>
+                                        <span id="case-id" style="margin-left: 10px;color: #a58d8d;">
+                                        {{case.case_id}}
+                                        </span>
+                                        <span id="case-title" style="display: block;font-weight: bold;font-size: 24px;">
+                                        {{case.title}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!----------Case Status & Time---------->
+                                <div class="row">
+                                    <div class="col-12 d-flex align-items-center" style="background: rgba(245,197,72,0);width: auto;padding-left: 0px;">
+                                        <span id="case-status" class="d-flex justify-content-center align-items-center" style="background: #f5c548;padding-left: 8px;padding-right: 8px;font-size: 14px;border-radius: 5px;font-weight: bold;">
+                                        </span>
+                                        <i class="material-icons" style="font-size: 14px;margin-bottom: 0px;margin-left: 10px;color: #a58d8d;">access_time</i>
+                                        <span id="case-time" style="font-size: 12px;color: #a58d8d;">
+                                        2022/03/27 ~ 2022/04/01 還剩3天
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2" style="/*position: absolute;*/"></div>
+                        </div>
+                        <!----------Case Detail---------->
+                        <div class="row">
+                            <div class="col-12 col-md-9">
+                            <div class="row">
+                            <!----------Case Reward---------->
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 19px;">
+                                <i class="material-icons" style="display: inline;font-size: 20px;">attach_money</i>
+                                <span style="display: inline;font-size: 18px;">
+                                報酬
+                                </span>
+                            </div>
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 20px;">
+                                <span id="case-reward" style="display: inline;font-size: 20px;">
+                                {{case.reward}}
+                                </span>
+                            </div>
+                           
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
+                                <hr style="width: 100%;opacity: 1;color: #a58d8d;">
+                            </div>
+
+                            <!----------Case Required Num---------->
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
+                                <i class="material-icons" style="display: inline;font-size: 16px;">people</i>
+                                <span style="display: inline;font-size: 14px;margin-left: 5px;">
+                                人數</span>
+                            </div>
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;">
+                                <span id="case-num" style="display: inline;">
+                                1
+                                </span>
+                                <span style="display: inline;margin-left: 3px;">
+                                人
+                                </span>
+                            </div>
+
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
+                                <hr style="width: 100%;opacity: 1;color: #a58d8d;">
+                            </div>
+
+                            <!----------Case Location---------->
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
+                                <i class="material-icons" style="display: inline;font-size: 16px;">location_on</i>
+                                <span style="display: inline;font-size: 14px;margin-left: 5px;">
+                                地點
+                                </span>
+                            </div>
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;font-size: 15px;">
+                                <span id="case-location">
+                                {{case.location}}
+                                </span>
+                            </div>
+
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
+                                <hr style="width: 100%;opacity: 1;color: #a58d8d;">
+                            </div>
+
+                            <!----------Case Work Mode---------->
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
+                                <i class="material-icons" style="display: inline;font-size: 16px;">build</i>
+                                <span style="display: inline;font-size: 14px;margin-left: 5px;">
+                                工作方式
+                                </span>
+                            </div>
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;font-size: 15px;">
+                                <span id="case-work">
+                                需到現場
+                                </span>
+                            </div>
+
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
+                                <hr style="width: 100%;opacity: 1;color: #a58d8d;">
+                            </div>
+
+                            <!----------Case Field & Type---------->
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
+                                <i class="material-icons" style="display: inline;font-size: 16px;">loyalty</i>
+                                <span style="display: inline;font-size: 14px;margin-left: 5px;">
+                                領域/類型
+                                </span>
+                            </div>
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center justify-content-start" style="margin-top: 5px;margin-bottom: 5px;">
+                                <div id="case-type-field">
+                                    {% for case_field in case_fields %}
+                                        {% if case_field.case_id == case.case_id%}
+                                            <a href="#" class="type-field-tag">#{{case_field.case_field.field_name}}</a>
+                                        {%endif%}
+                                     {% endfor %}
+                                     {% for case_type in case_types %}
+                                        {% if case_type.case_id == case.case_id%}
+                                            <a href="#" class="type-field-tag"># {{case_type.case_type.type_name}}</a>
+                                        {%endif%}
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
+                                <hr style="width: 100%;opacity: 1;color: #a58d8d;">
+                            </div>
+
+                            <!----------Case Preference---------->
+                            <div class="col-3 col-sm-3 col-md-3 col-xl-3 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;margin-bottom: 5px;">
+                                <i class="material-icons" style="display: inline;font-size: 16px;">favorite</i>
+                                <span style="display: inline;font-size: 14px;margin-left: 5px;">
+                                偏好條件
+                                </span>
+                            </div>
+                            <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;font-size: 15px;">
+                                <span id="case-preference">
+                                {{case.constraint}}
+                                </span>
+                            </div>
+
+                            <div class="col-11 d-flex align-items-center col-md-10 offset-1" style="height: 1px;opacity: 0.50;">
+                                <hr style="width: 100%;opacity: 1;color: #a58d8d;">
+                            </div>
+
+                            <!----------Case Description---------->
+                            <div class="col-12 col-md-9 offset-1 d-flex align-items-center caseinfo-title-color" style="margin-top: 5px;">
+                                <i class="material-icons" style="display: inline;font-size: 16px;">library_books</i>
+                                <span style="display: inline;font-size: 14px;margin-left: 5px;">
+                                委託內容
+                                </span>
+                                </div>
+                            <div class="col-11 col-md-9 offset-1" style="padding-left: 25px;margin-top: 20px;">
+                                <p id="case-description" style="font-size: 15px;">
+                                </p>
+                            </div>
+
+                            <!----------Case Image---------->
+                            <div class="col-11 col-md-11 offset-1" style="margin-top: 50px;">
+                                <div class="carousel slide" data-bs-ride="carousel" id="carousel-case-images">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <div class="row">
+                                                <div class="col padding-none">
+                                                    <img class="w-100 d-block" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" alt="Slide Image">
+                                                </div>
+                                                <div class="col padding-none">
+                                                    <img class="w-100 d-block" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" alt="Slide Image">
+                                                </div>
+                                                <div class="col padding-none">
+                                                    <img class="w-100 d-block" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" alt="Slide Image">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <img class="w-100 d-block" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" alt="Slide Image">
+                                                </div>
+                                                <div class="col">
+                                                    <img class="w-100 d-block" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" alt="Slide Image">
+                                                </div>
+                                                <div class="col">
+                                                    <img class="w-100 d-block" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" alt="Slide Image">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a class="carousel-control-prev" href="#carousel-case-images" role="button" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon"></span><span class="visually-hidden">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carousel-case-images" role="button" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon"></span><span class="visually-hidden">Next</span>
+                                        </a>
+                                    </div>
+                                    <ol class="carousel-indicators">
+                                        <li data-bs-target="#carousel-case-images" data-bs-slide-to="0" class="active"></li>
+                                        <li data-bs-target="#carousel-case-images" data-bs-slide-to="1"></li>
+                                        <li data-bs-target="#carousel-case-images" data-bs-slide-to="2"></li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="col-11 d-flex align-items-center col-md-11 offset-1" style="height: 1px;opacity: 0.50;margin-top: 10px;">
+                                <hr style="width: 100%;opacity: 1;color: #a58d8d;">
+                            </div>
+                            </div>
+                            </div>
+
+                            <!----------Case Buttons---------->
+                            <div class="col-0 col-md-3 justify-content-end align-content-end" style="position: relative;">
+
+                                <div class="row">
+                                    <!----------Follow Button---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 10px;">
+                                        <button class="btn btn-primary d-flex justify-content-center align-items-center button-case" id="button-case-follow" type="button">
+                                        <i class="material-icons" style="font-size: 16px;">bookmark_border</i>
+                                        追蹤委託
+                                        </button>
+                                    </div>
+                                    <!----------Report Button---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 6px;">
+                                        <button class="btn btn-primary d-flex justify-content-center align-items-center button-case" id="button-case-report" type="button">
+                                        <i class="material-icons" style="font-size: 16px;">report_problem</i>
+                                        檢舉委託
+                                        </button>
+                                    </div>
+                                    <!----------Profile Button---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center" style="height: 50px;margin-top: 6px;">
+                                        <button class="btn btn-primary d-flex justify-content-center align-items-center" id="button-case-commission" type="button" style="height: 150px;width:150px;display: block;color: #3d2d27;background: #f5c548;border-color: #86514000;height: 85%;max-width: 300px">
+                                        我有意願
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!----------Catch Parms---------->
+            <span style="display: none" id="get-case-status">{{case.case_status.status_name}}</span>
+            <span style="display: none" id="get-case-enddate">{{case.ended_datetime}}</span>
+            <span style="display: none" id="get-case-startdate">{{case.started_datetime}}</span>
+            <span style="display: none" id="get-case-description">{{case.description}}</span>
+ 
+            {% for photo in case_photo %}
+                {% if photo.case_id == case.case_id and photo.image.url != None%}
+                    <img class="w-100 d-block case-img d-none" src="{{photo.image.url}}" alt="Slide Image">
+                {%endif%}
+            {% endfor %}
+                
+            {% endfor%}
+
+
+            <!----------User---------->
+            
+            <div class="col-12 col-lg-3" style="margin-top: 0px;">
+                <div class="row" style="margin-top: 58px;">
+                    <!----------Title---------->
+                    <div class="col" style="padding-bottom: 0px;margin-bottom: -26px;z-index: 1;">
+                        <i class="fa fa-paperclip" style="font-size: 50px;color: #a58d8d;margin-left: 18px;margin-bottom: -0px;"></i>
+                    </div>
+                    <div class="col-12 d-lg-flex d-flex justify-content-center align-items-center">
+                        <div class="d-flex justify-content-center align-content-center align-items-center" style="height: 50px;width: 85%;border-top-left-radius: .25rem;border-top-right-radius: .25rem;background: #865140;">
+                            <span style="color: #f4f4f3;font-size: 20px;font-weight: bold;">
+                            案主資訊
+                            </span>
+                        </div>
+                    </div>
+                    <!----------Info---------->
+                    <div class="col-12 d-flex justify-content-center align-items-center">
+                        <div class="card" style="margin-bottom: 50px; border-top-left-radius: 0rem;border-top-right-radius: 0rem;border-bottom-right-radius: .25rem;border-bottom-left-radius: .25rem;width: 85%;">
+                            <div class="card-body">
+                                <div class="row">
+                                    
+                                    <!----------User Icon---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center">
+                                        <img id="user-icon" style="border-radius: 50%;width: 80px;height: 80px;" src="\static\images\4f6ec39cb88ea7d615f7c636283a2a27.jpg">
+                                    </div>
+
+                                    <!----------User Rate---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 10px;">
+                                        <div id="user-rate" class="d-flex justify-content-center align-items-center">
+                                        <i class="fa fa-star star-color"></i><i class="fa fa-star star-color"></i><i class="fa fa-star star-color"></i><i class="fa fa-star star-color"></i><i class="material-icons star-color">star_half</i>
+                                        </div>
+                                        <span id="user-ratenum" style="color: #865140;font-size: 14px">
+                                        (3)
+                                        </span>
+                                    </div>
+
+                                    <!----------User Nickname---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 8px;">
+                                        <span id="user-nickname" style="font-size: 16px;text-align: center;font-weight: bold;"></span>
+                                        <img src="/static/images/gender-female.png"  id="user-gender" style="margin-left: 3px;width:18px;height:18px;margin-top: -5px;">
+                                    </div>
+
+                                    <!----------User Department---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center">
+                                        <span id="user-department" style="margin-top: 6px;font-size: 14px;">
+                                        </span>
+                                    </div>
+
+                                    <div class="col-12 d-flex justify-content-center align-items-center">
+                                        <hr style="opacity: 0.50;width: 70%;margin: auto;margin-top: 20px;">
+                                    </div>
+
+                                    <!----------User Last Login Time---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center">
+                                        <span id="user-lastlogintime" style="font-size: 12px;margin-top: 10px;color: #b8b3b3;">
+                                        上次登入: 30分鐘前
+                                        </span>
+                                    </div>
+
+                                    <!----------Follow Button---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 50px;">
+                                        <button class="btn btn-primary d-flex justify-content-center align-items-center" id="button-user-follow" type="button" style="display: block;color: #865140;background: rgba(13,110,253,0);border-color: #865140;height: 85%;width: 90%;max-width: 300px">
+                                        <i class="material-icons">person_add</i>
+                                        追蹤
+                                        </button>
+                                    </div>
+                                    <!----------Profile Button---------->
+                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 6px;">
+                                        <button class="btn btn-primary d-flex justify-content-center align-items-center" id="button-userprofile" type="button" style="display: block;background: #865140;border-color: #865140;height: 85%;width: 90%;max-width: 300px;">
+                                        查看個人空間
+                                        </button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% for user in user_detail%}
+                <span style="display: none" id="get-user-nickname">
+                {% if user.nickname == "" %}
+                    {{user.name}}
+                {% else %}
+                    {{user.nickname}}
+                {%endif%}
+                </span>
+                <span style="display: none;" id="get-user-gender">
+                    {{user.gender}}
+                </span>
+                <span style="display: none;" id="get-user-department">
+                    {{user.department}}
+                </span>
+                <span style="display: none;" id="get-user-rate">
+                    {{user.rate}}
+                </span>
+                <span style="display: none;" id="get-user-ratenum">
+                    {{user.rate_num}}
+                </span>
+                <span style="display: none;" id="get-user-lastlogintime">
+                    {{user.last_login_datetime}}
+                </span>
+
+            {% endfor%}
+
+
+        </div>
+    </div>
+    
+
+    <script src="\static\bootstrap\js\bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
+    <script src="\static\js\case-profile.js"></script>
+    
+</body>
+
+</html>
+{% endblock %}

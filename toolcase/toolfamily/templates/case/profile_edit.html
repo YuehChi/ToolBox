@@ -1,0 +1,72 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>case_profile_edit</h1>
+<form class = "from"   action="/toolfamily/case/profile/{{case_id}}/edit/" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        {% comment %} <label>title2 </label> 
+        <input type="text" name ="title" value={{title}}><br><br> {% endcomment %}
+
+        {% for case in list_case%}
+        <label>title </label> 
+        <input type="text" name ="title" value={{case.title}}><br><br>
+        <label>description  </label> 
+        <input type="text" name ="description" value={{case.description}} ><br><br>
+        <label>reward </label>  
+        <input type="text" name ="reward" value={{case.reward}}><br><br>
+        <label>num </label>  
+        <input type="number" name ="num" value={{case.num}}><br><br>
+        <label>work </label>  
+        <input type="number" name ="work" value={{case.work}}><br><br>
+        <label>location  </label> 
+        <input type="text" name ="location" value={{case.location}}><br><br>
+        <label>constraint  </label> 
+        <input type="text" name ="constraint" value={{case.constraint}} ><br><br>
+        <label>ended_datetime : {{case.ended_datetime}} </label>  
+        <input type="date" name ="ended_datetime" ><br><br>
+        <label>委託照片:</label>
+        {% for case in list_case%} 
+                {% for photo in case_photo %}
+                    {% if photo.case_id == case.case_id and photo.image.url != None%}
+                        <img src="{{photo.image.url}}" alt="照片" style="width: 100px; height: 100px">
+                    {%endif%}
+                {% endfor %}      
+        {% endfor %}
+        <input type="file" multiple="multiple" name ="photo_image"  ><br><br>
+        <label>類型:  </label><br>
+        <div>
+        {% for case in list_case%}
+                {% for case_type in case_types %}
+                        {% if case_type.case_id == case.case_id%}
+                                {{case_type.case_type.type_name}}
+                        {%endif%}
+                {% endfor %}
+        {% endfor %}
+        </div>
+        <label><input type="checkbox" value="1" name="case_type"> 諮詢</label>
+        <label><input type="checkbox" value="2" name="case_type"> 家教</label>
+        <label><input type="checkbox" value="3" name="case_type"> 勞力</label>
+        <label><input type="checkbox" value="4" name="case_type"> 實驗</label>
+        <label><input type="checkbox" value="5" name="case_type"> 其他</label><br>
+        
+        <label>領域:  </label><br>
+        <div>
+        {% for case in list_case%}
+                {% for case_field in case_fields %}
+                    {% if case_field.case_id == case.case_id%}
+                        {{case_field.case_field.field_name}}
+                    {%endif%}
+                {% endfor %}
+        {% endfor %}
+        </div>
+        <label><input type="checkbox" value="1" name="case_field"> 電資</label>
+        <label><input type="checkbox" value="2" name="case_field"> 數理</label>
+        <label><input type="checkbox" value="3" name="case_field"> 人文科學</label>
+        <label><input type="checkbox" value="4" name="case_field"> 藝術設計</label>
+        <label><input type="checkbox" value="5" name="case_field"> 其他</label><br> 
+
+        <input type="submit" value="送出">
+        {% endfor %}
+</form>
+<button><a href="/toolfamily/case/profile/{{case_id}}">返回</a></button> 
+{% endblock %}

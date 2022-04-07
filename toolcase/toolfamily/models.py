@@ -351,6 +351,18 @@ class Case(models.Model):
         verbose_name='是否公開顯示',
         help_text='False:不顯示在公開查詢頁面，但已應徵/接案者仍可繼續')
 
+    #新增的東西 工作方式，徵求人數
+    work = models.IntegerField(
+        default=None,
+        null=True, blank=True,
+        verbose_name='偏好的工作方式',
+        help_text='0:實體, 1:線上, 留空:無偏好')
+    
+    num = models.IntegerField(
+        default=1,
+        verbose_name='徵求人數')
+
+
     class Meta:
         verbose_name = '委託單'  # 給人看的 table 名稱
         ordering = ['-created_datetime']
