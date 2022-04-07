@@ -1,9 +1,9 @@
 {% extends "base_generic.html" %}
 {% load static %}
 
-<div class="row">
-        {% block sidebar %}
-        <div style="margin-top: 20px;">
+<div class="row" >
+    {% block sidebar %}
+        <div style="margin-top: 80px;">
             <ul class="tab-list" style="text-align: center;display:block;list-style:none;">
                 <li class="list-group-item" m="1"><a href="javascript:void(0)" style="color: rgb(134, 81, 64);">會員中心</a></li>
                 <li class="list-group-item" m="2"><a href="javascript:void(0)" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li>
@@ -16,7 +16,9 @@
         </div>
     {% endblock %}
 {% block content %}
-    <div class="tab">
+<script src="\static\js\user.js" type="text/javascript"></script>
+<link rel="stylesheet" href="\static\css\user.css">
+    <div class="tab" style="margin-top: 60px;">
         <div c="1" class="" style="background: #ffffff; height: 500px;margin-top: 20px;margin-right: 10px;">
             <div class="container">
                 <div class="row">
@@ -87,8 +89,11 @@
                             <div style="text-align: center;">  {# 圖片上傳 #}
                                 <label for="id_icon" class="btn btn-primary border rounded" style="background: rgb(134,81,64);">上傳圖片</label>
                                 <input type="file" name="icon" accept="image/*" id="id_icon" style="display:none;">
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交">
                             </div>
-                            <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交">
+                            <div style="text-align: center;"> 
+                                <p style="margin-top: 10px; color: rgb(134, 81, 64)">檔案大小限2.5MB以下</p>
+                            </div>
                         </form>
                     </div>
                     <div class="col-md-6" style="margin-top: 10px;">
