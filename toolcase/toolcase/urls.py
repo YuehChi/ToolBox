@@ -25,13 +25,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),#Add Django site authentication urls (for login, logout, password management)
     path('toolfamily/', include('toolfamily.urls')),
-    path('', RedirectView.as_view(url='/toolfamily/', permanent=True)),#Add URL maps to redirect the base URL to our application
+    path('accounts/login/', RedirectView.as_view(url='/toolfamily/', permanent=True)),
+    path('', RedirectView.as_view(url='/toolfamily/home/', permanent=True)),
+
+    # path('accounts/', include('django.contrib.auth.urls')),#Add Django site authentication urls (for login, logout, password management)
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
-urlpatterns += [
-   path('catalog/', include('catalog.urls')),
-] 
+ 
 

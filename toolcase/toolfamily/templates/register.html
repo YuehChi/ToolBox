@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html style="--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 245,197,72;--bs-body-bg: rgb(244, 244, 243);--bs-success: #865140 ;--bs-success-rgb: 134,81,64;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>台大工具箱 NTU ToolBox</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
+    <link rel="stylesheet" href="/static/fonts/material-icons.min.css">
+</head>
+
+<body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="72" style="background: rgb(244, 244, 243);">
+    <script>
+        // email確認--------------------------------------------------------------
+        var isEmailCheck = false
+        function isEmail(strEmail) {
+            if (strEmail.search(/@ntu.edu.tw/) != -1){
+                document.getElementById("notice2").innerHTML="<span style='font-size: 12px;'>驗證中...請稍候</span>";
+                signUpcheck()
+            }else{
+                document.getElementById("notice2").innerHTML="<span style='font-size: 12px; color:Tomato;'>註冊須為台大信箱＠ntu.edu.tw</span>";
+                isEmailCheck = false
+            }
+            allCheck()
+        }
+
+        // email接遠端用
+        function signUpcheck() {
+            // model
+            var emailStr = document.getElementById('account').value;
+            var info = {}; //輸入的資料，填入空物件
+            info.email = emailStr; //填入的 email
+            isEmailCheck = true; //<------------------------------------------這開了就不管後端有沒有確認了，只要是＠ntu.edu.tw就可以
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', '{% url 'check-mail-used'%}', true);
+            xhr.setRequestHeader('Content-type', 'application/json');
+            var data = JSON.stringify(info); //因為格式是 JSON，所以要轉字串
+            xhr.send(data);
+
+            xhr.onload = function () {
+                var callbackData = JSON.parse(xhr.responseText); //因為輸入資料目前是字串，要轉成物件才能使用
+                var str = callbackData.message;
+                if (str == "帳號未被使用") {
+                    document.getElementById("notice2").innerHTML="<span style='font-size: 12px; color:green;'>帳號可以使用</span>";
+                    isEmailCheck = true;
+                } else {
+                    document.getElementById("notice2").innerHTML="<span style='font-size: 12px; color:Tomato;'>帳號已被使用</span>";
+                    isEmailCheck = false;
+                }
+            }
+        }
+
+        // 密碼2次確認---------------------------------------------------------------
+        var isPwdCheck = false
+        function validate() {
+            var pwd1 = document.getElementById("pwd").value;
+            var pwd2 = document.getElementById("confirm").value;
+            
+           if(pwd1 == pwd2) {
+               document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:green;'>兩次密碼相同</span>";
+               isPwdCheck = true;
+               
+            }else if (pwd1 != pwd2){
+                document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:Tomato;'>兩次密碼不同</span>";
+                isPwdCheck = false;
+            }
+            allCheck()
+        }
+        // 全部都check才可以按送出----------------------------------------------------------
+        function allCheck(){
+            document.getElementById("mySubmit").disabled = true;
+            // 最後判斷如果信箱ok 兩次密碼ok 才可以按送出
+            if(isEmailCheck==true & isPwdCheck==true){
+                document.getElementById("mySubmit").disabled = false;
+            }
+        }
+
+        // 密碼強度--------------------------------------------------------------------
+        var m_strUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var m_strLowerCase = "abcdefghijklmnopqrstuvwxyz";
+        var m_strNumber = "0123456789";
+        var m_strCharacters = "!@#$%^&*?_~";
+
+        function checkPwdStrength() {
+            var pwd = document.getElementById("pwd").value;
+            len = pwd.length;
+            var comp = "";
+
+            if (len == 0) {
+                comp = "<span style='font-size: 12px;'>密碼強度</span>";
+            }else {
+                // <span style='font-size: 12px;'>&nbsp> strong</span>
+                scr = parseInt(getPwdScore(pwd));
+                if(scr >= 60) {
+                    comp = "<table><tr><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:#12E183;'></td><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:#12E183;'></td><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:#12E183;'></td></tr></table>";
+                }else if(scr >= 40) {
+                    comp = "<table><tr><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:#F3C92B;'></td><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:#F3C92B;'></td></tr></table>";
+                }else if(scr >= 0) {
+                    comp = "<table><tr><td style='border:1px #865140 solid; height: 10px;width: 40px; background-color:Tomato;'></td></tr></table>";
+                }
+            }
+            document.getElementById('complexity').innerHTML = comp;
+            return false;
+        }
+        
+        function getPwdScore(strPassword) {
+            // Reset combination count
+            var nScore = 0;
+        
+            // Password length
+            if (strPassword.length < 5) {// -- Less than 4 characters
+                nScore += 5;
+            }else if (strPassword.length > 4 && strPassword.length < 8) {// -- 5 to 7 characters
+                nScore += 10;
+            }else if (strPassword.length > 7) {// -- 8 or more
+                nScore += 25;
+            }
+        
+            // Letters
+            var nUpperCount = countContain(strPassword, m_strUpperCase);
+            var nLowerCount = countContain(strPassword, m_strLowerCase);
+            var nLowerUpperCount = nUpperCount + nLowerCount;
+            // -- Letters are all lower case
+            if (nUpperCount == 0 && nLowerCount != 0) {
+                nScore += 10;
+            }else if (nUpperCount != 0 && nLowerCount != 0) { // -- Letters are upper case and lower case
+                nScore += 20;
+            }
+        
+            // Numbers
+            var nNumberCount = countContain(strPassword, m_strNumber);
+            if (nNumberCount == 1) // -- 1 number
+                nScore += 10;
+            if (nNumberCount >= 3)// -- 3 or more numbers
+                nScore += 20;
+        
+            // Characters
+            var nCharacterCount = countContain(strPassword, m_strCharacters);
+            if (nCharacterCount == 1) // -- 1 character
+                nScore += 10;
+            if (nCharacterCount > 1) // -- More than 1 character
+                nScore += 25;
+    
+            // Bonus
+            if (nNumberCount != 0 && nLowerUpperCount != 0)// -- Letters and numbers
+                nScore += 2;
+            if (nNumberCount != 0 && nLowerUpperCount != 0 && nCharacterCount != 0)// -- Letters, numbers, and characters
+                nScore += 3;
+            if (nNumberCount != 0 && nUpperCount != 0 && nLowerCount != 0 && nCharacterCount != 0) // -- Mixed case letters, numbers, and characters
+                nScore += 5;
+            return nScore;
+        }
+        
+        // Checks a string for a list of characters
+        function countContain(strPassword, strCheck) {
+            // Declare variables
+            var nCount = 0;
+            for (i = 0; i < strPassword.length; i++) {
+                if (strCheck.indexOf(strPassword.charAt(i)) > -1) {
+                    nCount++;
+                }
+            }
+            return nCount;
+        }
+
+    </script>
+   
+    
+    <nav class="navbar navbar-light navbar-expand-md fixed-top" style="background: rgb(244,244,243);height: 50px;color: rgb(165, 141, 141);border-radius: 0px;border-style: outset;border-top-style: none;border-right-style: none;border-bottom-width: 1px;border-bottom-style: solid;border-left-style: none;border-left-color: rgb(165, 141, 141);">
+        <div class="container-fluid"><a class="navbar-brand" href="#">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse d-md-flex d-lg-flex justify-content-md-end align-items-md-center justify-content-lg-end align-items-lg-center" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#" style="font-size: 12px;margin-left: -2px;margin-right: 8px;">繁體中文</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/toolfamily/" style="font-size: 12px;margin-left: -2px;margin-right: 8px;">Log in</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div></div>
+    <section class="d-flex justify-content-center align-items-center align-content-center align-self-center me-auto portfolio" id="portfolio" style="--bs-primary: #18BC9C;--bs-primary-rgb: 24,188,156;margin-top: 54px;">
+        
+        
+        <div class="row justify-content-center align-items-center" style="height: 600px;">
+            <div class="col-md-8 col-lg-6" style="width: 600px;padding-right: 0px;padding-left: 0px;">
+                <h1 style="font-family: Montserrat, sans-serif;text-align: right;color: rgb(123, 99, 99);font-size: 75px;margin-right: -150px;width: 564px;font-weight: bold;">加入我們！</h1>
+                <h1 style="font-family: Lato, sans-serif;text-align: center;color:  rgb(204,195,190) ;font-size: 75px;margin-right: 0px;width: 300px;margin-left: 40px;margin-top: -29px;">Join us!</h1>
+                {% load static %}
+                <div class="container" style="width: 500px;margin-right: 0px;margin-left: 39px;margin-top: 111px;padding-right: 24px;"><img src="{% static 'images/人頭2.png' %}" style="margin-top: 0px;margin-left: 40px;width: 183px;"><img src="{% static 'images/人頭1-1.png' %}" style="margin-top: -180px;margin-left: -2px;width: 195px;"></div>
+            </div>
+            <div class="col-md-10" style="height: 500px;width: 600px;">
+                <div class="container" style="width: 500px;margin-right: 0px;margin-left: 82px;margin-top: 43px;padding: 0px;padding-top: 0px;padding-right: 0px;color: rgb(165, 141, 141);height: 215px;">
+                    <span style="color: red;">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        {% endif %}
+                    </span>>
+                    <form action="" method="post" style="width: 252px;height: 211px;margin-left: 0px;">
+                        {% csrf_token %}
+
+                        <div class="mb-0 form-floating controls pb-2" method="post" style="border-bottom-width: 0px;height: 180px;width: 356px;">
+                            <div class="row" style="height: 60px;margin-top: -16px;width: 400px;">
+                                <div class="col">
+                                    <h1 style="font-size: 16px;color: rgb(244, 244, 243);background: rgb(204,195,190);text-align: center;width: 103px;height: 37px;line-height: 37px;border-radius: 9px;">姓名</h1>
+                                </div>
+                                <div class="col" style="width: 16px;">
+                                    <h1 style="color: var(--bs-red);font-size: 25px;text-align: center;width: 16px;margin-bottom: 0px;margin-left: -16px;">*</h1>
+                                </div>
+                                <div class="col" style="height: 36px;"><input class="form-control" type="text" name="username" id="username" required=true style="font-size: 16px;text-align: center;width: 216px;"><small class="form-text text-danger help-block"></small></div>
+                            </div>
+                            <div class="row" style="height: 60px;margin-top: 0px;width: 400px;">
+                                <div class="col">
+                                    <h1 style="font-size: 16px;color: rgb(244, 244, 243);background: rgb(204,195,190);text-align: center;width: 103px;height: 37px;line-height: 37px;border-radius: 9px;">帳號</h1>
+                                </div>
+                                <div class="col" style="width: 16px;">
+                                    <h1 style="color: var(--bs-red);font-size: 25px;text-align: center;width: 16px;margin-bottom: 0px;margin-left: -16px;">*</h1>
+                                </div>
+                                <div class="col" style="height: 36px;">
+                                    <input onkeyup=isEmail(this.value) class="form-control" type="email" name="account" id="account" required=true style="font-size: 16px;text-align: center;width: 216px;" placeholder="請輸入台大信箱"><span id="notice2"></span><small class="form-text text-danger help-block"></small></div>
+                            </div>
+                            <div class="row" style="height: 60px;margin-top: 0px;width: 400px;">
+                                <div class="col">
+                                    <h1 style="font-size: 16px;color: rgb(244, 244, 243);background: rgb(204,195,190);text-align: center;width: 103px;height: 37px;line-height: 37px;border-radius: 9px;">密碼</h1>
+                                </div>
+                                <div class="col" style="width: 16px;">
+                                    <h1 style="color: var(--bs-red);font-size: 25px;text-align: center;width: 16px;margin-bottom: 0px;margin-left: -16px;">*</h1>
+                                </div>
+                                <div class="col" style="height: 36px;">
+                                    <input onkeyup="return checkPwdStrength();" onblur="validate()" class="form-control" type="password" name="password" id="pwd" required=true style="font-size: 16px;text-align: center;width: 216px;"><small class="form-text text-danger help-block"></small>
+                                    <div id="complexity"></div>
+                                </div>
+                            </div>
+                            <div class="row" style="height: 60px;margin-top: 0px;width: 400px;">
+                                <div class="col">
+                                    <h1 style="font-size: 16px;color: rgb(244, 244, 243);background: rgb(204,195,190);text-align: center;width: 103px;height: 37px;line-height: 37px;border-radius: 9px;">再次輸入密碼</h1>
+                                </div>
+                                <div class="col" style="width: 16px;">
+                                    <h1 style="color: var(--bs-red);font-size: 25px;text-align: center;width: 16px;margin-bottom: 0px;margin-left: -16px;">*</h1>
+                                </div>
+                                <div class="col" style="height: 36px;">
+                                    <input onkeyup="validate()" class="form-control" type="password" name="confirm" id="confirm" required=true style="font-size: 16px;text-align: center;width: 216px;"><small class="form-text text-danger help-block"></small>
+                                    <span id="notice"></span>
+                                </div>
+                            </div>
+                            <div class="row" style="height: 60px;margin-top: 0px;width: 400px;">
+                                <div class="col">
+                                    <h1 style="font-size: 16px;color: rgb(244, 244, 243);background: rgb(204,195,190);text-align: center;width: 103px;height: 37px;line-height: 37px;border-radius: 9px;">網站聲明</h1>
+                                </div>
+                            </div>
+                            <div class="row" style="height: 222px;margin-top: -35px;width: 400px;margin-left: -2px;">
+                                <div class="col">
+                                    <div style="height: 200px;width: 411px;background: rgb(204,195,190);padding-top: 15px;padding-left: 15px;margin-left: -10px;border-radius: 9px;">
+                                       <div class="overflow-auto" style="height: 168px;width: 380px;" ><p style="color: rgb(244, 244, 243);border-radius: 5px;margin-left: 9px;width: 350px;text-align: justify;margin-top: 8px;">一、認知與接受條款<br>1. 台大工具箱委託平台(以下簡稱「台大工具箱」)係依據本服務條款提供台大工具箱（http://～）服務 (以下簡稱「本服務」)。當會員完成台大工具箱之會員註冊手續、或開始使用本服務時，即表示已閱讀、瞭解並同意接受本服務條款之所有內容，並完全接受本服務現有與未來衍生的服務項目及內容。台大工具箱公司有權於任何時間修改或變更本服務條款之內容，修改後的服務條款內容將公佈網站上，台大工具箱將不會個別通知會員，建議會員隨時注意該等修改或變更。會員於任何修改或變更後繼續使用本服務時，視為會員已閱讀、瞭解並同意接受該等修改或變更。若不同意上述的服務條款修訂或更新方式，或不接受本服務條款的其他任一約定，會員應立即停止使用本服務。<br>2. 若會員為未滿二十歲之未成年人，應於會員的家長（或監護人）閱讀、瞭解並同意本約定書之所有內容及其後修改變更後，方得註冊為會員、使用或繼續使用本服務。當會員使用或繼續使用台大工具箱時，即推定會員的家長（或監護人）已閱讀、瞭解並同意接受本約定書之所有內容及其後修改變更。<br>3. 會員及台大工具箱雙方同意使用本服務之所有內容包括意思表示等，以電子文件作為表示方式。<br><br>二、會員的註冊義務<br>為了能使用本服務，會員同意以下事項：<br><br>依本服務註冊表之提示提供會員本人正確、最新的資料，且不得以第三人之名義註冊為會員。每位會員僅能註冊登錄一個帳號，不可重覆註冊登錄。<br>即時維持並更新會員個人資料，確保其正確性，以獲取最佳之服務。<br>若會員提供任何錯誤或不實的資料、或未按指示提供資料、或欠缺必要之資料、或有重覆註冊帳號等情事時，台大工具箱有權不經事先通知，逕行暫停或終止會員的帳號，並拒絕會員使用本服務之全部或一部。<br><br>三、使用者的守法義務及承諾<br>會員承諾絕不為任何非法目的或以任何非法方式使用本服務，並承諾遵守中華民國相關法規及一切使用網際網路之國際慣例。會員若係中華民國以外之使用者，並同意遵守所屬國家或地域之法令。會員同意並保證不得利用本服務從事侵害他人權益或違法之行為，包括但不限於：<br><br>1. 公布或傳送任何誹謗、侮辱、具威脅性、攻擊性、不雅、猥褻、不實、違反公共秩序或善良風俗或其他不法之文字、圖片或任何形式的檔案<br>2. 侵害或毀損台大工具箱或他人名譽、隱私權、營業秘密、商標權、著作權、專利權、其他智慧財產權及其他權利<br>3. 違反依法律或契約所應負之保密義務<br>4. 冒用他人名義使用本服務<br>5. 傳輸或散佈電腦病毒<br>6. 從事未經本網站事前授權的商業行為<br>7. 刊載、傳輸、發送垃圾郵件、連鎖信、違法或未經台大工具箱許可之多層次傳銷訊息及廣告等；或儲存任何侵害他人智慧財產權或違反法令之資料<br>8. 對本服務其他用戶或第三人產生困擾、不悅或違反一般網路禮節致生反感之行為<br>9. 其他不符本服務所提供的使用目的之行為或台大工具箱有正當理由認為不適當之行為<br><br>四、服務之停止、中斷<br>台大工具箱將依一般合理之技術及方式，維持系統及服務之正常運作。但於以下各項情況時，台大工具箱有權可以停止、中斷提供本服務：<br><br>1. 台大工具箱網站電子通信設備進行必要之保養及施工時<br>2. 發生突發性之電子通信設備故障時<br>3. 台大工具箱網站申請之電子通信服務被停止，無法提供服務時<br>4. 由於天災等不可抗力之因素或其他不可歸責於台大工具致使台大工具網站無法提供服務時<br><br>五、交易行為<br>1. 雙方會員於確認委託關係時，其線下交易行為非本服務保障範圍，台大工具箱不負責任何交易責任。<br>2. 台大工具箱只提供會員媒合平台，若有出現非法之行為，本系統不負擔任何責任。會員需自行判斷是否為安全委任工作。<br><br>六、責任之限制與排除<br><br>1. 本服務所提供之各項功能，均依該功能當時之現況提供使用，台大工具箱對於其效能、速度、完整性、可靠性、安全性、正確性等，皆不負擔任何明示或默示之擔保責任。<br>2. 台大工具箱並不保證本服務之網頁、伺服器、網域等所傳送的電子郵件或其內容不會含有電腦病毒等有害物；亦不保證郵件、檔案或資料之傳輸儲存均正確無誤不會斷線和出錯等，因各該郵件、檔案或資料傳送或儲存失敗、遺失或錯誤等所致之損害，本網站不負賠償責任。<br></p></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="height: 60px;margin-top: 0px;width: 400px;margin-left: 6px;">
+                                <div class="col">
+                                    <h1 style="font-size: 16px;color:rgb(123, 99, 99);background: rgb(204,195,190);text-align: center;width: 377px;height: 37px;line-height: 41px;border-radius: 9px;margin-bottom: 0px;">我同意，註冊表示接受本平台上述之聲明<span style="color: var(--bs-red);margin-right: 5px;margin-left: 7px;">*</span>
+                                        <input onkeydown="allCheck()"type="checkbox" name="check" id="check" required=true style="margin-right: 11px;">
+                                    </h1>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-left: 25px;">
+                                <div class="col text-center"><button class="btn btn-primary" type="submit" id="mySubmit" style="background: rgb(245, 197, 72);border-top-color: rgb(245, 197, 72);border-right-color: rgb(245, 197, 72);border-bottom-color: rgb(245, 197, 72);border-left-color: rgb(245, 197, 72);width: 189.9844px;border-radius: 8px;margin-left: 0px;margin-top: 14px;height: 32px;text-align: center;font-size: 19px;line-height: 17.5px;--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 245,197,72;">註冊</button></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/js/freelancer.js"></script>
+</body>
+
+</html>

@@ -90,6 +90,7 @@ class UserDetail(models.Model):
         auto_now_add=True,
         verbose_name='建立時間')
     last_login_datetime = models.DateTimeField(
+        null=True, blank=True,
         verbose_name='上次登入時間')
 
     # 帳號資訊

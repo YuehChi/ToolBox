@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
-from pathlib import Path
+from pathlib import Path 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'toolfamily.apps.ToolfamilyConfig', ##將應用添加進INSTALLED_APPS
-    'catalog.apps.CatalogConfig', ##將應用添加進INSTALLED_APPS ************************到時候可以刪掉
 ]
 
 MIDDLEWARE = [
@@ -102,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+AUTHENTICATION_BACKENDS = ['toolfamily.views.CustomizeUserBackend']
 
 # change user class
 # AUTH_USER_MODEL = 'toolfamily.Account'  # 為了修改使用者的欄位
@@ -135,10 +134,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ntutoolbox@gmail.com'
+EMAIL_HOST_PASSWORD = 'ixbdessacfgleknl'
 
 
 # time format
