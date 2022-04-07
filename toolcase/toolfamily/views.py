@@ -91,16 +91,6 @@ def updateUser(request):
         if formPost.is_valid():
             userUpdate = formPost.save(commit=False)  # 先暫存，還不更改資料庫
             userUpdate.account_mail = user.account_mail  # 自動填入email
-            # if request.FILES:  # 若有上傳圖片  # 這個拆到 updateUserIcon() 了
-            #     try:
-            #         if userUpdate.icon:  # 若有舊檔，就刪除
-            #             oldUrl = userUpdate.icon.url[1:]  # 去掉最前面的斜線
-            #             oldUrl = os.path.join(settings.BASE_DIR, oldUrl)
-            #             print('find old icon and remove file', oldUrl)
-            #             os.remove(oldUrl)
-            #         userUpdate.icon = request.FILES['icon']
-            #     except Exception as ex:
-            #         print('Can not save user icon:', ex)
             userUpdate.save()  # 實際更改資料庫
             print('User data has been update.')
             return redirect('user-profile')  # 重定向並刷新個資分頁的資訊
@@ -137,10 +127,13 @@ def updateUserIcon(request):
             if request.FILES:  # 若有上傳圖片
                 try:
                     if userUpdate.icon:  # 若有舊檔，就刪除
-                        oldUrl = userUpdate.icon.url[1:]  # 去掉最前面的斜線
-                        oldUrl = os.path.join(settings.BASE_DIR, oldUrl)
-                        print('find old icon and remove file', oldUrl)
-                        os.remove(oldUrl)
+                        try:
+                            oldUrl = userUpdate.icon.url[1:]  # 去掉最前面的斜線
+                            oldUrl = os.path.join(settings.BASE_DIR, oldUrl)
+                            print('find old icon and remove file', oldUrl)
+                            os.remove(oldUrl)
+                        except Exception as ex:
+                            print('Cannot remove old file:', ex)
                     userUpdate.icon = request.FILES['icon']
                 except Exception as ex:
                     print('Can not save user icon:', ex)
