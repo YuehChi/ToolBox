@@ -9,12 +9,29 @@ class UserDetailAdmin(admin.ModelAdmin):
     list_display = (
         '__str__',
         'account_mail',
-        'gender',
+        'gender_shown',
         'department',
-        'rate',
+        'rate_shown',
         'last_login'
     )
-    readonly_fields = ('created_datetime', 'user_id')
+    readonly_fields = (
+        'user_id',
+        'created_datetime',
+        'last_login',
+        'work_num',
+        'publish_num')
+    def gender_shown(self, obj):
+        g = obj.gender
+        if g == 0:
+            return '不願透露'
+        elif g == 1:
+            return '男'
+        elif g == 2:
+            return '女'
+        else:
+            return '其他'
+    def rate_shown(self, obj):
+        return round(obj.rate, 2)
 admin.site.register(UserDetail, UserDetailAdmin)
 
 

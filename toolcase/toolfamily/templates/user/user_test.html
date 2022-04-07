@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+{% block title %}會員中心{% endblock %}
+
+{% block content %}
+<div>
+    <div>User Data:</div>
+    {{ user }}
+</div>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <div class="form-group col-md-6">
+
+            {{ userDataForm.as_p }}
+
+            <input class="btn btn-success" type="submit" value="儲存"/>
+        </div>
+    </div>
+</form>
+{% endblock %}
