@@ -1,22 +1,22 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+import os, django, json, smtplib, base64
 from .models import *
 from .forms import *
-from django.conf import settings
-from django.contrib.auth.decorators import login_required, permission_required
-import os  # 為了在上傳新檔時刪除舊檔
+
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.db.models import Q
-from django.contrib import messages, auth
-import django, json, smtplib
 from django.dispatch import receiver
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.hashers import check_password, make_password
-from django.contrib.auth.backends import ModelBackend
-import base64
-from itsdangerous import URLSafeTimedSerializer as utsr
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
+
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.backends import ModelBackend
+
+from itsdangerous import URLSafeTimedSerializer as utsr
 
 
 @login_required
@@ -248,7 +248,7 @@ def case_search(request):
 
 
 #####################################
-#           USER VIEWS              #
+#            USER MODULE            #
 #####################################
 # 使用者資料頁面
 @login_required
@@ -345,7 +345,7 @@ def updateUserIcon(request):
                     if userUpdate.icon:  # 若有舊檔，就刪除
                         try:
                             oldUrl = userUpdate.icon.url[1:]  # 去掉最前面的斜線
-                            oldUrl = os.path.join(settings.BASE_DIR, oldUrl)
+                            oldUrl = os.path.join(django_settings.BASE_DIR, oldUrl)
                             print('find old icon and remove file', oldUrl)
                             os.remove(oldUrl)
                         except Exception as ex:
@@ -379,6 +379,19 @@ def updateUserIcon(request):
         context={'num_visits': num_visits,
                  'user_name': user_name},
     )
+
+
+
+@login_required
+def user_publish_record(request):
+    return render(request, 'user/publish.html', locals())
+
+
+
+@login_required
+def user_take_record(request):
+    return render(request, 'user/take.html', locals())
+
 
 #########################################
 #                 TOOLS                 #

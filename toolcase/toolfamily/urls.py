@@ -9,7 +9,7 @@ urlpatterns = [
     path('activate/<str:token>', views.active, name='active'),
     path('forget/', views.forget, name='forget'),
     path('reset/<str:token>', views.reset, name='reset'),
-    path('home/', views.index, name='index')
+    path('home/', views.index, name='index'),
 ]
 
 
@@ -20,6 +20,8 @@ urlpatterns += [
     path('user/profile/', views.viewUser, name='user-profile'),
     path('user/profile/update/', views.updateUser, name='user-profile-update'),
     path('user/icon/update/', views.updateUserIcon, name='user-icon-update'),
+    path('user/publish', views.user_publish_record, name='user-publish-record'),
+    path('user/take', views.user_take_record, name='user-take-record'),
 ]
 
 #####################################
