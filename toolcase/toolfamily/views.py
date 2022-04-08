@@ -382,15 +382,19 @@ def updateUserIcon(request):
 
 
 
+# ------------user publish record------------
 @login_required
 def user_publish_record(request):
     return render(request, 'user/publish.html', locals())
 
 
 
+# ------------user take record------------
 @login_required
 def user_take_record(request):
     return render(request, 'user/take.html', locals())
+
+
 
 
 #########################################
@@ -465,7 +469,7 @@ def login(request):
             messages.warning(request,'使用者帳號或密碼錯誤')
         return redirect('login')
 
-    return render(request, 'login.html', locals())
+    return render(request, 'auth/login.html', locals())
 
 # -----------customize authentication-----------
 class CustomizeUserBackend(ModelBackend):
@@ -518,7 +522,7 @@ def register(request):
         request.session['messages'] = "請查看信箱點擊連結以完成註冊驗證。\n連結有效期為1個小時。"
         return HttpResponseRedirect('/')
 
-    return render(request, 'register.html', locals())
+    return render(request, 'auth/register.html', locals())
 
 # ------------email verification-------------
 def active(request, token):
@@ -581,7 +585,7 @@ def forget(request):
             messages.warning(request,'帳號不存在')
             return redirect('forget')
 
-    return render(request, 'forget_pwd.html', locals())
+    return render(request, 'auth/forget_pwd.html', locals())
 
 # --------------reset password----------------
 def reset(request, token):
@@ -612,7 +616,7 @@ def reset(request, token):
         request.session['messages'] = "密碼更改成功！"
         return HttpResponseRedirect('/')
 
-    return render(request, 'reset_pwd.html', locals())
+    return render(request, 'auth/reset_pwd.html', locals())
 
 # -----------check register email-------------
 @csrf_exempt
