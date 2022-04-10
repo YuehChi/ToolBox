@@ -18,6 +18,9 @@ from itsdangerous import URLSafeTimedSerializer as utsr
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
 from django.contrib import messages  # 用來向前端送錯誤訊息
+from datetime import date
+from datetime import datetime
+
 
 
 @login_required
@@ -259,14 +262,79 @@ def case_search(request):
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
 
-    list_case = Case.objects.filter(shown_public=True)
-    case_fields = Case_Field.objects.all()
-    case_types = Case_Type.objects.all()
-    case_photo = CasePhoto.objects.all()
+
+        case = Case.objects.first()
+        print(case.ended_datetime.date())
+        print("++++++++++++++++++++++++++++++++++++++++++++++")
+
+        if request.method == "POST" :
+
+            query = []
+            query_num = []
+            query_date = []
+            verrify = 0
+
+            # 查詢資訊資訊
+            query.append(request.POST.get('case_id'))
+            query.append(request.POST.get('title'))
+            query.append(request.POST.get('description'))
+            query.append(request.POST.get('reward'))
+            query.append(request.POST.get('location'))
+            query.append(request.POST.get('constraint'))
+            query_num.append(request.POST.get('num'))
+            query_num.append(request.POST.get('work'))
+            query_date.append(request.POST.get('date1'))
+            query_date.append(request.POST.get('date2'))
 
 
-    #list_case = Case.objects.select_related('case_status')
-    return render(request,'case/search.html',locals()) #之後要改
+            for i in range(6):
+                if query[i] == '':
+                     query[i] = 'None'
+                     verrify += 1
+
+            for i in range(2):
+                if query_num[i] == '':
+                     query_num[i] = 100000000000
+                     verrify += 1
+
+            for i in range(2):
+                if query_date[i] == '':
+                    query_date[i] = date.today()
+                    verrify += 1
+
+
+            print("*************** Querry: " , query ,query_num,query_date )
+
+            if verrify < 10:
+
+                result_case = Case.objects.filter(Q(case_id__icontains=query[0]) |Q(title__icontains=query[1]) |  Q(description__icontains=query[2]) |
+                Q(reward__icontains=query[3]) | Q(location__icontains=query[4]) | Q(constraint__icontains=query[5])  |  Q(ended_datetime__date__range=[query_date[0],query_date[1]])|
+                Q(num__icontains=query_num[0]) | Q(work__icontains=query_num[1])  & Q(shown_public=True) )
+
+                case_fields = Case_Field.objects.all()
+                case_types = Case_Type.objects.all()
+                case_photo = CasePhoto.objects.all()
+
+                return render(request,'case/search.html',locals())
+
+            else:
+                result_case = Case.objects.filter(shown_public=True)
+                case_fields = Case_Field.objects.all()
+                case_types = Case_Type.objects.all()
+                case_photo = CasePhoto.objects.all()
+
+                messages.warning(request, "請輸入收尋條件")
+                return render(request,'case/search.html',locals())
+
+
+
+        result_case = Case.objects.filter(shown_public=True)
+        case_fields = Case_Field.objects.all()
+        case_types = Case_Type.objects.all()
+        case_photo = CasePhoto.objects.all()
+
+        #list_case = Case.objects.select_related('case_status')
+        return render(request,'case/search.html',locals())
 
 
 
