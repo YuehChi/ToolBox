@@ -1,10 +1,19 @@
 input::-webkit-input-placeholder {
     font-size: 14px;
 }
+textarea::placeholder {
+    font-size:14px;
+}
+textarea{
+    padding: 10px;
+}
 input[type="text"] {
     border-color: #7B6363 ;
 }
 
+:focus {
+    -webkit-tap-highlight-color: transparent;
+}
 
 .cn_font {
     font-family: Microsoft JhengHei;
@@ -18,6 +27,24 @@ input[type="text"] {
     color: #dc3545;
     border-color: #dc3545 !important;
  }
+
+.upload-img {
+    max-width: 300px;
+    max-height: 100px;
+}
+
+.btn-upload-delete {
+    background-color: #4e423e9c;
+    color: #ffffff;
+    font-size: 10px;
+    border-radius: 50%;
+    border-color: transparent;
+}
+
+button span {
+    pointer-events: none;
+}
+
 #case_new_form {
     background: #ffffff;
     border-radius: 2rem;
