@@ -405,7 +405,7 @@
                                     <!----------User Last Login Time---------->
                                     <div class="col-12 d-flex justify-content-center align-items-center">
                                         <span id="user-lastlogintime" style="font-size: 12px;margin-top: 10px;color: #b8b3b3;">
-                                        上次登入: 30分鐘前
+                                        上次登入:
                                         </span>
                                     </div>
 
@@ -430,26 +430,26 @@
                 </div>
             </div>
             {% for user in user_detail%}
-                <span style="display: none" id="get-user-nickname">
+                <span style="display: inline" id="get-user-nickname">
                 {% if user.nickname == "" %}
                     {{user.name}}
                 {% else %}
                     {{user.nickname}}
                 {%endif%}
                 </span>
-                <span style="display: none;" id="get-user-gender">
+                <span style="display: inline;" id="get-user-gender">
                     {{user.gender}}
                 </span>
-                <span style="display: none;" id="get-user-department">
+                <span style="display: inline;" id="get-user-department">
                     {{user.department}}
                 </span>
-                <span style="display: none;" id="get-user-rate">
+                <span style="display: inline;" id="get-user-rate">
                     {{user.rate}}
                 </span>
-                <span style="display: none;" id="get-user-ratenum">
+                <span style="display: inline;" id="get-user-ratenum">
                     {{user.rate_num}}
                 </span>
-                <span style="display: none;" id="get-user-lastlogintime">
+                <span style="display: inline;" id="get-user-lastlogintime">
                     {{user.last_login_datetime}}
                 </span>
 
