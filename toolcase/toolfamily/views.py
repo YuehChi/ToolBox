@@ -262,13 +262,11 @@ def case_search(request):
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
 
-
         case = Case.objects.first()
         print(case.ended_datetime.date())
         print("++++++++++++++++++++++++++++++++++++++++++++++")
 
         if request.method == "POST" :
-
             query = []
             query_num = []
             query_date = []
@@ -326,7 +324,13 @@ def case_search(request):
                 messages.warning(request, "請輸入收尋條件")
                 return render(request,'case/search.html',locals())
 
+        result_case = Case.objects.filter(shown_public=True)
+        case_fields = Case_Field.objects.all()
+        case_types = Case_Type.objects.all()
+        case_photo = CasePhoto.objects.all()
 
+        #list_case = Case.objects.select_related('case_status')
+        return render(request,'case/search.html',locals())
 
         result_case = Case.objects.filter(shown_public=True)
         case_fields = Case_Field.objects.all()
