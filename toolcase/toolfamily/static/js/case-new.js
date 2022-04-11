@@ -16,7 +16,7 @@ $(document).ready(function() {
     $('#forminput-work').val($('#input-work').val())                  // Work Mode
     $('#forminput-constraint').val($('#input-preference').val())      // Constraint
     $('#forminput-location').val($('#input-location').val())          // Location
-    
+
     var description = $('#textarea-description').val()
    // description = description.replaceAll('\n', '<br>')
     $('#forminput-description').val(description) //Description
@@ -62,7 +62,7 @@ $(document).ready(function() {
   var location_temp = ""
   $('#radio-check-location').click(function(){
     var source = $(this).attr('src').split("/");
-    
+
     console.log($(this).val());
     if(source[source.length -1] == 'check-circle-outline.png'){
       location_temp = $('#input-location').val()
@@ -75,7 +75,7 @@ $(document).ready(function() {
       $("#input-location").val(location_temp);
       $(this).attr('src', '/static/images/check-circle-outline.png')
     }
-  
+
   });
 
 
@@ -96,26 +96,4 @@ $(document).ready(function() {
       }
     }
   });
-
-
-  //--------------------------垃圾桶--------------------------
-  
-  // let options = {
-  //   componentRestrictions: { country: 'tw' } // 限制在台灣範圍
-  // };
-  // var autocomplete = new google.maps.places.Autocomplete($("#input-location")[0], options);
-  // google.maps.event.addListener(autocomplete, 'place_changed', function() {
-  //     var place = autocomplete.getPlace();
-  //     console.log(place.address_components);
-  // });
-
-  // var selector = $(location).prop("href").split("/").slice(0,-3).join("/");
-  // var selector = selector + "/static/plugin/multiselect-02/colorlib-selector.html"
-  // $('.multi-selector').load(selector);
-  
-    // $('#summernote').summernote({
-  //     placeholder: 'Hello Bootstrap 4',
-  //     tabsize: 2,
-  //     height: 100
-  // });
 });

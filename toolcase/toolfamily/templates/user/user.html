@@ -27,7 +27,7 @@
                         {% if user.icon %}  {# 有圖才顯示 #}
                             <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="{{ user.icon.url }}">
                         {% else %}
-                            <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="/media/images/userIcon/default.png">
+                            <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="\static\images\default_icon_1.png">
                         {% endif %}
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                             {% if user.icon %}  {#有圖片才顯示#}
                                 <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" id="preview_img" src="{{ user.icon.url }}">
                             {% else %}
-                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="/media/images/userIcon/default.png">
+                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="\static\images\default_icon_1.png">
                             {% endif %}
                             </div>
                             <div style="text-align: center;">  {# 圖片上傳 #}
