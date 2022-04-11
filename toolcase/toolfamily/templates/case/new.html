@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>case-new</title>
     <link rel="stylesheet" href="\static\bootstrap\css\bootstrap.min.css" type="text/css" >
-    <link rel="stylesheet" href="\static\css\Material%20Design%20Icons.css" type="text/css">
     <link rel="stylesheet" href="\static\fonts\material-icons.min.css" type="text/css">
     <link rel="stylesheet" href="\static\css\materialdesignicons.min.css" type="text/css">
     <link rel="stylesheet" href="\static\css\case-new-styles.css" type="text/css">
@@ -248,7 +247,7 @@
                     <label class="form-label" for="textarea-description" style="font-weight: bold;">
                     委託描述
                     </label>
-                    <textarea  id="textarea-description" class="editordata" style="height: 95%;width: 100%;"></textarea>
+                    <textarea  id="textarea-description" name="textarea_description" class="editordata" style="height: 95%;width: 100%;" placeholder="限1000字"></textarea>
                 </div>
             </div>
             <!----------Image---------->
@@ -258,9 +257,12 @@
                     委託圖片
                     </label>
                     <p class="d-block" style="font-size: 12px;color: rgb(94,73,73);margin-bottom: 0px;margin-top: 1px;">
-                    檔案格式 jpg / jpeg / png，大小限制 3MB 內。<br>
+                    檔案格式 jpg / jpeg / png，大小限制 3MB 內，最多 10 張。<br>
                     </p>
-                    <input name="photo_image" type="file" style="color: #5e4949;margin-top: 10px;margin-left: 8px;" multiple>
+                    <div class="mt-2" id="upload_image">
+                        <input class="mb-2 d-block" id="input-img" name="input_img" type="file" accept="image/png, image/jpg, image/jpeg" style="color: #5e4949;margin-top: 10px;margin-left: 8px;">
+                        <span class="d-none error" id="span-input-file-validation">檔案大小需小於2MB</span>
+                    </div>
                 </div>
             </div>
             <hr style="opacity: 1;width: 90%;margin: auto;margin-top: 50px;color: #7B6363;/*border-color: #5e4949;*//*background: #5e4949;*/">
@@ -274,6 +276,7 @@
                 <div><button class="btn" type="button" id="button-post" style="background: #865140;color: rgb(255,255,255);width: 80px;">
                 發佈
                 </button></div>
+                <input type="file" multiple id="test">
             </div></div>
 
             <!-----------Form Input------------>
@@ -288,7 +291,9 @@
             <input name="constraint" type="hidden" id="forminput-constraint">
             <input name="location" type="hidden" id="forminput-location">
             <input name="description" type="hidden" id="forminput-description">
+            <input name="photo_image" type="hidden" id="forminput-images">
             <input type="submit" value="Submit" style="display: none;">
+            
             
         </div>
         </div>
