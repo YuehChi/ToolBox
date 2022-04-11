@@ -260,8 +260,8 @@
                     檔案格式 jpg / jpeg / png，大小限制 3MB 內，最多 10 張。<br>
                     </p>
                     <div class="mt-2" id="upload_image">
-                        <input class="mb-2 d-block" id="input-img-1" name="photo_image" type="file" style="color: #5e4949;margin-top: 10px;margin-left: 8px;">
-                
+                        <input class="mb-2 d-block" id="input-img" name="input_img" type="file" accept="image/png, image/jpg, image/jpeg" style="color: #5e4949;margin-top: 10px;margin-left: 8px;">
+                        <span class="d-none error" id="span-input-file-validation">檔案大小需小於2MB</span>
                     </div>
                 </div>
             </div>
@@ -276,6 +276,7 @@
                 <div><button class="btn" type="button" id="button-post" style="background: #865140;color: rgb(255,255,255);width: 80px;">
                 發佈
                 </button></div>
+                <input type="file" multiple id="test">
             </div></div>
 
             <!-----------Form Input------------>
@@ -290,7 +291,9 @@
             <input name="constraint" type="hidden" id="forminput-constraint">
             <input name="location" type="hidden" id="forminput-location">
             <input name="description" type="hidden" id="forminput-description">
+            <input name="photo_image" type="hidden" id="forminput-images">
             <input type="submit" value="Submit" style="display: none;">
+            
             
         </div>
         </div>

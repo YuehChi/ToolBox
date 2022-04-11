@@ -95,8 +95,8 @@ $(document).ready(function() {
         // }
         // imgitems_html = imgitems_html + '</div></div>'
     }
-    console.log(imgitems_html)
-    console.log(imgindicator_html)
+    // console.log(imgitems_html)
+    // console.log(imgindicator_html)
     $('.carousel-inner').html(imgitems_html)
     $('.carousel-indicators').html(imgindicator_html)
 
@@ -104,28 +104,29 @@ $(document).ready(function() {
 
 
 
-    console.log(case_images)
+    // console.log(case_images)
 
     // --------------- User Gender ---------------
     var gender = $('#get-user-gender').html()
     if (gender == 0){
         //genderless
         $('#user-gender').attr('src', '/static/images/gender-male-female.png')
-        console.log(gender)
+        // console.log(gender)
     }
     else if (gender == 1){
         //male
         $('#user-gender').attr('src', '/static/images/gender-male.png')
-        console.log(gender)
+        // console.log(gender)
     }
     else if (gender == 2){
         //female
         $('#user-gender').attr('src', '/static/images/gender-female.png')
-        console.log(gender)
+        // console.log(gender)
     }
 
     // --------------- User Last Login Time ---------------
     var lastlogin = $('#get-user-lastlogintime').html()
+    console.log($('#get-user-lastlogintime').html())
     var year = lastlogin.split('年')[0]
     var month = lastlogin.split('年')[1].split('月')[0]
     var date =  lastlogin.split('年')[1].split('月')[1].split('日')[0]
