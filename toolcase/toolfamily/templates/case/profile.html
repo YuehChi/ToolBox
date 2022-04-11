@@ -373,7 +373,11 @@
                                     
                                     <!----------User Icon---------->
                                     <div class="col-12 d-flex justify-content-center align-items-center">
-                                        <img id="user-icon" style="border-radius: 50%;width: 80px;height: 80px;" src="\static\images\4f6ec39cb88ea7d615f7c636283a2a27.jpg">
+                                        <div class="text-center pt-3 pr-3 pl-3 pb-2">
+                                            <a href="#">
+                                                <img class="my-2 mx-auto text-center rounded-circle square-cover d-inline" id="user-icon" src="/static/images/default_icon_1_small.png" style="width: 100px;max-width: 100px;">
+                                                </div>
+                                        </a></div>
                                     </div>
 
                                     <!----------User Rate---------->
@@ -429,28 +433,36 @@
                     </div>
                 </div>
             </div>
+
             {% for user in user_detail%}
-                <span style="display: inline" id="get-user-nickname">
+                <span style="display: none" id="get-user-icon">
+                {% if user.icon != "" %}
+                    {{user.icon.url}}
+                {% else %} 
+                    " "
+                {%endif%}
+                </span>
+                <span style="display: none" id="get-user-nickname">
                 {% if user.nickname == "" %}
                     {{user.name}}
                 {% else %}
                     {{user.nickname}}
                 {%endif%}
                 </span>
-                <span style="display: inline;" id="get-user-gender">
+                <span style="display: none;" id="get-user-gender">
                     {{user.gender}}
                 </span>
-                <span style="display: inline;" id="get-user-department">
+                <span style="display: none;" id="get-user-department">
                     {{user.department}}
                 </span>
-                <span style="display: inline;" id="get-user-rate">
+                <span style="display: none;" id="get-user-rate">
                     {{user.rate}}
                 </span>
-                <span style="display: inline;" id="get-user-ratenum">
+                <span style="display: none;" id="get-user-ratenum">
                     {{user.rate_num}}
                 </span>
-                <span style="display: inline;" id="get-user-lastlogintime">
-                    {{user.last_login_datetime}}
+                <span style="display: none;" id="get-user-lastlogintime">
+                    {{user.last_login}}
                 </span>
 
             {% endfor%}
