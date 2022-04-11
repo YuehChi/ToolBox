@@ -463,6 +463,29 @@
     <script src="\static\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
     <script src="\static\js\case-profile.js"></script>
+
+    <h1>case_user_detail</h1>
+        {% for user in user_detail%}
+              {% if user.icon != "" %}
+                  <img src="{{user.icon.url}}" alt="頭貼" style="width: 100px; height: 100px">
+              {% else %} 
+                  <p> no phote</p>
+              {%endif%}
+           <p>name : {{user.name}}</p>
+           <p>nickname : {{user.nickname}}</p>
+           {% if user.gender == 0 %}
+              <p>gender : 不願透露</p>
+           {% elif user.gender == 1 %}
+              <p>gender : 男</p>
+           {% elif user.gender == 2 %}
+              <p>gender : 女</p>
+           {% endif %}
+           <p>department : {{user.department}}</p>
+           <p>rate : {{user.rate}}</p>
+           <p>created_datetime : {{user.created_datetime}}</p>
+           <p>last_login_datetime : {{user.last_login}}</p>
+          
+        {% endfor%}
     
 </body>
 
