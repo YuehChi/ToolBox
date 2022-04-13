@@ -110,7 +110,7 @@ $(document).ready(function() {
     // ------------------------------ User ------------------------------
     $('#user-nickname').html($('#get-user-nickname').html())
     $('#user-department').html($('#get-user-department').html())
-    // $('#user-icon').attr('src', $('#get-user-icon').html())
+    $('#user-icon').attr('src', $('#get-user-icon').html())
     // $('#user-icon').attr('style', "background-image:" + $('#get-user-icon').html())
     console.log($('#get-user-lastlogintime').html())
     // --------------- User Gender ---------------
