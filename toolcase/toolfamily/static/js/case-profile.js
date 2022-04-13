@@ -50,7 +50,7 @@ $(document).ready(function() {
             if(i<show_num){
                 // console.log('i<show_num')
                 // console.log(imgitems_html)
-                imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block" src="' + case_images[i].src + '" alt="Slide Image"></div>'
+                imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block show-type" src="' + case_images[i].src + '" alt="Slide Image"></div>'
             }
             else{
                 console.log('i>show_num')
@@ -59,13 +59,13 @@ $(document).ready(function() {
                     // console.log(imgitems_html)
                     imgitems_html = imgitems_html + '</div></div>'
                     imgitems_html = imgitems_html + '<div class="carousel-item"><div class="row">'
-                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block" src="' + case_images[i].src + '" alt="Slide Image"></div>'
+                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block show-type" src="' + case_images[i].src + '" alt="Slide Image"></div>'
                     imgindicator_html = imgindicator_html + '<li data-bs-target="#carousel-case-images" data-bs-slide-to="'+ Math.floor(i/show_num) +'"></li>'
                 }
                 else{
                     // console.log('i%show_num != 0 || i==0')
                     // console.log(imgitems_html)
-                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block" src="' + case_images[i].src + '" alt="Slide Image"></div>'
+                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block show-type" src="' + case_images[i].src + '" alt="Slide Image"></div>'
                 }
             }
         }
