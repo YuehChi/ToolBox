@@ -5,12 +5,12 @@
     {% block sidebar %}
         <div style="margin-top: 80px;">
             <ul class="tab-list" style="text-align: center;display:block;list-style:none;">
-                <li class="list-group-item member" m="1"><a href="javascript:void(0)" style="color: rgb(134, 81, 64);">會員中心</a></li>
+                <li class="list-group-item member bold" m="1"><a href="javascript:void(0)" style="color: rgb(134, 81, 64);">會員中心</a></li>
                 <li class="list-group-item member" m="2"><a href="javascript:void(0)" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li>
-                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的委託</a></li>
-                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">接案紀錄</a></li>
+                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">委託管理</a></li>
+                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">委託紀錄</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的追蹤</a></li>
-                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">設定</a></li>
+                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">更改密碼</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">登出</a></li>
             </ul>
         </div>
@@ -27,7 +27,7 @@
                         {% if user.icon %}  {# 有圖才顯示 #}
                             <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="{{ user.icon.url }}">
                         {% else %}
-                            <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="/media/images/userIcon/default.png">
+                            <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="\static\images\default_icon_1.png">
                         {% endif %}
                         </div>
                     </div>
@@ -81,9 +81,9 @@
                             {% csrf_token %}
                             <div>
                             {% if user.icon %}  {#有圖片才顯示#}
-                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" id="preview_img" src="{{ user.icon.url }}">
+                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" id="preview_img" src="{{ user.icon.url }}">
                             {% else %}
-                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;" src="/media/images/userIcon/default.png">
+                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" id="preview_img" src="\static\images\default_icon_1.png">
                             {% endif %}
                             </div>
                             <div style="text-align: center;">  {# 圖片上傳 #}
