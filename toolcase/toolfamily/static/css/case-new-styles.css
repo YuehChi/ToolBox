@@ -6,6 +6,7 @@ textarea::placeholder {
 }
 textarea{
     padding: 10px;
+    resize: none;
 }
 input[type="text"] {
     border-color: #7B6363 ;
@@ -22,6 +23,8 @@ input[type="text"] {
 .en_font{
     font-family: Simonetta;
   }
+
+
 
 .error {
     color: #dc3545;
