@@ -376,7 +376,7 @@
                                         <div class="text-center pt-3 pr-3 pl-3 pb-2">
                                             <a href="#">
                                                 <img class="my-2 mx-auto text-center rounded-circle square-cover d-inline" id="user-icon" src="/static/images/default_icon_1_small.png" style="width: 100px;max-width: 100px;">
-                                                </div>
+                                                <div class="img-circular"></div>
                                         </a></div>
                                     </div>
 
@@ -435,11 +435,11 @@
             </div>
 
             {% for user in user_detail%}
-                <span style="display: none" id="get-user-icon">
+                <span style="display: inline" id="get-user-icon">
                 {% if user.icon != "" %}
                     {{user.icon.url}}
                 {% else %} 
-                    " "
+                    /static/images/default_icon_1_small.png
                 {%endif%}
                 </span>
                 <span style="display: none" id="get-user-nickname">
