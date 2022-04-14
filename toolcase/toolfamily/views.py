@@ -560,6 +560,10 @@ def user_publish_record(request):
         for record in record_list:
             if record.case == case:
                 number[case.case_id] += 1
+
+    # 上次登入時間 UserDetail 好像沒抓到 (User 有紀錄)
+
+    # 給判斷，決定按鈕樣式
     
     return render(request, 'user/publish.html', locals())
 
@@ -618,7 +622,7 @@ def take_case(request, case_id):
 
 # ---------cancel willingness---------
 @login_required
-def cancel_willingess(request, case_id):
+def cancel_willingess(request):
     # url還沒寫
     return 0
 
@@ -658,11 +662,40 @@ def build_commission(request):
 
 # ---------delete commission---------
 @login_required
-def delete_commission(request, case_id):
+def delete_commission(request, commission_id):
 
-    # 判斷是工具人or委託人解除，統一設置sender, receiver
-    # 該筆commission status設為關閉，不要刪掉
+    # set sender/receiver as publisher or toolman
+    commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
+
+    # first cancel
+    if commission.user_status.status_id == 2:
+        sender = request.user.user_detail
+        if commission.commissioned_user == sender:
+            receiver = commission.case.publisher
+        else:
+            receiver = commission.commissioned_user
+    
+        # # change the status, and send email to another user
+        # commission.user_status = Status.objects.get(Q(status_id=5))
+        # commission.save()
+        # # 寄信給對方、開始算天數三天 (怎麼算?)
+
+        # change front-end button
+        # 給前端判斷，切換按鈕樣式
+
+    # both cancel the case
+    elif commission.user_status.status_id == 5:
+        # 雙方都確認後，該筆commission status設為關閉，不要刪掉
+        pass
+
+    # timeout
+    else:
+        # 強制關閉，怎麼判斷?
+        pass
+
+
     # 解除的時候要判斷case狀態484變回徵求
+    
 
     return redirect('user-publish-record')
 
