@@ -476,6 +476,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
     <script src="\static\js\case-profile.js"></script>
 
+    {% comment %} <h1> {{check_user_id}} </hi>
     <h1>case_user_detail</h1>
         {% for user in user_detail%}
               {% if user.icon != "" %}
@@ -498,7 +499,7 @@
            <p>last_login_datetime : {{user.last_login}}</p>
           
         {% endfor%}
-    
+     {% endcomment %}
 </body>
 
 </html>
