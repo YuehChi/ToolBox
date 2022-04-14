@@ -24,6 +24,7 @@ urlpatterns += [
     path('user/password/update/', views.updatePassword, name='user-password-update'),
     path('user/publish/', views.user_publish_record, name='user-publish-record'),
     path('user/publish/<int:case_id>', views.user_publish_applicant, name='user-publish-applicant'),
+    path('user/build/', views.build_commission, name='build-commission'),
     path('user/take/', views.user_take_record, name='user-take-record'),
 ]
 
