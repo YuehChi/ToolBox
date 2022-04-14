@@ -15,6 +15,7 @@ from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.backends import ModelBackend
+
 from itsdangerous import URLSafeTimedSerializer as utsr
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
