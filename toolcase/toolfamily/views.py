@@ -23,11 +23,11 @@ from datetime import datetime
 
 @login_required
 def index(request):
-    list_case = Case.objects.filter(shown_public=True)
+    new_case = Case.objects.filter(shown_public=True)
+    most_case = Case.objects.filter(shown_public=True).order_by('-pageviews')
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
-
 
     #list_case = Case.objects.select_related('case_status')
     return render(request,'index.html',locals()) #之後要改
