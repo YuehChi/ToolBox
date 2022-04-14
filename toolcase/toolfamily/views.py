@@ -1,22 +1,22 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+import os, django, json, smtplib, base64
 from .models import *
 from .forms import *
-from django.conf import settings
-from django.contrib.auth.decorators import login_required, permission_required
-import os  # 為了在上傳新檔時刪除舊檔
+
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from django.db.models import Q
-from django.contrib import messages, auth
-import django, json, smtplib
+from django.db.models import Q, F
 from django.dispatch import receiver
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.hashers import check_password, make_password
-from django.contrib.auth.backends import ModelBackend
-import base64
-from itsdangerous import URLSafeTimedSerializer as utsr
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
+
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.backends import ModelBackend
+
+from itsdangerous import URLSafeTimedSerializer as utsr
 
 
 @login_required
@@ -248,7 +248,7 @@ def case_search(request):
 
 
 #####################################
-#           USER VIEWS              #
+#            USER MODULE            #
 #####################################
 # 使用者資料頁面
 @login_required
@@ -345,7 +345,7 @@ def updateUserIcon(request):
                     if userUpdate.icon:  # 若有舊檔，就刪除
                         try:
                             oldUrl = userUpdate.icon.url[1:]  # 去掉最前面的斜線
-                            oldUrl = os.path.join(settings.BASE_DIR, oldUrl)
+                            oldUrl = os.path.join(django_settings.BASE_DIR, oldUrl)
                             print('find old icon and remove file', oldUrl)
                             os.remove(oldUrl)
                         except Exception as ex:
@@ -380,6 +380,63 @@ def updateUserIcon(request):
                  'user_name': user_name},
     )
 
+
+
+# ------------user publish record------------
+@login_required
+def user_publish_record(request):
+
+    # all case the user publish
+    user = request.user.user_detail.user_id
+    publisher = UserDetail.objects.get(user_id=user)
+    case_list = Case.objects.filter(publisher=publisher)
+
+    # all applicants for all cases
+    willingness = CaseWillingness.objects.all().prefetch_related('apply_case')
+
+    return render(request, 'user/publish.html', locals())
+
+
+# ---------applicants for each case---------
+@login_required
+def user_publish_applicant(request, case_id):
+
+    # all applicants for all cases
+    case = Case.objects.get(Q(case_id=case_id))
+    willingness = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
+    print(willingness)
+
+    return render(request, 'user/applicant.html', locals())
+
+
+
+# ------------user take record------------
+@login_required
+def user_take_record(request):
+    return render(request, 'user/take.html', locals())
+
+
+
+#########################################
+#           USER-CASE  MODULE           #
+#########################################
+
+# ---------tool man sign up cases---------
+@login_required
+def take_case(request, case_id):
+
+    # foreign key
+    case = Case.objects.get(Q(case_id=case_id))
+    user = UserDetail.objects.get(Q(django_user=request.user))
+    
+    # create a case willingness
+    willingness = CaseWillingness.objects.create(apply_case=case, willing_user=user)
+    user.save()
+
+    return redirect('case-profile', case_id=case_id)
+
+
+
 #########################################
 #                 TOOLS                 #
 #########################################
@@ -413,6 +470,7 @@ def is_ajax(request):
 
 # ----------------login------------------
 def login(request):
+
     # show message for register
     if 'messages' in request.session:
         alert = True
@@ -452,7 +510,7 @@ def login(request):
             messages.warning(request,'使用者帳號或密碼錯誤')
         return redirect('login')
 
-    return render(request, 'login.html', locals())
+    return render(request, 'auth/login.html', locals())
 
 # -----------customize authentication-----------
 class CustomizeUserBackend(ModelBackend):
@@ -466,11 +524,13 @@ class CustomizeUserBackend(ModelBackend):
 
 # ----------------logout------------------
 def logout(request):
+
     auth.logout(request)
     return HttpResponseRedirect('/')
 
 # ----------------register------------------
 def register(request):
+
     if request.method == 'POST':
         username = request.POST.get('username')
         account = request.POST.get('account')
@@ -505,10 +565,11 @@ def register(request):
         request.session['messages'] = "請查看信箱點擊連結以完成註冊驗證。\n連結有效期為1個小時。"
         return HttpResponseRedirect('/')
 
-    return render(request, 'register.html', locals())
+    return render(request, 'auth/register.html', locals())
 
 # ------------email verification-------------
 def active(request, token):
+
     # timeout
     try:
         username = token_confirm.confirm_validate_token(token)
@@ -540,6 +601,7 @@ def active(request, token):
 
 # --------------forget password----------------
 def forget(request):
+
     if request.method == 'POST':
         account = request.POST.get('account')
         print(account)
@@ -568,10 +630,11 @@ def forget(request):
             messages.warning(request,'帳號不存在')
             return redirect('forget')
 
-    return render(request, 'forget_pwd.html', locals())
+    return render(request, 'auth/forget_pwd.html', locals())
 
 # --------------reset password----------------
 def reset(request, token):
+
     # timeout
     try:
         username = token_confirm.confirm_validate_token(token)
@@ -599,11 +662,12 @@ def reset(request, token):
         request.session['messages'] = "密碼更改成功！"
         return HttpResponseRedirect('/')
 
-    return render(request, 'reset_pwd.html', locals())
+    return render(request, 'auth/reset_pwd.html', locals())
 
 # -----------check register email-------------
 @csrf_exempt
 def check_mail_used(request):
+
     # parse json
     account = json.loads(request.body).get('email')
 

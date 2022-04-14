@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的委託</title>
+</head>
+<body>
+    <h1>我的委託</h1>
+
+    <table>
+        {% for case in case_list %}
+        <thead>
+            <tr>
+                <td>發布時間: {{case.created_datetime}}</td>
+                <td>標題: {{case.title}}</td>
+                <td><a href="{% url 'case-profile' case.case_id %}">編輯</a></td>
+                <td>結束時間: {{case.ended_datetime}}</td>
+                <td>狀態: {{case.case_status.status_name}}</td>
+                <td>(?/{{case.num}})</td>
+                <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單</a></td>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+        {% endfor%}
+    </table>
+</body>
+</html>
