@@ -19,6 +19,9 @@
     <a href="{% url 'user-publish-record' %}">回到我的委託</a><br>
     <span>委託編號 #{{case.case_id}}</span><br>
     <span>委託標題 {{case.title}}</span><br><br>
+    <span>已在該委託有 {{cnt}} 個工具人，可再選取 {{last}} 人</span><br><br>
+    {% comment %} 剩餘人數0的時候還沒擋 {% endcomment %}
+    {% comment %} 報名成功之後的alert還沒寫，怕會弄亂現在寫的東西 {% endcomment %}
 
     <table>
         <thead>

@@ -21,21 +21,34 @@
 
         {% for case in case_list %}
         <thead>
-            <tr>
-                <td>{{case.created_datetime}}</td>
-                <td>{{case.title}}</td>
-                <td><a href="{% url 'case-profile' case.case_id %}">編輯</a></td>
-                <td>{{case.ended_datetime}}</td>
-                <td>{{case.case_status.status_name}}</td>
-                <td>(?/{{case.num}})</td>
-                <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單</a></td>
-            </tr>
+            {% for key, value in number.items %}
+                {% if key == case.case_id %}
+                <tr>
+                    <td>{{case.created_datetime}}</td>
+                    <td>{{case.title}}</td>
+                    <td><a href="{% url 'case-profile' case.case_id %}">編輯</a></td>
+                    <td>{{case.ended_datetime}}</td>
+                    <td>{{case.case_status.status_name}}</td>
+                    <td>({{value}}/{{case.num}})</td>
+                    <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單</a></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
         </thead>
-
+            
         <tbody>
-
+            {% for record in record_list %}
+                {% if record.case == case %}
+                <tr>
+                    <td>{{record.commissioned_user.nickname}}<br>{{record.commissioned_user.last_login_datetime}}</td>
+                    <td>{{record.commissioned_user.account_mail}}<br>{{record.commissioned_user.contact}}</td>
+                    <td><input type="button" disabled="disabled" value="完成"></td>
+                    <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{record.commissionrecord_id}}'" value="解除"></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
         </tbody>
-        {% endfor%}
+        {% endfor %}
     </table>
 </body>
 </html>

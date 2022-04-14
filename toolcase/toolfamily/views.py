@@ -393,8 +393,20 @@ def user_publish_record(request):
     case_list = Case.objects.filter(publisher=publisher)
 
     # show all of the toolmen
-    # ????????
+    record_list = CommissionRecord.objects.all().prefetch_related('case')
 
+    # numbers of toolmen for each case
+    number = dict()
+    for case in case_list:
+        number[case.case_id] = 0
+        for record in record_list:
+            if record.case == case:
+                number[case.case_id] += 1
+
+    # 上次登入時間 UserDetail 好像沒抓到 (User 有紀錄)
+
+    # 給判斷，決定按鈕樣式
+    
     return render(request, 'user/publish.html', locals())
 
 
@@ -404,10 +416,22 @@ def user_publish_applicant(request, case_id):
 
     # all applicants for all cases
     case = Case.objects.get(Q(case_id=case_id))
-    willingness = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
+    willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
 
-    # 判斷還沒有成立委託關係，才會加入willingness回傳
-    # ??????????????
+    # is commissioned or not
+    willingness = []
+    cnt = 0
+    for data in willing:
+        # not cancel or finish
+        if data.user_status == Status.objects.get(Q(status_id=2)):
+            apply_case=data.apply_case
+            willing_user = data.willing_user
+            try:
+                CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
+                cnt += 1
+            except:
+                willingness.append(data)
+    last = case.num - cnt
 
     return render(request, 'user/applicant.html', locals())
 
@@ -434,27 +458,87 @@ def take_case(request, case_id):
     
     # create a case willingness
     willingness = CaseWillingness.objects.create(apply_case=case, willing_user=user)
-    user.save()
+    willingness.save()
 
     return redirect('case-profile', case_id=case_id)
 
 
+# ---------cancel willingness---------
+@login_required
+def cancel_willingess(request):
+    # url還沒寫
+    return 0
+
+
+# ---------build commission---------
 @login_required
 def build_commission(request):
     
     try:
         # get case willingness id
-        body = request.body.decode('utf-8').split('&')[1:]
-        toolman = []
-        for data in body:
-            toolman.append(data.split('=')[1])
+        body = request.body.decode('utf-8').split('&toolman=')[1:]
 
         # create commission record
-        # ???????????
+        for id in body:
+            willingness = CaseWillingness.objects.get(Q(casewillingness_id=id))
+            case = willingness.apply_case
+            toolman = willingness.willing_user
+            status = Status.objects.get(Q(status_id=2))
+
+            record = CommissionRecord.objects.create(case=case,
+                                                    commissioned_user=toolman,
+                                                    user_status=status)
+            record.save()
+
+        # change case status
+        case.case_status = Status.objects.get(Q(status_id=2))
+        case.save()
+
+        # 寄聯絡資訊給雙方
 
     except:
         # choose nobody
         pass
+
+    return redirect('user-publish-record')
+
+
+# ---------delete commission---------
+@login_required
+def delete_commission(request, commission_id):
+
+    # set sender/receiver as publisher or toolman
+    commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
+
+    # first cancel
+    if commission.user_status.status_id == 2:
+        sender = request.user.user_detail
+        if commission.commissioned_user == sender:
+            receiver = commission.case.publisher
+        else:
+            receiver = commission.commissioned_user
+    
+        # # change the status, and send email to another user
+        # commission.user_status = Status.objects.get(Q(status_id=5))
+        # commission.save()
+        # # 寄信給對方、開始算天數三天 (怎麼算?)
+
+        # change front-end button
+        # 給前端判斷，切換按鈕樣式
+
+    # both cancel the case
+    elif commission.user_status.status_id == 5:
+        # 雙方都確認後，該筆commission status設為關閉，不要刪掉
+        pass
+
+    # timeout
+    else:
+        # 強制關閉，怎麼判斷?
+        pass
+
+
+    # 解除的時候要判斷case狀態484變回徵求
+    
 
     return redirect('user-publish-record')
 
