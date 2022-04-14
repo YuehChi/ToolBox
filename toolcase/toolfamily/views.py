@@ -391,9 +391,6 @@ def user_publish_record(request):
     publisher = UserDetail.objects.get(user_id=user)
     case_list = Case.objects.filter(publisher=publisher)
 
-    # all applicants for all cases
-    willingness = CaseWillingness.objects.all().prefetch_related('apply_case')
-
     return render(request, 'user/publish.html', locals())
 
 
@@ -404,7 +401,8 @@ def user_publish_applicant(request, case_id):
     # all applicants for all cases
     case = Case.objects.get(Q(case_id=case_id))
     willingness = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
-    print(willingness)
+
+    # 判斷還沒有成立委託關係，才會加入willingness回傳
 
     return render(request, 'user/applicant.html', locals())
 
