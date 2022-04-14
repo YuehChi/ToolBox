@@ -1,6 +1,10 @@
 from django.urls import path
 from . import views
 
+
+#####################################
+#           AUTH URLS               #
+#####################################
 urlpatterns = [
     path('', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
@@ -37,6 +41,17 @@ urlpatterns += [
     path('case/profile/<int:case_id>/', views.case_profile, name='case-profile' ),
     path('case/profile/<int:case_id>/edit/',views.case_profile_edit, name='case-profile-edit'),
     path('case/search/', views.case_search,name='case-search'),
-    path('case/take/<int:case_id>',views.take_case, name='take-case'),
 ]
 
+#####################################
+#           TAKE URLS               #
+#####################################
+urlpatterns += [
+    path('user/publish/', views.user_publish_record, name='user-publish-record'),
+    path('user/publish/<int:case_id>', views.user_publish_applicant, name='user-publish-applicant'),
+    path('user/build/', views.build_commission, name='build-commission'),
+    path('user/delete/', views.delete_commission, name='delete-commission'),
+    path('user/take/', views.user_take_record, name='user-take-record'),
+
+    path('case/take/<int:case_id>',views.take_case, name='take-case'),
+]

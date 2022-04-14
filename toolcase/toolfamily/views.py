@@ -574,13 +574,18 @@ def user_publish_applicant(request, case_id):
 
     # is commissioned or not
     willingness = []
+    cnt = 0
     for data in willing:
-        apply_case=data.apply_case
-        willing_user = data.willing_user
-        try:
-            CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
-        except:
-            willingness.append(data)
+        # not cancel or finish
+        if data.user_status == Status.objects.get(Q(status_id=2)):
+            apply_case=data.apply_case
+            willing_user = data.willing_user
+            try:
+                CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
+                cnt += 1
+            except:
+                willingness.append(data)
+    last = case.num - cnt
 
     return render(request, 'user/applicant.html', locals())
 
@@ -611,6 +616,14 @@ def take_case(request, case_id):
     return redirect('case-profile', case_id=case_id)
 
 
+# ---------cancel willingness---------
+@login_required
+def cancel_willingess(request, case_id):
+    # url還沒寫
+    return 0
+
+
+# ---------build commission---------
 @login_required
 def build_commission(request):
     
@@ -629,9 +642,27 @@ def build_commission(request):
                                                     commissioned_user=toolman,
                                                     user_status=status)
             record.save()
+
+        # change case status
+        case.case_status = Status.objects.get(Q(status_id=2))
+        case.save()
+
+        # 寄聯絡資訊給雙方
+
     except:
         # choose nobody
         pass
+
+    return redirect('user-publish-record')
+
+
+# ---------delete commission---------
+@login_required
+def delete_commission(request, case_id):
+
+    # 判斷是工具人or委託人解除，統一設置sender, receiver
+    # 該筆commission status設為關閉，不要刪掉
+    # 解除的時候要判斷case狀態484變回徵求
 
     return redirect('user-publish-record')
 
