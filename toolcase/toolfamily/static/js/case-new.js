@@ -58,7 +58,7 @@ $(document).ready(function() {
     // console.log($('#forminput-description').val())
 
 
-    //$('#case-new-form').submit()
+    $('#case-new-form').submit()
 
 
   });
