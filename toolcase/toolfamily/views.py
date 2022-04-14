@@ -393,8 +393,16 @@ def user_publish_record(request):
     case_list = Case.objects.filter(publisher=publisher)
 
     # show all of the toolmen
-    # ????????
+    record_list = CommissionRecord.objects.all().prefetch_related('case')
 
+    # numbers of toolmen for each case
+    number = dict()
+    for case in case_list:
+        number[case.case_id] = 0
+        for record in record_list:
+            if record.case == case:
+                number[case.case_id] += 1
+    
     return render(request, 'user/publish.html', locals())
 
 
@@ -404,10 +412,17 @@ def user_publish_applicant(request, case_id):
 
     # all applicants for all cases
     case = Case.objects.get(Q(case_id=case_id))
-    willingness = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
+    willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
 
-    # 判斷還沒有成立委託關係，才會加入willingness回傳
-    # ??????????????
+    # is commissioned or not
+    willingness = []
+    for data in willing:
+        apply_case=data.apply_case
+        willing_user = data.willing_user
+        try:
+            CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
+        except:
+            willingness.append(data)
 
     return render(request, 'user/applicant.html', locals())
 
@@ -434,7 +449,7 @@ def take_case(request, case_id):
     
     # create a case willingness
     willingness = CaseWillingness.objects.create(apply_case=case, willing_user=user)
-    user.save()
+    willingness.save()
 
     return redirect('case-profile', case_id=case_id)
 
@@ -444,14 +459,19 @@ def build_commission(request):
     
     try:
         # get case willingness id
-        body = request.body.decode('utf-8').split('&')[1:]
-        toolman = []
-        for data in body:
-            toolman.append(data.split('=')[1])
+        body = request.body.decode('utf-8').split('&toolman=')[1:]
 
         # create commission record
-        # ???????????
+        for id in body:
+            willingness = CaseWillingness.objects.get(Q(casewillingness_id=id))
+            case = willingness.apply_case
+            toolman = willingness.willing_user
+            status = Status.objects.get(Q(status_id=2))
 
+            record = CommissionRecord.objects.create(case=case,
+                                                    commissioned_user=toolman,
+                                                    user_status=status)
+            record.save()
     except:
         # choose nobody
         pass
