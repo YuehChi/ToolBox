@@ -10,20 +10,30 @@
     <h1>我的委託</h1>
 
     <table>
+        <thead>
+            <tr>
+                <td>發布時間</td>
+                <td colspan=2>標題</td>
+                <td>結束時間</td>
+                <td colspan=2>狀態</td>
+            </tr>
+        </thead>
+
         {% for case in case_list %}
         <thead>
             <tr>
-                <td>發布時間: {{case.created_datetime}}</td>
-                <td>標題: {{case.title}}</td>
+                <td>{{case.created_datetime}}</td>
+                <td>{{case.title}}</td>
                 <td><a href="{% url 'case-profile' case.case_id %}">編輯</a></td>
-                <td>結束時間: {{case.ended_datetime}}</td>
-                <td>狀態: {{case.case_status.status_name}}</td>
+                <td>{{case.ended_datetime}}</td>
+                <td>{{case.case_status.status_name}}</td>
                 <td>(?/{{case.num}})</td>
                 <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單</a></td>
             </tr>
         </thead>
+
         <tbody>
-            
+
         </tbody>
         {% endfor%}
     </table>
