@@ -13,7 +13,7 @@
     <form action="/toolfamily/user/build/" method="post">
         {% csrf_token %}
         <button onclick="if(confirm('確認送出委託請求?')) this.form.submit();">送出</button>
-        <input type="reset" id="reset" value="重置">
+        <input type="reset" id="reset" value="重置"><br><br>
     </form>
 
     <a href="{% url 'user-publish-record' %}">回到我的委託</a><br>
