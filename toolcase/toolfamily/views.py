@@ -5,7 +5,7 @@ from .forms import *
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from django.db.models import Q
+from django.db.models import Q, F
 from django.dispatch import receiver
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as django_settings
@@ -385,7 +385,28 @@ def updateUserIcon(request):
 # ------------user publish record------------
 @login_required
 def user_publish_record(request):
+
+    # all case the user publish
+    user = request.user.user_detail.user_id
+    publisher = UserDetail.objects.get(user_id=user)
+    case_list = Case.objects.filter(publisher=publisher)
+
+    # all applicants for all cases
+    willingness = CaseWillingness.objects.all().prefetch_related('apply_case')
+
     return render(request, 'user/publish.html', locals())
+
+
+# ---------applicants for each case---------
+@login_required
+def user_publish_applicant(request, case_id):
+
+    # all applicants for all cases
+    case = Case.objects.get(Q(case_id=case_id))
+    willingness = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
+    print(willingness)
+
+    return render(request, 'user/applicant.html', locals())
 
 
 
@@ -394,6 +415,25 @@ def user_publish_record(request):
 def user_take_record(request):
     return render(request, 'user/take.html', locals())
 
+
+
+#########################################
+#           USER-CASE  MODULE           #
+#########################################
+
+# ---------tool man sign up cases---------
+@login_required
+def take_case(request, case_id):
+
+    # foreign key
+    case = Case.objects.get(Q(case_id=case_id))
+    user = UserDetail.objects.get(Q(django_user=request.user))
+    
+    # create a case willingness
+    willingness = CaseWillingness.objects.create(apply_case=case, willing_user=user)
+    user.save()
+
+    return redirect('case-profile', case_id=case_id)
 
 
 
@@ -430,6 +470,7 @@ def is_ajax(request):
 
 # ----------------login------------------
 def login(request):
+
     # show message for register
     if 'messages' in request.session:
         alert = True
@@ -483,11 +524,13 @@ class CustomizeUserBackend(ModelBackend):
 
 # ----------------logout------------------
 def logout(request):
+
     auth.logout(request)
     return HttpResponseRedirect('/')
 
 # ----------------register------------------
 def register(request):
+
     if request.method == 'POST':
         username = request.POST.get('username')
         account = request.POST.get('account')
@@ -526,6 +569,7 @@ def register(request):
 
 # ------------email verification-------------
 def active(request, token):
+
     # timeout
     try:
         username = token_confirm.confirm_validate_token(token)
@@ -557,6 +601,7 @@ def active(request, token):
 
 # --------------forget password----------------
 def forget(request):
+
     if request.method == 'POST':
         account = request.POST.get('account')
         print(account)
@@ -589,6 +634,7 @@ def forget(request):
 
 # --------------reset password----------------
 def reset(request, token):
+
     # timeout
     try:
         username = token_confirm.confirm_validate_token(token)
@@ -621,6 +667,7 @@ def reset(request, token):
 # -----------check register email-------------
 @csrf_exempt
 def check_mail_used(request):
+
     # parse json
     account = json.loads(request.body).get('email')
 

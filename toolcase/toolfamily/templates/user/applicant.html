@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>應徵名單</title>
+</head>
+<body>
+    <h1>應徵名單</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <td>工具人資訊</td>
+                <td>評價</td>
+                <td>狀態</td>
+                <td>動作</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in willingness %}
+                <tr>
+                    <td>{{data.willing_user.name}}</td>
+                    <td>{{data.willing_user.rate}}</td>
+                    <td>未選/已選</td>
+                    <td>選擇/確認</td>
+                </tr>
+            {% endfor%}
+        </tbody>
+    </table>
+</body>
+</html>
