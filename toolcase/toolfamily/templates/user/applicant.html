@@ -10,10 +10,10 @@
 <body>
     <h1>應徵名單</h1>
 
-    <form action="" method="post">
+    <form action="/toolfamily/user/build/" method="post">
         {% csrf_token %}
-        <button type="submit">送出</button>
-        <button>重置</button><br><br>
+        <button onclick="if(confirm('確認送出委託請求?')) this.form.submit();">送出</button>
+        <input type="reset" id="reset" value="重置">
     </form>
 
     <a href="{% url 'user-publish-record' %}">回到我的委託</a><br>
@@ -34,7 +34,7 @@
                 <tr>
                     <td>{{data.willing_user.name}} {{data.willing_user.gender}}(這是性別)</td>
                     <td>{{data.willing_user.rate}}</td>
-                    <td id="text_{{data.casewillingness_id}}">未選</td>
+                    <td class="select" id="text_{{data.casewillingness_id}}">未選</td>
                     <td><input type="button" id="{{data.casewillingness_id}}" class="btn" value="選擇"></td>
                 </tr>
             {% endfor%}
@@ -46,19 +46,26 @@
             num = $(this).attr("id");
             if ($(this).attr("value") == "選擇") {
                 $(this).val("取消");
-                $("#text_"+num).html("已選");
-                $('<input>').attr({
-                    tye: 'hidden',
-                    id: 'content' + num,
-                    name: num,
+                $("#text_" + num).html("已選");
+                $("<input>").attr({
+                    type: "hidden",
+                    id: "content" + num,
+                    class: "toolman",
+                    name: "toolman",
                     value: num,
-                }).appendTo('form');
+                }).appendTo("form");
             }
             else {
                 $(this).val("選擇");
                 $("#text_" + num).html("未選");
                 $("#content" + num).remove();
             }
+        });
+
+        $("#reset").click(function() {
+            $(".toolman").remove();
+            $(".select").html("未選");
+            $(".btn").val("選擇")
         });
     </script>
 </body>
