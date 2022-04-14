@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto Serif TC">
     <link rel="stylesheet" href="\static\css\case-profile-styles.css">
 
+       
+    <script src="\static\bootstrap\js\bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
+    <script src="\static\js\case-profile.js"></script>
 
 
 </head>
@@ -97,11 +101,13 @@
                                         <span style="display: inline;width: auto;color: rgb(165,141,141);">
                                         #案件編號</span>
                                         <span id="case-id" style="margin-left: 10px;color: #a58d8d;">
-                                        {{case.case_id}}
+                                            {{case.case_id}}
                                         </span>
                                         <span id="case-title" style="display: block;font-weight: bold;font-size: 24px;">
-                                        {{case.title}}
+                                            {{case.title}}
+                                            <a href="./edit/" class="d-none" style="font-size: small;color: #b94700" id="link-edit">編輯案件</a>
                                         </span>
+                                        
                                     </div>
                                 </div>
                                 <!----------Case Status & Time---------->
@@ -375,8 +381,8 @@
                                     <div class="col-12 d-flex justify-content-center align-items-center">
                                         <div class="text-center pt-3 pr-3 pl-3 pb-2">
                                             <a href="#">
-                                                <img class="my-2 mx-auto text-center rounded-circle square-cover d-inline" id="user-icon" src="/static/images/default_icon_1_small.png" style="width: 100px;max-width: 100px;">
-                                                <div class="img-circular"></div>
+                                                
+                                                <div class="img-circular" id="user-icon"></div>
                                         </a></div>
                                     </div>
 
@@ -435,7 +441,9 @@
             </div>
 
             {% for user in user_detail%}
-                <span style="display: inline" id="get-user-icon">
+                <span style="display: inline" id="get-user-id">{{user.pk}}</span>
+                <span style="display: inline" id="get-loginuser-id">{{check_user_id}}</span>
+                <span style="display: none" id="get-user-icon">
                 {% if user.icon != "" %}
                     {{user.icon.url}}
                 {% else %} 
@@ -470,34 +478,7 @@
 
         </div>
     </div>
-    
-
-    <script src="\static\bootstrap\js\bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
-    <script src="\static\js\case-profile.js"></script>
-
-    <h1>case_user_detail</h1>
-        {% for user in user_detail%}
-              {% if user.icon != "" %}
-                  <img src="{{user.icon.url}}" alt="頭貼" style="width: 100px; height: 100px">
-              {% else %} 
-                  <p> no phote</p>
-              {%endif%}
-           <p>name : {{user.name}}</p>
-           <p>nickname : {{user.nickname}}</p>
-           {% if user.gender == 0 %}
-              <p>gender : 不願透露</p>
-           {% elif user.gender == 1 %}
-              <p>gender : 男</p>
-           {% elif user.gender == 2 %}
-              <p>gender : 女</p>
-           {% endif %}
-           <p>department : {{user.department}}</p>
-           <p>rate : {{user.rate}}</p>
-           <p>created_datetime : {{user.created_datetime}}</p>
-           <p>last_login_datetime : {{user.last_login}}</p>
-          
-        {% endfor%}
+ 
     
 </body>
 

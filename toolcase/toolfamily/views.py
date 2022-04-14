@@ -116,6 +116,7 @@ def case_new(request):
 def case_profile(request ,case_id):
 
     pk_key = case_id
+    check_user_id = request.user.user_detail.user_id
 
     #瀏覽人數+1
     temp_case = Case.objects.get(case_id=pk_key)

@@ -1,5 +1,10 @@
 $(document).ready(function() {
 
+    // --------------- Case Edit Button ---------------
+    if($('#get-user-id').html() == $('#get-loginuser-id').html()){
+        $('#link-edit').removeClass('d-none')
+    }
+
     // --------------- Case Status ---------------
     var case_status = $('#get-case-status').html()
     console.log('case_status:' + case_status)
@@ -110,7 +115,8 @@ $(document).ready(function() {
     // ------------------------------ User ------------------------------
     $('#user-nickname').html($('#get-user-nickname').html())
     $('#user-department').html($('#get-user-department').html())
-    $('#user-icon').attr('src', $('#get-user-icon').html())
+    //$('#user-icon').attr('src', $('#get-user-icon').html())
+    $('#user-icon').css('background-image', 'url('+$('#get-user-icon').html()+')')
     // $('#user-icon').attr('style', "background-image:" + $('#get-user-icon').html())
     console.log($('#get-user-lastlogintime').html())
     // --------------- User Gender ---------------
