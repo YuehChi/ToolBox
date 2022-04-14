@@ -3,6 +3,7 @@ $(document).ready(function() {
     // --------------- Case Edit Button ---------------
     if($('#get-user-id').html() == $('#get-loginuser-id').html()){
         $('#link-edit').removeClass('d-none')
+        $('#case-buttons').addClass('d-none')
     }
 
     // --------------- Case Status ---------------
@@ -13,6 +14,7 @@ $(document).ready(function() {
     }
 
 
+
     // --------------- Case Time ---------------
     var enddate =$('#get-case-enddate').html()
     var year = enddate.split('年')[0]
@@ -20,7 +22,13 @@ $(document).ready(function() {
     var date =  enddate.split('年')[1].split('月')[1].split('日')[0]
     enddate = new Date(month + '/' + date + '/' + year)
     var currentdate = new Date();
-    var remainday = enddate.getDate() - currentdate.getDate()
+
+    var remainday = convertMS(Math.abs((enddate.getTime() - currentdate.getTime())))
+    //var remainday = enddate.getDate() - currentdate.getDate()
+
+    console.log(enddate)
+    console.log(currentdate)
+    console.log(remainday)
     enddate = year + '/' + month + '/' + date
 
     var startdate = $('#get-case-startdate').html()
@@ -29,8 +37,12 @@ $(document).ready(function() {
     var date =  startdate.split('年')[1].split('月')[1].split('日')[0]
     startdate = year + '/' + month + '/' + date
 
+    
 
-    $('#case-time').html(startdate + ' ~ ' + enddate + ' 還剩' + remainday + '天')
+
+
+    $('#case-time').html(startdate + ' ~ ' + enddate + ' 還剩' + remainday)
+    
 
 
     // --------------- Case Description ---------------
@@ -148,51 +160,9 @@ $(document).ready(function() {
     lastlogin = new Date(year, month-1, date, hour, minutes)
 
 
-    function convertMS(millisecondes){
-        let seconds = millisecondes / 1000
-        if(seconds < 60){
-            return '不到1分鐘前'
-        }
-        else{
-            let minutes = seconds / 60
-            if (minutes < 60){
-                console.log('minutes:' + Math.floor(minutes))
-                return Math.floor(minutes).toString() + ' 分鐘前'
-            }
-            else{
-                let hours = minutes/60
-                if (hours < 24){
-                    console.log('hours:' + hours)
-                    return Math.floor(hours).toString() + ' 小時前'
-                }
-                else{
-                    let days = hours/24
-                    if(days < 31){
-                        console.log('days:' + days)
-                        return Math.floor(days).toString() + ' 天前'
-                    }
-                    else{
-                        let months = days/30
-                        if(months < 12){
-                            console.log('months:' + months)
-                            return Math.floor(months).toString() + ' 個月前'
-                        }
-                        else{
-                            let years = months/12
-                            console.log('years:' + years)
-                            return Math.floor(years).toString() + ' 年前'
-                        }
-                    }
-                }
-            }
-
-        }
-        
-    }
-
     var llt = convertMS(Math.abs((currentdate.getTime() - lastlogin.getTime())))
     console.log(llt)
-    $('#user-lastlogintime').html('上次登入: ' + llt)
+    $('#user-lastlogintime').html('上次登入: ' + llt + '前')
 
     // --------------- User Rate ---------------
     console.log($('#get-user-rate').html())
@@ -234,9 +204,46 @@ $(document).ready(function() {
     console.log($('#get-user-lastlogintime').html())
 
 
-
-
-
-
-
 });
+
+function convertMS(millisecondes){
+    let seconds = millisecondes / 1000
+    if(seconds < 60){
+        return '不到1分鐘'
+    }
+    else{
+        let minutes = seconds / 60
+        if (minutes < 60){
+            console.log('minutes:' + Math.floor(minutes))
+            return Math.floor(minutes).toString() + ' 分鐘'
+        }
+        else{
+            let hours = minutes/60
+            if (hours < 24){
+                console.log('hours:' + hours)
+                return Math.floor(hours).toString() + ' 小時'
+            }
+            else{
+                let days = hours/24
+                if(days < 31){
+                    console.log('days:' + days)
+                    return Math.floor(days).toString() + ' 天'
+                }
+                else{
+                    let months = days/30
+                    if(months < 12){
+                        console.log('months:' + months)
+                        return Math.floor(months).toString() + ' 個月'
+                    }
+                    else{
+                        let years = months/12
+                        console.log('years:' + years)
+                        return Math.floor(years).toString() + ' 年'
+                    }
+                }
+            }
+        }
+
+    }
+    
+}

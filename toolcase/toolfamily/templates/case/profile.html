@@ -153,7 +153,7 @@
                             </div>
                             <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;">
                                 <span id="case-num" style="display: inline;">
-                                1
+                                {{case.num}}
                                 </span>
                                 <span style="display: inline;margin-left: 3px;">
                                 人
@@ -309,7 +309,7 @@
                             <!----------Case Buttons---------->
                             <div class="col-0 col-md-3 justify-content-end align-content-end" style="position: relative;">
 
-                                <div class="row">
+                                <div class="row" id="case-buttons">
                                     <!----------Follow Button---------->
                                     <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 10px;">
                                         <button class="btn btn-primary d-flex justify-content-center align-items-center button-case" id="button-case-follow" type="button">
