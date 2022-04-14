@@ -5,9 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>應徵名單</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <h1>應徵名單</h1>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit">送出</button>
+        <button>重置</button><br><br>
+    </form>
+
+    <a href="{% url 'user-publish-record' %}">回到我的委託</a><br>
+    <span>委託編號 #{{case.case_id}}</span><br>
+    <span>委託標題 {{case.title}}</span><br><br>
 
     <table>
         <thead>
@@ -21,13 +32,34 @@
         <tbody>
             {% for data in willingness %}
                 <tr>
-                    <td>{{data.willing_user.name}}</td>
+                    <td>{{data.willing_user.name}} {{data.willing_user.gender}}(這是性別)</td>
                     <td>{{data.willing_user.rate}}</td>
-                    <td>未選/已選</td>
-                    <td>選擇/確認</td>
+                    <td id="text_{{data.casewillingness_id}}">未選</td>
+                    <td><input type="button" id="{{data.casewillingness_id}}" class="btn" value="選擇"></td>
                 </tr>
             {% endfor%}
         </tbody>
     </table>
+
+    <script type="text/javascript">
+        $(".btn").click(function() {
+            num = $(this).attr("id");
+            if ($(this).attr("value") == "選擇") {
+                $(this).val("取消");
+                $("#text_"+num).html("已選");
+                $('<input>').attr({
+                    tye: 'hidden',
+                    id: 'content' + num,
+                    name: num,
+                    value: num,
+                }).appendTo('form');
+            }
+            else {
+                $(this).val("選擇");
+                $("#text_" + num).html("未選");
+                $("#content" + num).remove();
+            }
+        });
+    </script>
 </body>
 </html>
