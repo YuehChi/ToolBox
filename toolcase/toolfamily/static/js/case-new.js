@@ -58,7 +58,7 @@ $(document).ready(function() {
     // console.log($('#forminput-description').val())
 
 
-    $('#case-new-form').submit()
+    //$('#case-new-form').submit()
 
 
   });
@@ -87,7 +87,7 @@ $(document).ready(function() {
     }
     else {
 
-      upload_img_log.push([counter, $(this).prop('files')[0]])
+      upload_img_log.push([counter, upload_img])
       var reader = new FileReader();
 
       var target_div_id = 'updiv_' + counter
