@@ -8,5 +8,87 @@
 </head>
 <body>
     <h1>交易紀錄</h1>
+
+    <h2>報名</h2>
+    <table>
+        <thead>
+            <tr>
+                <td>案件名稱</td>
+                <td>結束時間</td>
+                <td>狀態</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for willing in willingness %}
+                <tr>
+                    <td><a href="{% url 'case-profile' willing.apply_case.case_id %}">{{willing.apply_case.title}}</td>
+                    <td>{{willing.apply_case.ended_datetime}}</td>
+                    <td>{{willing.apply_case.case_status.status_name}}</td>
+                    <td><input type="button" onclick="window.location='/toolfamily/case/cancel/{{willing.apply_case.case_id}}'" value="取消報名"></td>
+                    {% comment %} 是否確認取消的alert還沒寫 {% endcomment %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>進行中案件</h2>
+    <table>
+        <thead>
+            <tr>
+                <td>案件名稱</td>
+                <td>結束時間</td>
+                <td>狀態</td>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for commission in conduct %}
+                <tr>
+                    <td>{{commission.case.title}}</td>
+                    <td>{{commission.case.ended_datetime}}</td>
+                    <td>{{commission.case.case_status.status_name}}</td>
+
+                    {% if commission.user_status.status_id == 2 %}
+                        {% comment %} 確認alert都還沒做 {% endcomment %}
+                        <td><input type="button" onclick="window.location='/toolfamily/user/finish/{{commission.commissionrecord_id}}'" value="完成"></td>
+                        <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="解除"></td>
+                    {% elif commission.user_status.status_id == 5 %}
+                        <td>委託人已發出取消請求</td>
+                        <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="確認取消"></td>
+                    {% elif commission.user_status.status_id == 6 %}
+                        <td>等待對方確認取消</td>
+                    {% elif commission.user_status.status_id == 7 %}
+                        <td>等待對方確認完成</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>已結束案件</h2>
+    <table>
+        <thead>
+            <tr>
+                <td>案件名稱</td>
+                <td>結束時間</td>
+                <td>本次委託結果</td>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for commission in close %}
+                <tr>
+                    <td>{{commission.case.title}}</td>
+                    <td>{{commission.case.ended_datetime}}</td>
+
+                    {% if commission.user_status.status_id == 3 %}
+                        <td>已完成</td>
+                    {% elif commission.user_status.status_id == 4 %}
+                        <td>已取消</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
