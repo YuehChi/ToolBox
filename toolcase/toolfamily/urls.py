@@ -48,4 +48,5 @@ urlpatterns += [
     path('user/take/', views.user_take_record, name='user-take-record'),
 
     path('case/take/<int:case_id>',views.take_case, name='take-case'),
+    path('case/cancel/<int:case_id>', views.cancel_willingess, name='cancel-willingess')
 ]

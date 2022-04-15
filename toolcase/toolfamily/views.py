@@ -422,15 +422,13 @@ def user_publish_applicant(request, case_id):
     willingness = []
     cnt = 0
     for data in willing:
-        # not cancel or finish
-        if data.user_status == Status.objects.get(Q(status_id=2)):
-            apply_case=data.apply_case
-            willing_user = data.willing_user
-            try:
-                CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
-                cnt += 1
-            except:
-                willingness.append(data)
+        apply_case=data.apply_case
+        willing_user = data.willing_user
+        try:
+            CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
+            cnt += 1
+        except:
+            willingness.append(data)
     last = case.num - cnt
 
     return render(request, 'user/applicant.html', locals())
@@ -440,6 +438,32 @@ def user_publish_applicant(request, case_id):
 # ------------user take record------------
 @login_required
 def user_take_record(request):
+
+    # all willingness the user takes
+    user = request.user.user_detail
+    willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(willing_user=user)
+
+    # is commissioned or not
+    willingness = []
+    for data in willing:
+        apply_case=data.apply_case
+        willing_user = data.willing_user
+        try:
+            CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
+        except:
+            willingness.append(data)
+
+    # all commissions the user takes
+    record = CommissionRecord.objects.all().prefetch_related('case').filter(commissioned_user=user)
+    conduct = []
+    close = []
+    for data in record:
+        status = data.user_status.status_id
+        if status == 2 or status == 5 or status == 6:
+            conduct.append(data)
+        elif status == 3 or status == 4:
+            close.append(data)
+
     return render(request, 'user/take.html', locals())
 
 
@@ -465,9 +489,17 @@ def take_case(request, case_id):
 
 # ---------cancel willingness---------
 @login_required
-def cancel_willingess(request):
-    # url還沒寫
-    return 0
+def cancel_willingess(request, case_id):
+    
+    case = Case.objects.get(Q(case_id=case_id))
+    user = request.user.user_detail
+    try:
+        willingness = CaseWillingness.objects.get(Q(apply_case=case) & Q(willing_user=user))
+        willingness.delete()
+    except:
+        pass
+
+    return redirect('user-take-record')
 
 
 # ---------build commission---------
@@ -518,16 +550,14 @@ def delete_commission(request, commission_id):
         else:
             receiver = commission.commissioned_user
     
-        # # change the status, and send email to another user
-        # commission.user_status = Status.objects.get(Q(status_id=5))
-        # commission.save()
-        # # 寄信給對方、開始算天數三天 (怎麼算?)
+        # change the status, and send email to another user
+        # 寄信給對方、開始算天數三天 (怎麼算?)
 
         # change front-end button
         # 給前端判斷，切換按鈕樣式
 
     # both cancel the case
-    elif commission.user_status.status_id == 5:
+    elif commission.user_status.status_id == 5 or commission.user_status.status_id == 6:
         # 雙方都確認後，該筆commission status設為關閉，不要刪掉
         pass
 
