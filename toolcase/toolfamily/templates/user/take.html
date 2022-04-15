@@ -54,7 +54,7 @@
                         <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="解除"></td>
                     {% elif commission.user_status.status_id == 5 %}
                         <td>委託人已發出取消請求</td>
-                        <td><input type="button" value="確認取消"></td>
+                        <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="確認取消"></td>
                     {% elif commission.user_status.status_id == 6 %}
                         <td>等待對方確認取消</td>
                     {% elif commission.user_status.status_id == 7 %}
@@ -71,7 +71,7 @@
             <tr>
                 <td>案件名稱</td>
                 <td>結束時間</td>
-                <td>狀態</td>
+                <td>本次委託結果</td>
             </tr>
         </thead>
         
@@ -80,7 +80,6 @@
                 <tr>
                     <td>{{commission.case.title}}</td>
                     <td>{{commission.case.ended_datetime}}</td>
-                    <td>{{commission.case.case_status.status_name}}</td>
 
                     {% if commission.user_status.status_id == 3 %}
                         <td>已完成</td>

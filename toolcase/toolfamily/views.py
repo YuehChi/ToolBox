@@ -1,4 +1,5 @@
 import os, django, json, smtplib, base64
+from site import USER_SITE
 import re
 from .models import *
 from .forms import *
@@ -402,6 +403,7 @@ def user_publish_record(request):
                 number[case.case_id] += 1
 
     # 上次登入時間 UserDetail 好像沒抓到 (User 有紀錄)
+    # 取消或完成時，上面的狀態(2/7)要變動嗎?
     
     return render(request, 'user/publish.html', locals())
 
@@ -537,36 +539,55 @@ def delete_commission(request, commission_id):
 
     # set sender/receiver as publisher or toolman
     commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
+    case = commission.case
 
-    # first cancel
+    # first time cancel
     if commission.user_status.status_id == 2:
         sender = request.user.user_detail
         if commission.commissioned_user == sender:
             receiver = commission.case.publisher
+            commission.user_status = Status.objects.get(Q(status_id=6))
+            commission.save()
         else:
             receiver = commission.commissioned_user
+            commission.user_status = Status.objects.get(Q(status_id=5))
+            commission.save()
     
-        # change the status, and send email to another user
-        # 寄信給對方、開始算天數三天 (怎麼算?)
+        # 寄信給對方
+        # 開始算天數三天 (怎麼算?)
 
-        # change front-end button
-        # 給前端判斷，切換按鈕樣式
+        if sender == commission.commissioned_user:
+            return redirect('user-take-record')
+        else:
+            return redirect('user-publish-record')
 
     # both cancel the case
-    elif commission.user_status.status_id == 5 or commission.user_status.status_id == 6:
-        # 雙方都確認後，該筆commission status設為關閉，不要刪掉
+    elif commission.user_status.status_id == 5:
+        sender = commission.commissioned_user
+        receiver = commission.case.publisher
+    elif commission.user_status.status_id == 6:
+        sender = commission.case.publisher
+        receiver = commission.commissioned_user
+    commission.user_status = Status.objects.get(Q(status_id=4))
+    commission.save()
+
+    # if there is no commission, change the case status
+    result = CommissionRecord.objects.filter(Q(case=case) & (~Q(user_status=1) | ~Q(user_status=4)))
+    if result.exists():
         pass
+    else:
+        case.case_status = Status.objects.get(Q(status_id=1))
+        case.save()
+
+    # 寄信給對方
 
     # timeout
-    else:
-        # 強制關閉，怎麼判斷? -> 感覺是每一次刷新頁面都要判斷，且還要判斷case狀態484變回徵求
-        pass
-
-
-    # 解除的時候要判斷case狀態484變回徵求
+    # 強制關閉，怎麼判斷? -> 感覺是每一次刷新頁面都要判斷，且還要判斷case狀態484變回徵求
     
-    # 如果sender是工具人 -> return take page；委託人 -> return publish page
-    return redirect('user-publish-record')
+    if sender == commission.commissioned_user:
+        return redirect('user-take-record')
+    else:
+        return redirect('user-publish-record')
 
 
 # ---------finish commission---------
