@@ -3,7 +3,7 @@ var counter = 1
 var upload_img_log = []
 $(document).ready(function() {
   $('#button-post').click(function(){
-    console.log('click')
+    // console.log('click')
     $('#forminput-title').val($('#input-title').val())                // Title
     $('#forminput-reward').val($('#input-reward').val())              // Reward
     $('#forminput-casetype').val($('#select-casetype').val())        // Case Field
@@ -19,7 +19,7 @@ $(document).ready(function() {
     
     var description = $('#textarea-description').val()
 
-    console.log(upload_img_log)
+    // console.log(upload_img_log)
     var uplod_img_submit = []
     upload_img_log.forEach(function(value, index, object){
       uplod_img_submit.push(value[1])
@@ -31,7 +31,7 @@ $(document).ready(function() {
     // iii.files = new fileListItems(uplod_img_submit)
     $('#forminput-images').prop('files', new fileListItems(uplod_img_submit))
     // $('#forminput-images').prop('files', new fileListItems(uplod_img_submit).files)
-    console.log($('#forminput-images').prop('files'))
+    //console.log($('#forminput-images').prop('files'))
     //console.log($('#test').prop('files'))
 
 
@@ -45,16 +45,16 @@ $(document).ready(function() {
     // console.log($('#forminput-title').val())
     // console.log($('#forminput-casetype').val())
     // console.log($('#forminput-casefield').val())
-    console.log($('#forminput-num').val())
+    //console.log($('#forminput-num').val())
     // console.log($('#forminput-work').val())
     // console.log($('#forminput-startdate').val())
-    console.log($('#forminput-enddate').val())
+    //console.log($('#forminput-enddate').val())
     // console.log($('#forminput-constraint').val())
     // console.log($('#forminput-location').val())
     // console.log($('#forminput-description').val())
 
 
-    //$('#case-new-form').submit()
+    $('#case-new-form').submit()
 
 
   });
@@ -72,7 +72,7 @@ $(document).ready(function() {
   $('#textarea-description').val($('#get-description').val())
 
   //---------------------Work Mode---------------------
-  console.log($('#forminput-work').val())
+  // console.log($('#forminput-work').val())
   if($('#forminput-work').val() == '1'){
     $('#radio-check-onsite').attr('src', '/static/images/check-circle.png')
     $('#radio-check-online').attr('src', '/static/images/check-circle-outline.png')
@@ -83,12 +83,12 @@ $(document).ready(function() {
     $('#radio-check-online').attr('src', '/static/images/check-circle.png')
     $('#radio-check-onsite').attr('src', '/static/images/check-circle-outline.png')
     $('#input-work').val('2')
-    console.log($('#input-work').val())
+    // console.log($('#input-work').val())
   }
 
   //---------------------End Date---------------------
   var enddate = $('#get-enddate').html()
-  console.log(enddate)
+  // console.log(enddate)
   var year = enddate.split('年')[0]
   var month = enddate.split('年')[1].split('月')[0]
   var date =  enddate.split('年')[1].split('月')[1].split('日')[0]
