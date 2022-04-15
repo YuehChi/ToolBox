@@ -48,14 +48,17 @@
                     <td>{{commission.case.ended_datetime}}</td>
                     <td>{{commission.case.case_status.status_name}}</td>
 
-                    {% if commission.case.case_status.status_id == 2 %}
-                        <td><input type="button" value="完成"></td>
-                        <td><input type="button" value="解除"></td>
-                    {% elif commission.case.case_status.status_id == 5 %}
+                    {% if commission.user_status.status_id == 2 %}
+                        {% comment %} 確認alert都還沒做 {% endcomment %}
+                        <td><input type="button" onclick="window.location='/toolfamily/user/finish/{{commission.commissionrecord_id}}'" value="完成"></td>
+                        <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="解除"></td>
+                    {% elif commission.user_status.status_id == 5 %}
                         <td>委託人已發出取消請求</td>
                         <td><input type="button" value="確認取消"></td>
-                    {% elif commission.case.case_status.status_id == 6 %}
+                    {% elif commission.user_status.status_id == 6 %}
                         <td>等待對方確認取消</td>
+                    {% elif commission.user_status.status_id == 7 %}
+                        <td>等待對方確認完成</td>
                     {% endif %}
                 </tr>
             {% endfor %}
@@ -73,15 +76,15 @@
         </thead>
         
         <tbody>
-            {% for commission in done %}
+            {% for commission in close %}
                 <tr>
                     <td>{{commission.case.title}}</td>
                     <td>{{commission.case.ended_datetime}}</td>
                     <td>{{commission.case.case_status.status_name}}</td>
 
-                    {% if commission.case.case_status.status_id == 3 %}
+                    {% if commission.user_status.status_id == 3 %}
                         <td>已完成</td>
-                    {% elif commission.case.case_status.status_id == 4 %}
+                    {% elif commission.user_status.status_id == 4 %}
                         <td>已取消</td>
                     {% endif %}
                 </tr>

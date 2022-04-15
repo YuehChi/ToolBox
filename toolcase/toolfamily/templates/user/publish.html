@@ -49,13 +49,15 @@
                             <td><input type="button" disabled="disabled" value="完成"></td>
                             <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{record.commissionrecord_id}}'" value="解除"></td>
                         {% elif record.user_status.status_id == 3 %}
-                            <td>工具人已發出完成請求</td>
-                            <td><input type="button" value="確認完成"></td>
+                            <td>完成委託！</td>
                         {% elif record.user_status.status_id == 5 %}
                             <td>等待對方確認取消</td>
                         {% elif record.user_status.status_id == 6 %}
                             <td>工具人已發出取消請求</td>
                             <td><input type="button" value="確認取消"></td>
+                        {% elif record.user_status.status_id == 7 %}
+                            <td>工具人已發出完成請求</td>
+                            <td><input type="button" onclick="window.location='/toolfamily/user/finish/{{record.commissionrecord_id}}'" value="確認完成"></td>
                         {% endif %}
                     </tr>
                     {% endif %}

@@ -49,9 +49,10 @@ urlpatterns += [
 urlpatterns += [
     path('user/publish/', views.user_publish_record, name='user-publish-record'),
     path('user/publish/<int:case_id>', views.user_publish_applicant, name='user-publish-applicant'),
+    path('user/take/', views.user_take_record, name='user-take-record'),
     path('user/build/', views.build_commission, name='build-commission'),
     path('user/delete/<int:commission_id>', views.delete_commission, name='delete-commission'),
-    path('user/take/', views.user_take_record, name='user-take-record'),
+    path('user/finish/<int:commission_id>', views.finish_commission, name='finish-commission'),
 
     path('case/take/<int:case_id>',views.take_case, name='take-case'),
     path('case/cancel/<int:case_id>', views.cancel_willingess, name='cancel-willingess')
