@@ -38,9 +38,7 @@ def index(request):
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
 
-
-    #list_case = Case.objects.select_related('case_status')
-    return render(request,'index.html',locals()) #之後要改
+    return render(request, 'index.html', locals())
 
 
 
@@ -562,8 +560,6 @@ def user_publish_record(request):
                 number[case.case_id] += 1
 
     # 上次登入時間 UserDetail 好像沒抓到 (User 有紀錄)
-
-    # 給判斷，決定按鈕樣式
     
     return render(request, 'user/publish.html', locals())
 
@@ -728,6 +724,12 @@ def delete_commission(request, commission_id):
     
 
     return redirect('user-publish-record')
+
+
+# ---------finish commission---------
+@login_required
+def finish_commission(request):
+    return 0
 
 
 
