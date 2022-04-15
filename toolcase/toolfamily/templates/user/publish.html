@@ -9,6 +9,7 @@
 <body>
     <h1>我的委託</h1>
 
+    <h2>進行中案件</h2>
     <table>
         <thead>
             <tr>
@@ -20,34 +21,61 @@
         </thead>
 
         {% for case in case_list %}
-        <thead>
-            {% for key, value in number.items %}
-                {% if key == case.case_id %}
-                <tr>
-                    <td>{{case.created_datetime}}</td>
-                    <td>{{case.title}}</td>
-                    <td><a href="{% url 'case-profile' case.case_id %}">編輯</a></td>
-                    <td>{{case.ended_datetime}}</td>
-                    <td>{{case.case_status.status_name}}</td>
-                    <td>({{value}}/{{case.num}})</td>
-                    <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單</a></td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-        </thead>
-            
-        <tbody>
-            {% for record in record_list %}
-                {% if record.case == case %}
-                <tr>
-                    <td>{{record.commissioned_user.nickname}}<br>{{record.commissioned_user.last_login_datetime}}</td>
-                    <td>{{record.commissioned_user.account_mail}}<br>{{record.commissioned_user.contact}}</td>
-                    <td><input type="button" disabled="disabled" value="完成"></td>
-                    <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{record.commissionrecord_id}}'" value="解除"></td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-        </tbody>
+            {% if case.case_status.status_name in '徵求,進行' %}
+            <thead>
+                {% for key, value in number.items %}
+                    {% if key == case.case_id %}
+                    <tr>
+                        <td>{{case.created_datetime}}</td>
+                        <td>{{case.title}}</td>
+                        <td><a href="{% url 'case-profile' case.case_id %}">編輯</a></td>
+                        <td>{{case.ended_datetime}}</td>
+                        <td>{{case.case_status.status_name}}</td>
+                        <td>({{value}}/{{case.num}})</td>
+                        <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單</a></td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </thead>
+                
+            <tbody>
+                {% for record in record_list %}
+                    {% if record.case == case %}
+                    <tr>
+                        <td>{{record.commissioned_user.nickname}}<br>{{record.commissioned_user.last_login_datetime}}</td>
+                        <td>{{record.commissioned_user.account_mail}}<br>{{record.commissioned_user.contact}}</td>
+
+                        {% if record.user_status.status_id == 2 %}
+                            <td><input type="button" disabled="disabled" value="完成"></td>
+                            <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{record.commissionrecord_id}}'" value="解除"></td>
+                        {% elif record.user_status.status_id == 3 %}
+                            <td>工具人已發出完成請求</td>
+                            <td><input type="button" value="確認完成"></td>
+                        {% elif record.user_status.status_id == 5 %}
+                            <td>等待對方確認取消</td>
+                        {% elif record.user_status.status_id == 6 %}
+                            <td>工具人已發出取消請求</td>
+                            <td><input type="button" value="確認取消"></td>
+                        {% endif %}
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+            {% endif %}
+        {% endfor %}
+    </table>
+
+    <h2>已結束案件</h2>
+    <table>
+        {% for case in case_list %}
+            {% if case.case_status.status_name in '完成,關閉' %}
+            <tr>
+                <td>{{case.created_datetime}}</td>
+                <td>{{case.title}}</td>
+                <td>{{case.ended_datetime}}</td>
+                <td>{{case.case_status.status_name}}</td>
+            </tr>
+            {% endif %}
         {% endfor %}
     </table>
 </body>

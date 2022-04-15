@@ -42,19 +42,19 @@
         </thead>
         
         <tbody>
-            {% for case in conduct %}
+            {% for commission in conduct %}
                 <tr>
-                    <td>{{case.case.title}}</td>
-                    <td>{{case.case.ended_datetime}}</td>
-                    <td>{{case.case.case_status.status_name}}</td>
+                    <td>{{commission.case.title}}</td>
+                    <td>{{commission.case.ended_datetime}}</td>
+                    <td>{{commission.case.case_status.status_name}}</td>
 
-                    {% if case.case.case_status.status_id == 2 %}
+                    {% if commission.case.case_status.status_id == 2 %}
                         <td><input type="button" value="完成"></td>
                         <td><input type="button" value="解除"></td>
-                    {% elif case.case.case_status.status_id == 5 %}
+                    {% elif commission.case.case_status.status_id == 5 %}
                         <td>委託人已發出取消請求</td>
                         <td><input type="button" value="確認取消"></td>
-                    {% elif case.case.case_status.status_id == 6 %}
+                    {% elif commission.case.case_status.status_id == 6 %}
                         <td>等待對方確認取消</td>
                     {% endif %}
                 </tr>
@@ -73,15 +73,15 @@
         </thead>
         
         <tbody>
-            {% for case in done %}
+            {% for commission in done %}
                 <tr>
-                    <td>{{case.case.title}}</td>
-                    <td>{{case.case.ended_datetime}}</td>
-                    <td>{{case.case.case_status.status_name}}</td>
+                    <td>{{commission.case.title}}</td>
+                    <td>{{commission.case.ended_datetime}}</td>
+                    <td>{{commission.case.case_status.status_name}}</td>
 
-                    {% if case.case.case_status.status_id == 3 %}
+                    {% if commission.case.case_status.status_id == 3 %}
                         <td>已完成</td>
-                    {% elif case.case.case_status.status_id == 4 %}
+                    {% elif commission.case.case_status.status_id == 4 %}
                         <td>已取消</td>
                     {% endif %}
                 </tr>
