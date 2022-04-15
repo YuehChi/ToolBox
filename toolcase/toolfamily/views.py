@@ -455,7 +455,7 @@ def user_take_record(request):
     close = []
     for data in record:
         status = data.user_status.status_id
-        if status == 2 or status == 5 or status == 6:
+        if status == 2 or status == 5 or status == 6 or status == 7:
             conduct.append(data)
         elif status == 3 or status == 4:
             close.append(data)
@@ -559,20 +559,44 @@ def delete_commission(request, commission_id):
 
     # timeout
     else:
-        # 強制關閉，怎麼判斷?
+        # 強制關閉，怎麼判斷? -> 感覺是每一次刷新頁面都要判斷，且還要判斷case狀態484變回徵求
         pass
 
 
     # 解除的時候要判斷case狀態484變回徵求
     
-
+    # 如果sender是工具人 -> return take page；委託人 -> return publish page
     return redirect('user-publish-record')
 
 
 # ---------finish commission---------
 @login_required
-def finish_commission(request):
-    return 0
+def finish_commission(request, commission_id):
+
+    commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
+
+    # status=2 represent that toolman apply for consummation
+    if commission.user_status.status_id == 2:
+
+        # 發email給委託人
+        # 開始計時三天
+
+        # change status
+        commission.user_status = Status.objects.get(Q(status_id=7))
+        commission.save()
+        return redirect('user-take-record')
+
+    # status=7 represent that publisher confirm the task
+    else:
+
+        # email給工具人
+
+        # change status
+        commission.user_status = Status.objects.get(Q(status_id=3))
+        commission.save()
+        return redirect('user-publish-record')
+
+    # else，處理超過時限沒確認 -> 感覺要在每一次刷新頁面都判斷
 
 
 
