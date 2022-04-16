@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os, django, json, smtplib, base64
 from site import USER_SITE
 import re
@@ -60,7 +61,7 @@ def index(request):
     for data in all:
         if data.finish_datetime != None:
             delta = datetime.datetime.now().astimezone() - data.finish_datetime
-            if delta.seconds > 10:#259200:  # can set lower when demo
+            if delta.seconds > 259200:  # can set lower when demo
 
                 # ------finish check------
                 if data.user_status.status_id == 1 or data.user_status.status_id == 7:
@@ -112,37 +113,101 @@ def index(request):
 
                     data.user_status = Status.objects.get(Q(status_id=3))
                     data.save()
-                
 
                 # ------delete check------
-        
-                # elif data.user_status.status_id == 5 or data.user_status.status_id == 6:
-                #     temp = []  # message
-                #     temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
-                #     if data.user_status.status_id == 5:
-                #         temp.append(f"委託人 {data.case.publisher.nickname} 發起解除委託，")
-                #         temp.append(f"由於工具人 {data.commissioned_user.nickname} 未於三日內確認，")
-                #     elif data.user_status.status_id == 6:
-                #         temp.append(f"工具人 {data.commissioned_user.nickname} 發起解除委託，")
-                #         temp.append(f"由於委託人 {data.case.publisher.nickname} 未於三日內確認，")
-                #     temp.append(f"系統已自動解除該項委託。")
-                #     notice.append(temp)   
-                #     # for first person login                     
-                #     if data.doublecheck_datetime == None and 'delete' not in request.session:  
-                #         request.session['delete'] = True
-                #         data.doublecheck_datetime = datetime.datetime.now()
-                #         data.save()
-                #     # for second person login  
-                #     elif 'delete' not in request.session:   
-                #         request.session['delete'] = data.commissionrecord_id
+                elif data.user_status.status_id in [4, 5, 6]:
+                    # message
+                    temp = []  
+                    temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                    if data.user_status.status_id == 5:
+                        temp.append(f"委託人 {data.case.publisher.nickname} 發起解除委託，")
+                        temp.append(f"由於工具人 {data.commissioned_user.nickname} 未於三日內確認，")
+                    elif data.user_status.status_id == 6:
+                        temp.append(f"工具人 {data.commissioned_user.nickname} 發起解除委託，")
+                        temp.append(f"由於委託人 {data.case.publisher.nickname} 未於三日內確認，")
+                    temp.append(f"系統已自動解除該項委託。")
 
-    # 判斷是否有commission逾期沒確認取消，強制取消並通知 (用時間)
+                    # # publisher X；toolman X -> toolman check
+                    # if data.user_status.status_id in [5, 6] and data.doublecheck_datetime == None and data.commissioned_user == now_user:
+                    #     data.doublecheck_datetime = datetime.datetime.now()
+                    #     data.save()
+                    #     if 'delete_toolman' not in request.session:
+                    #         request.session['delete_toolman'] = []
+                    #     request.session['delete_toolman'].append(data.commissionrecord_id)
+                    #     request.session['notice'].append(temp)
+                    # # publisher O；toolman X -> toolman check
+                    # elif data.user_status.status_id == 1 and data.doublecheck_datetime == None and data.commissioned_user == now_user:
+                    #     data.doublecheck_datetime = datetime.datetime.now()
+                    #     data.save()
+                    #     if 'finish_toolman' not in request.session:
+                    #         request.session['finish_toolman'] = []
+                    #     request.session['finish_toolman'].append(data.commissionrecord_id)
+                    #     request.session['notice'].append(temp)
+                    # # publisher X；toolman X -> publisher check
+                    # elif data.user_status.status_id in [5, 6] and data.doublecheck_datetime == None and data.case.publisher == now_user:
+                    #     if 'finish_publisher' not in request.session:
+                    #         request.session['finish_publisher'] = []
+                    #     request.session['finish_publisher'].append(data.commissionrecord_id)
+                    #     request.session['notice'].append(temp)
+                    # # publisher X；toolman O -> publisher check
+                    # elif data.user_status.status_id == 7 and data.doublecheck_datetime != None and data.case.publisher == now_user:
+                    #     if 'finish_publisher' not in request.session:
+                    #         request.session['finish_publisher'] = []
+                    #     request.session['finish_publisher'].append(data.commissionrecord_id)
+                    #     request.session['notice'].append(temp)
+                    # # publisher O；toolman O -> finish
+                    # elif data.doublecheck_datetime == None:
+                    #     if 'finish_publisher' not in request.session:
+                    #         request.session['finish_publisher'] = []
+                    #     request.session['finish_publisher'].append(data.commissionrecord_id)
+                    # elif data.user_status.status_id in [5, 6]:
+                    #     if 'finish_toolman' not in request.session:
+                    #         request.session['finish_toolman'] = []
+                    #     request.session['finish_toolman'].append(data.commissionrecord_id)
+
+                    # data.user_status = Status.objects.get(Q(status_id=3))
+                    # data.save()
+
+            else:
+                # not yet confirm finish
+                if data.user_status.status_id == 7 and now_user == data.case.publisher:
+                    if 'remind' not in request.session:
+                        request.session['remind'] = []
+                    if data.commissionrecord_id not in request.session['remind']:
+                        temp = []  
+                        temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                        temp.append(f"工具人 {data.commissioned_user.nickname} 發起完成委託，")
+                        temp.append(f"請於 {(data.finish_datetime+timedelta(days=3)).strftime('%Y/%m/%d %H:%M:%S')} 前確認完成。")
+                        request.session['notice'].append(temp)    
+                        request.session['remind'].append(data.commissionrecord_id)
+
+                # not yet confirm delete
+                elif data.user_status.status_id == 6 and now_user == data.case.publisher:
+                    if 'remind' not in request.session:
+                        request.session['remind'] = []
+                    if data.commissionrecord_id not in request.session['remind']:
+                        temp = []  
+                        temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                        temp.append(f"工具人 {data.commissioned_user.nickname} 發起解除委託，")
+                        temp.append(f"請於 {(data.finish_datetime+timedelta(days=3)).strftime('%Y/%m/%d %H:%M:%S')} 前確認解除。")
+                        request.session['notice'].append(temp)
+                        request.session['remind'].append(data.commissionrecord_id)
+                
+                elif data.user_status.status_id == 5 and now_user == data.commissioned_user:
+                    if 'remind' not in request.session:
+                        request.session['remind'] = []
+                    if data.commissionrecord_id not in request.session['remind']:
+                        temp = []  
+                        temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                        temp.append(f"委託人 {data.case.publisher.nickname} 發起解除委託，")
+                        temp.append(f"請於 {(data.finish_datetime+timedelta(days=3)).strftime('%Y/%m/%d %H:%M:%S')} 前確認解除。")
+                        request.session['notice'].append(temp)
+                        request.session['remind'].append(data.commissionrecord_id)
+
+
 
     # 判斷是否有"發布的"case到期，強制完成
-
-    # 判斷是否有還沒確認完成的commission (用status)
-
-    # 判斷是否有還沒確認取消的commission (用status)
+    
 
     notice = request.session['notice']
     
@@ -1003,10 +1068,10 @@ def logout(request):
             data.save()
         del request.session['finish_publisher']
 
-    # data.user_status = Status.objects.get(Q(status_id=4))
-    #                     data.save()
-
+    if 'remind' in request.session:
+        del request.session['remind']
     del request.session['notice']
+
     auth.logout(request)
     return HttpResponseRedirect('/')
 
