@@ -438,17 +438,21 @@ def user_take_record(request):
 
     # all willingness the user takes
     user = request.user.user_detail
-    willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(willing_user=user)
+    all_willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(willing_user=user)
+    all_commission = CommissionRecord.objects.filter(Q(commissioned_user=user))
 
     # is commissioned or not
+    all_case = set()
     willingness = []
-    for data in willing:
-        apply_case=data.apply_case
-        willing_user = data.willing_user
-        try:
-            CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
-        except:
-            willingness.append(data)
+    for data in all_willing:  # all cases
+        all_case.add(data.apply_case)
+    for case in all_case:  # pick the newest one for all cases
+        newest_willing = all_willing.filter(apply_case=case).order_by('-created_datetime')[0]
+        newest_commission = all_commission.filter(case=case).order_by('-created_datetime')
+        if len(newest_commission) == 0:  # commissioned not yet
+            willingness.append(newest_willing)
+        elif newest_willing.created_datetime > newest_commission[0].created_datetime:  # a new willingness
+            willingness.append(newest_willing)
 
     # all commissions the user takes
     record = CommissionRecord.objects.all().prefetch_related('case').filter(commissioned_user=user)
@@ -599,10 +603,10 @@ def finish_commission(request, commission_id):
     if commission.user_status.status_id == 2:
 
         # 發email給委託人
-        # 開始計時三天
 
         # change status
         commission.user_status = Status.objects.get(Q(status_id=7))
+        commission.finish_datetime = datetime.datetime.now()
         commission.save()
         return redirect('user-take-record')
 
@@ -613,6 +617,7 @@ def finish_commission(request, commission_id):
 
         # change status
         commission.user_status = Status.objects.get(Q(status_id=3))
+        commission.doublecheck_datetime = datetime.datetime.now()
         commission.save()
         return redirect('user-publish-record')
 
