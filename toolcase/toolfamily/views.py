@@ -39,6 +39,64 @@ def index(request):
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
 
+    # get all commissions the user publishes/takes
+    now_user = request.user.user_detail
+    all_commission = CommissionRecord.objects.all()
+    all_publish = []
+    for data in all_commission:
+        if data.case.publisher == now_user:
+            all_publish.append(data)
+    all_take = CommissionRecord.objects.filter(commissioned_user=now_user)
+    notice = []
+
+    # check timeout finish request
+    for data in all_publish:
+        if data.finish_datetime != None:
+            delta = datetime.datetime.now().astimezone() - data.finish_datetime
+            if delta.seconds > 259200:  # can set lower when demo
+                # for finish
+                if data.user_status.status_id == 7:
+                    if data.doublecheck_datetime == None:  # for first person login
+                        data.doublecheck_datetime = datetime.datetime.now()
+                        data.save()
+                    else:  # for second person login
+                        data.user_status = Status.objects.get(Q(status_id=3))
+                        data.save()
+                    temp = []  # message
+                    temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                    temp.append(f"工具人 {data.commissioned_user.nickname} 發起完成委託，")
+                    temp.append(f"由於委託人 {data.case.publisher.nickname} 未於三日內確認，")
+                    temp.append(f"系統已自動完成該項委託。")
+                    notice.append(temp)
+
+                # for delete
+                elif data.user_status.status_id == 5 or data.user_status.status_id == 6:
+                    if data.doublecheck_datetime == None:  # for first person login
+                        data.doublecheck_datetime = datetime.datetime.now()
+                        data.save()
+                    else:  # for second person login
+                        data.user_status = Status.objects.get(Q(status_id=4))
+                        data.save()
+                    temp = []  # message
+                    temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                    if data.user_status.status_id == 5:
+                        temp.append(f"委託人 {data.case.publisher.nickname} 發起解除委託，")
+                        temp.append(f"由於工具人 {data.commissioned_user.nickname} 未於三日內確認，")
+                    elif data.user_status.status_id == 6:
+                        temp.append(f"工具人 {data.commissioned_user.nickname} 發起解除委託，")
+                        temp.append(f"由於委託人 {data.case.publisher.nickname} 未於三日內確認，")
+                    temp.append(f"系統已自動解除該項委託。")
+                    notice.append(temp)
+
+    # 判斷是否有commission逾期沒確認取消，強制取消並通知 (用時間)
+
+    # 判斷是否有"發布的"case到期，強制完成
+
+    # 判斷是否有還沒確認完成的commission (用status)
+
+    # 判斷是否有還沒確認取消的commission (用status)
+
+
     return render(request, 'index.html', locals())
 
 
@@ -552,18 +610,6 @@ def user_publish_record(request):
     # show all of the toolmen
     record_list = CommissionRecord.objects.all().prefetch_related('case')
 
-    # check the finish request is timeout or not
-    for data in record_list:
-        if data.finish_datetime != None:
-            delta = datetime.datetime.now().astimezone() - data.finish_datetime
-            if delta.seconds > 259200:  # can set lower when demo
-                if data.user_status.status_id == 7:  # for finish
-                    data.user_status = Status.objects.get(Q(status_id=3))
-                    data.save()
-                elif data.user_status.status_id == 5 or data.user_status.status_id == 6:  # for delete
-                    data.user_status = Status.objects.get(Q(status_id=4))
-                    data.save()
-
     # numbers of toolmen for each case
     number = dict()
     for case in case_list:
@@ -646,24 +692,14 @@ def user_take_record(request):
     conduct = []
     close = []
     for data in record:
-
-        # check timeout
-        if data.finish_datetime != None:
-            delta = datetime.datetime.now().astimezone() - data.finish_datetime
-            if delta.seconds > 259200:  # can set lower when demo
-                if data.user_status.status_id == 7:  # for finish
-                    data.user_status = Status.objects.get(Q(status_id=3))
-                    data.save()
-                elif data.user_status.status_id == 5 or data.user_status.status_id == 6:  # for delete
-                    data.user_status = Status.objects.get(Q(status_id=4))
-                    data.save()
-
         status = data.user_status.status_id
         if status == 2 or status == 5 or status == 6 or status == 7:
             conduct.append(data)
         elif status == 3 or status == 4:
             close.append(data)
         
+    # 丟case資訊回去
+
     return render(request, 'user/take.html', locals())
 
 
@@ -726,8 +762,6 @@ def build_commission(request):
         case.case_status = Status.objects.get(Q(status_id=2))
         case.save()
 
-        # 寄聯絡資訊給雙方
-
     except:
         # choose nobody
         pass
@@ -756,8 +790,6 @@ def delete_commission(request, commission_id):
             commission.user_status = Status.objects.get(Q(status_id=5))
             commission.finish_datetime = datetime.datetime.now()
             commission.save()
-    
-        # 寄信給對方
 
         if sender == commission.commissioned_user:
             return redirect('user-take-record')
@@ -781,11 +813,6 @@ def delete_commission(request, commission_id):
     else:
         case.case_status = Status.objects.get(Q(status_id=1))
         case.save()
-
-    # 寄信給對方
-
-    # timeout
-    # 強制關閉，怎麼判斷? -> 感覺是每一次刷新頁面都要判斷，且還要判斷case狀態484變回徵求
     
     if sender == commission.commissioned_user:
         return redirect('user-take-record')
@@ -802,8 +829,6 @@ def finish_commission(request, commission_id):
     # status=2 represent that toolman apply for consummation
     if commission.user_status.status_id == 2:
 
-        # 發email給委託人
-
         # change status
         commission.user_status = Status.objects.get(Q(status_id=7))
         commission.finish_datetime = datetime.datetime.now()
@@ -812,8 +837,6 @@ def finish_commission(request, commission_id):
 
     # status=7 represent that publisher confirm the task
     else:
-
-        # email給工具人
 
         # change status
         commission.user_status = Status.objects.get(Q(status_id=3))
