@@ -557,11 +557,8 @@ def user_publish_record(request):
     for case in case_list:
         number[case.case_id] = 0
         for record in record_list:
-            if record.case == case:
+            if record.case == case and record.user_status.status_id != 4:
                 number[case.case_id] += 1
-
-    # 上次登入時間 UserDetail 好像沒抓到 (User 有紀錄)
-    # 取消或完成時，上面的狀態(2/7)要變動嗎?
     
     return render(request, 'user/publish.html', locals())
 
@@ -581,10 +578,12 @@ def user_publish_applicant(request, case_id):
         apply_case=data.apply_case
         willing_user = data.willing_user
         try:
-            CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
-            cnt += 1
+            commission = CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
         except:
             willingness.append(data)
+        else:
+            if commission.user_status.status_id != 4:
+                cnt += 1
     last = case.num - cnt
 
     return render(request, 'user/applicant.html', locals())

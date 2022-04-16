@@ -55,5 +55,5 @@ urlpatterns += [
     path('user/finish/<int:commission_id>', views.finish_commission, name='finish-commission'),
 
     path('case/take/<int:case_id>',views.take_case, name='take-case'),
-    path('case/cancel/<int:case_id>', views.cancel_willingess, name='cancel-willingess')
+    path('case/cancel/<int:case_id>', views.cancel_willingess, name='cancel-willingess'),
 ]

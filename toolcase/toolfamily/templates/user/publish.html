@@ -42,7 +42,7 @@
                 {% for record in record_list %}
                     {% if record.case == case %}
                     <tr>
-                        <td>{{record.commissioned_user.nickname}}<br>{{record.commissioned_user.last_login_datetime}}</td>
+                        <td>{{record.commissioned_user.nickname}}<br>{{record.commissioned_user.django_user.last_login}}</td>
                         <td>{{record.commissioned_user.account_mail}}<br>{{record.commissioned_user.contact}}</td>
 
                         {% if record.user_status.status_id == 2 %}
