@@ -268,6 +268,155 @@ def case_search(request):
 
 
         case = Case.objects.first()
+        if request.method == "POST" :
+
+            query = []
+            query_num = []
+            query_date = []
+            query_t = []
+            verrify = 0 
+
+            # 查詢資訊資訊
+            query.append(request.POST.get('case_id'))
+            query.append(request.POST.get('title'))
+            query.append(request.POST.get('description'))
+            query.append(request.POST.get('reward'))
+            query.append(request.POST.get('location'))
+            query.append(request.POST.get('constraint'))
+
+            query_num.append(request.POST.get('num'))
+            query_num.append(request.POST.get('work'))
+            
+            query_date.append(request.POST.get('date1'))
+            query_date.append(request.POST.get('date2'))
+
+            query_t.append(request.POST.get('case_type'))
+            query_t.append(request.POST.get('case_field'))
+            query_s = request.POST.get('search')        
+
+
+            for i in range(6):
+                if query[i] == '':
+                     query[i] = 'None'
+                     verrify += 1 
+
+            for i in range(2):
+                if query_num[i] == '':
+                     query_num[i] = 100000000000
+                     verrify += 1 
+            
+            for i in range(2):
+                if query_date[i] == '':
+                    query_date[i] = date.today()
+                    verrify += 1 
+
+            for i in range(2):
+                if query_t[i] == None:
+                     verrify += 1 
+
+            if query_s == '':
+                verrify += 1 
+                
+
+            print("*************** Querry: " , query ,query_num,query_date, query_s)
+            print("verrify:",verrify)
+
+            if verrify < 13:
+
+                if query_t[0] == None and query_t[1] ==None and  query_s == "":
+
+
+                    result_case = Case.objects.filter(Q(case_id__icontains=query[0]) |Q(title__icontains=query[1]) |  Q(description__icontains=query[2]) | 
+                    Q(reward__icontains=query[3]) | Q(location__icontains=query[4]) | Q(constraint__icontains=query[5])  |  Q(ended_datetime__date__range=[query_date[0],query_date[1]])|
+                    Q(num__icontains=query_num[0]) | Q(work__icontains=query_num[1])  & Q(shown_public=True) )
+
+                    case_fields = Case_Field.objects.all()
+                    case_types = Case_Type.objects.all()
+                    case_photo = CasePhoto.objects.all()
+
+                    return render(request,'case/search.html',locals()) 
+                
+                elif query_t[0] != None :
+                    print("++++++++++++++++++++++++++++++++++++++")
+                    print(query_t[0])
+                    id_list =[]
+                    case_types = Case_Type.objects.filter(case_type= query_t[0]).all()
+                    for i in case_types:
+                        print(i.case_id,i.case.title,i.case.publisher,i.case.case_status.status_name ,i.case_type.type_name)
+                        id_list.append(i.case_id)
+                    
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search.html',locals()) 
+                
+                elif query_t[1] != None :
+                    print("-----------------------------------------------")
+                    print(query_t[1])
+                    id_list =[]
+                    case_fields = Case_Field.objects.filter(case_field=query_t[1] ).all()
+                    for i in case_fields:
+                        print(i.case_id,i.case.title,i.case.publisher,i.case.case_status.status_name ,i.case_field.field_name)
+                        id_list.append(i.case_id)
+                    
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search.html',locals()) 
+
+                elif query_s != "" :
+                    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                    print(query_s)
+                    result_case = Case.objects.filter(Q(title__icontains=query_s) |  Q(description__icontains=query_s) | 
+                    Q(reward__icontains=query_s) | Q(location__icontains=query_s) | Q(constraint__icontains=query_s)  & Q(shown_public=True) )
+
+                    print(result_case)
+                    case_fields = Case_Field.objects.all()
+                    case_types = Case_Type.objects.all()
+                    case_photo = CasePhoto.objects.all()
+                    
+
+                    return render(request,'case/search.html',locals()) 
+
+                else :
+                    print("-------------------------------------")
+                    print(query_s)
+                    result_case = Case.objects.filter(Q(title__icontains=query_s) |  Q(description__icontains=query_s) | 
+                    Q(reward__icontains=query_s) | Q(location__icontains=query_s) | Q(constraint__icontains=query_s)  & Q(shown_public=True) )
+
+                    case_fields = Case_Field.objects.all()
+                    case_types = Case_Type.objects.all()
+                    case_photo = CasePhoto.objects.all()
+                    
+
+                    return render(request,'case/search.html',locals()) 
+                
+            else: 
+                result_case = Case.objects.filter(shown_public=True)
+                case_fields = Case_Field.objects.all()
+                case_types = Case_Type.objects.all()
+                case_photo = CasePhoto.objects.all()
+
+                messages.warning(request, "請輸入收尋條件")
+                return render(request,'case/search.html',locals()) 
+
+
+
+        result_case = Case.objects.filter(shown_public=True)
+        case_fields = Case_Field.objects.all()
+        case_types = Case_Type.objects.all()
+        case_photo = CasePhoto.objects.all()
+
+        #list_case = Case.objects.select_related('case_status')
+        return render(request,'case/search.html',locals()) 
+
+
+@login_required
+def case_search1(request):
+    
+        case = Case.objects.first()
         print(case.ended_datetime.date())
 
         if request.method == "POST" :
@@ -414,7 +563,302 @@ def case_search(request):
         #list_case = Case.objects.select_related('case_status')
         return render(request,'case/search.html',locals()) 
 
+@login_required
+def case_search2(request):
+    
+        case = Case.objects.first()
 
+        if request.method == "POST" :
+            query_t = []
+            verrify = 0 
+
+            # 查詢資訊資訊
+ 
+            query_t.append(request.POST.get('case_type'))
+            query_t.append(request.POST.get('case_field'))
+            query_s = request.POST.get('search')        
+
+            for i in range(2):
+                if query_t[i] == None:
+                     verrify += 1 
+
+            if query_s == '':
+                verrify += 1 
+                
+
+            print("*************** Querry: " , query_t , query_s)
+            print("verrify:",verrify)
+
+            if verrify < 3:
+                
+                if query_t[0] != None :
+                    print("++++++++++++++++++++++++++++++++++++++")
+                    print(query_t[0])
+                    id_list =[]
+                    case_types = Case_Type.objects.filter(case_type= query_t[0]).all()
+                    for i in case_types:
+                        print(i.case_id,i.case.title,i.case.publisher,i.case.case_status.status_name ,i.case_type.type_name)
+                        id_list.append(i.case_id)
+                    
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search2.html',locals()) 
+                
+                elif query_t[1] != None :
+                    print("-----------------------------------------------")
+                    print(query_t[1])
+                    id_list =[]
+                    case_fields = Case_Field.objects.filter(case_field=query_t[1] ).all()
+                    for i in case_fields:
+                        print(i.case_id,i.case.title,i.case.publisher,i.case.case_status.status_name ,i.case_field.field_name)
+                        id_list.append(i.case_id)
+                    
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search2.html',locals()) 
+
+                elif query_s != "" :
+                    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                    print(query_s)
+                    result_case = Case.objects.filter(Q(title__icontains=query_s) |  Q(description__icontains=query_s) | 
+                    Q(reward__icontains=query_s) | Q(location__icontains=query_s) | Q(constraint__icontains=query_s)  & Q(shown_public=True) )
+
+                    print(result_case)
+                    case_fields = Case_Field.objects.all()
+                    case_types = Case_Type.objects.all()
+                    case_photo = CasePhoto.objects.all()
+                    
+
+                    return render(request,'case/search2.html',locals()) 
+
+                else :
+                    print("-------------------------------------")
+                    print(query_s)
+                    result_case = Case.objects.filter(Q(title__icontains=query_s) |  Q(description__icontains=query_s) | 
+                    Q(reward__icontains=query_s) | Q(location__icontains=query_s) | Q(constraint__icontains=query_s)  & Q(shown_public=True) )
+
+                    case_fields = Case_Field.objects.all()
+                    case_types = Case_Type.objects.all()
+                    case_photo = CasePhoto.objects.all()
+                    
+
+                    return render(request,'case/search2.html',locals()) 
+                
+            else: 
+                result_case = Case.objects.filter(shown_public=True)
+                case_fields = Case_Field.objects.all()
+                case_types = Case_Type.objects.all()
+                case_photo = CasePhoto.objects.all()
+
+                messages.warning(request, "請輸入收尋條件")
+                return render(request,'case/search2.html',locals()) 
+
+
+
+        result_case = Case.objects.filter(shown_public=True)
+        case_fields = Case_Field.objects.all()
+        case_types = Case_Type.objects.all()
+        case_photo = CasePhoto.objects.all()
+
+        #list_case = Case.objects.select_related('case_status')
+        return render(request,'case/search2.html',locals()) 
+
+@login_required
+def case_search3(request):
+     
+        case = Case.objects.first()
+        if request.method == "POST" :
+
+            query = []
+            query_num = []
+            query_date = []
+            query_t = []
+            verrify = 0 
+
+            # 查詢資訊資訊
+            query.append(request.POST.get('case_id'))
+            query.append(request.POST.get('title'))
+            query.append(request.POST.get('description'))
+            query.append(request.POST.get('reward'))
+            query.append(request.POST.get('location'))
+            query.append(request.POST.get('constraint'))
+            query_num.append(request.POST.get('num'))
+            query_num.append(request.POST.get('work'))
+            query_date.append(request.POST.get('date1'))
+            query_date.append(request.POST.get('date2'))
+
+            type = request.POST.get('type')
+            field = request.POST.get('field')
+            querry = request.POST.get('querry')
+
+            query_t.append(request.POST.get('case_type'))
+            query_t.append(request.POST.get('case_field'))
+            query_s = request.POST.get('search')        
+
+
+            for i in range(6):
+                if query[i] == '':
+                     query[i] = 'None'
+                     verrify += 1 
+
+            for i in range(2):
+                if query_num[i] == '':
+                     query_num[i] = 100000000000
+                     verrify += 1 
+            
+            for i in range(2):
+                if query_date[i] == '':
+                    query_date[i] = date.today()
+                    verrify += 1 
+
+            for i in range(2):
+                if query_t[i] == None:
+                     verrify += 1 
+
+            if query_s == '':
+                verrify += 1 
+                
+
+            print("*************** Querry: " , query ,query_num,query_date, query_s)
+            print("verrify:",verrify)
+
+            if verrify < 13:
+
+                if query_t[0] == None and query_t[1] ==None and  query_s == "":
+
+                  
+                    temp_id_list =[]
+                    id_list =[]
+
+                    # 標題、case描述、報酬、地點、限制
+                    print(querry)
+                    querry_case = Case.objects.filter(Q(title__icontains=querry) |  Q(description__icontains=querry) | 
+                    Q(reward__icontains=querry) | Q(location__icontains=querry) | Q(constraint__icontains=querry)  & Q(shown_public=True) )
+                    for i in querry_case:
+                        temp_id_list.append(i.case_id)
+                    print("0000000000000000000000000000")
+                    print("temp_id_list:",temp_id_list)
+
+
+                    fields = Case_Field.objects.filter(case_field=field ).all()
+                    for i in fields:
+                        temp_id_list.append(i.case_id)
+                    print("1111111111111111111111111111")
+                    print("temp_id_list:",temp_id_list)
+
+                    types = Case_Type.objects.filter(case_type= type).all()
+                    for i in types:
+                        temp_id_list.append(i.case_id)
+                    print("222222222222222222222222222")
+                    print("temp_id_list:",temp_id_list)
+                    print(len(temp_id_list))
+
+                    if len(temp_id_list) == 0:
+                        temp_case = Case.objects.filter(Q(case_id__icontains=query[0]) |Q(title__icontains=query[1]) |  Q(description__icontains=query[2]) | 
+                        Q(reward__icontains=query[3]) | Q(location__icontains=query[4]) | Q(constraint__icontains=query[5])  |  Q(ended_datetime__date__range=[query_date[0],query_date[1]])|
+                        Q(num__icontains=query_num[0]) | Q(work__icontains=query_num[1])  & Q(shown_public=True) )
+
+                        for i in temp_case:
+                            id_list.append(i.case_id)
+                        print("3333333333333333333333333333333")
+                        print("id_list:",id_list)
+                    
+                    else:
+                        temp_case = Case.objects.filter(Q(case_id__icontains=query[0]) |Q(title__icontains=query[1]) |  Q(description__icontains=query[2]) | 
+                        Q(reward__icontains=query[3]) | Q(location__icontains=query[4]) | Q(constraint__icontains=query[5])  |  Q(ended_datetime__date__range=[query_date[0],query_date[1]])|
+                        Q(num__icontains=query_num[0]) | Q(work__icontains=query_num[1])  & Q(shown_public=True) & Q(case_id__in=temp_id_list))
+
+                        for i in temp_case:
+                            id_list.append(i.case_id)
+                        print("3333333333333333333333333333333")
+                        print("id_list:",id_list)
+
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search3.html',locals()) 
+                
+                elif query_t[0] != None :
+                    print("++++++++++++++++++++++++++++++++++++++")
+                    print(query_t[0])
+                    id_list =[]
+                    case_types = Case_Type.objects.filter(case_type= query_t[0]).all()
+                    for i in case_types:
+                        print(i.case_id,i.case.title,i.case.publisher,i.case.case_status.status_name ,i.case_type.type_name)
+                        id_list.append(i.case_id)
+                    
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search3.html',locals()) 
+                
+                elif query_t[1] != None :
+                    print("-----------------------------------------------")
+                    print(query_t[1])
+                    id_list =[]
+                    case_fields = Case_Field.objects.filter(case_field=query_t[1] ).all()
+                    for i in case_fields:
+                        print(i.case_id,i.case.title,i.case.publisher,i.case.case_status.status_name ,i.case_field.field_name)
+                        id_list.append(i.case_id)
+                    
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search3.html',locals()) 
+
+                elif query_s != "" :
+                    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                    print(query_s)
+                    result_case = Case.objects.filter(Q(title__icontains=query_s) |  Q(description__icontains=query_s) | 
+                    Q(reward__icontains=query_s) | Q(location__icontains=query_s) | Q(constraint__icontains=query_s)  & Q(shown_public=True) )
+
+                    print(result_case)
+                    case_fields = Case_Field.objects.all()
+                    case_types = Case_Type.objects.all()
+                    case_photo = CasePhoto.objects.all()
+                    
+
+                    return render(request,'case/search3.html',locals()) 
+
+                else :
+                    print("-------------------------------------")
+                    print(query_s)
+                    result_case = Case.objects.filter(Q(title__icontains=query_s) |  Q(description__icontains=query_s) | 
+                    Q(reward__icontains=query_s) | Q(location__icontains=query_s) | Q(constraint__icontains=query_s)  & Q(shown_public=True) )
+
+                    case_fields = Case_Field.objects.all()
+                    case_types = Case_Type.objects.all()
+                    case_photo = CasePhoto.objects.all()
+                    
+
+                    return render(request,'case/search3.html',locals()) 
+                
+            else: 
+                result_case = Case.objects.filter(shown_public=True)
+                case_fields = Case_Field.objects.all()
+                case_types = Case_Type.objects.all()
+                case_photo = CasePhoto.objects.all()
+
+                messages.warning(request, "請輸入收尋條件")
+                return render(request,'case/search3.html',locals()) 
+
+
+
+        result_case = Case.objects.filter(shown_public=True)
+        case_fields = Case_Field.objects.all()
+        case_types = Case_Type.objects.all()
+        case_photo = CasePhoto.objects.all()
+
+        #list_case = Case.objects.select_related('case_status')
+        return render(request,'case/search3.html',locals()) 
 
 
 #####################################

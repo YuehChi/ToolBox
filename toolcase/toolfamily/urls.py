@@ -31,5 +31,8 @@ urlpatterns += [
     path('case/profile/<int:case_id>/', views.case_profile, name='case-profile' ),
     path('case/profile/<int:case_id>/edit/',views.case_profile_edit, name='case-profile-edit'),
     path('case/search/', views.case_search,name='case-search'),
+    path('case/search1/', views.case_search1,name='case-search1'),
+    path('case/search2/', views.case_search2,name='case-search2'),
+    path('case/search3/', views.case_search3,name='case-search3'),
 ]
 
