@@ -552,6 +552,14 @@ def user_publish_record(request):
     # show all of the toolmen
     record_list = CommissionRecord.objects.all().prefetch_related('case')
 
+    # check the finish request is timeout or not
+    for data in record_list:
+        if data.finish_datetime != None:
+            delta = datetime.datetime.now().astimezone() - data.finish_datetime
+            if delta.seconds > 259200:  # can set lower when demo
+                data.user_status = Status.objects.get(Q(status_id=3))
+                data.save()
+
     # numbers of toolmen for each case
     number = dict()
     for case in case_list:
@@ -569,20 +577,28 @@ def user_publish_applicant(request, case_id):
 
     # all applicants for all cases
     case = Case.objects.get(Q(case_id=case_id))
-    willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
+    all_willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
+    all_commission = CommissionRecord.objects.filter(case=case)
 
     # is commissioned or not
+    all_user = set()
     willingness = []
     cnt = 0
-    for data in willing:
-        apply_case=data.apply_case
-        willing_user = data.willing_user
-        try:
-            commission = CommissionRecord.objects.get(Q(case=apply_case) & Q(commissioned_user=willing_user))
-        except:
-            willingness.append(data)
-        else:
-            if commission.user_status.status_id != 4:
+    for data in all_willing:  # pick the newest one for all users
+        all_user.add(data.willing_user)
+    for user in all_user:
+        newest_willing = all_willing.filter(willing_user=user).order_by('-created_datetime')[0]
+        newest_commission = all_commission.filter(commissioned_user=user).order_by('-created_datetime')
+        if len(newest_commission) == 0:  # commissioned not yet
+            willingness.append(newest_willing)
+        elif newest_willing.created_datetime > newest_commission[0].created_datetime:  # a new willingness
+            willingness.append(newest_willing)
+
+    # count the number of conducting user
+    for user in all_user:
+        commission = CommissionRecord.objects.filter(Q(case=case) & Q(commissioned_user=user))
+        for record in commission:
+            if record.user_status.status_id != 4:
                 cnt += 1
     last = case.num - cnt
 
@@ -616,12 +632,20 @@ def user_take_record(request):
     conduct = []
     close = []
     for data in record:
+
+        # check the finish request is timeout or not
+        if data.finish_datetime != None:
+            delta = datetime.datetime.now().astimezone() - data.finish_datetime
+            if delta.seconds > 259200:  # can set lower when demo
+                data.user_status = Status.objects.get(Q(status_id=3))
+                data.save()
+
         status = data.user_status.status_id
         if status == 2 or status == 5 or status == 6 or status == 7:
             conduct.append(data)
         elif status == 3 or status == 4:
             close.append(data)
-
+        
     return render(request, 'user/take.html', locals())
 
 
@@ -777,8 +801,6 @@ def finish_commission(request, commission_id):
         commission.doublecheck_datetime = datetime.datetime.now()
         commission.save()
         return redirect('user-publish-record')
-
-    # else，處理超過時限沒確認 -> 感覺要在每一次刷新頁面都判斷
 
 
 
