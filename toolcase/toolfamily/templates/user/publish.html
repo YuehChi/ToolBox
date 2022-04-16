@@ -30,7 +30,11 @@
                         <td>{{case.title}}</td>
                         <td><a href="{% url 'case-profile' case.case_id %}">編輯</a></td>
                         <td>{{case.ended_datetime}}</td>
-                        <td>{{case.case_status.status_name}}</td>
+                        {% if value == 0 %}
+                            <td>徵求中</td>
+                        {% else %}
+                            <td>進行中</td>
+                        {% endif %}
                         <td>({{value}}/{{case.num}})</td>
                         <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單</a></td>
                     </tr>
@@ -46,8 +50,8 @@
                         <td>{{record.commissioned_user.account_mail}}<br>{{record.commissioned_user.contact}}</td>
 
                         {% if record.user_status.status_id == 2 %}
-                            <td><input type="button" disabled="disabled" value="完成"></td>
-                            <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{record.commissionrecord_id}}'" value="解除"></td>
+                            <td><input type="button" disabled="disabled" value="完成">
+                                <input type="button" onclick="window.location='/toolfamily/user/delete/{{record.commissionrecord_id}}'" value="解除"></td>
                         {% elif record.user_status.status_id == 3 %}
                             <td>完成委託！</td>
                         {% elif record.user_status.status_id == 4 %}

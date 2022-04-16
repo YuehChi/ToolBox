@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os, django, json, smtplib, base64
 from site import USER_SITE
 import re
@@ -28,6 +29,177 @@ def index(request):
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
 
+    # get all commissions the user publishes/takes
+    now_user = request.user.user_detail
+    all_commission = CommissionRecord.objects.all()
+    all_publish = []
+    all = []
+    for data in all_commission:
+        if data.case.publisher == now_user:
+            all_publish.append(data)
+            all.append(data)
+    all_take = CommissionRecord.objects.filter(commissioned_user=now_user)
+    for data in all_take:
+        all.append(data)
+
+    if 'notice' not in request.session:
+        request.session['notice'] = []
+    notice = []
+
+    # check timeout request
+    for data in all:
+        if data.finish_datetime != None:
+            delta = datetime.datetime.now().astimezone() - data.finish_datetime
+            if delta.seconds > 259200:  # can set lower when demo
+
+                # ------finish check------
+                if data.user_status.status_id == 1 or data.user_status.status_id == 7:
+
+                    # message
+                    temp = []  
+                    temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                    temp.append(f"工具人 {data.commissioned_user.nickname} 發起完成委託，")
+                    temp.append(f"由於委託人 {data.case.publisher.nickname} 未於三日內確認，")
+                    temp.append(f"系統已自動完成該項委託。")
+
+                    # publisher X；toolman X -> toolman check
+                    if data.user_status.status_id == 7 and data.doublecheck_datetime == None and data.commissioned_user == now_user:
+                        data.doublecheck_datetime = datetime.datetime.now()
+                        data.save()
+                        if 'finish_toolman' not in request.session:
+                            request.session['finish_toolman'] = []
+                        request.session['finish_toolman'].append(data.commissionrecord_id)
+                        request.session['notice'].append(temp)
+                    # publisher O；toolman X -> toolman check
+                    elif data.user_status.status_id == 1 and data.doublecheck_datetime == None and data.commissioned_user == now_user:
+                        data.doublecheck_datetime = datetime.datetime.now()
+                        data.save()
+                        if 'finish_toolman' not in request.session:
+                            request.session['finish_toolman'] = []
+                        request.session['finish_toolman'].append(data.commissionrecord_id)
+                        request.session['notice'].append(temp)
+                    # publisher X；toolman X -> publisher check
+                    elif data.user_status.status_id == 7 and data.doublecheck_datetime == None and data.case.publisher == now_user:
+                        if 'finish_publisher' not in request.session:
+                            request.session['finish_publisher'] = []
+                        request.session['finish_publisher'].append(data.commissionrecord_id)
+                        request.session['notice'].append(temp)
+                    # publisher X；toolman O -> publisher check
+                    elif data.user_status.status_id == 7 and data.doublecheck_datetime != None and data.case.publisher == now_user:
+                        if 'finish_publisher' not in request.session:
+                            request.session['finish_publisher'] = []
+                        request.session['finish_publisher'].append(data.commissionrecord_id)
+                        request.session['notice'].append(temp)
+                    # publisher O；toolman O -> finish
+                    elif data.doublecheck_datetime == None:
+                        if 'finish_publisher' not in request.session:
+                            request.session['finish_publisher'] = []
+                        request.session['finish_publisher'].append(data.commissionrecord_id)
+                    elif data.user_status.status_id == 7:
+                        if 'finish_toolman' not in request.session:
+                            request.session['finish_toolman'] = []
+                        request.session['finish_toolman'].append(data.commissionrecord_id)
+
+                    data.user_status = Status.objects.get(Q(status_id=3))
+                    data.save()
+
+                # ------delete check------
+                elif data.user_status.status_id in [4, 5, 6]:
+                    # message
+                    temp = []  
+                    temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                    if data.user_status.status_id == 5:
+                        temp.append(f"委託人 {data.case.publisher.nickname} 發起解除委託，")
+                        temp.append(f"由於工具人 {data.commissioned_user.nickname} 未於三日內確認，")
+                    elif data.user_status.status_id == 6:
+                        temp.append(f"工具人 {data.commissioned_user.nickname} 發起解除委託，")
+                        temp.append(f"由於委託人 {data.case.publisher.nickname} 未於三日內確認，")
+                    temp.append(f"系統已自動解除該項委託。")
+
+                    # # publisher X；toolman X -> toolman check
+                    # if data.user_status.status_id in [5, 6] and data.doublecheck_datetime == None and data.commissioned_user == now_user:
+                    #     data.doublecheck_datetime = datetime.datetime.now()
+                    #     data.save()
+                    #     if 'delete_toolman' not in request.session:
+                    #         request.session['delete_toolman'] = []
+                    #     request.session['delete_toolman'].append(data.commissionrecord_id)
+                    #     request.session['notice'].append(temp)
+                    # # publisher O；toolman X -> toolman check
+                    # elif data.user_status.status_id == 1 and data.doublecheck_datetime == None and data.commissioned_user == now_user:
+                    #     data.doublecheck_datetime = datetime.datetime.now()
+                    #     data.save()
+                    #     if 'finish_toolman' not in request.session:
+                    #         request.session['finish_toolman'] = []
+                    #     request.session['finish_toolman'].append(data.commissionrecord_id)
+                    #     request.session['notice'].append(temp)
+                    # # publisher X；toolman X -> publisher check
+                    # elif data.user_status.status_id in [5, 6] and data.doublecheck_datetime == None and data.case.publisher == now_user:
+                    #     if 'finish_publisher' not in request.session:
+                    #         request.session['finish_publisher'] = []
+                    #     request.session['finish_publisher'].append(data.commissionrecord_id)
+                    #     request.session['notice'].append(temp)
+                    # # publisher X；toolman O -> publisher check
+                    # elif data.user_status.status_id == 7 and data.doublecheck_datetime != None and data.case.publisher == now_user:
+                    #     if 'finish_publisher' not in request.session:
+                    #         request.session['finish_publisher'] = []
+                    #     request.session['finish_publisher'].append(data.commissionrecord_id)
+                    #     request.session['notice'].append(temp)
+                    # # publisher O；toolman O -> finish
+                    # elif data.doublecheck_datetime == None:
+                    #     if 'finish_publisher' not in request.session:
+                    #         request.session['finish_publisher'] = []
+                    #     request.session['finish_publisher'].append(data.commissionrecord_id)
+                    # elif data.user_status.status_id in [5, 6]:
+                    #     if 'finish_toolman' not in request.session:
+                    #         request.session['finish_toolman'] = []
+                    #     request.session['finish_toolman'].append(data.commissionrecord_id)
+
+                    # data.user_status = Status.objects.get(Q(status_id=3))
+                    # data.save()
+
+            else:
+                # not yet confirm finish
+                if data.user_status.status_id == 7 and now_user == data.case.publisher:
+                    if 'remind' not in request.session:
+                        request.session['remind'] = []
+                    if data.commissionrecord_id not in request.session['remind']:
+                        temp = []  
+                        temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                        temp.append(f"工具人 {data.commissioned_user.nickname} 發起完成委託，")
+                        temp.append(f"請於 {(data.finish_datetime+timedelta(days=3)).strftime('%Y/%m/%d %H:%M:%S')} 前確認完成。")
+                        request.session['notice'].append(temp)    
+                        request.session['remind'].append(data.commissionrecord_id)
+
+                # not yet confirm delete
+                elif data.user_status.status_id == 6 and now_user == data.case.publisher:
+                    if 'remind' not in request.session:
+                        request.session['remind'] = []
+                    if data.commissionrecord_id not in request.session['remind']:
+                        temp = []  
+                        temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                        temp.append(f"工具人 {data.commissioned_user.nickname} 發起解除委託，")
+                        temp.append(f"請於 {(data.finish_datetime+timedelta(days=3)).strftime('%Y/%m/%d %H:%M:%S')} 前確認解除。")
+                        request.session['notice'].append(temp)
+                        request.session['remind'].append(data.commissionrecord_id)
+                
+                elif data.user_status.status_id == 5 and now_user == data.commissioned_user:
+                    if 'remind' not in request.session:
+                        request.session['remind'] = []
+                    if data.commissionrecord_id not in request.session['remind']:
+                        temp = []  
+                        temp.append(f"案件編號#{data.case.case_id} {data.case.title}")
+                        temp.append(f"委託人 {data.case.publisher.nickname} 發起解除委託，")
+                        temp.append(f"請於 {(data.finish_datetime+timedelta(days=3)).strftime('%Y/%m/%d %H:%M:%S')} 前確認解除。")
+                        request.session['notice'].append(temp)
+                        request.session['remind'].append(data.commissionrecord_id)
+
+
+
+    # 判斷是否有"發布的"case到期，強制完成
+    
+
+    notice = request.session['notice']
+    
     return render(request, 'index.html', locals())
 
 
@@ -394,14 +566,6 @@ def user_publish_record(request):
     # show all of the toolmen
     record_list = CommissionRecord.objects.all().prefetch_related('case')
 
-    # check the finish request is timeout or not
-    for data in record_list:
-        if data.finish_datetime != None:
-            delta = datetime.datetime.now().astimezone() - data.finish_datetime
-            if delta.seconds > 259200:  # can set lower when demo
-                data.user_status = Status.objects.get(Q(status_id=3))
-                data.save()
-
     # numbers of toolmen for each case
     number = dict()
     for case in case_list:
@@ -409,6 +573,16 @@ def user_publish_record(request):
         for record in record_list:
             if record.case == case and record.user_status.status_id != 4:
                 number[case.case_id] += 1
+
+    # check the status should turn back to 1 or not
+    for key, value in number.items():
+        if value == 0:
+            case = Case.objects.get(Q(case_id=key))
+            case.case_status = Status.objects.get(Q(status_id=1))
+            case.save()
+
+
+    # 判斷已結束的案件
     
     return render(request, 'user/publish.html', locals())
 
@@ -444,6 +618,8 @@ def user_publish_applicant(request, case_id):
                 cnt += 1
     last = case.num - cnt
 
+    # 評價
+
     return render(request, 'user/applicant.html', locals())
 
 
@@ -475,20 +651,16 @@ def user_take_record(request):
     conduct = []
     close = []
     for data in record:
-
-        # check the finish request is timeout or not
-        if data.finish_datetime != None:
-            delta = datetime.datetime.now().astimezone() - data.finish_datetime
-            if delta.seconds > 259200:  # can set lower when demo
-                data.user_status = Status.objects.get(Q(status_id=3))
-                data.save()
-
         status = data.user_status.status_id
         if status == 2 or status == 5 or status == 6 or status == 7:
             conduct.append(data)
         elif status == 3 or status == 4:
             close.append(data)
         
+    # 丟case資訊回去
+
+    # 評價
+
     return render(request, 'user/take.html', locals())
 
 
@@ -551,8 +723,6 @@ def build_commission(request):
         case.case_status = Status.objects.get(Q(status_id=2))
         case.save()
 
-        # 寄聯絡資訊給雙方
-
     except:
         # choose nobody
         pass
@@ -574,14 +744,13 @@ def delete_commission(request, commission_id):
         if commission.commissioned_user == sender:
             receiver = commission.case.publisher
             commission.user_status = Status.objects.get(Q(status_id=6))
+            commission.finish_datetime = datetime.datetime.now()
             commission.save()
         else:
             receiver = commission.commissioned_user
             commission.user_status = Status.objects.get(Q(status_id=5))
+            commission.finish_datetime = datetime.datetime.now()
             commission.save()
-    
-        # 寄信給對方
-        # 開始算天數三天 (怎麼算?)
 
         if sender == commission.commissioned_user:
             return redirect('user-take-record')
@@ -605,11 +774,6 @@ def delete_commission(request, commission_id):
     else:
         case.case_status = Status.objects.get(Q(status_id=1))
         case.save()
-
-    # 寄信給對方
-
-    # timeout
-    # 強制關閉，怎麼判斷? -> 感覺是每一次刷新頁面都要判斷，且還要判斷case狀態484變回徵求
     
     if sender == commission.commissioned_user:
         return redirect('user-take-record')
@@ -626,8 +790,6 @@ def finish_commission(request, commission_id):
     # status=2 represent that toolman apply for consummation
     if commission.user_status.status_id == 2:
 
-        # 發email給委託人
-
         # change status
         commission.user_status = Status.objects.get(Q(status_id=7))
         commission.finish_datetime = datetime.datetime.now()
@@ -636,8 +798,6 @@ def finish_commission(request, commission_id):
 
     # status=7 represent that publisher confirm the task
     else:
-
-        # email給工具人
 
         # change status
         commission.user_status = Status.objects.get(Q(status_id=3))
@@ -734,6 +894,24 @@ class CustomizeUserBackend(ModelBackend):
 
 # ----------------logout------------------
 def logout(request):
+
+    # change status for finish request
+    if 'finish_toolman' in request.session:
+        for id in request.session['finish_toolman']:
+            data = CommissionRecord.objects.get(Q(commissionrecord_id=id))
+            data.user_status = Status.objects.get(Q(status_id=7))
+            data.save()
+        del request.session['finish_toolman']
+    elif 'finish_publisher' in request.session:
+        for id in request.session['finish_publisher']:
+            data = CommissionRecord.objects.get(Q(commissionrecord_id=id))
+            data.user_status = Status.objects.get(Q(status_id=1))
+            data.save()
+        del request.session['finish_publisher']
+
+    if 'remind' in request.session:
+        del request.session['remind']
+    del request.session['notice']
 
     auth.logout(request)
     return HttpResponseRedirect('/')
