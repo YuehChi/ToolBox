@@ -50,8 +50,8 @@
 
                     {% if commission.user_status.status_id == 2 %}
                         {% comment %} 確認alert都還沒做 {% endcomment %}
-                        <td><input type="button" onclick="window.location='/toolfamily/user/finish/{{commission.commissionrecord_id}}'" value="完成"></td>
-                        <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="解除"></td>
+                        <td><input type="button" onclick="window.location='/toolfamily/user/finish/{{commission.commissionrecord_id}}'" value="完成">
+                            <input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="解除"></td>
                     {% elif commission.user_status.status_id == 5 %}
                         <td>委託人已發出取消請求</td>
                         <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="確認取消"></td>

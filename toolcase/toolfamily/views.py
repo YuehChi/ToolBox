@@ -557,8 +557,12 @@ def user_publish_record(request):
         if data.finish_datetime != None:
             delta = datetime.datetime.now().astimezone() - data.finish_datetime
             if delta.seconds > 259200:  # can set lower when demo
-                data.user_status = Status.objects.get(Q(status_id=3))
-                data.save()
+                if data.user_status.status_id == 7:  # for finish
+                    data.user_status = Status.objects.get(Q(status_id=3))
+                    data.save()
+                elif data.user_status.status_id == 5 or data.user_status.status_id == 6:  # for delete
+                    data.user_status = Status.objects.get(Q(status_id=4))
+                    data.save()
 
     # numbers of toolmen for each case
     number = dict()
@@ -567,6 +571,16 @@ def user_publish_record(request):
         for record in record_list:
             if record.case == case and record.user_status.status_id != 4:
                 number[case.case_id] += 1
+
+    # check the status should turn back to 1 or not
+    for key, value in number.items():
+        if value == 0:
+            case = Case.objects.get(Q(case_id=key))
+            case.case_status = Status.objects.get(Q(status_id=1))
+            case.save()
+
+
+    # 判斷已結束的案件
     
     return render(request, 'user/publish.html', locals())
 
@@ -633,12 +647,16 @@ def user_take_record(request):
     close = []
     for data in record:
 
-        # check the finish request is timeout or not
+        # check timeout
         if data.finish_datetime != None:
             delta = datetime.datetime.now().astimezone() - data.finish_datetime
             if delta.seconds > 259200:  # can set lower when demo
-                data.user_status = Status.objects.get(Q(status_id=3))
-                data.save()
+                if data.user_status.status_id == 7:  # for finish
+                    data.user_status = Status.objects.get(Q(status_id=3))
+                    data.save()
+                elif data.user_status.status_id == 5 or data.user_status.status_id == 6:  # for delete
+                    data.user_status = Status.objects.get(Q(status_id=4))
+                    data.save()
 
         status = data.user_status.status_id
         if status == 2 or status == 5 or status == 6 or status == 7:
@@ -731,14 +749,15 @@ def delete_commission(request, commission_id):
         if commission.commissioned_user == sender:
             receiver = commission.case.publisher
             commission.user_status = Status.objects.get(Q(status_id=6))
+            commission.finish_datetime = datetime.datetime.now()
             commission.save()
         else:
             receiver = commission.commissioned_user
             commission.user_status = Status.objects.get(Q(status_id=5))
+            commission.finish_datetime = datetime.datetime.now()
             commission.save()
     
         # 寄信給對方
-        # 開始算天數三天 (怎麼算?)
 
         if sender == commission.commissioned_user:
             return redirect('user-take-record')
