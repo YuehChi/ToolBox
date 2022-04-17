@@ -1,3 +1,4 @@
+from calendar import c
 from datetime import timedelta
 import os, django, json, smtplib, base64
 from site import USER_SITE
@@ -564,6 +565,7 @@ def user_publish_record(request):
 
     # show all of the toolmen
     record_list = CommissionRecord.objects.all().prefetch_related('case')
+    willing_list = CaseWillingness.objects.all().prefetch_related('apply_case')
 
     # numbers of toolmen for each case
     number = dict()
@@ -580,7 +582,23 @@ def user_publish_record(request):
             case.case_status = Status.objects.get(Q(status_id=1))
             case.save()
 
+    # number of applicants
+    willing = dict()
+    toolman = set()
+    for case in case_list:
+        for data in willing_list:
+            if data.apply_case == case:
+                toolman.add(data.willing_user)
+    for case in case_list:
+        willing[case.case_id] = 0
+        for man in toolman:
+            willingness = CaseWillingness.objects.filter(Q(apply_case=case) & Q(willing_user=man))
+            commission = CommissionRecord.objects.filter(Q(case=case) & Q(commissioned_user=man))
+            if len(willingness) - len(commission) == 1:
+                willing[case.case_id] += 1
 
+
+    
     # 判斷已結束的案件
     
     return render(request, 'user/publish.html', locals())
@@ -616,8 +634,6 @@ def user_publish_applicant(request, case_id):
             if record.user_status.status_id != 4:
                 cnt += 1
     last = case.num - cnt
-
-    # 評價
 
     return render(request, 'user/applicant.html', locals())
 
@@ -666,8 +682,6 @@ def user_take_record(request):
                     deadline[data.commissionrecord_id] = "不到一小時"
         elif status == 3 or status == 4:
             close.append(data)
-
-    # 評價
 
     return render(request, 'user/take.html', locals())
 
