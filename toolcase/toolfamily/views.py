@@ -650,14 +650,23 @@ def user_take_record(request):
     record = CommissionRecord.objects.all().prefetch_related('case').filter(commissioned_user=user)
     conduct = []
     close = []
+    deadline = {}
     for data in record:
         status = data.user_status.status_id
         if status == 2 or status == 5 or status == 6 or status == 7:
             conduct.append(data)
+            if status == 2:
+                delta = data.case.ended_datetime - datetime.datetime.now().astimezone()
+                if delta.days > 30:
+                    deadline[data.commissionrecord_id] = f"{delta.days // 30} 個月"
+                if delta.days > 0:
+                    deadline[data.commissionrecord_id] = f"{delta.days} 天"
+                elif delta.seconds > 3600:
+                    deadline[data.commissionrecord_id] = f"{delta.seconds // 3600} 小時"
+                else:
+                    deadline[data.commissionrecord_id] = "不到一小時"
         elif status == 3 or status == 4:
             close.append(data)
-        
-    # 丟case資訊回去
 
     # 評價
 
