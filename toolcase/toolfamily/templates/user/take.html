@@ -35,22 +35,28 @@
     <table>
         <thead>
             <tr>
-                <td>案件名稱</td>
                 <td>結束時間</td>
+                <td>案件名稱</td>
+                <td>報酬</td>
+                <td>訊息</td>
                 <td>狀態</td>
             </tr>
         </thead>
         
-        <tbody>
-            {% for commission in conduct %}
+        {% for commission in conduct %}
+        <thead>
                 <tr>
-                    <td>{{commission.case.title}}</td>
                     <td>{{commission.case.ended_datetime}}</td>
-                    <td>{{commission.case.case_status.status_name}}</td>
-
+                    <td>{{commission.case.title}}</td>
+                    <td>{{commission.case.reward}}</td>
                     {% if commission.user_status.status_id == 2 %}
                         {% comment %} 確認alert都還沒做 {% endcomment %}
-                        <td><input type="button" onclick="window.location='/toolfamily/user/finish/{{commission.commissionrecord_id}}'" value="完成">
+                        {% for key, value in deadline.items %}
+                            {% if commission.commissionrecord_id == key %}
+                            <td>還剩 {{value}}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td><input type="button" onclick="window.location='/toolfamily/user/finish/{{commission.commissionrecord_id}}'" value="完成"><br>
                             <input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="解除"></td>
                     {% elif commission.user_status.status_id == 5 %}
                         <td>委託人已發出取消請求</td>
@@ -61,8 +67,22 @@
                         <td>等待對方確認完成</td>
                     {% endif %}
                 </tr>
-            {% endfor %}
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>｜委託人資訊
+                {% if commission.case.publisher.icon %}
+                    <img src="{{commission.case.publisher.icon.url}}">
+                {% endif %}
+                </td>
+                <td>{{commission.case.publisher.nickname}} (性別){{commission.case.publisher.gender}}<br>
+                    上次登入: {{commission.case.publisher.django_user.last_login}}</td>
+                <td>{{commission.case.publisher.account_mail}}<br>
+                    (contact){{commission.case.publisher.contact}}</td>
+            </tr>
         </tbody>
+        {% endfor %}
     </table>
 
     <h2>已結束案件</h2>
@@ -82,7 +102,20 @@
                     <td>{{commission.case.ended_datetime}}</td>
 
                     {% if commission.user_status.status_id == 3 %}
-                        <td>已完成</td>
+                    <td>評價 
+                        {% if commission.rate_worker_to_publisher %}
+                            已評分: {{commission.rate_worker_to_publisher}}
+                        {% else %}
+                        <form action="/toolfamily/user/rate/" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value=1 name="{{commission.commissionrecord_id}}">
+                            <input type="submit" value=2 name="{{commission.commissionrecord_id}}">
+                            <input type="submit" value=3 name="{{commission.commissionrecord_id}}">
+                            <input type="submit" value=4 name="{{commission.commissionrecord_id}}">
+                            <input type="submit" value=5 name="{{commission.commissionrecord_id}}">
+                        <form>
+                        {% endif %}
+                        已完成！</td>
                     {% elif commission.user_status.status_id == 4 %}
                         <td>已取消</td>
                     {% endif %}
