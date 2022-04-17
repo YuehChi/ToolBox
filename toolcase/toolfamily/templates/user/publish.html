@@ -9,7 +9,7 @@
 <body>
     <h1>我的委託</h1>
 
-    <h2>進行中案件</h2>
+    <h2>我的委託</h2>
     <table>
         <thead>
             <tr>
@@ -33,10 +33,14 @@
                         {% if value == 0 %}
                             <td>徵求中</td>
                         {% else %}
-                            <td>進行中</td>
+                            <td>委託中</td>
                         {% endif %}
                         <td>({{value}}/{{case.num}})</td>
-                        <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單</a></td>
+                        <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單 (
+                            {% for key1, value1 in willing.items %}
+                                {% if key1 == case.case_id %}{{value1}}{% endif %}
+                            {% endfor %}
+                            )</a></td>
                     </tr>
                     {% endif %}
                 {% endfor %}
@@ -48,7 +52,7 @@
                     <tr>
                         <td>
                         {% if record.commissioned_user.icon %}
-                            <img src="{{record.commissioned_user.icon.url}}">
+                            <img src="{{record.commissioned_user.icon.url}}" width="40px">
                         {% endif %}
                         </td>
                         <td>{{record.commissioned_user.nickname}}<br>上次登入: {{record.commissioned_user.django_user.last_login}}</td>
@@ -60,7 +64,7 @@
                         {% elif record.user_status.status_id == 3 %}
                             <td>評價 
                                 {% if record.rate_publisher_to_worker %}
-                                    已評分: {{record.rate_publisher_to_worker}}
+                                    {{record.rate_publisher_to_worker}}
                                 {% else %}
                                     <form action="/toolfamily/user/rate/" method="post">
                                         {% csrf_token %}
@@ -71,9 +75,9 @@
                                         <input type="submit" value=5 name="{{record.commissionrecord_id}}">
                                     <form>
                                 {% endif %}
-                                完成委託！</td>
+                                已完成委託</td>
                         {% elif record.user_status.status_id == 4 %}
-                            <td>已取消</td>
+                            <td>已解除</td>
                         {% elif record.user_status.status_id == 5 %}
                             <td>等待對方確認取消</td>
                         {% elif record.user_status.status_id == 6 %}
@@ -91,7 +95,7 @@
         {% endfor %}
     </table>
 
-    <h2>已結束案件</h2>
+    <h2>歷史紀錄</h2>
     <table>
         {% for case in case_list %}
             {% if case.case_status.status_name in '完成,關閉' %}
