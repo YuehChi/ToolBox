@@ -46,8 +46,13 @@
                 {% for record in record_list %}
                     {% if record.case == case %}
                     <tr>
-                        <td>{{record.commissioned_user.nickname}}<br>{{record.commissioned_user.django_user.last_login}}</td>
-                        <td>{{record.commissioned_user.account_mail}}<br>{{record.commissioned_user.contact}}</td>
+                        <td>
+                        {% if record.commissioned_user.icon %}
+                            <img src="{{record.commissioned_user.icon.url}}">
+                        {% endif %}
+                        </td>
+                        <td>{{record.commissioned_user.nickname}}<br>上次登入: {{record.commissioned_user.django_user.last_login}}</td>
+                        <td>{{record.commissioned_user.account_mail}}<br>(contact){{record.commissioned_user.contact}}</td>
 
                         {% if record.user_status.status_id == 2 %}
                             <td><input type="button" disabled="disabled" value="完成">

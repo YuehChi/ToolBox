@@ -71,7 +71,11 @@
 
         <tbody>
             <tr>
-                <td>｜委託人資訊 <img src="{{commission.case.publisher.icon}}"></td>
+                <td>｜委託人資訊
+                {% if commission.case.publisher.icon %}
+                    <img src="{{commission.case.publisher.icon.url}}">
+                {% endif %}
+                </td>
                 <td>{{commission.case.publisher.nickname}} (性別){{commission.case.publisher.gender}}<br>
                     上次登入: {{commission.case.publisher.django_user.last_login}}</td>
                 <td>{{commission.case.publisher.account_mail}}<br>
