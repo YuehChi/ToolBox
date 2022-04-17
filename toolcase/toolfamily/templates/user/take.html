@@ -102,7 +102,20 @@
                     <td>{{commission.case.ended_datetime}}</td>
 
                     {% if commission.user_status.status_id == 3 %}
-                        <td>已完成</td>
+                    <td>評價 
+                        {% if commission.rate_worker_to_publisher %}
+                            已評分: {{commission.rate_worker_to_publisher}}
+                        {% else %}
+                        <form action="/toolfamily/user/rate/" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value=1 name="{{commission.commissionrecord_id}}">
+                            <input type="submit" value=2 name="{{commission.commissionrecord_id}}">
+                            <input type="submit" value=3 name="{{commission.commissionrecord_id}}">
+                            <input type="submit" value=4 name="{{commission.commissionrecord_id}}">
+                            <input type="submit" value=5 name="{{commission.commissionrecord_id}}">
+                        <form>
+                        {% endif %}
+                        已完成！</td>
                     {% elif commission.user_status.status_id == 4 %}
                         <td>已取消</td>
                     {% endif %}

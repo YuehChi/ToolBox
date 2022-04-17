@@ -58,7 +58,20 @@
                             <td><input type="button" disabled="disabled" value="完成">
                                 <input type="button" onclick="window.location='/toolfamily/user/delete/{{record.commissionrecord_id}}'" value="解除"></td>
                         {% elif record.user_status.status_id == 3 %}
-                            <td>完成委託！</td>
+                            <td>評價 
+                                {% if record.rate_publisher_to_worker %}
+                                    已評分: {{record.rate_publisher_to_worker}}
+                                {% else %}
+                                    <form action="/toolfamily/user/rate/" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit" value=1 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=2 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=3 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=4 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=5 name="{{record.commissionrecord_id}}">
+                                    <form>
+                                {% endif %}
+                                完成委託！</td>
                         {% elif record.user_status.status_id == 4 %}
                             <td>已取消</td>
                         {% elif record.user_status.status_id == 5 %}

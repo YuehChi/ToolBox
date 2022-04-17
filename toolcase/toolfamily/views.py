@@ -193,9 +193,8 @@ def index(request):
                         request.session['notice'].append(temp)
                         request.session['remind'].append(data.commissionrecord_id)
 
-
-
-    # 判斷是否有"發布的"case到期，強制完成
+    # check expired cases
+    # 是否有過期case
     
 
     notice = request.session['notice']
@@ -813,6 +812,54 @@ def finish_commission(request, commission_id):
         commission.doublecheck_datetime = datetime.datetime.now()
         commission.save()
         return redirect('user-publish-record')
+
+
+# ---------give rate---------
+@login_required
+def rate(request):
+
+    # get id and rate from request body
+    body = request.body.decode('utf-8').split('&')
+    for data in body:
+        try:
+            int(data.split('=')[0])
+        except:
+            pass
+        else:
+            id = int(data.split('=')[0])
+            rate = int(data.split('=')[1])
+            break
+
+    commission = CommissionRecord.objects.get(Q(commissionrecord_id=id))
+    user = request.user.user_detail
+
+    # publisher gives rating for toolman
+    if user == commission.case.publisher:
+        commission.rate_publisher_to_worker = rate
+        commission.save()
+
+        toolman = commission.commissioned_user
+        ori_rate = toolman.rate * toolman.rate_num
+        new_rate = (ori_rate + rate) / (toolman.rate_num + 1)
+        toolman.rate  = new_rate
+        toolman.rate_num  = toolman.rate_num + 1
+        toolman.save()
+
+        return redirect('user-publish-record')
+
+    # toolman gives rating for publisher
+    else:
+        commission.rate_worker_to_publisher = rate
+        commission.save()
+
+        publisher = commission.case.publisher
+        ori_rate = publisher.rate * publisher.rate_num
+        new_rate = (ori_rate + rate) / (publisher.rate_num + 1)
+        publisher.rate  = new_rate
+        publisher.rate_num  = publisher.rate_num + 1
+        publisher.save()
+
+        return redirect('user-take-record')
 
 
 
