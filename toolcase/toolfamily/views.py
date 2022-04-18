@@ -284,33 +284,51 @@ def viewUser(request):
     userDataForm = UserDetailModelForm(instance=user)
     print(f'get data of {user}.')
 
-    # 取得使用者資料
-    dataCol = [  # 要取得哪些欄位 #目前沒作用
-        'name',
-        'nickname',
-        'account_mail',
-        'gender',
-        'department',
-        'work',
-        'information',
-        'icon',
-        'rate',
-        'rate_num',
-        'work_num',
-        'publish_num',
-        'commissioned_status',
-        'commissioning_status',
-        'verification',
-        'created_datetime',
-        'last_login_datetime'
-        ]
-
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
         'user': user,
         'userDataForm': userDataForm,
         }
     return render(request, 'user/user.html', content)
+
+
+@login_required
+def viewOtherUser(request, user_id):
+    user = get_object_or_404(  # 找出自己是哪個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+
+    # 找要看的是哪個 user
+    viewedUser = get_object_or_404(  # 找出要看的 user; 找不到則回傳 404 error
+        UserDetail,
+        user_id=user_id,
+        isActive=True)  # 若是被停權的 user，一樣 404
+    if user == viewedUser:  # 若就是自己本人，則導到自己的頁面
+        return redirect('my-user-profile')
+
+    # 取得使用者資料
+    dataCol = [  # 要取得哪些欄位  # 注意：@property的欄位不能用.values()抓
+        'nickname',
+        'gender',
+        'department',
+        'work',  # 偏好的工作方式
+        'information',  # 自我介紹
+        'icon',  # 大頭貼
+        'rate',  # 評價
+        'rate_num',  # 評價的人數
+        ]
+    userData = UserDetail.objects.filter(user_id=user_id).values(*dataCol)[0]
+    userData['work_num'] = viewedUser.work_num  # 接案數
+    userData['publish_num'] = viewedUser.publish_num  # 發案數
+    print(userData)
+
+    # 整理資訊並回傳
+    content = {  # 要傳入模板的資訊
+        'user': user,
+        'viewed_user': userData
+        }
+    return render(request, 'user/user_profile.html', content)
 
 
 # ------ 更新使用者資料 ------
@@ -331,7 +349,7 @@ def updateUser(request):
             userUpdate.account_mail = user.account_mail  # 自動填入email
             userUpdate.save()  # 實際更改資料庫
             print('User data has been update.')
-            return redirect('user-profile')  # 重定向並刷新個資分頁的資訊
+            return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
         else:
             print('The form is not valid.')
             userDataForm = formPost  # 保留剛剛POST的分析結果，以顯示錯誤訊息
@@ -355,8 +373,6 @@ def updateUserIcon(request):
 
     # POST: 更改使用者資料
     if request.method == 'POST':
-        print('\n\nrequest.POST:', request.POST)
-        print('request.FILES:', request.FILES)
         iconPost = UserIconForm(request.POST, instance=user)  # 改頭像的表單
         if iconPost.is_valid():
             userUpdate = iconPost.save(commit=False)  # 先暫存，還不更改資料庫
@@ -377,10 +393,11 @@ def updateUserIcon(request):
                     print('Can not save user icon:', ex)
             userUpdate.save()  # 實際更改資料庫
             print('User data has been update.')
-            return redirect('user-profile')  # 重定向並刷新個資分頁的資訊
+            return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
         else:
             print('The form is not valid.')
             userDataForm = iconPost  # 保留剛剛POST的分析結果，以顯示錯誤訊息
+            return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊

@@ -14,11 +14,9 @@ class UserDetailModelForm(forms.ModelForm):
             # 'account_mail',  # 這是帳號名，不可更改
             'gender',
             'department',
-            'work',
-            'contact',
+            'work',  # 偏好的工作方式
+            'contact',  # 聯絡資訊（應徵時發送用）
             'information',
-            'contactInfo'  # 聯絡資訊的預設值（應徵時發送用；發送時可客製化）
-            # 'icon',  # 這部分功能切到 UserIconForm()
             )
 
     def clean_account_mail(self, *args, **kwargs):

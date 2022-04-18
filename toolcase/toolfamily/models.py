@@ -124,9 +124,6 @@ class UserDetail(models.Model):
     information = models.TextField(
         default='', blank=True,
         verbose_name='自我介紹')
-    contactInfo = models.TextField(
-        default='', blank=True,
-        verbose_name='聯絡資訊')
     icon = models.ImageField(
         upload_to=user_icon_path,
         null=True, blank=True)

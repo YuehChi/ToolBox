@@ -7,6 +7,7 @@ from .models import *
 class UserDetailAdmin(admin.ModelAdmin):
     save_as = True
     list_display = (
+        'user_id',
         '__str__',
         'account_mail',
         'gender_shown',
