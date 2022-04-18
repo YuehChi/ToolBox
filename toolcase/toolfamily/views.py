@@ -94,6 +94,7 @@ def timeout(request):
                 # change conducting and applying for finish -> to finish status
                 if data.user_status.status_id in [2, 7]:
                     data.user_status.status_id = finish
+                    data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
                     
                     msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動完成委託。"
@@ -103,6 +104,7 @@ def timeout(request):
                 # change applying for publisher sending delete -> to close
                 elif data.user_status.status_id == 5:
                     data.user_status.status_id = close
+                    data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
                     
                     msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動解除委託。"
@@ -112,6 +114,7 @@ def timeout(request):
                 # change applying for toolman sending delete -> to close
                 elif data.user_status.status_id == 6:
                     data.user_status.status_id = close
+                    data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
                     
                     msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動解除委託。"
@@ -135,6 +138,7 @@ def timeout(request):
                 # publisher apply for delete, user=publisher
                 if data.user_status.status_id == 5:
                     data.user_status = close
+                    data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
 
                     # user = publisher
@@ -157,6 +161,7 @@ def timeout(request):
                 # toolman apply for delete
                 elif data.user_status.status_id == 6:
                     data.user_status = close
+                    data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
 
                     # user = publisher
@@ -179,6 +184,7 @@ def timeout(request):
                 # toolman apply finish
                 elif data.user_status.status_id == 7:
                     data.user_status = finish
+                    data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
 
                     # user = publisher
