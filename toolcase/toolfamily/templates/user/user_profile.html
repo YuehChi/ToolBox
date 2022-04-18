@@ -1,0 +1,62 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="\static\css\user.css">
+    <div class="tab" style="margin-top: 60px;">
+        <div class="" style="background: #ffffff; height: 500px;margin-top: 20px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6" style="max-width: 70%;width: 250px;">
+                        <div>
+                        {% if user.icon %}  {# 有圖才顯示 #}
+                            <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" src="{{ user.icon.url }}">
+                        {% else %}
+                            <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" src="\static\images\default_icon_1.png">
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="margin-top: 10px;">
+                        <div>
+                            <p style="color:  rgb(38, 29, 29);">{{user.name}}|{{user.nickname}}</p>
+                            {% if user.gender == 0 %}
+                                <p style="color:  rgb(38, 29, 29);">不願透漏</p>
+                            {% elif user.gender == 1 %}
+                                <p style="color:  rgb(38, 29, 29);">男</p>
+                            {% elif user.gender == 2 %}
+                                <p style="color:  rgb(38, 29, 29);">女</p>
+                            {% endif %}
+                            <p style="color:  rgb(38, 29, 29);">{{user.department}}</p>
+                            <p style="color:  rgb(38, 29, 29);"><pre>{{user.information}}</pre></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container" >
+                <div class="row">
+                    <div class="col-md-4" style="border-width: 0px;">
+                        <div class="border rounded" style="border: 1px solid #EEEEEE ;">
+                            <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;">接案數量</p>
+                            <p style="text-align: center;font-size: 60px;color: rgb(134, 81, 64);">{{ user.work_num }}</p>
+                            <p style="text-align: right;padding-right: 20px;">件</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded" style="border-style: solid;border-color: #EEEEEE;">
+                            <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;">發案數量</p>
+                            <p style="text-align: center;font-size: 60px;color: rgb(134, 81, 64);">{{ user.publish_num }}</p>
+                            <p style="text-align: right;padding-right: 20px;">件</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded" style="border: 1px solid #EEEEEE ;">
+                            <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;border-width: 0px;">評價分數</p>
+                            <p style="color: rgb(134, 81, 64);font-size: 60px;text-align: center;">{{ user.rate|floatformat:"2" }}{# 保留2位小數 #}</p>
+                            <p style="text-align: right;padding-right: 20px;">分</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
