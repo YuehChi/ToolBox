@@ -74,11 +74,9 @@
         <tbody>
     </table>
 
-    {% for messages in notice %}
-        {% for msg in messages %}
-            <span>{{msg}}</span><br>
-        {% endfor %}
-        <br>
+    {% comment %} 已經排序且篩選前 10 筆 {% endcomment %}
+    {% for msg in notice %}
+        <span>{{msg.message}}</span><br>
     {% endfor %}
 
 {% endblock %}

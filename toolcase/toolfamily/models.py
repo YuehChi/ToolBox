@@ -259,6 +259,28 @@ class FollowCase(models.Model):
         return f'{self.user} follows {self.followed_case}.'
 
 
+# 通知
+class Notice(models.Model):
+    notice_id = models.AutoField(primary_key=True, editable=False)
+    user = models.ForeignKey(UserDetail,
+        related_name='notice_user',
+        verbose_name='通知使用者',
+        on_delete=models.CASCADE)
+    message = models.TextField(
+        default='', blank=True,
+        verbose_name='通知內容')
+    created_datetime = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='通知建立時間')
+
+    class Meta:
+        verbose_name = '通知'
+
+    def __str__(self):
+        return f'notice {self.message} for user {self.user}.'
+
+
+
 
 
 

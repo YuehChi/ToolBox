@@ -16,7 +16,6 @@
                 <td>結束時間</td>
                 <td>案件名稱</td>
                 <td>報酬</td>
-                <td>case狀態</td>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +23,6 @@
                 <tr>
                     <td>{{willing.apply_case.ended_datetime}}</td>
                     <td><a href="{% url 'case-profile' willing.apply_case.case_id %}">{{willing.apply_case.title}}</td>
-                    <td>{{willing.apply_case.case_status.status_name}}</td>
                     <td>{{willing.apply_case.reward}}</td>
                     <td><input type="button" onclick="window.location='/toolfamily/case/cancel/{{willing.apply_case.case_id}}'" value="取消報名"></td>
                     {% comment %} 是否確認取消的alert還沒寫 {% endcomment %}
@@ -49,7 +47,7 @@
         <thead>
                 <tr>
                     <td>{{commission.case.ended_datetime}}</td>
-                    <td>{{commission.case.title}}</td>
+                    <td><a href="{% url 'case-profile' commission.case.case_id %}">{{commission.case.title}}</td>
                     <td>{{commission.case.reward}}</td>
                     {% if commission.user_status.status_id == 2 %}
                         {% comment %} 確認alert都還沒做 {% endcomment %}
