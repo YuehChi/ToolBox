@@ -23,13 +23,197 @@ from django.contrib.auth.backends import ModelBackend
 
 from itsdangerous import URLSafeTimedSerializer as utsr
 
+#########################################
+#                 TOOLS                 #
+#########################################
 
+# ---------------def Token-----------------
+class Token:
+    def __init__(self, security_key):
+        self.security_key = security_key
+        self.salt = base64.b64encode(security_key.encode('UTF-8'))
+    def generate_validate_token(self, username):
+        serializer = utsr(self.security_key)
+        return serializer.dumps(username, self.salt)
+    def confirm_validate_token(self, token, expiration=3600):
+        serializer = utsr(self.security_key)
+        return serializer.loads(token, salt=self.salt, max_age=expiration)
+    def remove_validate_token(self, token):
+        serializer = utsr(self.security_key)
+        return serializer.loads(token, salt=self.salt)
+token_confirm = Token(django_settings.SECRET_KEY)
+
+
+
+# ----------------def ajax response----------------
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+
+# ---------check timeout---------
+def timeout(request):
+    user = request.user.user_detail
+    all_publish = Case.objects.filter(publisher=user)  # all cases the user publish
+    all_case = Case.objects.all()  # all cases
+    all_commission = CommissionRecord.objects.filter(Q(commissioned_user=user) | Q(case__in=all_publish))  # all commission the user own and take
+    finish = Status.objects.get(Q(status_id=3))
+    close = Status.objects.get(Q(status_id=4))
+
+    # finish case if all of toolmen are done
+    for case in all_publish:
+        if case.case_status.status_id in [1, 2]:
+            commission = CommissionRecord.objects.filter(case=case)
+            cnt = 0
+            for data in commission:
+                if data.user_status.status_id == 3:
+                    cnt += 1
+            if cnt >= case.num:
+                case.case_status = finish
+                case.save()
+
+                msg = f"案件編號#{case.case_id} {case.title}，所有工具人都已完成委託，案件完成！"
+                notice = Notice.objects.create(user=user, message=msg)
+                notice.save()
+
+
+    # case timeout
+    for case in all_case:
+        if case.case_status.status_id in [1, 2] and datetime.datetime.now().astimezone() > case.ended_datetime:
+            willing = CaseWillingness.objects.filter(apply_case=case)
+            commission = CommissionRecord.objects.filter(case=case)
+            
+            # cancel all willingness
+            for data in willing:
+                data.delete()
+                msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動取消報名。"
+                notice = Notice.objects.create(user=data.willing_user, message=msg)
+                notice.save()
+
+            for data in commission:
+                # change conducting and applying for finish -> to finish status
+                if data.user_status.status_id in [2, 7]:
+                    data.user_status.status_id = finish
+                    data.save()
+                    
+                    msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動完成委託。"
+                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
+                    notice.save()
+
+                # change applying for publisher sending delete -> to close
+                elif data.user_status.status_id == 5:
+                    data.user_status.status_id = close
+                    data.save()
+                    
+                    msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動解除委託。"
+                    notice = Notice.objects.create(user=data.case.publisher, message=msg)
+                    notice.save()
+
+                # change applying for toolman sending delete -> to close
+                elif data.user_status.status_id == 6:
+                    data.user_status.status_id = close
+                    data.save()
+                    
+                    msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動解除委託。"
+                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
+                    notice.save()
+
+            # update case status
+            case.case_status = finish
+            case.save()
+
+            msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動完成案件。"
+            notice = Notice.objects.create(user=data.case.publisher, message=msg)
+            notice.save()
+
+    # apply timeout
+    for data in all_commission:
+        if data.finish_datetime != None:
+            delta = datetime.datetime.now().astimezone() - data.finish_datetime
+            if  delta.seconds > 10:#259200:
+                
+                # publisher apply for delete, user=publisher
+                if data.user_status.status_id == 5:
+                    data.user_status = close
+                    data.save()
+
+                    # user = publisher
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            委託人 {data.case.publisher.nickname} 發起解除請求，\
+                            工具人 {data.commissioned_user.nickname} 未於三日內確認，\
+                            系統自動解除委託。"
+
+                    # user = toolman
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            委託人 {data.commissioned_user.nickname} 發起解除請求，\
+                            工具人 {data.case.publisher.nickname} 未於三日內確認，\
+                            系統自動解除委託。"
+
+                    notice = Notice.objects.create(user=data.case.publisher, message=msg)
+                    notice.save()
+                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
+                    notice.save()
+
+                # toolman apply for delete
+                elif data.user_status.status_id == 6:
+                    data.user_status = close
+                    data.save()
+
+                    # user = publisher
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            工具人 {data.commissioned_user.nickname} 發起解除請求，\
+                            委託人 {data.case.publisher.nickname} 未於三日內確認，\
+                            系統自動解除委託。"
+
+                    # user = toolman
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            工具人 {data.case.publisher.nickname} 發起解除請求，\
+                            委託人 {data.commissioned_user.nickname} 未於三日內確認，\
+                            系統自動解除委託。"
+
+                    notice = Notice.objects.create(user=data.case.publisher, message=msg)
+                    notice.save()
+                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
+                    notice.save()
+
+                # toolman apply finish
+                elif data.user_status.status_id == 7:
+                    data.user_status = finish
+                    data.save()
+
+                    # user = publisher
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            工具人 {data.commissioned_user.nickname} 發起完成請求，\
+                            委託人 {data.case.publisher.nickname} 未於三日內確認，\
+                            系統自動完成委託。"
+
+                    # user = toolman
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            工具人 {data.case.publisher.nickname} 發起完成請求，\
+                            委託人 {data.commissioned_user.nickname} 未於三日內確認，\
+                            系統自動完成委託。"
+
+                    notice = Notice.objects.create(user=data.case.publisher, message=msg)
+                    notice.save()
+                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
+                    notice.save()
+
+    notice = Notice.objects.filter(Q(user=user)).order_by('-created_datetime')[:10]
+    return notice
+
+
+
+#####################################
+#            HOME PAGE              #
+#####################################
 @login_required
 def index(request):
     list_case = Case.objects.filter(shown_public=True)
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
+
+    notice = timeout(request)
     
     return render(request, 'index.html', locals())
 
@@ -428,9 +612,7 @@ def user_publish_record(request):
             if len(willingness) - len(commission) == 1:
                 willing[case.case_id] += 1
 
-
-    
-    # 判斷已結束的案件
+    timeout(request)
     
     return render(request, 'user/publish.html', locals())
 
@@ -465,6 +647,8 @@ def user_publish_applicant(request, case_id):
             if record.user_status.status_id != 4:
                 cnt += 1
     last = case.num - cnt
+
+    timeout(request)
 
     return render(request, 'user/applicant.html', locals())
 
@@ -513,6 +697,8 @@ def user_take_record(request):
                     deadline[data.commissionrecord_id] = "不到一小時"
         elif status == 3 or status == 4:
             close.append(data)
+
+    timeout(request)
 
     return render(request, 'user/take.html', locals())
 
@@ -661,152 +847,6 @@ def finish_commission(request, commission_id):
         return redirect('user-publish-record')
 
 
-# ---------check timeout---------
-def timeout(request):
-    user = request.user.user_detail
-    all_publish = Case.objects.filter(publisher=user)  # all cases the user publish
-    all_case = Case.objects.all()  # all cases
-    all_commission = CommissionRecord.objects.filter(Q(commissioned_user=user) | Q(case__in=all_publish))  # all commission the user own and take
-    finish = Status.objects.get(Q(status_id=3))
-    close = Status.objects.get(Q(status_id=4))
-
-    # finish case if all of toolmen are done
-    for case in all_publish:
-        commission = CommissionRecord.objects.filter(case=case)
-        finish_cnt = 0
-        for data in commission:
-            if data.user_status.status_id == 3:
-                cnt += 1
-        if cnt == case.num:
-            case.case_status = finish
-            case.save()
-
-        msg = f"案件編號#{case.case_id} {case.title}，所有工具人都已完成委託，案件完成！"
-        notice = Notice.objects.create(user=user, message=msg)
-        notice.save()
-
-
-    # case timeout
-    for case in all_case:
-        if datetime.datetime.now().astimezone() > case.ended_datetime:
-            willing = CaseWillingness.objects.filter(apply_case=case)
-            commission = CommissionRecord.objects.filter(case=case)
-            
-            # cancel all willingness
-            for data in willing:
-                data.delete()
-                msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動取消報名。"
-                notice = Notice.objects.create(user=data.willing_user, message=msg)
-                notice.save()
-
-            for data in commission:
-                # change conducting and applying for finish -> to finish status
-                if data.user_status.status_id in [2, 7]:
-                    data.user_status.status_id = finish
-                    data.save()
-                    
-                    msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動完成委託。"
-                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
-                    notice.save()
-
-                # change applying for publisher sending delete -> to close
-                elif data.user_status.status_id == 5:
-                    data.user_status.status_id = close
-                    data.save()
-                    
-                    msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動解除委託。"
-                    notice = Notice.objects.create(user=data.case.publisher, message=msg)
-                    notice.save()
-
-                # change applying for toolman sending delete -> to close
-                elif data.user_status.status_id == 6:
-                    data.user_status.status_id = close
-                    data.save()
-                    
-                    msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動解除委託。"
-                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
-                    notice.save()
-
-            # update case status
-            case.case_status = finish
-            case.save()
-
-            msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動完成案件。"
-            notice = Notice.objects.create(user=data.case.publisher, message=msg)
-            notice.save()
-
-    # apply timeout
-    for data in all_commission:
-        delta = datetime.datetime.now().astimezone() - data.finish_datetime
-        if  delta.seconds > 259200:
-            
-            # publisher apply for delete, user=publisher
-            if data.user_status.status_id == 5:
-                data.user_status = close
-                data.save()
-
-                # user = publisher
-                msg = f"案件編號#{data.case.case_id} {data.case.title}，\
-                        委託人 {data.case.publisher.nickname} 發起解除請求，\
-                        工具人 {data.commissioned_user.nickname} 未於三日內確認，\
-                        系統自動解除委託。"
-
-                # user = toolman
-                msg = f"案件編號#{data.case.case_id} {data.case.title}，\
-                        委託人 {data.commissioned_user.nickname} 發起解除請求，\
-                        工具人 {data.case.publisher.nickname} 未於三日內確認，\
-                        系統自動解除委託。"
-
-                notice = Notice.objects.create(user=data.case.publisher, message=msg)
-                notice.save()
-                notice = Notice.objects.create(user=data.commissioned_user, message=msg)
-                notice.save()
-
-            # toolman apply for delete
-            elif data.user_status.status_id == 6:
-                data.user_status = close
-                data.save()
-
-                # user = publisher
-                msg = f"案件編號#{data.case.case_id} {data.case.title}，\
-                        工具人 {data.commissioned_user.nickname} 發起解除請求，\
-                        委託人 {data.case.publisher.nickname} 未於三日內確認，\
-                        系統自動解除委託。"
-
-                # user = toolman
-                msg = f"案件編號#{data.case.case_id} {data.case.title}，\
-                        工具人 {data.case.publisher.nickname} 發起解除請求，\
-                        委託人 {data.commissioned_user.nickname} 未於三日內確認，\
-                        系統自動解除委託。"
-
-                notice = Notice.objects.create(user=data.case.publisher, message=msg)
-                notice.save()
-                notice = Notice.objects.create(user=data.commissioned_user, message=msg)
-                notice.save()
-
-            # toolman apply finish
-            elif data.user_status.status_id == 7:
-                data.user_status = finish
-                data.save()
-
-                # user = publisher
-                msg = f"案件編號#{data.case.case_id} {data.case.title}，\
-                        工具人 {data.commissioned_user.nickname} 發起完成請求，\
-                        委託人 {data.case.publisher.nickname} 未於三日內確認，\
-                        系統自動完成委託。"
-
-                # user = toolman
-                msg = f"案件編號#{data.case.case_id} {data.case.title}，\
-                        工具人 {data.case.publisher.nickname} 發起完成請求，\
-                        委託人 {data.commissioned_user.nickname} 未於三日內確認，\
-                        系統自動完成委託。"
-
-                notice = Notice.objects.create(user=data.case.publisher, message=msg)
-                notice.save()
-                notice = Notice.objects.create(user=data.commissioned_user, message=msg)
-                notice.save()
-
-
 
 # ---------give rate---------
 @login_required
@@ -854,32 +894,6 @@ def rate(request):
         publisher.save()
 
         return redirect('user-take-record')
-
-
-
-#########################################
-#                 TOOLS                 #
-#########################################
-
-# ---------------def Token-----------------
-class Token:
-    def __init__(self, security_key):
-        self.security_key = security_key
-        self.salt = base64.b64encode(security_key.encode('UTF-8'))
-    def generate_validate_token(self, username):
-        serializer = utsr(self.security_key)
-        return serializer.dumps(username, self.salt)
-    def confirm_validate_token(self, token, expiration=3600):
-        serializer = utsr(self.security_key)
-        return serializer.loads(token, salt=self.salt, max_age=expiration)
-    def remove_validate_token(self, token):
-        serializer = utsr(self.security_key)
-        return serializer.loads(token, salt=self.salt)
-token_confirm = Token(django_settings.SECRET_KEY)
-
-# ----------------def ajax response----------------
-def is_ajax(request):
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
 

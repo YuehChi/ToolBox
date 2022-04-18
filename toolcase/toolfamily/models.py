@@ -269,6 +269,9 @@ class Notice(models.Model):
     message = models.TextField(
         default='', blank=True,
         verbose_name='通知內容')
+    created_datetime = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='通知建立時間')
 
     class Meta:
         verbose_name = '通知'
