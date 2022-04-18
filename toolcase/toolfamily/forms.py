@@ -17,6 +17,7 @@ class UserDetailModelForm(forms.ModelForm):
             'work',
             'contact',
             'information',
+            'contactInfo'  # 聯絡資訊的預設值（應徵時發送用；發送時可客製化）
             # 'icon',  # 這部分功能切到 UserIconForm()
             )
 
