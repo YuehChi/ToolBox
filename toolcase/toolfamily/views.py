@@ -17,6 +17,7 @@ import base64
 from itsdangerous import URLSafeTimedSerializer as utsr
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
+from django.contrib import messages  # 用來向前端送錯誤訊息
 
 
 @login_required
@@ -321,7 +322,6 @@ def viewOtherUser(request, user_id):
     userData = UserDetail.objects.filter(user_id=user_id).values(*dataCol)[0]
     userData['work_num'] = viewedUser.work_num  # 接案數
     userData['publish_num'] = viewedUser.publish_num  # 發案數
-    print(userData)
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
@@ -418,6 +418,50 @@ def updateUserIcon(request):
         context={'num_visits': num_visits,
                  'user_name': user_name},
     )
+
+# ------ 更新密碼（需要先複驗密碼） ------
+@login_required
+def updatePassword(request):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+
+    # 重新確認密碼
+    if request.method == 'POST':
+        print(request.POST)
+        # 重新確認密碼
+        oldPassword = request.POST.get('oldPassword')
+        django_user = auth.authenticate(
+            username=user.account_mail,
+            password=oldPassword)
+
+        if not django_user:
+            print('Wrong password!')
+            messages.error(request, 'Wrong password!')
+            return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
+
+        # reset password（用和忘記密碼一樣的方式）
+        newPassword = request.POST.get('newPassword')
+        confirm = request.POST.get('confirmNewPassword')
+        print(newPassword, confirm)
+        if newPassword != confirm:
+            print('Different two passwords!')
+            messages.error(request, 'New passwords are not equal!')
+            return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
+
+        # update datebase
+        django_user.password = make_password(newPassword)
+        django_user.save()
+
+        user.salt = django_user.password
+        user.save()
+
+        request.session['messages'] = "密碼更改成功！"
+        return HttpResponseRedirect('/')  # 導到首頁(會員登入頁面)
+
+    # GET: 導向使用者頁面
+    return redirect('my-user-profile')
 
 
 
