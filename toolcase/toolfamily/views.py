@@ -573,6 +573,8 @@ def updateUserIcon(request):
 @login_required
 def user_publish_record(request):
 
+    timeout(request)
+
     # all case the user publish
     user = request.user.user_detail.user_id
     publisher = UserDetail.objects.get(user_id=user)
@@ -585,10 +587,11 @@ def user_publish_record(request):
     # numbers of toolmen for each case
     number = dict()
     for case in case_list:
-        number[case.case_id] = 0
-        for record in record_list:
-            if record.case == case and record.user_status.status_id != 4:
-                number[case.case_id] += 1
+        if case.case_status.status_id in [1, 4]:
+            number[case.case_id] = 0
+            for record in record_list:
+                if record.case == case and record.user_status.status_id != 4:
+                    number[case.case_id] += 1
 
     # check the status should turn back to 1 or not
     for key, value in number.items():
@@ -599,20 +602,14 @@ def user_publish_record(request):
 
     # number of applicants
     willing = dict()
-    toolman = set()
-    for case in case_list:
-        for data in willing_list:
-            if data.apply_case == case:
-                toolman.add(data.willing_user)
     for case in case_list:
         willing[case.case_id] = 0
-        for man in toolman:
-            willingness = CaseWillingness.objects.filter(Q(apply_case=case) & Q(willing_user=man))
-            commission = CommissionRecord.objects.filter(Q(case=case) & Q(commissioned_user=man))
-            if len(willingness) - len(commission) == 1:
-                willing[case.case_id] += 1
-
-    timeout(request)
+        for data in willing_list:
+            if data.apply_case == case:
+                try:
+                    CommissionRecord.objects.get(Q(commissioned_user=data.willing_user) & Q(case=case))
+                except:
+                    willing[case.case_id] += 1               
     
     return render(request, 'user/publish.html', locals())
 
@@ -620,6 +617,8 @@ def user_publish_record(request):
 # ---------applicants for each case---------
 @login_required
 def user_publish_applicant(request, case_id):
+
+    timeout(request)
 
     # all applicants for all cases
     case = Case.objects.get(Q(case_id=case_id))
@@ -648,8 +647,6 @@ def user_publish_applicant(request, case_id):
                 cnt += 1
     last = case.num - cnt
 
-    timeout(request)
-
     return render(request, 'user/applicant.html', locals())
 
 
@@ -657,6 +654,8 @@ def user_publish_applicant(request, case_id):
 # ------------user take record------------
 @login_required
 def user_take_record(request):
+
+    timeout(request)
 
     # all willingness the user takes
     user = request.user.user_detail
@@ -697,8 +696,6 @@ def user_take_record(request):
                     deadline[data.commissionrecord_id] = "不到一小時"
         elif status == 3 or status == 4:
             close.append(data)
-
-    timeout(request)
 
     return render(request, 'user/take.html', locals())
 
