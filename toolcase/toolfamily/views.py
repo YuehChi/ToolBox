@@ -751,6 +751,8 @@ def build_commission(request):
 
     return redirect('user-publish-record')
 
+    # 寄送聯絡資訊給對方還沒寫QQQ
+
 
 # ---------delete commission---------
 @login_required
