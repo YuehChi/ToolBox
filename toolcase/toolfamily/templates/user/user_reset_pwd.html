@@ -1,0 +1,54 @@
+{% extends "base_generic.html" %}
+{% load static %}
+{% block content %}
+<script src="\static\js\user.js" type="text/javascript"></script>
+<link rel="stylesheet" href="\static\css\user.css">
+<div class="row" >
+    <div class="col-sm-2">
+        <div class="justify-content-center" style="margin-top: 80px;">
+            <ul class="tab-list" style="text-align: center;display:block;">
+                <li class="list-group-item member bold" m="1"><a href="javascript:void(0)" style="color: rgb(134, 81, 64);">會員中心</a></li>
+                <li class="list-group-item member" m="2"><a href="javascript:void(0)" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li>
+                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">委託管理</a></li>
+                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">委託紀錄</a></li>
+                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的追蹤</a></li>
+                <li class="list-group-item"><a href="{%url 'user-password-update'%}" style="color: rgb(134, 81, 64) ;">更改密碼</a></li>
+                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">登出</a></li>
+            </ul>
+        </div>
+    </div>
+<!-- 更改密碼 -->
+    <div class="col-sm-10 tab" style="margin-top: 60px;">
+        <div c="6"  class="tab-inner" style="background: #ffffff;height: 500px;margin-top: 20px;margin-right: 10px;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6" style="max-width: 70%;width: 250px;">
+                        <form action="{% url 'user-password-update' %}" method="POST">
+                            {% csrf_token %}
+                            <p style="color:  rgb(38, 29, 29);">
+                                請輸入您的舊密碼：
+                                <input class="border rounded form-control" type="password" name="oldPassword" required>
+                            </p>
+                            <p style="color:  rgb(38, 29, 29);">
+                                請輸入新密碼：
+                                <input class="border rounded form-control" type="password" name="newPassword" required>
+                            </p>
+                            <p style="color:  rgb(38, 29, 29);">
+                                請再次輸入新密碼：
+                                <input class="border rounded form-control" type="password" name="confirmNewPassword" required>
+                            </p>
+                            <div style="text-align: center;margin-bottom: 20px;">
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交">
+                                <!-- 顯示自訂錯誤訊息 -->
+                                {% for error in messages %}
+                                <div>{{ error }}</div>
+                                {% endfor%}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

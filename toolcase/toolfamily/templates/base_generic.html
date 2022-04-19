@@ -51,7 +51,8 @@
                       <a class="dropdown-item" href="#" style="color: #5e4949;">委託管理</a>
                       <a class="dropdown-item" href="#" style="color: #5e4949;">委託紀錄</a>
                       <a class="dropdown-item" href="#" style="color: #5e4949;">我的追蹤</a>
-                      <a class="dropdown-item member" m="6" href="{% url 'my-user-profile'%}" style="color: #5e4949;">更改密碼</a>  <!--沒效，只能導到會員中心頁面-->
+                      {# <a class="dropdown-item member" m="6" href="{% url 'my-user-profile'%}" style="color: #5e4949;">更改密碼</a>  <!--沒效，只能導到會員中心頁面--> #}
+                      <a class="dropdown-item" href="{% url 'user-password-update' %}" style="color: #5e4949;">更改密碼</a>
                       <a class="dropdown-item" href="{% url 'logout' %}" style="color: #5e4949;">登出</a></div>
                 </div>
             </div>

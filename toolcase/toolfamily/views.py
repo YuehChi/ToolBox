@@ -273,7 +273,7 @@ def case_search(request):
 #####################################
 #           USER VIEWS              #
 #####################################
-# ------ 使用者資料頁面 ------
+# ------ 自己的個人資訊頁面 ------
 @login_required
 def viewUser(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -293,6 +293,7 @@ def viewUser(request):
     return render(request, 'user/user.html', content)
 
 
+# ------ 瀏覽其他使用者的資料 ------
 @login_required
 def viewOtherUser(request, user_id):
     user = get_object_or_404(  # 找出自己是哪個 user; 找不到則回傳 404 error
@@ -331,7 +332,7 @@ def viewOtherUser(request, user_id):
     return render(request, 'user/user_profile.html', content)
 
 
-# ------ 更新使用者資料 ------
+# ------ 更新個人資訊 ------
 @login_required
 def updateUser(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -362,7 +363,7 @@ def updateUser(request):
     return render(request, 'user/user.html/', content)
 
 
-# ------ 更新使用者頭像 ------
+# ------ 更新頭像 ------
 @login_required
 def updateUserIcon(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -419,7 +420,8 @@ def updateUserIcon(request):
                  'user_name': user_name},
     )
 
-# ------ 更新密碼（需要先複驗密碼） ------
+
+# ------ 更新密碼（需要再次輸入舊密碼）------
 @login_required
 def updatePassword(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -439,7 +441,7 @@ def updatePassword(request):
         if not django_user:
             print('Wrong password!')
             messages.error(request, 'Wrong password!')
-            return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
+            return redirect('user-password-update')  # 返回並顯示錯誤訊息
 
         # reset password（用和忘記密碼一樣的方式）
         newPassword = request.POST.get('newPassword')
@@ -448,7 +450,7 @@ def updatePassword(request):
         if newPassword != confirm:
             print('Different two passwords!')
             messages.error(request, 'New passwords are not equal!')
-            return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
+            return redirect('user-password-update')  # 返回並顯示錯誤訊息
 
         # update datebase
         django_user.password = make_password(newPassword)
@@ -458,10 +460,10 @@ def updatePassword(request):
         user.save()
 
         request.session['messages'] = "密碼更改成功！"
-        return HttpResponseRedirect('/')  # 導到首頁(會員登入頁面)
+        return HttpResponseRedirect('/')  # 自動登出，導到會員登入頁面
 
-    # GET: 導向使用者頁面
-    return redirect('my-user-profile')
+    # GET: 導向改密碼頁面
+    return render(request, 'user/user_reset_pwd.html', locals())
 
 
 
