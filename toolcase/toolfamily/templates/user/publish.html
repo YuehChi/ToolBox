@@ -9,7 +9,7 @@
 <body>
     <h1>我的委託</h1>
 
-    <h2>進行中案件</h2>
+    <h2>我的委託</h2>
     <table>
         <thead>
             <tr>
@@ -33,10 +33,14 @@
                         {% if value == 0 %}
                             <td>徵求中</td>
                         {% else %}
-                            <td>進行中</td>
+                            <td>委託中</td>
                         {% endif %}
                         <td>({{value}}/{{case.num}})</td>
-                        <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單</a></td>
+                        <td><a href="{% url 'user-publish-applicant' case.case_id %}">應徵名單 (
+                            {% for key1, value1 in willing.items %}
+                                {% if key1 == case.case_id %}{{value1}}{% endif %}
+                            {% endfor %}
+                            )</a></td>
                     </tr>
                     {% endif %}
                 {% endfor %}
@@ -46,16 +50,34 @@
                 {% for record in record_list %}
                     {% if record.case == case %}
                     <tr>
-                        <td>{{record.commissioned_user.nickname}}<br>{{record.commissioned_user.django_user.last_login}}</td>
-                        <td>{{record.commissioned_user.account_mail}}<br>{{record.commissioned_user.contact}}</td>
+                        <td>
+                        {% if record.commissioned_user.icon %}
+                            <img src="{{record.commissioned_user.icon.url}}" width="40px">
+                        {% endif %}
+                        </td>
+                        <td>{{record.commissioned_user.nickname}} (性別){{record.commissioned_user.gender}}<br>上次登入: {{record.commissioned_user.django_user.last_login}}</td>
+                        <td>{{record.commissioned_user.account_mail}}<br>(contact){{record.commissioned_user.contact}}</td>
 
                         {% if record.user_status.status_id == 2 %}
                             <td><input type="button" disabled="disabled" value="完成">
                                 <input type="button" onclick="window.location='/toolfamily/user/delete/{{record.commissionrecord_id}}'" value="解除"></td>
                         {% elif record.user_status.status_id == 3 %}
-                            <td>完成委託！</td>
+                            <td>評價
+                                {% if record.rate_publisher_to_worker %}
+                                    {{record.rate_publisher_to_worker}}
+                                {% else %}
+                                    <form action="/toolfamily/user/rate/" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit" value=1 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=2 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=3 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=4 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=5 name="{{record.commissionrecord_id}}">
+                                    <form>
+                                {% endif %}
+                                已完成委託</td>
                         {% elif record.user_status.status_id == 4 %}
-                            <td>已取消</td>
+                            <td>已解除</td>
                         {% elif record.user_status.status_id == 5 %}
                             <td>等待對方確認取消</td>
                         {% elif record.user_status.status_id == 6 %}
@@ -73,16 +95,64 @@
         {% endfor %}
     </table>
 
-    <h2>已結束案件</h2>
+    <h2>歷史紀錄</h2>
     <table>
+        <thead>
+            <tr>
+                <td>發布時間</td>
+                <td>標題</td>
+                <td>結束時間</td>
+                <td>狀態</td>
+            </tr>
+        </thead>
+
+
         {% for case in case_list %}
             {% if case.case_status.status_name in '完成,關閉' %}
-            <tr>
-                <td>{{case.created_datetime}}</td>
-                <td>{{case.title}}</td>
-                <td>{{case.ended_datetime}}</td>
-                <td>{{case.case_status.status_name}}</td>
-            </tr>
+            <thead>
+                <tr>
+                    <td>{{case.created_datetime}}</td>
+                    <td>{{case.title}}</td>
+                    <td>{{case.ended_datetime}}</td>
+                    <td>{{case.case_status.status_name}}</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for record in record_list %}
+                    {% if record.case == case %}
+                    <tr>
+                        <td>
+                        {% if record.commissioned_user.icon %}
+                            <img src="{{record.commissioned_user.icon.url}}" width="40px">
+                        {% endif %}
+                        </td>
+                        <td>{{record.commissioned_user.nickname}} (性別){{record.commissioned_user.gender}}<br>上次登入: {{record.commissioned_user.django_user.last_login}}</td>
+                        <td>{{record.commissioned_user.account_mail}}<br>(contact){{record.commissioned_user.contact}}</td>
+
+                        {% if record.user_status.status_id == 3 %}
+                            <td>評價
+                                {% if record.rate_publisher_to_worker %}
+                                    {{record.rate_publisher_to_worker}}
+                                {% else %}
+                                    <form action="/toolfamily/user/rate/" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit" value=1 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=2 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=3 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=4 name="{{record.commissionrecord_id}}">
+                                        <input type="submit" value=5 name="{{record.commissionrecord_id}}">
+                                    <form>
+                                {% endif %}
+                                已完成委託</td>
+                        {% elif record.user_status.status_id == 4 %}
+                            <td>於{{record.doublecheck_datetime}}解除委託
+                                已解除委託</td>
+                        {% endif %}
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
             {% endif %}
         {% endfor %}
     </table>

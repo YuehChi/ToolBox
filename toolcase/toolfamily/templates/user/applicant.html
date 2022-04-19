@@ -19,14 +19,14 @@
     <a href="{% url 'user-publish-record' %}">回到我的委託</a><br>
     <span>委託編號 #{{case.case_id}}</span><br>
     <span>委託標題 {{case.title}}</span><br><br>
-    <span>已在該委託有 {{cnt}} 個工具人，可再選取 {{last}} 人</span><br><br>
+    <span>該委託已有 {{cnt}} 個工具人，可最多再選取 {{last}} 人</span><br><br>
     {% comment %} 剩餘人數0的時候還沒擋 {% endcomment %}
     {% comment %} 報名成功之後的alert還沒寫，怕會弄亂現在寫的東西 {% endcomment %}
 
     <table>
         <thead>
             <tr>
-                <td>工具人資訊</td>
+                <td colspan=2>工具人資訊</td>
                 <td>評價</td>
                 <td>狀態</td>
                 <td>動作</td>
@@ -35,7 +35,12 @@
         <tbody>
             {% for data in willingness %}
                 <tr>
-                    <td>{{data.willing_user.name}} {{data.willing_user.gender}}(這是性別)</td>
+                    <td>
+                        {% if data.willing_user.icon %}
+                            <img src="{{data.willing_user.icon.url}}" width="40px">
+                        {% endif %}
+                    </td>
+                    <td>{{data.willing_user.name}} (性別){{data.willing_user.gender}}</td>
                     <td>{{data.willing_user.rate}}</td>
                     <td class="select" id="text_{{data.casewillingness_id}}">未選</td>
                     <td><input type="button" id="{{data.casewillingness_id}}" class="btn" value="選擇"></td>
