@@ -1,9 +1,10 @@
 from calendar import c
-from datetime import timedelta
+from datetime import date, datetime, timedelta
 import os, django, json, smtplib, base64
 from urllib import request
 from site import USER_SITE
 import re
+
 from .models import *
 from .forms import *
 
@@ -16,17 +17,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
 
-from django.contrib import messages, auth
+from django.contrib import messages, auth  # message 用來向前端送錯誤訊息
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.backends import ModelBackend
 
 from itsdangerous import URLSafeTimedSerializer as utsr
-from django.conf import settings as django_settings
-from django.core.mail import send_mail
-from django.contrib import messages  # 用來向前端送錯誤訊息
-from datetime import date
-from datetime import datetime
+
 
 
 #########################################
@@ -131,8 +128,10 @@ def timeout(request):
             case.case_status = finish
             case.save()
 
+            # # 此處報錯 "data變數不存在"
             msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動完成案件。"
-            notice = Notice.objects.create(user=data.case.publisher, message=msg)
+            # notice = Notice.objects.create(user=data.case.publisher, message=msg)
+            notice = Notice.objects.create(user=case.publisher, message=msg)
             notice.save()
 
     # apply timeout
