@@ -1,8 +1,13 @@
 $(document).ready(function() {
 
+    // --------------- Case Edit Button ---------------
+    if($('#get-user-id').html() == $('#get-loginuser-id').html()){
+        $('#link-edit').removeClass('d-none')
+    }
+
     // --------------- Case Status ---------------
     var case_status = $('#get-case-status').html()
-    console.log(case_status)
+    console.log('case_status:' + case_status)
     if(case_status == '徵求'){
         $('#case-status').html('徵求中')
     }
@@ -44,35 +49,35 @@ $(document).ready(function() {
         imgitems_html = imgitems_html + '<div class="carousel-item active"><div class="row">'
         imgindicator_html = imgindicator_html + '<li data-bs-target="#carousel-case-images" data-bs-slide-to="0" class="active"></li>'
         for (i=0; i<case_images.length; i++){
-            console.log(case_images[i].src)
-            console.log(imgitems_html)
+            // console.log(case_images[i].src)
+            // console.log(imgitems_html)
 
             if(i<show_num){
-                console.log('i<show_num')
-                console.log(imgitems_html)
-                imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block" src="' + case_images[i].src + '" alt="Slide Image"></div>'
+                // console.log('i<show_num')
+                // console.log(imgitems_html)
+                imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block show-type" src="' + case_images[i].src + '" alt="Slide Image"></div>'
             }
             else{
                 console.log('i>show_num')
                 if(i%show_num == 0 && i!=0){
-                    console.log('i%show_num == 0 && i!=0')
-                    console.log(imgitems_html)
+                    // console.log('i%show_num == 0 && i!=0')
+                    // console.log(imgitems_html)
                     imgitems_html = imgitems_html + '</div></div>'
                     imgitems_html = imgitems_html + '<div class="carousel-item"><div class="row">'
-                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block" src="' + case_images[i].src + '" alt="Slide Image"></div>'
+                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block show-type" src="' + case_images[i].src + '" alt="Slide Image"></div>'
                     imgindicator_html = imgindicator_html + '<li data-bs-target="#carousel-case-images" data-bs-slide-to="'+ Math.floor(i/show_num) +'"></li>'
                 }
                 else{
-                    console.log('i%show_num != 0 || i==0')
-                    console.log(imgitems_html)
-                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block" src="' + case_images[i].src + '" alt="Slide Image"></div>'
+                    // console.log('i%show_num != 0 || i==0')
+                    // console.log(imgitems_html)
+                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block show-type" src="' + case_images[i].src + '" alt="Slide Image"></div>'
                 }
             }
         }
         if(case_images.length %show_num != 0){
             imgitems_html = imgitems_html + '<div class="col padding-none"></div>'
         }
-        console.log(imgitems_html)
+        // console.log(imgitems_html)
         imgitems_html = imgitems_html + '</div></div>'
             
         //     if (i==0){
@@ -95,8 +100,8 @@ $(document).ready(function() {
         // }
         // imgitems_html = imgitems_html + '</div></div>'
     }
-    console.log(imgitems_html)
-    console.log(imgindicator_html)
+    // console.log(imgitems_html)
+    // console.log(imgindicator_html)
     $('.carousel-inner').html(imgitems_html)
     $('.carousel-indicators').html(imgindicator_html)
 
@@ -104,28 +109,37 @@ $(document).ready(function() {
 
 
 
-    console.log(case_images)
+    // console.log(case_images)
 
+
+    // ------------------------------ User ------------------------------
+    $('#user-nickname').html($('#get-user-nickname').html())
+    $('#user-department').html($('#get-user-department').html())
+    //$('#user-icon').attr('src', $('#get-user-icon').html())
+    $('#user-icon').css('background-image', 'url('+$('#get-user-icon').html()+')')
+    // $('#user-icon').attr('style', "background-image:" + $('#get-user-icon').html())
+    console.log($('#get-user-lastlogintime').html())
     // --------------- User Gender ---------------
     var gender = $('#get-user-gender').html()
     if (gender == 0){
         //genderless
         $('#user-gender').attr('src', '/static/images/gender-male-female.png')
-        console.log(gender)
+        // console.log(gender)
     }
     else if (gender == 1){
         //male
         $('#user-gender').attr('src', '/static/images/gender-male.png')
-        console.log(gender)
+        // console.log(gender)
     }
     else if (gender == 2){
         //female
         $('#user-gender').attr('src', '/static/images/gender-female.png')
-        console.log(gender)
+        // console.log(gender)
     }
 
     // --------------- User Last Login Time ---------------
     var lastlogin = $('#get-user-lastlogintime').html()
+
     var year = lastlogin.split('年')[0]
     var month = lastlogin.split('年')[1].split('月')[0]
     var date =  lastlogin.split('年')[1].split('月')[1].split('日')[0]
@@ -218,12 +232,6 @@ $(document).ready(function() {
     console.log($('#get-user-rate').html())
     console.log($('#get-user-ratenum').html())
     console.log($('#get-user-lastlogintime').html())
-    $('#user-nickname').html($('#get-user-nickname').html())
-    $('#user-department').html($('#get-user-department').html())
-
-
-
-
 
 
 });

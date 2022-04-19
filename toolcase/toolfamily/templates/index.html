@@ -2,14 +2,7 @@
 
 {% block content %}
     <h1>all_case_show</h1>
-    <h1>all_case_show</h1>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <h1>new_all_case_show</h1>
      <table class="table">
         <thead>
             <tr>
@@ -32,7 +25,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for case in list_case%}
+            {% for case in new_case%}
                 <tr>
                   <td><a href="{% url 'case-profile' case.case_id %}">{{case.case_id}}</a></td>
                   <td>{{case.title}}</td>
@@ -78,6 +71,71 @@
     {% for msg in notice %}
         <span>{{msg.message}}</span><br>
     {% endfor %}
+    <h1>popular_case_show</h1>
+     <table class="table">
+        <thead>
+            <tr>
+                <th>case_id</th>
+                <th>title</th>
+                <th>委託人</th>
+                <th>報酬方式</th>
+                <th>地點</th>
+                <th>內容說明</th>
+                <th>偏好條件</th>
+                <th>開始時間</th>
+                <th>結束時間</th>
+                <th>狀態</th>
+                <th>領域</th>
+                <th>類型</th>
+                <th>照片</th>
+                <th>徵求人數</th>
+                <th>工作偏好</th>
+                <th>瀏覽人數</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for case in most_case%}
+                <tr>
+                  <td><a href="{% url 'case-profile' case.case_id %}">{{case.case_id}}</a></td>
+                  <td>{{case.title}}</td>
+                  <td>{{case.publisher}}</td>
+                  <td>{{case.reward}}</td>
+                  <td>{{case.location}}</td>
+                  <td>{{case.description}}</td>
+                  <td>{{case.constraint}}</td>
+                  <td>{{case.started_datetime}}</td>
+                  <td>{{case.ended_datetime}}</td>
+                  <td>{{case.case_status.status_name}}</td>
+                  <td>
+                  {% for case_field in case_fields %}
+                    {% if case_field.case_id == case.case_id%}
+                        {{case_field.case_field.field_name}}
+                    {%endif%}
+                  {% endfor %}
+                  </td>
+                  <td>
+                  {% for case_type in case_types %}
+                    {% if case_type.case_id == case.case_id%}
+                        {{case_type.case_type.type_name}}
+                    {%endif%}
+                  {% endfor %}
+                  </td>
+                  <td>
+                  {% for photo in case_photo %}
+                    {% if photo.case_id == case.case_id and photo.image.url != None%}
+                        <img src="{{photo.image.url}}" alt="照片" style="width: 100px; height: 100px">
+                    {%endif%}
+                  {% endfor %}
+                  </td>
+                  <td>{{case.num}}</td>
+                  <td>{{case.work}}</td>
+                  <td>{{case.pageviews}}</td>
+                </tr>
+
+            {% endfor%}
+        <tbody>
+    </table>
+
 
 {% endblock %}
 

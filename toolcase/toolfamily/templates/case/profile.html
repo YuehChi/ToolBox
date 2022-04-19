@@ -17,6 +17,10 @@
     <link rel="stylesheet" href="\static\css\case-profile-styles.css">
 
 
+    <script src="\static\bootstrap\js\bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
+    <script src="\static\js\case-profile.js"></script>
+
 
 </head>
 
@@ -97,11 +101,13 @@
                                         <span style="display: inline;width: auto;color: rgb(165,141,141);">
                                         #案件編號</span>
                                         <span id="case-id" style="margin-left: 10px;color: #a58d8d;">
-                                        {{case.case_id}}
+                                            {{case.case_id}}
                                         </span>
                                         <span id="case-title" style="display: block;font-weight: bold;font-size: 24px;">
-                                        {{case.title}}
+                                            {{case.title}}
+                                            <a href="./edit/" class="d-none" style="font-size: small;color: #b94700" id="link-edit">編輯案件</a>
                                         </span>
+
                                     </div>
                                 </div>
                                 <!----------Case Status & Time---------->
@@ -147,7 +153,7 @@
                             </div>
                             <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color" style="margin-top: 5px;margin-bottom: 5px;">
                                 <span id="case-num" style="display: inline;">
-                                1
+                                {{case.num}}
                                 </span>
                                 <span style="display: inline;margin-left: 3px;">
                                 人
@@ -303,7 +309,7 @@
                             <!----------Case Buttons---------->
                             <div class="col-0 col-md-3 justify-content-end align-content-end" style="position: relative;">
 
-                                <div class="row">
+                                <div class="row" id="case-buttons">
                                     <!----------Follow Button---------->
                                     <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 10px;">
                                         <button class="btn btn-primary d-flex justify-content-center align-items-center button-case" id="button-case-follow" type="button">
@@ -373,7 +379,11 @@
                                     
                                     <!----------User Icon---------->
                                     <div class="col-12 d-flex justify-content-center align-items-center">
-                                        <img id="user-icon" style="border-radius: 50%;width: 80px;height: 80px;" src="\static\images\4f6ec39cb88ea7d615f7c636283a2a27.jpg">
+                                        <div class="text-center pt-3 pr-3 pl-3 pb-2">
+                                            <a href="#">
+
+                                                <div class="img-circular" id="user-icon"></div>
+                                        </a></div>
                                     </div>
 
                                     <!----------User Rate---------->
@@ -429,8 +439,22 @@
                     </div>
                 </div>
             </div>
+
             {% for user in user_detail%}
-                <span style="display: inline" id="get-user-nickname">
+                <span style="display: none" id="get-user-id">
+                    {{user.pk}}
+                </span>
+                <span style="display: none" id="get-loginuser-id">
+                    {{check_user_id}}
+                </span>
+                <span style="display: none" id="get-user-icon">
+                {% if user.icon != "" %}
+                    {{user.icon.url}}
+                {% else %}
+                    /static/images/default_icon_1_small.png
+                {%endif%}
+                </span>
+                <span style="display: none" id="get-user-nickname">
                 {% if user.nickname == "" %}
                     {{user.name}}
                 {% else %}
@@ -449,8 +473,8 @@
                 <span style="display: inline;" id="get-user-ratenum">
                     {{user.rate_num}}
                 </span>
-                <span style="display: inline;" id="get-user-lastlogintime">
-                    {{user.last_login_datetime}}
+                <span style="display: none;" id="get-user-lastlogintime">
+                    {{user.last_login}}
                 </span>
 
             {% endfor%}
@@ -468,7 +492,7 @@
         {% for user in user_detail%}
               {% if user.icon != "" %}
                   <img src="{{user.icon.url}}" alt="頭貼" style="width: 100px; height: 100px">
-              {% else %} 
+              {% else %}
                   <p> no phote</p>
               {%endif%}
            <p>name : {{user.name}}</p>
@@ -484,7 +508,7 @@
            <p>rate : {{user.rate}}</p>
            <p>created_datetime : {{user.created_datetime}}</p>
            <p>last_login_datetime : {{user.last_login}}</p>
-          
+
         {% endfor%}
     
 </body>
