@@ -35,10 +35,10 @@
                 </ul>
                 <button class="btn btn-primary" type="button" id="button-case-new" style="padding: 2px 12px;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;">我要發案</button>
                 {% if user.icon %}  {# 有圖才顯示 #}
-                <img style="border-radius: 50%;width: 40px;margin: 5px;padding: 2px;" src="{{ user.icon.url }}">
-              {% else %}
-                <img style="border-radius: 50%;width: 40px;margin: 5px;padding: 2px;" src="\static\images\default_icon_1.png">
-              {% endif %}
+                    <img style="border-radius: 50%; width: 40px; height: 40px; margin: 5px; padding: 2px;" src="{{ user.icon.url }}">
+                {% else %}
+                    <img style="border-radius: 50%; width: 40px;  height: 40px; margin: 5px;padding: 2px;" src="\static\images\default_icon_1.png">
+                {% endif %}
                 <div class="dropdown">
                     <a class="dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="color: rgb(94,73,73);font-size: 12px;">
                         {% if user.nickname %}
