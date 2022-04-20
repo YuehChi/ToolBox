@@ -133,7 +133,7 @@ def timeout(request):
     for data in all_commission:
         if data.finish_datetime != None:
             delta = datetime.datetime.now().astimezone() - data.finish_datetime
-            if  delta.seconds > 10:#259200:
+            if  delta.seconds > 259200:
                 
                 # publisher apply for delete, user=publisher
                 if data.user_status.status_id == 5:
@@ -839,7 +839,8 @@ def delete_commission(request, commission_id):
     commission.save()
 
     # if there is no commission, change the case status
-    result = CommissionRecord.objects.filter(Q(case=case) & (~Q(user_status=1) | ~Q(user_status=4)))
+    close_status = Status.objects.get(Q(status_id=4))
+    result = CommissionRecord.objects.filter(Q(case=case) & ~Q(user_status=close_status))
     if result.exists():
         pass
     else:
