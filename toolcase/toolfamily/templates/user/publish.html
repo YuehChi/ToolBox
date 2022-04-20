@@ -10,12 +10,12 @@
     <h1>我的委託</h1>
 
     <h2>我的委託</h2>
-    <table>
+    <table border=1>
         <thead>
             <tr>
                 <td>發布時間</td>
                 <td colspan=2>標題</td>
-                <td>結束時間</td>
+                <td colspan=2>結束時間</td>
                 <td colspan=2>狀態</td>
             </tr>
         </thead>
@@ -30,6 +30,13 @@
                         <td>{{case.title}}</td>
                         <td><a href="{% url 'case-profile' case.case_id %}">編輯</a></td>
                         <td>{{case.ended_datetime}}</td>
+
+                        {% for key1, value1 in deadline.items %}
+                            {% if case.case_id == key1 %}
+                            <td>還剩 {{value1}}</td>
+                            {% endif %}
+                        {% endfor %}
+                        
                         {% if value == 0 %}
                             <td>徵求中</td>
                         {% else %}
@@ -96,7 +103,7 @@
     </table>
 
     <h2>歷史紀錄</h2>
-    <table>
+    <table border=1>
         <thead>
             <tr>
                 <td>發布時間</td>

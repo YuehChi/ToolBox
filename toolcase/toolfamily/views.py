@@ -586,6 +586,20 @@ def user_publish_record(request):
     publisher = UserDetail.objects.get(user_id=user)
     case_list = Case.objects.filter(publisher=publisher)
 
+    # time left
+    deadline = {}
+    for data in case_list:
+        if data.case_status.status_id in [1, 2]:
+            delta = data.ended_datetime - datetime.datetime.now().astimezone()
+            if delta.days > 30:
+                deadline[data.case_id] = f"{delta.days // 30} 個月"
+            elif delta.days > 0:
+                deadline[data.case_id] = f"{delta.days} 天"
+            elif delta.seconds > 3600:
+                deadline[data.case_id] = f"{delta.seconds // 3600} 小時"
+            else:
+                deadline[data.case_id] = "不到一小時"
+
     # show all of the toolmen
     record_list = CommissionRecord.objects.all().prefetch_related('case')
     willing_list = CaseWillingness.objects.all().prefetch_related('apply_case')
@@ -694,7 +708,7 @@ def user_take_record(request):
                 delta = data.case.ended_datetime - datetime.datetime.now().astimezone()
                 if delta.days > 30:
                     deadline[data.commissionrecord_id] = f"{delta.days // 30} 個月"
-                if delta.days > 0:
+                elif delta.days > 0:
                     deadline[data.commissionrecord_id] = f"{delta.days} 天"
                 elif delta.seconds > 3600:
                     deadline[data.commissionrecord_id] = f"{delta.seconds // 3600} 小時"
@@ -821,6 +835,7 @@ def delete_commission(request, commission_id):
         sender = commission.case.publisher
         receiver = commission.commissioned_user
     commission.user_status = Status.objects.get(Q(status_id=4))
+    commission.doublecheck_datetime = datetime.datetime.now()
     commission.save()
 
     # if there is no commission, change the case status
