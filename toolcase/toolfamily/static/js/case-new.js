@@ -19,7 +19,7 @@ $(document).ready(function() {
     $('#forminput-work').val($('#input-work').val())                  // Work Mode
     $('#forminput-constraint').val($('#input-preference').val())      // Constraint
     $('#forminput-location').val($('#input-location').val())          // Location
-    
+
     var description = $('#textarea-description').val()
 
     console.log(upload_img_log)
@@ -153,7 +153,7 @@ $(document).ready(function() {
   var location_temp = ""
   $('#radio-check-location').click(function(){
     var source = $(this).attr('src').split("/");
-    
+
     console.log($(this).val());
     if(source[source.length -1] == 'check-circle-outline.png'){
       location_temp = $('#input-location').val()
@@ -166,7 +166,7 @@ $(document).ready(function() {
       $("#input-location").val(location_temp);
       $(this).attr('src', '/static/images/check-circle-outline.png')
     }
-  
+
   });
 
   //---------------------Work Mode Radio Button----------------------
@@ -188,6 +188,7 @@ $(document).ready(function() {
     }
   });
 });
+<<<<<<< HEAD
 
   
 function deleteImg(event) {
@@ -239,3 +240,5 @@ function randomLetter(length) {
   for (var i = 0, len = files.length; i<len; i++) b.items.add(files[i])
   return b.files
 }
+=======
+>>>>>>> origin/Server
