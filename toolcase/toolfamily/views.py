@@ -593,7 +593,7 @@ def user_publish_record(request):
     # numbers of toolmen for each case
     number = dict()
     for case in case_list:
-        if case.case_status.status_id in [1, 4]:
+        if case.case_status.status_id in [1, 2]:
             number[case.case_id] = 0
             for record in record_list:
                 if record.case == case and record.user_status.status_id != 4:
@@ -748,6 +748,7 @@ def build_commission(request):
     try:
         # get case willingness id
         body = request.body.decode('utf-8').split('&toolman=')[1:]
+        toolmanInfoList = []
 
         # create commission record
         for id in body:
@@ -755,11 +756,23 @@ def build_commission(request):
             case = willingness.apply_case
             toolman = willingness.willing_user
             status = Status.objects.get(Q(status_id=2))
+            toolmanInfoList.append(willingness.willing_user)
 
             record = CommissionRecord.objects.create(case=case,
-                                                    commissioned_user=toolman,
-                                                    user_status=status)
+                                                     commissioned_user=toolman,
+                                                     user_status=status)
             record.save()
+
+        # create notice for publisher
+        msg = f"您已對 案件編號#{case.case_id} {case.title} 成立委託，請至 我的委託 查看工具人聯繫方式。"
+        notice = Notice.objects.create(user=request.user.user_detail, message=msg)
+        notice.save()
+
+        # create notice for all toolmen
+        msg = f"案件編號#{case.case_id} {case.title}，委託人 {request.user.user_detail.nickname} 已成立委託，請至 我的接案 查看委託人聯繫方式。"
+        for user in toolmanInfoList:
+            notice = Notice.objects.create(user=user, message=msg)
+            notice.save()
 
         # change case status
         case.case_status = Status.objects.get(Q(status_id=2))
@@ -771,7 +784,6 @@ def build_commission(request):
 
     return redirect('user-publish-record')
 
-    # 寄送聯絡資訊給對方還沒寫QQQ
 
 
 # ---------delete commission---------
