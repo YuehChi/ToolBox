@@ -189,6 +189,9 @@ $(document).ready(function() {
   });
 });
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> User-2.0
 
   
 function deleteImg(event) {
@@ -220,6 +223,7 @@ function postImg(event) {
   }
   
 }
+<<<<<<< HEAD
 
 function randomLetter(length) {
     var result     = '';
@@ -242,3 +246,5 @@ function randomLetter(length) {
 }
 =======
 >>>>>>> origin/Server
+=======
+>>>>>>> User-2.0

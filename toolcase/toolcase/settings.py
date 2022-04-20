@@ -127,6 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = 'static/'
 
 #設定上傳檔案存放的目錄
 MEDIA_URL = '/media/'

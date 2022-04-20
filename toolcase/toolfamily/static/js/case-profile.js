@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 $(document).ready(function() {
 
     // --------------- Case Edit Button ---------------
@@ -249,6 +250,8 @@ function convertMS(millisecondes){
 
 }
 =======
+=======
+>>>>>>> User-2.0
 $(document).ready(function() {
 
     // --------------- Case Status ---------------
@@ -384,7 +387,7 @@ $(document).ready(function() {
 
     // --------------- User Last Login Time ---------------
     var lastlogin = $('#get-user-lastlogintime').html()
-    
+
     var year = lastlogin.split('年')[0]
     var month = lastlogin.split('年')[1].split('月')[0]
     var date =  lastlogin.split('年')[1].split('月')[1].split('日')[0]
@@ -432,7 +435,7 @@ $(document).ready(function() {
             }
 
         }
-        
+
     }
 
     var llt = convertMS(Math.abs((currentdate.getTime() - lastlogin.getTime())))
@@ -462,7 +465,7 @@ $(document).ready(function() {
         else{
             rate_html = rate_html + '<i class="material-icons star-color">star_border</i>'
         }
-        starnum = starnum - 1 
+        starnum = starnum - 1
     }
 
     console.log(rate_html)
@@ -485,4 +488,8 @@ $(document).ready(function() {
 
 
 });
+<<<<<<< HEAD
 >>>>>>> origin/Server
+=======
+
+>>>>>>> User-2.0

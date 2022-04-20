@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> User-2.0
 {% extends "base_generic.html" %}
 
 {% block content %}
@@ -327,7 +330,7 @@
                                     </div>
                                     <!----------Profile Button---------->
                                     <div class="col-12 d-flex justify-content-center align-items-center" style="height: 50px;margin-top: 6px;">
-                                        <button onclick="window.location='/toolfamily/case/take/{{case.case_id}}'" class="btn btn-primary d-flex justify-content-center align-items-center" id="button-case-commission" type="button" style="height: 150px;width:150px;display: block;color: #3d2d27;background: #f5c548;border-color: #86514000;height: 85%;max-width: 300px">
+                                        <button class="btn btn-primary d-flex justify-content-center align-items-center" id="button-case-commission" type="button" style="height: 150px;width:150px;display: block;color: #3d2d27;background: #f5c548;border-color: #86514000;height: 85%;max-width: 300px">
                                         我有意願
                                         </button>
                                     </div>
@@ -341,24 +344,24 @@
                     </div>
                 </div>
             </div>
-            
+
             <!----------Catch Parms---------->
             <span style="display: none" id="get-case-status">{{case.case_status.status_name}}</span>
             <span style="display: none" id="get-case-enddate">{{case.ended_datetime}}</span>
             <span style="display: none" id="get-case-startdate">{{case.started_datetime}}</span>
             <span style="display: none" id="get-case-description">{{case.description}}</span>
- 
+
             {% for photo in case_photo %}
                 {% if photo.case_id == case.case_id and photo.image.url != None%}
                     <img class="w-100 d-block case-img d-none" src="{{photo.image.url}}" alt="Slide Image">
                 {%endif%}
             {% endfor %}
-                
+
             {% endfor%}
 
 
             <!----------User---------->
-            
+
             <div class="col-12 col-lg-3" style="margin-top: 0px;">
                 <div class="row" style="margin-top: 58px;">
                     <!----------Title---------->
@@ -377,13 +380,18 @@
                         <div class="card" style="margin-bottom: 50px; border-top-left-radius: 0rem;border-top-right-radius: 0rem;border-bottom-right-radius: .25rem;border-bottom-left-radius: .25rem;width: 85%;">
                             <div class="card-body">
                                 <div class="row">
-                                    
+
                                     <!----------User Icon---------->
                                     <div class="col-12 d-flex justify-content-center align-items-center">
                                         <div class="text-center pt-3 pr-3 pl-3 pb-2">
                                             <a href="#">
+<<<<<<< HEAD
 
                                                 <div class="img-circular" id="user-icon"></div>
+=======
+                                                <img class="my-2 mx-auto text-center rounded-circle square-cover d-inline" id="user-icon" src="/static/images/default_icon_1_small.png" style="width: 100px;max-width: 100px;">
+                                                </div>
+>>>>>>> User-2.0
                                         </a></div>
                                     </div>
 
@@ -433,7 +441,7 @@
                                         查看個人空間
                                         </button>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -442,17 +450,24 @@
             </div>
 
             {% for user in user_detail%}
+<<<<<<< HEAD
                 <span style="display: none" id="get-user-id">
                     {{user.pk}}
                 </span>
                 <span style="display: none" id="get-loginuser-id">
                     {{check_user_id}}
                 </span>
+=======
+>>>>>>> User-2.0
                 <span style="display: none" id="get-user-icon">
                 {% if user.icon != "" %}
                     {{user.icon.url}}
                 {% else %}
+<<<<<<< HEAD
                     /static/images/default_icon_1_small.png
+=======
+                    " "
+>>>>>>> User-2.0
                 {%endif%}
                 </span>
                 <span style="display: none" id="get-user-nickname">
@@ -462,16 +477,16 @@
                     {{user.nickname}}
                 {%endif%}
                 </span>
-                <span style="display: inline;" id="get-user-gender">
+                <span style="display: none;" id="get-user-gender">
                     {{user.gender}}
                 </span>
-                <span style="display: inline;" id="get-user-department">
+                <span style="display: none;" id="get-user-department">
                     {{user.department}}
                 </span>
-                <span style="display: inline;" id="get-user-rate">
+                <span style="display: none;" id="get-user-rate">
                     {{user.rate}}
                 </span>
-                <span style="display: inline;" id="get-user-ratenum">
+                <span style="display: none;" id="get-user-ratenum">
                     {{user.rate_num}}
                 </span>
                 <span style="display: none;" id="get-user-lastlogintime">
@@ -483,11 +498,12 @@
 
         </div>
     </div>
-    
+
 
     <script src="\static\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
     <script src="\static\js\case-profile.js"></script>
+<<<<<<< HEAD
 
     <h1>case_user_detail</h1>
         {% for user in user_detail%}
@@ -511,11 +527,14 @@
            <p>last_login_datetime : {{user.last_login}}</p>
 
         {% endfor%}
+=======
+>>>>>>> User-2.0
     
 </body>
 
 </html>
 {% endblock %}
+<<<<<<< HEAD
 =======
 {% extends "base_generic.html" %}
 
@@ -1000,3 +1019,5 @@
 </html>
 {% endblock %}
 >>>>>>> origin/Server
+=======
+>>>>>>> User-2.0
