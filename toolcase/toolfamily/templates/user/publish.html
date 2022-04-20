@@ -28,7 +28,11 @@
                     <tr>
                         <td>{{case.created_datetime}}</td>
                         <td>{{case.title}}</td>
-                        <td><a href="{% url 'case-profile' case.case_id %}">編輯</a></td>
+                        <td>
+                            {% if case.case_status.status_id == 1 %}
+                                <a href="{% url 'case-profile' case.case_id %}">編輯</a>
+                            {% endif %}
+                        </td>
                         <td>{{case.ended_datetime}}</td>
 
                         {% for key1, value1 in deadline.items %}
@@ -36,7 +40,7 @@
                             <td>還剩 {{value1}}</td>
                             {% endif %}
                         {% endfor %}
-                        
+
                         {% if value == 0 %}
                             <td>徵求中</td>
                         {% else %}
