@@ -1,125 +1,184 @@
-{% extends "base_generic.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<h1>case_search</h1>
-<h1>case_search</h1>
-     {% comment %} action="/toolfamily/case/new/" 注意 在new 頁面要是這個action {% endcomment %}
-    <form class = "from"  action=" " enctype="multipart/form-data" method="POST">
-        {% csrf_token %}
-         <div>
-            <P>簡單搜尋</p>
-            <label>類型: </label>
-            <label><input type="checkbox" value="1" name="case_type"> 諮詢</label>
-            <label><input type="checkbox" value="2" name="case_type"> 家教</label>
-            <label><input type="checkbox" value="3" name="case_type"> 勞力</label>
-            <label><input type="checkbox" value="4" name="case_type"> 實驗</label>
-            <label><input type="checkbox" value="5" name="case_type"> 其他</label>&nbsp&nbsp&nbsp
-            <label> 領域: </label>
-            <label><input type="checkbox" value="1" name="case_field"> 電資</label>
-            <label><input type="checkbox" value="2" name="case_field"> 數理</label>
-            <label><input type="checkbox" value="3" name="case_field"> 人文科學</label>
-            <label><input type="checkbox" value="4" name="case_field"> 藝術設計</label>
-            <label><input type="checkbox" value="5" name="case_field"> 其他</label>&nbsp&nbsp&nbsp
-            <label> 文字搜尋: </label>  
-                 <input type="text" name ="search" placeholder="Enter Your reward" >
-            <input type="submit" value="送出"><br><br>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>case-search</title>
+    <link rel="stylesheet" href="\static\bootstrap\css\bootstrap.min.css">
+    <link rel="stylesheet" href="\static\fonts\material-icons.min.css">
+    <link rel="stylesheet" href="\static\css\case-search-styles.css">
+
+    <script src="\static\bootstrap\js\bootstrap.min.js"></script>
+</head>
+
+<body style="background: #f4f4f3;">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <span style="font-weight: bold;color: #865140;">
+                                進階搜尋
+                                </span>
+                            </div>
+                            <div class="col-12 search-col">
+                                <span class="d-block" style="font-size: 15px;">
+                                領域
+                                </span>
+                                <div style="height: auto;/*inline-height: 10px;*/display: inline;font-size: 12px!important;">
+                                    <div class="form-check form-check-inline" style="height: auto;margin-bottom: 0px;">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-1" style="border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-1">
+                                        電資
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline" style="height: 13px;">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-2" style="border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-2">
+                                        數理
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline" style="height: auto;">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-3" style="border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-3">
+                                        人文科學
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline" style="height: 20px !important;margin-bottom: 0px;min-height: 18px;">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-4" style="color: #865140;border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-4">
+                                        藝術設計
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline" style="border-color: rgb(134, 81, 64);border-top-color: rgb(134,;border-right-color: 81,;border-bottom-color: 64);border-left-color: 81,;">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-5" style="border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-5">
+                                        其他
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 search-col">
+                                <span class="d-block" style="font-size: 15px;">
+                                類型
+                                </span>
+                                <div style="height: auto;/*inline-height: 10px;*/display: inline;font-size: 12px!important;">
+                                    <div class="form-check form-check-inline" style="height: auto;margin-bottom: 0px;">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-6" style="border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-6">
+                                        諮詢
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline" style="height: 13px;">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-7" style="border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-7">
+                                        家教
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline" style="height: auto;">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-8" style="border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-8">
+                                        勞力
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline" style="height: 20px !important;margin-bottom: 0px;min-height: 18px;">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-9" style="color: #865140;border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-9">
+                                        實驗
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline" style="border-color: rgb(134, 81, 64);border-top-color: rgb(134,;border-right-color: 81,;border-bottom-color: 64);border-left-color: 81,;">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-10" style="border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-10">
+                                        其他
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 search-col">
+                                <span class="d-block" style="font-size: 15px;">
+                                徵求人數
+                                </span>
+                                <select class="d-block">
+                                    <optgroup label="This is a group">
+                                        <option value="12" selected="">This is item 1</option>
+                                        <option value="13">This is item 2</option>
+                                        <option value="14">This is item 3</option>
+                                    </optgroup>
+                                </select></div>
+                            <div class="col-12 search-col"><span class="d-block" style="font-size: 15px;">結束時間</span><select>
+                                    <optgroup label="This is a group">
+                                        <option value="12" selected="">This is item 1</option>
+                                        <option value="13">This is item 2</option>
+                                        <option value="14">This is item 3</option>
+                                    </optgroup>
+                                </select></div>
+                            <div class="col-12 search-col"><span style="font-size: 15px;">結束時間</span>
+                                <div style="height: auto;font-size: 12px;">
+                                    <div class="form-check form-check-inline"><input class="form-check-input" type="radio" id="formCheck-11" style="border-color: #865140;"><label class="form-check-label" for="formCheck-11">需在現場</label></div>
+                                    <div class="form-check form-check-inline"><input class="form-check-input" type="radio" id="formCheck-12" style="border-color: #865140;"><label class="form-check-label" for="formCheck-12">線上</label></div>
+                                </div>
+                            </div>
+                            <div class="col-12 search-col"><span class="d-block" style="font-size: 15px;">偏好條件</span><input type="text"></div>
+                            <div class="col-12 search-col"><span class="d-block" style="font-size: 15px;">地點</span><input type="text"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-9">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 flex-wrap d-inline-block">
+                                <div class="d-inline-block" style="height: auto;width: auto;margin-left: 10%;"></div>
+                                <div style="height: 12px;"><span class="d-lg-flex d-inline-block justify-content-start" style="padding-left: 50px;">所有案件 ─ 共&nbsp;<span style="color: #865140;">956</span>&nbsp;件<br></span></div>
+                                <div class="text-end d-lg-flex justify-content-lg-end d-inline-block justify-content-end" style="height: auto;width: auto;vertical-align: baseline;/*justify-content: end;*/"><select>
+                                        <option value="1" selected="">1 / 10頁</option>
+                                        <option value="2">2 / 10頁</option>
+                                        <option value="3">3 / 10頁</option>
+                                    </select><select>
+                                        <option value="1" selected="">時間 新→舊</option>
+                                        <option value="2">時間 舊→新</option>
+                                        <option value="2">追蹤人數</option>
+                                        <option value="4">應徵人數</option>
+                                    </select></div>
+                                <hr>
+                            </div>
+                            <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <div class="d-sm-flex d-md-flex d-lg-flex align-items-sm-end align-items-md-end justify-content-lg-center align-items-lg-end img-box align-items-end justify-content-center d-none d-sm-block">
+                                                        <p class="d-lg-flex" style="text-align: center;color: #f4f4f3;">25<br>應徵中</p>
+                                                    </div>
+                                                    <div class="d-flex justify-content-center align-items-end xs-img-box d-sm-none d-md-none d-lg-none d-xl-none" style="margin-left: -23px;margin-top: -18px;">
+                                                        <p class="d-flex justify-content-center" style="color: #f4f4f3;text-align: center;">25</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-10 col-md-8">
+                                                    <h4 style="color: rgb(38,29,29);font-weight: bold;font-size: 18px;margin-bottom: 0px;width: 90%;">這是一個標題</h4>
+                                                    <div class="d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;"><i class="material-icons" style="color: #865140;font-size: 14px;">confirmation_number</i><span style="color: #865140;margin-left: 5px;font-size: 14px;">Stabucks * 1</span><span style="color: #865140;margin-right: 5px;margin-left: 5px;">|</span><i class="material-icons" style="color: #865140;font-size: 10px;">people</i><span style="margin-left: 5px;color: #865140;">1人</span><span style="margin-left: 5px;margin-right: 5px;color: #865140;">|</span><i class="material-icons" style="color: #865140;font-size: 10px;">location_on</i><span style="margin-left: 5px;color: #865140;">台大管理二館</span><span style="margin-left: 5px;margin-right: 5px;color: #865140;">|</span><i class="material-icons" style="color: #865140;font-size: 10px;">build</i><span style="margin-left: 5px;color: #865140;">現場面談</span></div>
+                                                    <p style="color: #261d1d;font-size: 10px;height: auto;line-height: 12px;width: 90%;margin-bottom: 0px;"><br>還剩下兩年約，想去解約又怕被盧或吞錢，希望徵一名男性陪我去健身房解約...<br><br></p>
+                                                    <hr style="color: #5e4949;margin-top: 10px;margin-bottom: 10px;"><a class="d-inline tag" href="#">#勞力</a><a class="d-inline tag" href="#">#人文科學</a><i class="material-icons" style="color: #865140;position: absolute;top: -3%;right: 20%;font-size: 30px;">bookmark_border</i>
+                                                </div>
+                                                <div class="col d-lg-flex justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
+                                                    <div class="img-circular"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <P>複合搜尋</p>
-            <label>case_id </label> 
-            <input type="text" name ="case_id" placeholder="Enter Your title" >
-            <label>title </label> 
-            <input type="text" name ="title" placeholder="Enter Your title" >
-            <label>內容說明  </label> 
-            <input type="text" name ="description" placeholder="Enter Your description" >
-            <label>報酬方式 </label>  
-            <input type="text" name ="reward" placeholder="Enter Your reward" >
-            <label>徵求人數 </label>  
-            <input type="number" name ="num" placeholder="Enter Your num" >
-            <label>工作偏好 </label>  
-            <input type="number" name ="work" placeholder="Enter Your work" >
-            <label>地點  </label> 
-            <input type="text" name ="location" placeholder="Enter Your location" >
-            <label>工作偏好  </label> 
-            <input type="text" name ="constraint" placeholder="Enter Your constraint" >
-            <label>起始日期 </label> 
-            <input type="date" name ="date1" >
-            <label>結束日期  </label> 
-            <input type="date" name ="date2" >
-            <input type="submit" value="送出"><br><br>
-        </div>
-    </form>
+    </div>
 
-    <h1>case_result</h1>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <h2 style="color:red" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h2>
-            {% endfor %}
-        </ul>
-    {% endif %}
-     <table class="table">
-        <thead>
-            <tr>
-                <th>case_id</th>
-                <th>title</th>
-                <th>委託人</th>
-                <th>報酬方式</th>
-                <th>地點</th>
-                <th>內容說明</th>
-                <th>偏好條件</th>
-                <th>開始時間</th>
-                <th>結束時間</th>
-                <th>狀態</th>
-                <th>領域</th>
-                <th>類型</th>
-                <th>照片</th>
-                <th>徵求人數</th>
-                <th>工作偏好</th>
-                <th>瀏覽人數</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for case in result_case%}
-                <tr>
-                  <td><a href="{% url 'case-profile' case.case_id %}">{{case.case_id}}</a></td>
-                  <td>{{case.title}}</td>
-                  <td>{{case.publisher}}</td>
-                  <td>{{case.reward}}</td>
-                  <td>{{case.location}}</td>
-                  <td>{{case.description}}</td>
-                  <td>{{case.constraint}}</td>
-                  <td>{{case.started_datetime}}</td>
-                  <td>{{case.ended_datetime}}</td>
-                  <td>{{case.case_status.status_name}}</td>
-                  <td>
-                  {% for case_field in case_fields %}
-                    {% if case_field.case_id == case.case_id%}
-                        {{case_field.case_field.field_name}}
-                    {%endif%}
-                  {% endfor %}
-                  </td>
-                  <td>
-                  {% for case_type in case_types %}
-                    {% if case_type.case_id == case.case_id%}
-                        {{case_type.case_type.type_name}}
-                    {%endif%}
-                  {% endfor %}
-                  </td>
-                  <td>
-                  {% for photo in case_photo %}
-                    {% if photo.case_id == case.case_id and photo.image.url != None%}
-                        <img src="{{photo.image.url}}" alt="照片" style="width: 100px; height: 100px">
-                    {%endif%}
-                  {% endfor %}
-                  </td>
-                  <td>{{case.num}}</td>
-                  <td>{{case.work}}</td>
-                  <td>{{case.pageviews}}</td>
-                </tr>
-  
-            {% endfor%}
-        <tbody>
-    </table>
+</body>
 
-{% endblock %}
+</html>
