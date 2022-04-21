@@ -1,6 +1,11 @@
 {% extends "base_generic.html" %}
-
 {% block content %}
+{% if alert %}
+    <script type="text/javascript">
+        alert({{erro|safe}});
+    </script>
+{% endif %}
+  
     <h1>all_case_show</h1>
     <h1>new_all_case_show</h1>
      <table class="table">
