@@ -1,3 +1,6 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,23 +15,53 @@
     <script src="\static\bootstrap\js\bootstrap.min.js"></script>
 </head>
 
-<body style="background: #f4f4f3;">
-    <div class="container mt-5">
+<body class="cn_font en_font" style="background: #f4f4f3;">
+        
+    <!----------Image Board---------->
+    <div class="container" style="margin-top: 50PX;height: 100px;width: 100%;margin-right: 0px;margin-left: 0px;padding-right: 0px;padding-left: 0px;max-width: none;">
+        <div class="row" style="height: 100px;width: 100%;margin: 0px;">
+            <div class="col" style="height: 100px;width: 100%;padding: 0px;"><img src="\static\images\ntu_1.png" style="width: 100%;height: 100px;"></div>
+        </div>
+    </div>
+
+    <!----------NavBar Search---------->
+    <div class="container d-md-flex justify-content-md-end" style="margin-top: 10px;">
+        <nav class="navbar navbar-light navbar-expand-md d-md-flex d-lg-flex">
+            <div class="container-fluid"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end" id="navcol-2"><a href="#" style="margin-right: 35px;">全部案件</a>
+                    <ul class="navbar-nav">
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item dropdown" style="margin-right: 35px;"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="margin-right: 0px;">找領域</a>
+                            <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                        </li>
+                        <li class="nav-item dropdown" style="margin-right: 35px;"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="margin-right: 20px;">找類型</a>
+                            <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                        </li>
+                    </ul>
+                </div><input type="search" style="width: 220px;">
+            </div>
+        </nav>
+    </div>
+    <hr class="d-lg-flex" style="width: 95%;margin: auto;margin-right: 20px;margin-left: 20px;margin-top: 0px;opacity: 1;border-color: #5e4949;color: #5e4949;">
+
+
+    <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-12 col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <span style="font-weight: bold;color: #865140;">
+                                <span style="font-weight: bold;color: #865140;padding-left: 10px;">
                                 進階搜尋
                                 </span>
                             </div>
-                            <div class="col-12 search-col">
-                                <span class="d-block" style="font-size: 15px;">
+                            <div class="col-12 search-col mt-3">
+                                <span class="d-block" style="font-size: 14px;">
                                 領域
                                 </span>
-                                <div style="height: auto;/*inline-height: 10px;*/display: inline;font-size: 12px!important;">
+                                <div style="height: auto;display: inline;font-size: 12px!important;">
                                     <div class="form-check form-check-inline" style="height: auto;margin-bottom: 0px;">
                                         <input class="form-check-input" type="checkbox" id="formCheck-1" style="border-color: #865140;">
                                         <label class="form-check-label" for="formCheck-1">
@@ -53,7 +86,7 @@
                                         藝術設計
                                         </label>
                                     </div>
-                                    <div class="form-check form-check-inline" style="border-color: rgb(134, 81, 64);border-top-color: rgb(134,;border-right-color: 81,;border-bottom-color: 64);border-left-color: 81,;">
+                                    <div class="form-check form-check-inline" style="border-color: rgb(134, 81, 64);">
                                         <input class="form-check-input" type="checkbox" id="formCheck-5" style="border-color: #865140;">
                                         <label class="form-check-label" for="formCheck-5">
                                         其他
@@ -61,8 +94,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 search-col">
-                                <span class="d-block" style="font-size: 15px;">
+                            <div class="col-12 search-col mt-3">
+                                <span class="d-block" style="font-size: 14px;">
                                 類型
                                 </span>
                                 <div style="height: auto;/*inline-height: 10px;*/display: inline;font-size: 12px!important;">
@@ -90,7 +123,7 @@
                                         實驗
                                         </label>
                                     </div>
-                                    <div class="form-check form-check-inline" style="border-color: rgb(134, 81, 64);border-top-color: rgb(134,;border-right-color: 81,;border-bottom-color: 64);border-left-color: 81,;">
+                                    <div class="form-check form-check-inline" style="border-color: rgb(134, 81, 64);">
                                         <input class="form-check-input" type="checkbox" id="formCheck-10" style="border-color: #865140;">
                                         <label class="form-check-label" for="formCheck-10">
                                         其他
@@ -98,32 +131,72 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 search-col">
-                                <span class="d-block" style="font-size: 15px;">
+                            <div class="col-12 search-col mt-3">
+                                <span class="d-block" style="font-size: 14px;">
                                 徵求人數
                                 </span>
-                                <select class="d-block">
-                                    <optgroup label="This is a group">
-                                        <option value="12" selected="">This is item 1</option>
-                                        <option value="13">This is item 2</option>
-                                        <option value="14">This is item 3</option>
-                                    </optgroup>
-                                </select></div>
-                            <div class="col-12 search-col"><span class="d-block" style="font-size: 15px;">結束時間</span><select>
-                                    <optgroup label="This is a group">
-                                        <option value="12" selected="">This is item 1</option>
-                                        <option value="13">This is item 2</option>
-                                        <option value="14">This is item 3</option>
-                                    </optgroup>
-                                </select></div>
-                            <div class="col-12 search-col"><span style="font-size: 15px;">結束時間</span>
+                                <select class="select form-select-lg" id="select-num" name="select_num">
+                                    <div class="options">
+                                        <option class="item option" value="1">不限</option>
+                                        <option class="item" value="2">1 人</option>
+                                        <option class="item" value="3">1~5 人</option>
+                                        <option class="item" value="4">5~10 人以下</option>
+                                        <option class="item" value="5">10 人以上</option>
+                                    </div>
+                                </select>
+                            </div>
+                            <div class="col-12 search-col mt-3">
+                                <span class="d-block" style="font-size: 14px;">
+                                結束時間
+                                </span>
+                                <select class="select form-select-lg" id="select-enddate" name="select_enddate">
+                                    <div class="options">
+                                        <option class="item option" value="1">不限</option>
+                                        <option class="item" value="2">小於三天</option>
+                                        <option class="item" value="3">小於一週</option>
+                                        <option class="item" value="4">小於一個月</option>
+                                        <option class="item" value="5">一個月以上</option>
+                                    </div>
+                                </select>
+                            </div>
+                            <div class="col-12 search-col mt-3">
+                                <span style="font-size: 14px;">
+                                工作方式
+                                </span>
                                 <div style="height: auto;font-size: 12px;">
-                                    <div class="form-check form-check-inline"><input class="form-check-input" type="radio" id="formCheck-11" style="border-color: #865140;"><label class="form-check-label" for="formCheck-11">需在現場</label></div>
-                                    <div class="form-check form-check-inline"><input class="form-check-input" type="radio" id="formCheck-12" style="border-color: #865140;"><label class="form-check-label" for="formCheck-12">線上</label></div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" id="formCheck-11" style="border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-11">
+                                        需在現場
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" id="formCheck-12" style="border-color: #865140;">
+                                        <label class="form-check-label" for="formCheck-12">
+                                        線上
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-12 search-col"><span class="d-block" style="font-size: 15px;">偏好條件</span><input type="text"></div>
-                            <div class="col-12 search-col"><span class="d-block" style="font-size: 15px;">地點</span><input type="text"></div>
+                            <div class="col-12 search-col mt-3">
+                                <span class="d-block" style="font-size: 14px;">
+                                偏好條件
+                                </span>
+                                <input class="form-control" type="text" id="input-preference" name="input_preference" style="width: 90%;height: 30px;border-color: #7B6363;" placeholder="不限">
+                            </div>
+                            <div class="col-12 search-col mt-3">
+                                <span class="d-block" style="font-size: 14px;">
+                                地點
+                                </span>
+                                <input class="form-control" type="text" id="input-location" name="input_location" style="width: 90%;height: 30px;border-color: #7B6363;" placeholder="不限">
+                            </div>
+                            
+                            <div class="col-12 search-col mt-3 justify-content-end align-items-end text-end">
+                                <button class="btn" type="button" id="button-post" style="font-size: 14px;background: #a89792;color: rgb(255,255,255);width: 80px;margin-right: 10%;">
+                                    送出
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -132,46 +205,148 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
+                            <!----------Filter---------->
                             <div class="col-12 flex-wrap d-inline-block">
-                                <div class="d-inline-block" style="height: auto;width: auto;margin-left: 10%;"></div>
-                                <div style="height: 12px;"><span class="d-lg-flex d-inline-block justify-content-start" style="padding-left: 50px;">所有案件 ─ 共&nbsp;<span style="color: #865140;">956</span>&nbsp;件<br></span></div>
-                                <div class="text-end d-lg-flex justify-content-lg-end d-inline-block justify-content-end" style="height: auto;width: auto;vertical-align: baseline;/*justify-content: end;*/"><select>
-                                        <option value="1" selected="">1 / 10頁</option>
-                                        <option value="2">2 / 10頁</option>
-                                        <option value="3">3 / 10頁</option>
-                                    </select><select>
-                                        <option value="1" selected="">時間 新→舊</option>
-                                        <option value="2">時間 舊→新</option>
-                                        <option value="2">追蹤人數</option>
-                                        <option value="4">應徵人數</option>
-                                    </select></div>
-                                <hr>
+                                <div class="d-inline-block" style="height: auto;width: auto;margin-left: 10%;">
+                                
+                                    <div class="d-inline-block" style="height: auto;">
+                                        <span class="d-lg-flex d-inline-block justify-content-start" style="padding-left: 50px;">
+                                        所有案件 ─ 共&nbsp;<span style="color: #865140;">956</span>&nbsp;件<br>
+                                        </span>
+                                    </div>
+                                    <div class="text-end d-inline-block" style="height: auto;width: auto;vertical-align: baseline;/*justify-content: end;*/"><select>
+                                            <option value="1" selected="">1 / 10頁</option>
+                                            <option value="2">2 / 10頁</option>
+                                            <option value="3">3 / 10頁</option>
+                                        </select>
+                                        <select>
+                                            <option value="1" selected="">時間 新→舊</option>
+                                            <option value="2">時間 舊→新</option>
+                                            <option value="2">追蹤人數</option>
+                                            <option value="4">應徵人數</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <hr class="mt-2 mb-0">
                             </div>
-                            <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-body">
+                            <!----------Case Card---------->
+                            <div id="case-cards">
+                                <div class="col-12">
+                                    <div class="card case-card">
+                                        <div class="card-body" style="padding-bottom: 5px;">
                                             <div class="row">
+                                                <!----------Applyication Num---------->
                                                 <div class="col-2">
                                                     <div class="d-sm-flex d-md-flex d-lg-flex align-items-sm-end align-items-md-end justify-content-lg-center align-items-lg-end img-box align-items-end justify-content-center d-none d-sm-block">
-                                                        <p class="d-lg-flex" style="text-align: center;color: #f4f4f3;">25<br>應徵中</p>
+                                                        <p class="d-lg-flex" style="text-align: center;color: #f4f4f3;">
+                                                        25
+                                                        <br>
+                                                        應徵中
+                                                        </p>
                                                     </div>
                                                     <div class="d-flex justify-content-center align-items-end xs-img-box d-sm-none d-md-none d-lg-none d-xl-none" style="margin-left: -23px;margin-top: -18px;">
-                                                        <p class="d-flex justify-content-center" style="color: #f4f4f3;text-align: center;">25</p>
+                                                        <p class="d-flex justify-content-center" style="color: #f4f4f3;text-align: center;">
+                                                        25
+                                                        </p>
                                                     </div>
                                                 </div>
+
+
+                                                <!----------Case Main Info---------->
                                                 <div class="col-10 col-md-8">
-                                                    <h4 style="color: rgb(38,29,29);font-weight: bold;font-size: 18px;margin-bottom: 0px;width: 90%;">這是一個標題</h4>
-                                                    <div class="d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;"><i class="material-icons" style="color: #865140;font-size: 14px;">confirmation_number</i><span style="color: #865140;margin-left: 5px;font-size: 14px;">Stabucks * 1</span><span style="color: #865140;margin-right: 5px;margin-left: 5px;">|</span><i class="material-icons" style="color: #865140;font-size: 10px;">people</i><span style="margin-left: 5px;color: #865140;">1人</span><span style="margin-left: 5px;margin-right: 5px;color: #865140;">|</span><i class="material-icons" style="color: #865140;font-size: 10px;">location_on</i><span style="margin-left: 5px;color: #865140;">台大管理二館</span><span style="margin-left: 5px;margin-right: 5px;color: #865140;">|</span><i class="material-icons" style="color: #865140;font-size: 10px;">build</i><span style="margin-left: 5px;color: #865140;">現場面談</span></div>
-                                                    <p style="color: #261d1d;font-size: 10px;height: auto;line-height: 12px;width: 90%;margin-bottom: 0px;"><br>還剩下兩年約，想去解約又怕被盧或吞錢，希望徵一名男性陪我去健身房解約...<br><br></p>
-                                                    <hr style="color: #5e4949;margin-top: 10px;margin-bottom: 10px;"><a class="d-inline tag" href="#">#勞力</a><a class="d-inline tag" href="#">#人文科學</a><i class="material-icons" style="color: #865140;position: absolute;top: -3%;right: 20%;font-size: 30px;">bookmark_border</i>
+                                                    <h4 style="color: rgb(38,29,29);font-weight: bold;font-size: 20px;margin-bottom: 0px;width: 90%;">
+                                                    這是一個標題
+                                                    </h4>
+                                                    <!----------Second Info---------->
+                                                    <div class="mt-1 d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;">
+                                                        <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 16px;">confirmation_number</i>
+                                                        <span style="color: #865140;margin-right: 5px;font-size: 16px;">
+                                                        Stabucks * 1
+                                                        </span>
+                                                        
+                                                        <span style="color: #865140;margin-right: 5px;margin-left: 5px;">|</span>
+                                                        
+                                                        <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">people</i>
+                                                        <span style="margin-right: 5px;color: #865140;">
+                                                        1人
+                                                        </span>
+                                                        
+                                                        <span style="margin-left: 5px;margin-right: 5px;color: #865140;">|</span>
+                                                        
+                                                        <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">location_on</i>
+                                                        <span style="margin-right: 5px;color: #865140;">
+                                                        台大管理二館
+                                                        </span>
+                                                        
+                                                        <span style="margin-right: 5px;margin-right: 5px;color: #865140;">|</span>
+                                                        
+                                                        <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">build</i>
+                                                        <span style="margin-right: 5px;color: #865140;">
+                                                        現場面談
+                                                        </span>
+                                                    </div>
+
+                                                    <!----------Description---------->
+                                                    <p class="mt-3" style="color: #261d1d;font-size: 12px;height: auto;line-height: 18px;width: 90%;margin-bottom: 0px;">
+                                                    還剩下兩年約，想去解約又怕被盧或吞錢，希望徵一名男性陪我去健身房解約...<br><br>
+                                                    </p>
+
+                                                    <hr style="color: #5e4949;margin-top: 3px;margin-bottom: 3px;">
+
+                                                    <!----------Fields & Types---------->
+                                                    <a class="d-inline tag" href="#">#勞力</a>
+                                                    <a class="d-inline tag" href="#">#人文科學</a>
+
+                                                    <!----------Bookmark---------->
+                                                    <i class="material-icons" style="color: #865140;position: absolute;top: -4%;right: 20%;font-size: 40px;">bookmark_border</i>
                                                 </div>
-                                                <div class="col d-lg-flex justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
-                                                    <div class="img-circular"></div>
+
+                                                <!----------User Main Info---------->
+                                                <div class="d-lg-flex justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
+                                                    <div class="row">
+                                                        <!----------User Icon---------->
+                                                        <div class="col-12 d-flex justify-content-center align-items-center">
+                                                            <div class="text-center">
+                                                                <a href="#">
+                                                                    <div class="img-circular" id="user-icon"></div>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+
+                                                        <!----------User Rate---------->
+                                                        <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
+                                                            <div id="user-rate" class="d-flex justify-content-center align-items-center">
+                                                                <i class="material-icons star-color">star</i><i class="material-icons star-color">star</i><i class="material-icons star-color">star</i><i class="material-icons star-color">star</i><i class="material-icons star-color">star</i>
+                                                            </div>
+                                                            <span id="user-ratenum" style="color: #865140;font-size: 14px">
+                                                            (3)
+                                                            </span>
+                                                        </div>
+
+                                                        <!----------User Nickname---------->
+                                                        <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
+                                                            <span id="user-nickname" style="font-size: 14px;text-align: center;font-weight: bold;">
+                                                            超級小熊貓
+                                                            </span>
+                                    
+                                                        </div>
+
+                                                        <!----------User Last Login Time---------->
+                                                        <div class="col-12 d-flex justify-content-center align-items-center">
+                                                            <span id="user-lastlogintime" style="font-size: 10px;margin-top: 3px;color: #b8b3b3;">
+                                                            上次登入:
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <hr class="mt-1 mb-0" style="border: none;width: 98%; height: 1px;margin: auto;opacity: 0.5;border-color: #5e4949;color: #5e4949;">
+                            </div><!----------End Case Card---------->
+
+                            
                         </div>
                     </div>
                 </div>
@@ -182,3 +357,5 @@
 </body>
 
 </html>
+
+{% endblock %}
