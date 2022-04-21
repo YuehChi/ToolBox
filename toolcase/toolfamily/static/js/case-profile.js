@@ -37,8 +37,6 @@ $(document).ready(function() {
     var date =  startdate.split('年')[1].split('月')[1].split('日')[0]
     startdate = year + '/' + month + '/' + date
 
-    
-
 
 
     $('#case-time').html(startdate + ' ~ ' + enddate + ' 還剩' + remainday)
