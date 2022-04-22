@@ -1,6 +1,7 @@
 from calendar import c
 from datetime import timedelta
-import os, django, json, smtplib, base64
+import os, django, json, smtplib, base64, imaplib, time
+from email.mime.text import MIMEText
 from urllib import request
 from site import USER_SITE
 import re
@@ -936,6 +937,20 @@ def rate(request):
 # ----------------login------------------
 def login(request):
 
+    # check mail validation
+    if 'first_refresh' in request.session and request.session['first_refresh'] == False:
+        request.session['first_refresh'] = True
+        return redirect('register')
+
+    # check url timeout or not
+    all_user = User.objects.all()
+    for data in all_user:
+        if data.user_detail.isActive == False:
+            if (datetime.datetime.now().astimezone() -  data.date_joined).seconds > 3600:
+                user_detail = UserDetail.objects.get(Q(django_user=data))
+                user_detail.delete()
+                data.delete()
+
     # show message for register
     if 'messages' in request.session:
         alert = True
@@ -981,11 +996,11 @@ def login(request):
 class CustomizeUserBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            user = UserDetail.objects.get(Q(account_mail=username))
-        except UserDetail.DoesNotExist as e:
+            django_user = User.objects.get(Q(email=username))
+        except User.DoesNotExist as e:
             return None
-        if check_password(password, user.django_user.password):
-            return user.django_user
+        if check_password(password, django_user.password):
+            return django_user
 
 # ----------------logout------------------
 def logout(request):
@@ -995,6 +1010,32 @@ def logout(request):
 
 # ----------------register------------------
 def register(request):
+
+    # check email validation
+    if 'mail_validation' in request.session:
+        mailserver = imaplib.IMAP4_SSL('imap.gmail.com', 993)
+        mailserver.login(django_settings.EMAIL_HOST_USER, django_settings.EMAIL_HOST_PASSWORD)
+        status, count1 = mailserver.select('Inbox')
+        time.sleep(2)
+        status, count2 = mailserver.select('Inbox')
+        status, data = mailserver.fetch(count2[0], '(UID BODY[TEXT])')
+        ori_mail = data[0][1].decode('utf-8').split('<')[1].split('>')[0]
+        mailserver.close()
+        mailserver.logout()
+
+        if ori_mail == request.session['mail_validation']:
+            ori_user = User.objects.get(Q(email=ori_mail))
+            ori_user.delete()
+
+            request.session['messages'] = "對不起，您使用的註冊信箱無效。\n請確認信箱後重新註冊。"
+            del request.session['mail_validation']
+            del request.session['first_refresh']
+            return HttpResponseRedirect('/')
+
+        request.session['messages'] = "請查看信箱點擊連結以完成註冊驗證。\n連結有效期為1個小時。"
+        del request.session['mail_validation']
+        del request.session['first_refresh']
+        return HttpResponseRedirect('/')
 
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -1015,6 +1056,8 @@ def register(request):
 
         try:
             send_mail(title, msg, email_from, receiver, fail_silently=False)
+            request.session['mail_validation'] = account
+            request.session['first_refresh'] = False
         except:
             messages.warning(request,'信箱格式錯誤或已註冊')
             return redirect('register')
@@ -1027,7 +1070,6 @@ def register(request):
         userDetail = UserDetail.objects.create(name=username, django_user=user, account_mail=account, salt=password)
         userDetail.save()
 
-        request.session['messages'] = "請查看信箱點擊連結以完成註冊驗證。\n連結有效期為1個小時。"
         return HttpResponseRedirect('/')
 
     return render(request, 'auth/register.html', locals())
@@ -1040,10 +1082,13 @@ def active(request, token):
         username = token_confirm.confirm_validate_token(token)
     except:
         username = token_confirm.remove_validate_token(token)
-        user = User.objects.get(Q(username=username))
-        userDetail = UserDetail.objects.get(Q(django_user=user))
-        userDetail.delete()
-        user.delete()
+        try:
+            user = User.objects.get(Q(username=username))
+            userDetail = UserDetail.objects.get(Q(django_user=user))
+            userDetail.delete()
+            user.delete()
+        except:
+            pass
         request.session['messages'] = "對不起，驗證連結已過期。\n請重新註冊。"
         return HttpResponseRedirect('/')
 
