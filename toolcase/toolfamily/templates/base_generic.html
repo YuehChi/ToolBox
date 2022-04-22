@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   {% block title %}<title>台大工具箱 NTU ToolBox</title>{% endblock %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  
+
   <!-- Add additional CSS in static file -->
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -13,19 +14,19 @@
   <link rel="stylesheet" href="\static\bootstrap\css\bootstrap.min.css" type="text/css" >
   <link rel="stylesheet" href="\static\fonts\material-icons.min.css" type="text/css">
   <link rel="stylesheet" href="\static\css\materialdesignicons.min.css" type="text/css">
-  
 
   <script src="\static\bootstrap\js\bootstrap.min.js" type="text/javascript"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
   <script src="\static\js\base_generic.js" type="text/javascript"></script>
+  <script src="\static\js\user.js" type="text/javascript"></script>
 </head>
 
 
 
 <body style="background: #f4f4f3;">
   {% block header-navbar %}
-    <!----------NavBar FixtedTop---------->
-    <nav class="navbar navbar-light navbar-expand-md fixed-top" style="background: rgb(244,244,243);height: 50px;border-bottom-width: 0px;">
+      <!----------NavBar FixtedTop---------->
+      <nav class="navbar navbar-light navbar-expand-md fixed-top" style="background: rgb(244,244,243);height: 50px;border-bottom-width: 0px;">
         <div class="container-fluid"><a class="navbar-brand" href="{% url 'index'%}">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse d-md-flex d-lg-flex justify-content-md-end align-items-md-center justify-content-lg-end align-items-lg-center" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
                 <ul class="navbar-nav">
@@ -35,76 +36,82 @@
                 </ul>
                 <button class="btn btn-primary" type="button" id="button-case-new" style="padding: 2px 12px;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;">我要發案</button>
                 {% if user.icon %}  {# 有圖才顯示 #}
-                    <img style="border-radius: 50%; width: 40px; height: 40px; margin: 5px; padding: 2px;" src="{{ user.icon.url }}">
+                  <img style="border-radius: 50%;width: 40px;height: 40px;margin: 5px;padding: 2px;" src="{{ user.icon.url }}">
                 {% else %}
-                    <img style="border-radius: 50%; width: 40px;  height: 40px; margin: 5px;padding: 2px;" src="\static\images\default_icon_1.png">
+                  <img style="border-radius: 50%;width: 40px;height: 40px;margin: 5px;padding: 2px;" src="\static\images\default_icon_1.png">
                 {% endif %}
                 <div class="dropdown">
                     <a class="dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="color: rgb(94,73,73);font-size: 12px;">
                         {% if user.nickname %}
                             {{ user.nickname }}&nbsp;
                         {% else %}
-                            {{ user.name }}&nbsp;
+                            {{ user.name }}
                         {% endif %}
                     </a>
                     <div class="dropdown-menu" style="margin: 0;padding: 7px 0px;margin-left: -30px;font-size: 12px;width: 100px;min-width: 100px;margin-top: 11px;border-width: 0px;background: rgb(244,244,243);text-align: center;color: #5e4949;">
-                      <a class="dropdown-item member" m="1" href="{% url 'my-user-profile'%}" style="color: #5e4949;">會員中心</a>
-                      <a class="dropdown-item" href="#" style="color: #5e4949;">委託管理</a>
-                      <a class="dropdown-item" href="#" style="color: #5e4949;">委託紀錄</a>
-                      <a class="dropdown-item" href="#" style="color: #5e4949;">我的追蹤</a>
-                      <a class="dropdown-item" href="{% url 'user-password-update' %}" style="color: #5e4949;">更改密碼</a>
-                      <a class="dropdown-item" href="{% url 'logout' %}" style="color: #5e4949;">登出</a></div>
+                        <a class="dropdown-item member" m="1" href="{% url 'my-user-profile'%}" style="color: #5e4949;">會員中心</a>
+                        <a class="dropdown-item" href="#" style="color: #5e4949;">我的委託</a>
+                        <a class="dropdown-item" href="#" style="color: #5e4949;">委託紀錄</a>
+                        <a class="dropdown-item" href="#" style="color: #5e4949;">我的追蹤</a>
+                        <a class="dropdown-item" href="#" style="color: #5e4949;">設定</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}" style="color: #5e4949;">登出</a>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
   {% endblock %}
+
 <div class="container-fluid">
-    <div class="row">
-      <!-- <div class="col-sm-2">
-      {% block sidebar %}
-          <ul class="sidebar-nav">
-            <li><a href="{% url 'index'%}">Home</a></li>
-          </ul>
 
-          <ul class="sidebar-nav">
-            <li><a href="{% url 'case-new'%}">新增case</a></li>
-            <li><a href="{% url 'case-search'%}">查詢case</a></li>
-            {% if user.is_authenticated %}
-             <li>User: {{ user.get_username }}</li>
-             <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-            {% else %}
-             <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-            {% endif %}
-          </ul>
-      {% endblock %}
-      </div>  -->
-      <!-- end .col-->
+<div class="row">
+  <div class="col-sm-2">
+  {% block sidebar %}
+  <ul class="sidebar-nav">
+    <li><a href="{% url 'index'%}">Home</a></li>
+  </ul>
 
-      <div class="col-sm-12 ">
-      {% block content %}
-        <!-- content here-->
-      {% endblock %}
+  <ul class="sidebar-nav">
+    <li><a href="{% url 'case-new'%}">新增case</a></li>
+    <li><a href="{% url 'case-search'%}">查詢case</a></li>
 
-      {% block pagination %}
-        {% if is_paginated %}
-            <div class="pagination">
-                <span class="page-links">
-                    {% if page_obj.has_previous %}
-                        <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
-                    {% endif %}
-                    <span class="page-current">
-                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                    </span>
-                    {% if page_obj.has_next %}
-                        <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
-                    {% endif %}
+
+
+   {% if user.is_authenticated %}
+     <li>User: {{ user.get_username }}</li>
+     <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+   {% else %}
+     <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+   {% endif %}
+  </ul>
+
+  {% endblock %}
+  </div>
+  <div class="col-sm-10 ">
+  {% block content %}{% endblock %}
+
+  {% block pagination %}
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                 </span>
-            </div>
-        {% endif %}
-      {% endblock %}
-      </div>  <!-- end .col -->
-    </div>  <!-- end .row-->
-</div>  <!-- end .container-fluid-->
+                {% if page_obj.has_next %}
+                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+  {% endblock %}
+
+
+  </div>
+</div>
+
+</div>
 </body>
 </html>
