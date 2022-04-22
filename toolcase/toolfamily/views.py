@@ -987,11 +987,11 @@ def login(request):
 class CustomizeUserBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            user = UserDetail.objects.get(Q(account_mail=username))
-        except UserDetail.DoesNotExist as e:
+            django_user = User.objects.get(Q(email=username))
+        except User.DoesNotExist as e:
             return None
-        if check_password(password, user.django_user.password):
-            return user.django_user
+        if check_password(password, django_user.password):
+            return django_user
 
 # ----------------logout------------------
 def logout(request):
