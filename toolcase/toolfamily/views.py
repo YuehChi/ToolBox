@@ -942,6 +942,15 @@ def login(request):
         request.session['first_refresh'] = True
         return redirect('register')
 
+    # check url timeout or not
+    all_user = User.objects.all()
+    for data in all_user:
+        if data.user_detail.isActive == False:
+            if (datetime.datetime.now().astimezone() -  data.date_joined).seconds > 3600:
+                user_detail = UserDetail.objects.get(Q(django_user=data))
+                user_detail.delete()
+                data.delete()
+
     # show message for register
     if 'messages' in request.session:
         alert = True
@@ -1073,10 +1082,13 @@ def active(request, token):
         username = token_confirm.confirm_validate_token(token)
     except:
         username = token_confirm.remove_validate_token(token)
-        user = User.objects.get(Q(username=username))
-        userDetail = UserDetail.objects.get(Q(django_user=user))
-        userDetail.delete()
-        user.delete()
+        try:
+            user = User.objects.get(Q(username=username))
+            userDetail = UserDetail.objects.get(Q(django_user=user))
+            userDetail.delete()
+            user.delete()
+        except:
+            pass
         request.session['messages'] = "對不起，驗證連結已過期。\n請重新註冊。"
         return HttpResponseRedirect('/')
 
