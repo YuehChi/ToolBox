@@ -94,6 +94,12 @@
                 <th>徵求人數</th>
                 <th>工作偏好</th>
                 <th>瀏覽人數</th>
+                <th>暱稱</th>
+                <th>頭像</th>
+                <th>性別</th>
+                <th>部門</th>
+                <th>評價</th>
+                <th>上次登入時間</th>
             </tr>
         </thead>
         <tbody>
@@ -133,6 +139,16 @@
                   <td>{{case.num}}</td>
                   <td>{{case.work}}</td>
                   <td>{{case.pageviews}}</td>
+                  <td>{{case.publisher.nickname}}</td>
+                  {% if case.publisher.icon.url != "" %}
+                    <td><img src="{{case.publisher.icon.url}}" alt="頭貼" style="width: 100px; height: 100px"></td>
+                  {% else %} 
+                    <td> no phote </td>
+                  {%endif%}
+                  <td>{{case.publisher.gender}}</td>
+                  <td>{{case.publisher.department}}</td>
+                  <td>{{case.publisher.rate}}</td>
+                  <td>{{case.publisher.last_login}}</td>
                 </tr>
   
             {% endfor%}
