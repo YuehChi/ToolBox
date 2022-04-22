@@ -32,6 +32,8 @@ DB內的刪除怎麼處理
         - on_delete=models.PROTECT 阻止外鍵被刪除
 """
 
+User._meta.get_field('username')._unique = False
+
 
 # 生成 n 個字符的隨機字串（目前沒在使用）
 def randomStr(n=6):
