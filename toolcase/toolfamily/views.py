@@ -315,7 +315,7 @@ def case_search(request):
         if len(field) == 0 :
             check += 1
         if  num == '':
-            num = 100000000000000000
+            num = 0
             check += 1
         if  work == '':
             work = 100000000000000000
@@ -410,7 +410,7 @@ def case_search(request):
 
             # === 複合查詢判斷 - other訊息
             temp2_id_list =[]
-            temp_case = Case.objects.filter(Q(num=num) | Q(ended_datetime__date__lte = date_time)| Q(work=work) |
+            temp_case = Case.objects.filter(Q(num__lte=num) | Q(ended_datetime__date__lte = date_time)| Q(work=work) |
             Q(constraint__icontains=constraint)  |Q(location__icontains=location)  & Q(shown_public=True))
             for i in temp_case:
                 temp2_id_list.append(i.case_id)
@@ -497,7 +497,7 @@ def case_search1(request):
         if len(field) == 0 :
             check += 1
         if  num == '':
-            num = 100000000000000000
+            num = 0
             check += 1
         if  work == '':
             work = 100000000000000000
@@ -592,7 +592,7 @@ def case_search1(request):
 
             # === 複合查詢判斷 - other訊息
             temp2_id_list =[]
-            temp_case = Case.objects.filter(Q(num=num) | Q(ended_datetime__date__lte = date_time)| Q(work=work) |
+            temp_case = Case.objects.filter(Q(num__lte=num) | Q(ended_datetime__date__lte = date_time)| Q(work=work) |
             Q(constraint__icontains=constraint)  |Q(location__icontains=location)  & Q(shown_public=True))
             for i in temp_case:
                 temp2_id_list.append(i.case_id)
