@@ -362,7 +362,7 @@ def case_search(request):
                 print("type_value:",type_value)
                 print("id_list",id_list,"\n")
               
-                return render(request,'case/search1.html',locals())
+                return render(request,'case/search.html',locals())
 
             # ==== 單一查詢 - 領域 ====
             elif query_o[1] != None:
@@ -379,7 +379,7 @@ def case_search(request):
                 print("field_value:",field_value)
                 print("id_list",id_list,"\n")
                 
-                return render(request,'case/search1.html',locals()) 
+                return render(request,'case/search.html',locals()) 
 
             # ==== 單一查詢 - 關鍵字 ====
             else:
@@ -397,7 +397,7 @@ def case_search(request):
                 query_list = id_list
                 print("id_list",id_list,"\n")
 
-                return render(request,'case/search1.html',locals()) 
+                return render(request,'case/search.html',locals()) 
         
         # == 複合查詢判斷 ==
         else:
@@ -533,7 +533,7 @@ def case_search(request):
                         case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                         case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
 
-                        return render(request,'case/search1.html',locals()) 
+                        return render(request,'case/search.html',locals()) 
 
                 # 若其他5個選項有交集出結果，則繼續和 type 和 field的結果進行交集
                 else:
@@ -556,7 +556,7 @@ def case_search(request):
                     case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                     case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
 
-                    return render(request,'case/search1.html',locals())
+                    return render(request,'case/search.html',locals())
             
 
             else: 
@@ -568,7 +568,7 @@ def case_search(request):
                     case_fields = Case_Field.objects.all()
                     case_types = Case_Type.objects.all()
                     case_photo = CasePhoto.objects.all()
-                    return render(request,'case/search1.html',locals()) 
+                    return render(request,'case/search.html',locals()) 
 
                 
                 # === 複合查詢id結果 -關鍵字與其他五個選項交集
@@ -592,7 +592,7 @@ def case_search(request):
                     case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                     case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
 
-                    return render(request,'case/search1.html',locals()) 
+                    return render(request,'case/search.html',locals()) 
 
     # 預設畫面，代所有case
     result_case = Case.objects.filter(shown_public=True)
@@ -600,7 +600,7 @@ def case_search(request):
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
 
-    return render(request,'case/search1.html',locals()) 
+    return render(request,'case/search.html',locals()) 
 
 
 @login_required
