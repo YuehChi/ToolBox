@@ -105,7 +105,7 @@
                 <form class="from"  action=" " enctype="multipart/form-data" method="POST"  id="advanced-search-form">
                     {% csrf_token %}
                     <input class="d-none" type="text" name ="case_query" id="advanced-search-case-query">
-                    <input class="d-none" type="text" name="query_list" id="forminput-caselist">
+                    <input class="d-none" name="query_list" id="forminput-caselist">
                     <input class="d-none" id="forminput-num" type="number" name ="num">
                     <input class="d-none" id="forminput-date" type="date" name ="date_time" >
                     <input class="d-none" id="forminput-work" type="number" name ="work" >

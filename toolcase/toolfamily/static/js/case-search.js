@@ -125,11 +125,11 @@ function getDefault(){
 
         console.log()
         var str_list = $('#get-input-caselist').html().slice(1,-1).split(', ')
-        var new_str = "["
-        str_list.forEach(element => new_str += "'" + element.toString() + "'," );
-        new_str = new_str.slice(0,-1) + "]"
+        var str_arr = []
+        str_list.forEach(element => str_arr.push(element) );
         
-        $("#forminput-caselist").val(new_str)
+        
+        $("#forminput-caselist").val(str_arr)
     }
 
 }
