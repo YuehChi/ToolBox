@@ -9,6 +9,7 @@
 <h1>case_search</h1>
 <h1>case_search</h1>
     <P>type:{{type}} ; field: {{field}}; num:{{num}} ; date_time: {{date_time}}; work: {{work}} ; constraint: {{constraint}} ; location: {{location}}</p>
+    <p>id_list: {{id_list}}</p>
     <form class = "from"  action=" " enctype="multipart/form-data" method="POST">
         {% csrf_token %}
          <div>
@@ -52,6 +53,13 @@
             <label><input type="checkbox" value="3" name="field"> 人文科學</label>
             <label><input type="checkbox" value="4" name="field"> 藝術設計</label>
             <label><input type="checkbox" value="5" name="field"> 其他</label>&nbsp&nbsp&nbsp<br>
+            <label> 關鍵字: </label>
+            <label><input type="checkbox" value="1" name="query_list"> case1</label>
+            <label><input type="checkbox" value="2" name="query_list"> case2</label>
+            <label><input type="checkbox" value="3" name="query_list"> case3</label>
+            <label><input type="checkbox" value="4" name="query_list"> case4</label>
+            <label><input type="checkbox" value="5" name="query_list"> case5</label>
+            <label><input type="checkbox" value="6" name="query_list"> case6</label>&nbsp&nbsp&nbsp<br>
             <label>徵求人數: </label>  &nbsp&nbsp
             <input type="number" name ="num" placeholder="Enter Your num" >&nbsp
              <label>結束日期:  </label> &nbsp&nbsp

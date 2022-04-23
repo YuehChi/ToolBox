@@ -308,7 +308,10 @@ def case_search(request):
         location = request.POST.get('location')
 
         # == 複合查詢- 是否要交集領域/類型 ==
-        con = request.POST.get('con')     
+        con = request.POST.get('con') 
+
+        # == 複合查詢- 關鍵字 == 
+        query_list = request.POST.getlist('query_list')
 
         if len(type) == 0 :
             check += 1
@@ -421,17 +424,32 @@ def case_search(request):
 
                 id_list = list(set(temp_id_list)  & set(temp2_id_list))
                 print("交集 id_list:" ,id_list)
+
+                # === 複合查詢id結果 - 交集類型/類型/關鍵字
+                if  len(query_list) == 0 :
+                    query_id_list = []
+                    query_id_list = list(set(id_list)  & set(query_list))
+                    print("query_id_list:",query_id_list)
+
+                    result_case = Case.objects.filter(case_id__in=query_id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=query_id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=query_id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=query_id_list ).all()
+                    return render(request,'case/search.html',locals())
+
                 result_case = Case.objects.filter(case_id__in=id_list ).all()
                 case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                 case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                 case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
 
                 return render(request,'case/search.html',locals())
+
+            
             
             if check == 7:
-                # messages.warning(request, "請輸入收尋條件")
+                # messages.warning(request, "請輸入搜尋條件")
                 alert = True
-                erro =json.dumps("請輸入收尋條件")
+                erro =json.dumps("請輸入搜尋條件")
                 return render(request,'case/search.html',locals()) 
 
 
