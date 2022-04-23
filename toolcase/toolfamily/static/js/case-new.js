@@ -12,12 +12,12 @@ $(document).ready(function() {
     var startdate = new Date();
     startdate = startdate.getFullYear() + '-' + String(startdate. getMonth() + 1). padStart(2, '0') + '-' + String(startdate. getDate()). padStart(2, '0') +' '+ startdate.getHours() + ":" + startdate.getMinutes() + ":" + startdate.getSeconds();
     var enddate = $('#input-enddate').val().split('/')
-    enddate = enddate[2] + '-' + enddate[0] + '-' + enddate[1]
+    enddate = enddate[2] + '-' + enddate[0] + '-' + enddate[1] + ' 23:59:59'
     $('#forminput-enddate').val(enddate)                                 // Ended Datetime
     $('#forminput-startdate').val(startdate)
     $('#forminput-num').val($('#input-num').val())                    // Required Num
     $('#forminput-work').val($('#input-work').val())                  // Work Mode
-    $('#forminput-constraint').val($('#input-preference').val())      // Constraint
+    $('#forminput-constraint').val($('#input-preference').val())      // Constraint-
     $('#forminput-location').val($('#input-location').val())          // Location
     
     var description = $('#textarea-description').val()

@@ -1,0 +1,83 @@
+
+
+.main-color {
+    color:#865140;
+}
+
+#div-search-allcase {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+  
+#div-search-allcase:hover {
+    background-color: #eee;
+    border-radius: 2px;
+}
+  
+.search-dropdown:hover {
+    background-color: #865140;
+    border-radius: 2px;
+}
+  
+  
+.search-dropdown-menu {
+    width: 100% !important; 
+    min-width: 0px !important;
+}
+  
+.a-search {
+    color: #865140
+}
+
+#search-keyword {
+    background-color: transparent;
+    border-width: 0px;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-color: #5e4949;
+    border-bottom-left-radius: 0ch;
+    border-bottom-right-radius: 0ch;
+}
+  
+.keyword_input {
+    border: 0px solid ;
+    width: 250px;
+    max-width: 250px;
+    height:35px;
+    margin-top: 2px;
+    margin-bottom: 10px;
+    padding-left: 42px;
+    font-size: 16px;
+    color: #000;
+    background-color: transparent;
+    outline: none;
+    border-bottom-color: transparent;
+    border-bottom: 1px solid;
+}
+
+.keyword_input:hover {
+    background: #eee;
+    border-bottom-color: #865140;
+    border-bottom: 1px solid;
+    border-bottom-left-radius: 0ch;
+    border-bottom-right-radius: 0ch;
+}
+  
+.keyword_input::-webkit-input-placeholder {
+    font-size: 15px !important;
+}
+  
+.keyword_icon {
+    position: absolute;
+    left: 10px;
+    top: 6px;
+    color: #444;
+}
+  
+.keyword_wrap {
+    position: relative;
+}
+  
+.white-background {
+    background-color: white !important;
+}
