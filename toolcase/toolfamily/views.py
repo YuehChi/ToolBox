@@ -312,9 +312,24 @@ def case_search(request):
         con = request.POST.get('con')  
 
         # == 複合查詢- 關鍵字 == 
-        query_list = request.POST.getlist('query_list')
+        key= request.POST.get('query_list')
+        print("*********key:",key)
+        print(key == '' )
+        print(key == None)
+        query_list = [] 
+
+        if key == None:
+            query_list.append('')
+        else : 
+            key_arr = key.split(',')
+            print(key_arr) 
+            if key_arr [0] == '' :
+                query_list = key_arr
+            else:
+                for s in key_arr:
+                    query_list.append(int(s))
         print("query_list:",query_list) 
-        # print( query_list[0] == '' ) 
+        print( query_list[0] != '' ) 
 
         if len(type) == 0 :
             check += 1
@@ -343,6 +358,7 @@ def case_search(request):
             check2 += 1 
 
         print("check:" , check)
+        print("check2:" , check2)
         print("Querry: " , query_o[0] ,query_o[1],query_o[2])
         print("Q: " , type ,field,num,date_time,work,constraint,location,con)
         print("========================================================")
@@ -512,7 +528,7 @@ def case_search(request):
             if con == "1": 
                 
                 # 若其他5個選項搜尋不到結果，應該直接輸出type 和 field的結果
-                if check == 5:
+                if check2 == 5:
 
                     # 關鍵字結果與type 和 field的交集結果
                     if query_list[0] != ''  :
@@ -854,7 +870,7 @@ def case_search1(request):
                         case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                         case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                         case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
-                        return render(request,'case/search.html',locals())
+                        return render(request,'case/search1.html',locals())
                     
                     else:
                         id_list = temp_id_list
@@ -912,7 +928,7 @@ def case_search1(request):
                     case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                     case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                     case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
-                    return render(request,'case/search.html',locals())
+                    return render(request,'case/search1.html',locals())
                 
                 # === 其他五個選項交集結果
                 else:
