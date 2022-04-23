@@ -121,6 +121,17 @@ function getDefault(){
         $('#radio-workmode-2').prop('checked', true)
     }
 
+    if($('#get-input-caselist').html() != ""){
+
+        console.log()
+        var str_list = $('#get-input-caselist').html().slice(1,-1).split(', ')
+        var new_str = "["
+        str_list.forEach(element => new_str += "'" + element.toString() + "'," );
+        new_str = new_str.slice(0,-1) + "]"
+        
+        $("#forminput-caselist").val(new_str)
+    }
+
 }
 
 function advancedSearchSubmit(){
@@ -207,6 +218,7 @@ function advancedSearchSubmit(){
     console.log($('#forminput-work').val())
     console.log($('#forminput-constraint').val())
     console.log($('#forminput-location').val())
+    console.log($("#forminput-caselist").val())
     
     if(typeof  $('input[name="field"]:checked').val() === "undefined" && typeof  $('input[name="type"]:checked').val() === "undefined"){
         $('#forminput-con').val('0')
