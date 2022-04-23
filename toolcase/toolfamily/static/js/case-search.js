@@ -207,6 +207,10 @@ function advancedSearchSubmit(){
     console.log($('#forminput-work').val())
     console.log($('#forminput-constraint').val())
     console.log($('#forminput-location').val())
+    
+    if(typeof  $('input[name="field"]:checked').val() === "undefined" && typeof  $('input[name="type"]:checked').val() === "undefined"){
+        $('#forminput-con').val('0')
+    }
     console.log($('#forminput-con').val())
 
     $('#advanced-search-case-query').val("")
