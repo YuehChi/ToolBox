@@ -312,7 +312,9 @@ def case_search(request):
         con = request.POST.get('con')  
 
         # == 複合查詢- 關鍵字 == 
-        query_list = request.POST.getlist('query_list')   
+        query_list = request.POST.getlist('query_list')
+        print("query_list:",query_list) 
+        # print( query_list[0] == '' ) 
 
         if len(type) == 0 :
             check += 1
@@ -486,10 +488,9 @@ def case_search(request):
             print("location_temp:",temp2)
 
             record = []
-        
-            
+            print("check_list:",check_list)
             # 交集複合搜尋的其他選項
-            for i in range(6):
+            for i in range(5):
                 if check_list[i] == 1:
                     record.append(i)
             print("record: ",record)
@@ -497,11 +498,11 @@ def case_search(request):
             if len(record) !=0 :
                 for i in range(len(record)):
                     num = record[i]
-                    print(i)
+                    #print(i)
                     if i == 0 :
                         temp2_id_list = temp2[num]
-                        print("temp2_id_list:",temp2_id_list)
-                        print("temp2[i]:",temp2[num])
+                        #print("temp2_id_list:",temp2_id_list)
+                        #print("temp2[i]:",temp2[num])
                     else:
                         temp2_id_list = list(set(temp2_id_list) & set(temp2[num]))
 
@@ -514,7 +515,7 @@ def case_search(request):
                 if check == 5:
 
                     # 關鍵字結果與type 和 field的交集結果
-                    if len(query_list) != 0 :
+                    if query_list[0] != ''  :
                         id_list = []
                         id_list = list(set(temp_id_list)  & set(query_list))
                         print("其他五個選項沒有輸入，關鍵字結果與type 和 field的交集結果:",id_list)
@@ -540,7 +541,7 @@ def case_search(request):
                     id_list = list(set(temp_id_list)  & set(temp2_id_list))
                    
                     # === 複合查詢id結果 - 交集類型/類型/關鍵字
-                    if  len(query_list) != 0 :
+                    if  query_list[0] != '' :
                         query_id_list = []
                         query_id_list = list(set(id_list)  & set(query_list))
                         print("和其他5個選項 交集 關鍵字 與 type 和 field的結果 " ,query_id_list)
@@ -572,7 +573,7 @@ def case_search(request):
 
                 
                 # === 複合查詢id結果 -關鍵字與其他五個選項交集
-                if len(query_list) != 0 :
+                if query_list[0] != ''  :
                     id_list = []
                     id_list = list(set(temp2_id_list)  & set(query_list))
                     print("其他五個選項與關鍵字交集結果:",id_list)
@@ -815,10 +816,11 @@ def case_search1(request):
             print("location_temp:",temp2)
 
             record = []
-        
+
+            print("check_list:",check_list)
             
             # 交集複合搜尋的其他選項
-            for i in range(6):
+            for i in range(5):
                 if check_list[i] == 1:
                     record.append(i)
             print("record: ",record)
@@ -843,7 +845,7 @@ def case_search1(request):
                 if check == 5:
 
                     # 關鍵字結果與type 和 field的交集結果
-                    if len(query_list) != 0 :
+                    if query_list[0] != '' :
                         id_list = []
                         id_list = list(set(temp_id_list)  & set(query_list))
                         print("其他五個選項沒有輸入，關鍵字結果與type 和 field的交集結果:",id_list)
@@ -869,7 +871,7 @@ def case_search1(request):
                     id_list = list(set(temp_id_list)  & set(temp2_id_list))
                    
                     # === 複合查詢id結果 - 交集類型/類型/關鍵字
-                    if  len(query_list) != 0 :
+                    if  query_list[0] != '' :
                         query_id_list = []
                         query_id_list = list(set(id_list)  & set(query_list))
                         print("和其他5個選項 交集 關鍵字 與 type 和 field的結果 " ,query_id_list)
@@ -901,7 +903,7 @@ def case_search1(request):
 
                 
                 # === 複合查詢id結果 -關鍵字與其他五個選項交集
-                if len(query_list) != 0 :
+                if query_list[0] != '' :
                     id_list = []
                     id_list = list(set(temp2_id_list)  & set(query_list))
                     print("其他五個選項與關鍵字交集結果:",id_list)
