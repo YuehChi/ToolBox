@@ -282,7 +282,8 @@ def case_search(request):
         # 定義參數
         query_o = []
         vertify = 0 
-        check = 0
+        check = 0   #判斷是不是都沒填
+        check2 = 0   #判斷是不是除了type和field 都沒有填
         alert = False
         erro = ''
 
@@ -308,10 +309,10 @@ def case_search(request):
         location = request.POST.get('location')
 
         # == 複合查詢- 是否要交集領域/類型 ==
-        con = request.POST.get('con') 
+        con = request.POST.get('con')  
 
         # == 複合查詢- 關鍵字 == 
-        query_list = request.POST.getlist('query_list')
+        query_list = request.POST.getlist('query_list')   
 
         if len(type) == 0 :
             check += 1
@@ -320,19 +321,24 @@ def case_search(request):
         if  num == '':
             num = 0
             check += 1
+            check2 += 1
         if  work == '':
             work = 100000000000000000
             check += 1 
+            check2 += 1
         if date_time == '':
             date_time = now().date() + timedelta(days=-1) 
             date_time = "2000-01-01"
-            check += 1 
+            check += 1
+            check2 += 1 
         if constraint =='':
             constraint = "None"
-            check += 1 
+            check += 1
+            check2 += 1 
         if location =='':
             location = "None"
-            check += 1 
+            check += 1
+            check2 += 1 
 
         print("check:" , check)
         print("Querry: " , query_o[0] ,query_o[1],query_o[2])
@@ -356,7 +362,7 @@ def case_search(request):
                 print("type_value:",type_value)
                 print("id_list",id_list,"\n")
               
-                return render(request,'case/search.html',locals())
+                return render(request,'case/search1.html',locals())
 
             # ==== 單一查詢 - 領域 ====
             elif query_o[1] != None:
@@ -373,12 +379,13 @@ def case_search(request):
                 print("field_value:",field_value)
                 print("id_list",id_list,"\n")
                 
-                return render(request,'case/search.html',locals()) 
+                return render(request,'case/search1.html',locals()) 
 
             # ==== 單一查詢 - 關鍵字 ====
             else:
                 print("single search for key_word :" ,query_o[2])
                 id_list =[]
+                query_list = []
                 temp_case = Case.objects.filter(Q(title__icontains=query_o[2]) |  Q(description__icontains=query_o[2]) | 
                 Q(reward__icontains=query_o[2]) | Q(location__icontains=query_o[2]) | Q(constraint__icontains=query_o[2])  & Q(shown_public=True) )
                 for i in temp_case:
@@ -387,9 +394,10 @@ def case_search(request):
                 case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                 case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
                 case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                query_list = id_list
                 print("id_list",id_list,"\n")
 
-                return render(request,'case/search.html',locals()) 
+                return render(request,'case/search1.html',locals()) 
         
         # == 複合查詢判斷 ==
         else:
@@ -412,58 +420,179 @@ def case_search(request):
             print("temp_id_list: " , temp_id_list)
 
             # === 複合查詢判斷 - other訊息
-            temp2_id_list =[]
-            temp_case = Case.objects.filter(Q(num__lte=num) | Q(ended_datetime__date__lte = date_time)| Q(work=work) |
-            Q(constraint__icontains=constraint)  |Q(location__icontains=location)  & Q(shown_public=True))
-            for i in temp_case:
-                temp2_id_list.append(i.case_id)
+            temp = []  # 個別case值
+            temp2 = [] # 存成list
+            check_list = [] # 0代表無值; 1代表有值
+            temp2_id_list =[] #用來紀錄交集其他5個選項
+
+            ## 人數
+            if num == 0:
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter(Q(num__lte=num) & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("num_temp:",temp2)
+              
+            ## 日期
+            if date_time == "2000-01-01":
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(ended_datetime__date__lte = date_time)& Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("date_temp:",temp2)
+                
+            ## 工作
+            if  work == 100000000000000000:
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(work=work) & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("work_temp:",temp2)
+
+            ## 偏好
+            if  constraint == "None":
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(constraint__icontains=constraint) & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("constraint_temp:",temp2)
+
+            ## 地點
+            if  location == "None":
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(location__icontains=location)  & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("location_temp:",temp2)
+
+            record = []
+        
+            
+            # 交集複合搜尋的其他選項
+            for i in range(6):
+                if check_list[i] == 1:
+                    record.append(i)
+            print("record: ",record)
+
+            if len(record) !=0 :
+                for i in range(len(record)):
+                    num = record[i]
+                    print(i)
+                    if i == 0 :
+                        temp2_id_list = temp2[num]
+                        print("temp2_id_list:",temp2_id_list)
+                        print("temp2[i]:",temp2[num])
+                    else:
+                        temp2_id_list = list(set(temp2_id_list) & set(temp2[num]))
+
             print("temp2_id_list:",temp2_id_list)
 
             # === 複合查詢id結果 - 交集類型/類型
             if con == "1": 
+                
+                # 若其他5個選項搜尋不到結果，應該直接輸出type 和 field的結果
+                if check == 5:
 
-                id_list = list(set(temp_id_list)  & set(temp2_id_list))
-                print("交集 id_list:" ,id_list)
+                    # 關鍵字結果與type 和 field的交集結果
+                    if len(query_list) != 0 :
+                        id_list = []
+                        id_list = list(set(temp_id_list)  & set(query_list))
+                        print("其他五個選項沒有輸入，關鍵字結果與type 和 field的交集結果:",id_list)
 
-                # === 複合查詢id結果 - 交集類型/類型/關鍵字
-                if  len(query_list) == 0 :
-                    query_id_list = []
-                    query_id_list = list(set(id_list)  & set(query_list))
-                    print("query_id_list:",query_id_list)
+                        result_case = Case.objects.filter(case_id__in=id_list ).all()
+                        case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                        case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                        case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                        return render(request,'case/search.html',locals())
+                    
+                    else:
+                        id_list = temp_id_list
+                        print("其他五個選項沒有輸入，type 和 field的聯集結果:",id_list)
+                        result_case = Case.objects.filter(case_id__in=id_list ).all()
+                        case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                        case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                        case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
 
-                    result_case = Case.objects.filter(case_id__in=query_id_list ).all()
-                    case_types = Case_Type.objects.filter(case_id__in=query_id_list ).all()
-                    case_photo = CasePhoto.objects.filter(case_id__in=query_id_list ).all()
-                    case_fields = Case_Field.objects.filter(case_id__in=query_id_list ).all()
+                        return render(request,'case/search1.html',locals()) 
+
+                # 若其他5個選項有交集出結果，則繼續和 type 和 field的結果進行交集
+                else:
+                    id_list = list(set(temp_id_list)  & set(temp2_id_list))
+                   
+                    # === 複合查詢id結果 - 交集類型/類型/關鍵字
+                    if  len(query_list) != 0 :
+                        query_id_list = []
+                        query_id_list = list(set(id_list)  & set(query_list))
+                        print("和其他5個選項 交集 關鍵字 與 type 和 field的結果 " ,query_id_list)
+                        result_case = Case.objects.filter(case_id__in=query_id_list ).all()
+                        case_types = Case_Type.objects.filter(case_id__in=query_id_list ).all()
+                        case_photo = CasePhoto.objects.filter(case_id__in=query_id_list ).all()
+                        case_fields = Case_Field.objects.filter(case_id__in=query_id_list ).all()
+                        return render(request,'case/search.html',locals())
+
+                    print("和其他5個選項 交集 type 和 field的結果 id_list:" ,id_list)
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search1.html',locals())
+            
+
+            else: 
+                # 使用者未輸入任何資訊在進階搜尋時
+                if check == 7:
+                    alert = True
+                    erro =json.dumps("請輸入搜尋條件")
+                    result_case = Case.objects.filter(shown_public=True)
+                    case_fields = Case_Field.objects.all()
+                    case_types = Case_Type.objects.all()
+                    case_photo = CasePhoto.objects.all()
+                    return render(request,'case/search1.html',locals()) 
+
+                
+                # === 複合查詢id結果 -關鍵字與其他五個選項交集
+                if len(query_list) != 0 :
+                    id_list = []
+                    id_list = list(set(temp2_id_list)  & set(query_list))
+                    print("其他五個選項與關鍵字交集結果:",id_list)
+
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
                     return render(request,'case/search.html',locals())
+                
+                # === 其他五個選項交集結果
+                else:
+                    id_list = temp2_id_list
+                    print("其他五個選項相互交集結果:",id_list)
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
 
-                result_case = Case.objects.filter(case_id__in=id_list ).all()
-                case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
-                case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
-                case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
-
-                return render(request,'case/search.html',locals())
-
-            
-            
-            if check == 7:
-                # messages.warning(request, "請輸入搜尋條件")
-                alert = True
-                erro =json.dumps("請輸入搜尋條件")
-                return render(request,'case/search.html',locals()) 
-
-
-            # === 複合查詢id結果 - 並集類型/類型
-            id_list = list(set(temp_id_list) | set(temp2_id_list))
-            print("並集 id_list:" ,id_list) 
-
-            result_case = Case.objects.filter(case_id__in=id_list ).all()
-            case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
-            case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
-            case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
-
-           
-            return render(request,'case/search.html',locals()) 
+                    return render(request,'case/search1.html',locals()) 
 
     # 預設畫面，代所有case
     result_case = Case.objects.filter(shown_public=True)
@@ -471,18 +600,19 @@ def case_search(request):
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
 
-    #list_case = Case.objects.select_related('case_status')
-    return render(request,'case/search.html',locals()) 
+    return render(request,'case/search1.html',locals()) 
 
 
 @login_required
-def case_search1(request):    
+def case_search1(request):  
+
     if request.method == "POST" :
 
         # 定義參數
         query_o = []
         vertify = 0 
-        check = 0
+        check = 0   #判斷是不是都沒填
+        check2 = 0   #判斷是不是除了type和field 都沒有填
         alert = False
         erro = ''
 
@@ -508,7 +638,10 @@ def case_search1(request):
         location = request.POST.get('location')
 
         # == 複合查詢- 是否要交集領域/類型 ==
-        con = request.POST.get('con')     
+        con = request.POST.get('con')  
+
+        # == 複合查詢- 關鍵字 == 
+        query_list = request.POST.getlist('query_list')   
 
         if len(type) == 0 :
             check += 1
@@ -517,19 +650,24 @@ def case_search1(request):
         if  num == '':
             num = 0
             check += 1
+            check2 += 1
         if  work == '':
             work = 100000000000000000
             check += 1 
+            check2 += 1
         if date_time == '':
             date_time = now().date() + timedelta(days=-1) 
             date_time = "2000-01-01"
-            check += 1 
+            check += 1
+            check2 += 1 
         if constraint =='':
             constraint = "None"
-            check += 1 
+            check += 1
+            check2 += 1 
         if location =='':
             location = "None"
-            check += 1 
+            check += 1
+            check2 += 1 
 
         print("check:" , check)
         print("Querry: " , query_o[0] ,query_o[1],query_o[2])
@@ -576,6 +714,7 @@ def case_search1(request):
             else:
                 print("single search for key_word :" ,query_o[2])
                 id_list =[]
+                query_list = []
                 temp_case = Case.objects.filter(Q(title__icontains=query_o[2]) |  Q(description__icontains=query_o[2]) | 
                 Q(reward__icontains=query_o[2]) | Q(location__icontains=query_o[2]) | Q(constraint__icontains=query_o[2])  & Q(shown_public=True) )
                 for i in temp_case:
@@ -584,6 +723,7 @@ def case_search1(request):
                 case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                 case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
                 case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                query_list = id_list
                 print("id_list",id_list,"\n")
 
                 return render(request,'case/search1.html',locals()) 
@@ -609,43 +749,179 @@ def case_search1(request):
             print("temp_id_list: " , temp_id_list)
 
             # === 複合查詢判斷 - other訊息
-            temp2_id_list =[]
-            temp_case = Case.objects.filter(Q(num__lte=num) | Q(ended_datetime__date__lte = date_time)| Q(work=work) |
-            Q(constraint__icontains=constraint)  |Q(location__icontains=location)  & Q(shown_public=True))
-            for i in temp_case:
-                temp2_id_list.append(i.case_id)
+            temp = []  # 個別case值
+            temp2 = [] # 存成list
+            check_list = [] # 0代表無值; 1代表有值
+            temp2_id_list =[] #用來紀錄交集其他5個選項
+
+            ## 人數
+            if num == 0:
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter(Q(num__lte=num) & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("num_temp:",temp2)
+              
+            ## 日期
+            if date_time == "2000-01-01":
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(ended_datetime__date__lte = date_time)& Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("date_temp:",temp2)
+                
+            ## 工作
+            if  work == 100000000000000000:
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(work=work) & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("work_temp:",temp2)
+
+            ## 偏好
+            if  constraint == "None":
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(constraint__icontains=constraint) & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("constraint_temp:",temp2)
+
+            ## 地點
+            if  location == "None":
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(location__icontains=location)  & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("location_temp:",temp2)
+
+            record = []
+        
+            
+            # 交集複合搜尋的其他選項
+            for i in range(6):
+                if check_list[i] == 1:
+                    record.append(i)
+            print("record: ",record)
+
+            if len(record) !=0 :
+                for i in range(len(record)):
+                    num = record[i]
+                    print(i)
+                    if i == 0 :
+                        temp2_id_list = temp2[num]
+                        print("temp2_id_list:",temp2_id_list)
+                        print("temp2[i]:",temp2[num])
+                    else:
+                        temp2_id_list = list(set(temp2_id_list) & set(temp2[num]))
+
             print("temp2_id_list:",temp2_id_list)
 
             # === 複合查詢id結果 - 交集類型/類型
             if con == "1": 
+                
+                # 若其他5個選項搜尋不到結果，應該直接輸出type 和 field的結果
+                if check == 5:
 
-                id_list = list(set(temp_id_list)  & set(temp2_id_list))
-                print("交集 id_list:" ,id_list)
-                result_case = Case.objects.filter(case_id__in=id_list ).all()
-                case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
-                case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
-                case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                    # 關鍵字結果與type 和 field的交集結果
+                    if len(query_list) != 0 :
+                        id_list = []
+                        id_list = list(set(temp_id_list)  & set(query_list))
+                        print("其他五個選項沒有輸入，關鍵字結果與type 和 field的交集結果:",id_list)
 
-                return render(request,'case/search1.html',locals())
+                        result_case = Case.objects.filter(case_id__in=id_list ).all()
+                        case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                        case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                        case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                        return render(request,'case/search.html',locals())
+                    
+                    else:
+                        id_list = temp_id_list
+                        print("其他五個選項沒有輸入，type 和 field的聯集結果:",id_list)
+                        result_case = Case.objects.filter(case_id__in=id_list ).all()
+                        case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                        case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                        case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+
+                        return render(request,'case/search1.html',locals()) 
+
+                # 若其他5個選項有交集出結果，則繼續和 type 和 field的結果進行交集
+                else:
+                    id_list = list(set(temp_id_list)  & set(temp2_id_list))
+                   
+                    # === 複合查詢id結果 - 交集類型/類型/關鍵字
+                    if  len(query_list) != 0 :
+                        query_id_list = []
+                        query_id_list = list(set(id_list)  & set(query_list))
+                        print("和其他5個選項 交集 關鍵字 與 type 和 field的結果 " ,query_id_list)
+                        result_case = Case.objects.filter(case_id__in=query_id_list ).all()
+                        case_types = Case_Type.objects.filter(case_id__in=query_id_list ).all()
+                        case_photo = CasePhoto.objects.filter(case_id__in=query_id_list ).all()
+                        case_fields = Case_Field.objects.filter(case_id__in=query_id_list ).all()
+                        return render(request,'case/search.html',locals())
+
+                    print("和其他5個選項 交集 type 和 field的結果 id_list:" ,id_list)
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search1.html',locals())
             
-            if check == 7:
-                # messages.warning(request, "請輸入收尋條件")
-                alert = True
-                erro =json.dumps("請輸入收尋條件")
-                return render(request,'case/search1.html',locals()) 
 
+            else: 
+                # 使用者未輸入任何資訊在進階搜尋時
+                if check == 7:
+                    alert = True
+                    erro =json.dumps("請輸入搜尋條件")
+                    result_case = Case.objects.filter(shown_public=True)
+                    case_fields = Case_Field.objects.all()
+                    case_types = Case_Type.objects.all()
+                    case_photo = CasePhoto.objects.all()
+                    return render(request,'case/search1.html',locals()) 
 
-            # === 複合查詢id結果 - 並集類型/類型
-            id_list = list(set(temp_id_list) | set(temp2_id_list))
-            print("並集 id_list:" ,id_list) 
+                
+                # === 複合查詢id結果 -關鍵字與其他五個選項交集
+                if len(query_list) != 0 :
+                    id_list = []
+                    id_list = list(set(temp2_id_list)  & set(query_list))
+                    print("其他五個選項與關鍵字交集結果:",id_list)
 
-            result_case = Case.objects.filter(case_id__in=id_list ).all()
-            case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
-            case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
-            case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                    return render(request,'case/search.html',locals())
+                
+                # === 其他五個選項交集結果
+                else:
+                    id_list = temp2_id_list
+                    print("其他五個選項相互交集結果:",id_list)
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
 
-           
-            return render(request,'case/search1.html',locals()) 
+                    return render(request,'case/search1.html',locals()) 
 
     # 預設畫面，代所有case
     result_case = Case.objects.filter(shown_public=True)
@@ -653,7 +929,6 @@ def case_search1(request):
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
 
-    #list_case = Case.objects.select_related('case_status')
     return render(request,'case/search1.html',locals()) 
 
 
