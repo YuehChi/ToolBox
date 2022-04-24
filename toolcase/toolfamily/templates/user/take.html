@@ -1,145 +1,532 @@
+{% extends "base_generic.html" %}
 <!DOCTYPE html>
 <html lang="en">
+{% block sidebar %}
+    <div class="col-md-6 d-none d-md-block" style="width: 192px;margin-top: 80px;">
+        <ul class="list-group">
+            <li class="list-group-item" style="background: rgb(241,241,241);text-align: center;font-size: 12px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);text-align: center;font-size: 16px;">會員中心</a></li>
+            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">編輯個人資訊</a></li>
+            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">我的委託</a></li>
+            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">我的接案</a></li>
+            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">我的追蹤</a></li>
+            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">設定</a></li>
+            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">登出</a></li>
+        </ul>
+    </div>
+{% endblock %}
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+
+{% block content %}
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的接案</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>台大工具箱</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/fonts/material-icons.min.css">
+    <link rel="stylesheet" href="/static/css/take-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body>
-    <h1>我的接案</h1>
+<style>
+    
+    .checked {
+    color: #FFED85;
+    }
+    .unchecked {
+        color: rgba(198, 189, 189, 0.893);
+    }
 
-    <h2>報名案件</h2>
-    <table border=1>
-        <thead>
-            <tr>
-                <td>結束時間</td>
-                <td>案件名稱</td>
-                <td>報酬</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for willing in willingness %}
-                <tr>
-                    <td>{{willing.apply_case.ended_datetime}}</td>
-                    <td><a href="{% url 'case-profile' willing.apply_case.case_id %}">{{willing.apply_case.title}}</td>
-                    <td>{{willing.apply_case.reward}}</td>
-                    <td><input type="button" onclick="window.location='/toolfamily/case/cancel/{{willing.apply_case.case_id}}'" value="取消報名"></td>
-                    {% comment %} 是否確認取消的alert還沒寫 {% endcomment %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    fieldset, label { margin: 0; padding: 0; }
+    body{ margin: 20px; }
+    h1 { font-size: 1.5em; margin: 10px; }
+    
+    /****** Style Star Rating Widget *****/
+    
+    .rating { 
+      border: none;
+      float: left;
+    }
+    
+    .rating > input { display: none; } 
+    .rating > label:before { 
+      margin: 5px;
+      font-size: 1.25em;
+      font-family: FontAwesome;
+      display: inline-block;
+      content: "\f005";
+    }
+    
+    .rating > .half:before { 
+      content: "\f089";
+      position: absolute;
+    }
+    
+    .rating > label { 
+      color: #ddd; 
+     float: right; 
+    }
+    
+    /***** CSS Magic to Highlight Stars on Hover *****/
+    
+    .rating > input:checked ~ label, /* show gold star when clicked */
+    .rating:not(:checked) > label:hover, /* hover current star */
+    .rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+    
+    .rating > input:checked + label:hover, /* hover current star when changing rating */
+    .rating > input:checked ~ label:hover,
+    .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+    .rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+    </style>
+{% load static %}
+<script >
+    function changeImage(id) {
+        var a = id
+        var url = window.location.origin + "{% static 'images/Vector2.png' %}"
 
-    <h2>我的接案</h2>
-    <table border=1>
-        <thead>
-            <tr>
-                <td>結束時間</td>
-                <td>案件名稱</td>
-                <td>報酬</td>
-                <td>訊息</td>
-                <td>狀態</td>
-            </tr>
-        </thead>
+        if (document.getElementById(id).src == url){
+            document.getElementById(id).src = "{% static 'images/Vector.png' %}";
+        } else{
+            document.getElementById(id).src = "{% static 'images/Vector2.png' %}";
+        }
+    }
+    function changeTime(oriTime, ouputId, status){
+        var yyyy = oriTime.split('年')[0]
+        var mm = oriTime.split('年')[1].split('月')[0]
+        var dd = oriTime.split('年')[1].split('月')[1].split('日')[0]
+        var tt = oriTime.split('年')[1].split('月')[1].split('日 ')[1]
+        if (mm.length == 1){
+            mm = "0"+mm;
+        }
+        if (dd.length ==1){
+            dd = "0"+dd
+        }
+        var today = yyyy + '/' + mm + '/' + dd
+        var enddate = new Date(mm + '/' + dd + '/' + yyyy + ' '+ tt)
+        var currentdate = new Date();
+        var remainday = Math.abs((enddate.getTime() - currentdate.getTime()))
+
+        if (status == "s"){
+            document.getElementById(ouputId).innerHTML=today;
+        }else if (status =="e"){
+            document.getElementById(ouputId).innerHTML=today + "<span style='margin-left: 5px;color: rgb(60,46,47); font-size: 14px;'> 還剩 </span> <span style='font-size:18px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span>";
+        }else if (status =="user"){
+            document.getElementById(ouputId).innerHTML="上次登入: "+ msToTime(remainday)+"前";
+        }else{
+            document.getElementById(ouputId).innerHTML="於 "+ today+ " <br>解除委託";
+        }
+    }
+    function msToTime(ms) {
+        let seconds = (ms / 1000).toFixed(0);
+        let minutes = (ms / (1000 * 60)).toFixed(0);
+        let hours = (ms / (1000 * 60 * 60)).toFixed(0);
+        let days = (ms / (1000 * 60 * 60 * 24)).toFixed(0);
+        if (seconds < 60) return seconds + " 秒";
+        else if (minutes < 60) return minutes + " 分";
+        else if (hours < 24) return hours + " 小時";
+        else return days + " 天"
+    }
+    function changePage(Page){
+        if (Page == "history"){
+            document.getElementById("history").style.display="";
+            document.getElementById("registration").style.display="none";
+            document.getElementById("take").style.display="none";
+
+            document.getElementById("historyA").style.color="rgb(94, 73, 73)";
+            document.getElementById("registrationA").style.color="rgb(204,195,190)";
+            document.getElementById("takeA").style.color="rgb(204,195,190)";
+           
+        }else if(Page == "registration"){
+            document.getElementById("history").style.display="none";
+            document.getElementById("registration").style.display="";
+            document.getElementById("take").style.display="none";
+
+            document.getElementById("historyA").style.color="rgb(204,195,190)";
+            document.getElementById("registrationA").style.color="rgb(94, 73, 73)";
+            document.getElementById("takeA").style.color="rgb(204,195,190)";
+            
+        }else if(Page == "take"){
+            document.getElementById("history").style.display="none";
+            document.getElementById("registration").style.display="none";
+            document.getElementById("take").style.display="";
+
+            document.getElementById("historyA").style.color="rgb(204,195,190)";
+            document.getElementById("registrationA").style.color="rgb(204,195,190)";
+            document.getElementById("takeA").style.color="rgb(94, 73, 73)";
+        }
         
-        {% for commission in conduct %}
-        <thead>
-                <tr>
-                    <td>{{commission.case.ended_datetime}}</td>
-                    <td><a href="{% url 'case-profile' commission.case.case_id %}">{{commission.case.title}}</td>
-                    <td>{{commission.case.reward}}</td>
-                    {% if commission.user_status.status_id == 2 %}
-                        {% comment %} 確認alert都還沒做 {% endcomment %}
-                        {% for key, value in deadline.items %}
-                            {% if commission.commissionrecord_id == key %}
-                            <td>還剩 {{value}}</td>
-                            {% endif %}
-                        {% endfor %}
-                        <td><input type="button" onclick="window.location='/toolfamily/user/finish/{{commission.commissionrecord_id}}'" value="完成"><br>
-                            <input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="解除"></td>
-                    {% elif commission.user_status.status_id == 5 %}
-                        <td>委託人已發出取消請求</td>
-                        <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="確認取消"></td>
-                    {% elif commission.user_status.status_id == 6 %}
-                        <td>等待對方確認取消</td>
-                    {% elif commission.user_status.status_id == 7 %}
-                        <td>等待對方確認完成</td>
-                    {% endif %}
-                </tr>
-        </thead>
+    }
 
-        <tbody>
-            <tr>
-                <td>｜委託人資訊
-                {% if commission.case.publisher.icon %}
-                    <img src="{{commission.case.publisher.icon.url}}" width="40px">
-                {% endif %}
-                </td>
-                <td>{{commission.case.publisher.nickname}} (性別){{commission.case.publisher.gender}}<br>
-                    上次登入: {{commission.case.publisher.django_user.last_login}}</td>
-                <td>{{commission.case.publisher.account_mail}}<br>
-                    (contact){{commission.case.publisher.contact}}</td>
-            </tr>
-        </tbody>
-        {% endfor %}
-    </table>
+    function getStar(starId,value){
+        var stringA = "<span class='fa fa-star checked'></span>"
+        var stringB = "<span class='fa fa-star unchecked'></span>"
+        var result = ""
+        for (i = 0; i < value; i++){
+            result= result+stringA
+        }
+        var los = 5-value
+        for(j = 0; j<los; j++){
+            result = result+stringB
+        }
 
-    <h2>歷史紀錄</h2>
-    <table border=1>
-        <thead>
-            <tr>
-                <td>結束時間</td>
-                <td>案件名稱</td>
-                <td>報酬</td>
-                <td>狀態</td>
-            </tr>
-        </thead>
+        document.getElementById(starId).innerHTML=result
+    }
+    
+    
+</script>
+<body style="background: rgb(244,244,243);">
+    <div class="container" style="width: 1317px;">
         
-        {% for commission in close %}
-        <thead>
-            <tr>
-                <td>{{commission.case.ended_datetime}}</td>
-                <td>{{commission.case.title}}</td>
-                <td>{{commission.case.reward}}</td>
-                {% if commission.user_status.status_id == 3 %}
-                    <td>已完成</td>
-                {% elif commission.user_status.status_id == 4 %}
-                    <td>已解除</td>
-                {% endif %}
-            </tr>
-        </thead>
+        <div class="row" style="width: 1222px;margin-right: 30px;margin-right: 30px;">
+            <div class="col-md-6" style="width: 1027px; border-bottom-style: none;margin-top: 80px; padding-right: 0px;padding-left: 0px;">
+                {% load static %}
+                <div class="border rounded" style="background: #ffffff;width: 990px;margin-left: 22px;box-shadow: 1px 1px rgba(191,191,191,0.81);"><img src="{% static 'images/Ellipse%204.png' %}" style="margin-top: 50px;margin-left: 405px;">
+                    <h1 class="fw-bold text-center" style="color: rgb(94, 73, 73);margin-top: -52px;font-size: 30px;">我的接案</h1>
+                    <div style="margin-top: 27px;width: 300px;margin-left: 687px;"><span style="margin-left: 28px;color: rgb(94, 73, 73);font-size: 14px;">篩選</span>
+                        <div class="dropdown" style="width: 166px;margin-left: 72px;margin-top: -24px;"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" style="height: 24px;background: rgb(232,231,229);font-size: 16px;text-align: right;line-height: 8.5px;border-style: none;width: 160.125px;"></button>
+                            <div class="dropdown-menu" style="font-size: 12px;text-align: justify;"><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按發布時間</a><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按結束時間</a><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按狀態</a></div>
+                        </div>
+                    </div>
+                    <div class="underlineEffects" style="margin-top: -55px;width: 523px;">
+                        <ul style="margin-left: 40px;margin-bottom: 0px;">
+                            <li><a id="takeA"href="javascript:void(0);" style="color: rgb(94, 73, 73);"onclick="changePage('take');">我的接案</a></li>
+                            <li><a id="registrationA" href="javascript:void(0);" onclick="changePage('registration');">報名案件</a></li>
+                            <li><a id="historyA" href="javascript:void(0);" onclick="changePage('history');">歷史紀錄</a></li>
+                        </ul>
+                    </div>
+                    
+<!-- take -->
+                    <div id="take">
+                        <div style="width: 873px;margin-left: 50px;margin-top: 5px;margin-right: 50px;">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 80px;"></td>
+                                        <td style="width: 230px;"><button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(142,93,78);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;">↓</button>結束時間</td>
+                                        <td colspan="2" style="width: 80px;">案件名稱</td>
+                                        <td style="width: 100px;">報酬</td>
+                                        <td style="width: 100px;">訊息</td>
+                                        {% load static %}
+                                        <td colspan="2" style="width: 20px; text-align: center;">狀態<button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Help.png' %}"></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div style="margin-top: -19px;width: 892px; margin-left: 50px;margin-right: 50px;margin-bottom: 50px; background: rgba(244, 244, 243, 1);border-radius: 27px;border: 1px solid rgb(125,105,105);">
+                            <table style="margin-top: 7px;" class="table table-borderless tableTitle">
+                                {% for commission in conduct %}
+                                <tbody>
+                                    <tr>
+                                        {% load static %}
+                                        <td style="width: 80.297px;padding-right: 0px;padding-left: 20px;padding-bottom: 0px;">
+                                            <button class="btn btn-primary" onclick="changeImage({{ commission.case.case_id }})" type="button" data-bs-toggle="collapse" data-bs-target="#M{{ commission.case.case_id }}" aria-expanded="false" aria-controls="M{{ commission.case.case_id }}"  style="line-height: 45px; background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;">
+                                                <img id="{{ commission.case.case_id }}" src="{% static 'images/Vector2.png' %}">
+                                            </button>
+                                        </td>
+                                        <td style="line-height: 50px;color: rgb(121, 110, 110);width: 150.297px;padding-bottom: 0px;" id="enddate{{ commission.case.case_id }}">
+                                            {{commission.case.ended_datetime}}
+                                            <script> 
+                                                var oriTime = "{{commission.case.ended_datetime}}"
+                                                var ouputId = "enddate{{ commission.case.case_id }}"
+                                                changeTime(oriTime, ouputId ,"s");
+                                            </script>
+                                        </td>
+                                        <td colspan="2" style="width: 275px;">
+                                            <a href="{% url 'case-profile' commission.case.case_id %}" style="color: rgb(60,46,47);line-height: 50px;padding-bottom: 0px;">
+                                                {{commission.case.title}}}
+                                            </a>
+                                        </td>
+                                        <td style="width: 90px;line-height: 50px;color: rgb(121, 110, 110); padding-bottom: 0px;">{{commission.case.reward}}</td>
+                                        {% if commission.user_status.status_id == 2 %}
+                                            {% comment %} 確認alert都還沒做 {% endcomment %}
+                                            {% for key, value in deadline.items %}
+                                                {% if commission.commissionrecord_id == key %}
+                                                <td style="line-height: 50px;">還剩 {{value}}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <td>
+                                                <button class="btn btn-primary" type="button" onclick="window.location='/toolfamily/user/finish/{{commission.commissionrecord_id}}'" value="完成" style="width: 127.2812px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成</button><br>
+                                                <button class="btn btn-primary" type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'"  value="解除" style="width: 127.2812px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">解除</button>
+                                                
+                                            </td>
+                                        {% elif commission.user_status.status_id == 5 %}
+                                            <td>委託人已發出取消請求</td>
+                                            <td><input type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="確認取消"></td>
+                                        {% elif commission.user_status.status_id == 6 %}
+                                            <td>等待對方確認取消</td>
+                                        {% elif commission.user_status.status_id == 7 %}
+                                            <td>等待對方確認完成</td>
+                                        {% endif %}
+                                    </tr>
+                                        <tr>
+                                            <td colspan="9" style="padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px; ">
+                                                <div class="collapse" id="M{{ commission.case.case_id }}">
+                                                    <table class="table tableContain">
+                                                        <tbody>
+                                                            <tr style="font-size: 12px;background: #ffffff;">
+                                                                <td style="line-height: 60px; width: 80px; padding-right: 0px;padding-left: 30px;padding-bottom: 0px;">｜委託人資訊</td>
+                                                                
+                                                                <td style="line-height: 30px; width: 150px;">
+                                                                    
+                                                                        {% if commission.case.publisher.icon %}
+                                                                            <img class="rounded-circle" src="{{commission.case.publisher.icon.url}}" style="width: 43px;margin-top: 10px;">
+                                                                        {% endif %}
+                                                                    
+                                                                    <div style="margin-left: 55px; margin-top: -53px;">
+                                                                        <a href="#" style="color: rgb(134,81,64);">{{commission.case.publisher.nickname}}
+                                                                            {% load static %} 
+                                                                            {% if commission.case.publisher.gender == 0 %}
+                                                                                {% load static %}
+                                                                                <img  style="width: 18px;"src="{% static 'images/gender-female.png' %}" style="margin-left: 10px;">
+                                                                            {% elif commission.case.publisher.gender == 1 %}
+                                                                                {% load static %}
+                                                                                <img style="width: 18px;"src="{% static 'images/gender-male.png' %}" style="margin-left: 10px;">
+                                                                            {% else %}
+                                                                                {% load static %}
+                                                                                <img style="width: 18px;"src="{% static 'images/gender-male-female.png' %}" style="margin-left: 10px;">
+                                                                            {% endif %}
+                                                                        </a>
+                                                                    
+                                                                        <div class="w-100">
+                                                                            <span style="color: rgb(142,145,147);font-size: 12px;line-height: 0px;" id="t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}">上次登入: {{commission.case.publisher.django_user.last_login}}
+                                                                                <script> 
+                                                                                    var oriTime = "{{commission.case.publisher.django_user.last_login}}"
+                                                                                    var ouputId = "t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"
+                                                                                    changeTime(oriTime, ouputId ,"user");
+                                                                                </script>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width: 30px;text-align: center ; line-height: 53px;"><button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button><button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Person_add.png' %}"></button></td>
+                                                                <td style="text-align: left; line-height: 58px;width: 200px;color: rgb(85,58,58);">
+                                                                    {% if contact != None %}
+                                                                        {{commission.case.publisher.contact}}
+                                                                    {% else %}
+                                                                        {{commission.case.publisher.account_mail}}
+                                                                    {% endif %}
+                                                                    {% load static %}
+                                                                    <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr> 
+                                    </tbody>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
 
-        <tbody>
-            <td>｜委託人資訊
-                {% if commission.case.publisher.icon %}
-                    <img src="{{commission.case.publisher.icon.url}}" width="40%">
-                {% endif %}
-            </td>
-            <td>{{commission.case.publisher.nickname}} (性別){{commission.case.publisher.gender}}<br>
-                上次登入: {{commission.case.publisher.django_user.last_login}}</td>
-            <td>{{commission.case.publisher.account_mail}}<br>
-                (contact){{commission.case.publisher.contact}}</td>
-
-            {% if commission.user_status.status_id == 3 %}
-            <td>評價 
-                {% if commission.rate_worker_to_publisher %}
-                    {{commission.rate_worker_to_publisher}}
-                {% else %}
-                <form action="/toolfamily/user/rate/" method="post">
-                    {% csrf_token %}
-                    <input type="submit" value=1 name="{{commission.commissionrecord_id}}">
-                    <input type="submit" value=2 name="{{commission.commissionrecord_id}}">
-                    <input type="submit" value=3 name="{{commission.commissionrecord_id}}">
-                    <input type="submit" value=4 name="{{commission.commissionrecord_id}}">
-                    <input type="submit" value=5 name="{{commission.commissionrecord_id}}">
-                <form>
-                {% endif %}</td>
-            {% elif commission.user_status.status_id == 4 %}
-                <td>已於 {{commission.doublecheck_datetime}} 解除案件</td>
-            {% endif %}
-        <tbody>
-        {% endfor %}
-    </table>
+<!-- registration -->
+                    <div id="registration" style="display: none;">
+                        <div style="width: 873px;margin-left: 50px;margin-right: 50px; margin-top: 20px;margin-bottom: 50px;background-color: rgb(226, 218, 212); border-radius: 27px;border: 1px solid rgb(125,105,105);">
+                            <table style="margin-top: 0px; margin-bottom: 23px;" class="table table-sm table-striped table-borderless ">
+                                <thead style="color: rgb(75, 49, 42);padding-top: 0px;">
+                                    <tr>
+                                        
+                                        <td style="width: 200px;text-align: center;">
+                                            <button class="btn" type="button" style="color: rgb(75, 49, 42);height: 30px;">↑ 結束時間</button>
+                                        </td>
+                                        <td colspan="2" style="width: 250px;text-align: center;">案件名稱</td>
+                                        <td style="width: 80px;text-align: center;">報酬</td>
+                                        <td colspan="2"style="width: 80px;text-align: center;">動作</td>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-light">
+                                    {% for willing in willingness %}
+                                        <tr>
+                                            <td style="color: rgb(121, 110, 110);line-height: 50px; width: 200px;text-align: center;"id="enddate{{ willing.apply_case.case_id }}">
+                                                {{willing.apply_case.ended_datetime}}
+                                                <script> 
+                                                    var oriTime = "{{willing.apply_case.ended_datetime}}}"
+                                                    var ouputId = "enddate{{ willing.apply_case.case_id }}"
+                                                    changeTime(oriTime, ouputId ,"s");
+                                                </script>
+                                            </td>
+                                            
+                                            <td colspan="2" style="width: 250px;text-align: left;">
+                                                <a href="{% url 'case-profile' willing.apply_case.case_id %}" style="color: rgb(60,46,47);line-height: 50px;padding-bottom: 0px;">
+                                                    {{willing.apply_case.title}}
+                                                </a>
+                                                </td>
+                                            <td style="width: 80px;text-align: center;line-height: 50px;color: rgb(121, 110, 110);">{{willing.apply_case.reward}}</td>
+                                            <td colspan="2"style="width: 80px;text-align: center;line-height: 50px">
+                                                {% comment %} 是否確認取消的alert還沒寫 {% endcomment %}
+                                                <button class="btn btn-primary" type="button" onclick="window.location='/toolfamily/case/cancel/{{willing.apply_case.case_id}}'" value="取消報名" style="width: 127.2812px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">取消報名</button>
+                                            </td>
+                                            
+                                        </tr>
+                                    {% endfor%}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+<!-- History -->
+                    <div id="history" style="display: none;">
+                        <div style="width: 873px;margin-left: 50px;margin-top: 5px;margin-right: 50px;">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 80px;"></td>
+                                        <td style="width: 230px;"><button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(142,93,78);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;">↓</button>結束時間</td>
+                                        <td colspan="2" style="width: 80px;">案件名稱</td>
+                                        <td style="width: 100px;">報酬</td>
+                                        <td style="width: 100px;">狀態</td>
+                                        <td colspan="2" style="width: 47px;">獲得的評價</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div style="margin-top: -19px;width: 892px; margin-left: 50px;margin-right: 50px;margin-bottom: 50px; background: rgba(244, 244, 243, 1);border-radius: 27px;border: 1px solid rgb(125,105,105);">
+                            <table style="margin-top: 7px;" class="table table-borderless tableTitle">
+                                {% for commission in close %}
+                                <tbody>
+                                    <tr>
+                                        {% load static %}
+                                        <td style="width: 80.297px;padding-right: 0px;padding-left: 20px;padding-bottom: 0px;">
+                                            <button class="btn btn-primary" onclick="changeImage({{ commission.case.case_id }})" type="button" data-bs-toggle="collapse" data-bs-target="#Mh{{ commission.case.case_id }}" aria-expanded="false" aria-controls="Mh{{ commission.case.case_id }}"  style="line-height: 45px; background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;">
+                                                <img id="{{ commission.case.case_id }}" src="{% static 'images/Vector2.png' %}">
+                                            </button>
+                                        </td>
+                                        <td style="line-height: 50px;color: rgb(121, 110, 110);width: 150.297px;padding-bottom: 0px;" id="enddate{{ commission.case.case_id }}">
+                                            {{commission.case.ended_datetime}}
+                                            <script> 
+                                                var oriTime = "{{commission.case.ended_datetime}}"
+                                                var ouputId = "enddate{{ commission.case.case_id }}"
+                                                changeTime(oriTime, ouputId ,"s");
+                                            </script>
+                                        </td>
+                                        <td colspan="2" style="width: 190px;">
+                                            <a href="{% url 'case-profile' commission.case.case_id %}" style="color: rgb(60,46,47);line-height: 50px;padding-bottom: 0px;">
+                                                {{commission.case.title}}}
+                                            </a>
+                                        </td>
+                                        <td style="width: 98.766px;line-height: 50px;color: rgb(121, 110, 110); padding-bottom: 0px;">{{commission.case.reward}}</td>
+                                        {% if commission.user_status.status_id == 3 %}
+                                            <td style="line-height: 50px;">已完成</td>
+                                        {% elif commission.user_status.status_id == 4 %}
+                                            <td style="line-height: 50px;">已解除</td>
+                                        {% endif %}
+                                        <td style="line-height: 50px;">
+                                            {% comment %} 我得到的星星ＱＱ 我需要value {% endcomment %}
+                                            <span id="starth{{ commission.case.case_id }}">
+                                                <script>
+                                                    var starId = "starth{{ commission.case.case_id }}"
+                                                    var value = " 0"
+                                                    getStar(starId, value );
+                                                </script>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                        <tr>
+                                            <td colspan="9" style="padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px; ">
+                                                <div class="collapse" id="Mh{{ commission.case.case_id }}">
+                                                    <table class="table table-borderless tableContain">
+                                                        <tbody>
+                                                            <tr style="font-size: 12px;background: #ffffff;">
+                                                                <td style="line-height: 65px; width: 120px; text-align: center; ">｜委託人資訊</td>
+                                                                
+                                                                <td style="line-height: 53px; width: 200px;">
+                                                                    
+                                                                    {% if commission.case.publisher.icon %}
+                                                                        <img class="rounded-circle" src="{{commission.case.publisher.icon.url}}" style="width: 43px;margin-top: 10px;">
+                                                                    {% endif %}
+                                                                    
+                                                                    <div style="margin-left: 55px; margin-top: -40px; height: 50px;line-height: 20px;">
+                                                                        <a href="#" style="color: rgb(134,81,64);">{{commission.case.publisher.nickname}}
+                                                                            {% load static %} 
+                                                                            {% if commission.case.publisher.gender == 0 %}
+                                                                                {% load static %}
+                                                                                <img  style="width: 18px;"src="{% static 'images/gender-female.png' %}" style="margin-left: 10px;">
+                                                                            {% elif commission.case.publisher.gender == 1 %}
+                                                                                {% load static %}
+                                                                                <img style="width: 18px;"src="{% static 'images/gender-male.png' %}" style="margin-left: 10px;">
+                                                                            {% else %}
+                                                                                {% load static %}
+                                                                                <img style="width: 18px;"src="{% static 'images/gender-male-female.png' %}" style="margin-left: 10px;">
+                                                                            {% endif %}
+                                                                        </a>
+                                                                    
+                                                                        <div class="w-100">
+                                                                            <span style="color: rgb(142,145,147);font-size: 12px;line-height: 0px;" id="th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}">
+                                                                                上次登入: {{commission.case.publisher.django_user.last_login}}
+                                                                                <script> 
+                                                                                    var oriTime = "{{commission.case.publisher.django_user.last_login}}"
+                                                                                    var ouputId = "th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"
+                                                                                    changeTime(oriTime, ouputId ,"user");
+                                                                                </script>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width: 80px;text-align: center ; line-height: 53px;"><button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button><button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Person_add.png' %}"></button></td>
+                                                                <td style="text-align: left; line-height: 58px;width: 200px;color: rgb(85,58,58);">
+                                                                    {% if contact != None %}
+                                                                        {{commission.case.publisher.contact}}
+                                                                    {% else %}
+                                                                        {{commission.case.publisher.account_mail}}
+                                                                    {% endif %}
+                                                                    {% load static %}
+                                                                    <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
+                                                                </td>
+                                                                {% if commission.user_status.status_id == 3 %}
+                                                                    <td>評價&nbsp;&nbsp;
+                                                                    {% if commission.rate_worker_to_publisher %}
+                                                                        
+                                                                        <span id="starth{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}">
+                                                                            <script>
+                                                                                var starId = "starth{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}"
+                                                                                var value = "{{commission.rate_worker_to_publisher}}"
+                                                                                getStar(starId, value );</script>
+                                                                        </span>
+                                                                    {% else %}
+                                                                    <td style="width: 145px;">
+                                                                        <form action="/toolfamily/user/rate/" method="post">
+                                                                            {% csrf_token %}
+                                                                            <fieldset class="rating">
+                                                                                <input type="submit" id="field{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}_star5" name="{{commission.commissionrecord_id}}" value="5" /><label class = "full" for="field{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}_star5"></label>
+                                                                                <input type="submit" id="field{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}_star4" name="{{commission.commissionrecord_id}}" value="4" /><label class = "full" for="field{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}_star4"></label>
+                                                                                <input type="submit" id="field{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}_star3" name="{{commission.commissionrecord_id}}" value="3" /><label class = "full" for="field{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}_star3"></label>
+                                                                                <input type="submit" id="field{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}_star2" name="{{commission.commissionrecord_id}}" value="3" /><label class = "full" for="field{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}_star2"></label>
+                                                                                <input type="submit" id="field{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}_star1" name="{{commission.commissionrecord_id}}" value="1" /><label class = "full" for="field{{commission.case.publisher.account_mail}}}{{  commission.case.case_id  }}_star1"></label>
+                                                                            </fieldset>
+                                                                        <form>
+                                                                            {% endif %}
+                                                                    </td>
+                                                                    <td style="width: 150px;line-height: 56px;padding-right: 0px;padding-left: 0px;color: rgb(85,58,58);" colspan="3">評價&nbsp;&nbsp;
+                                                                      
+                                                                        
+                                                                        
+                                                                        
+                                                                    </td>
+                                                                {% elif commission.user_status.status_id == 4 %}
+                                                                    <td style="text-align: center; padding-top: 20px; line-height: 20px;" id="deleh{{ commission.case.case_id }}">
+                                                                        已於 {{commission.doublecheck_datetime}}解除案件
+                                                                        <script>
+                                                                            var oriTime = "{{commission.doublecheck_datetime}}"
+                                                                            var ouputId = "deleh{{ commission.case.case_id }}"
+                                                                            changeTime(oriTime, ouputId, "dele");
+                                                                        </script> 
+                                                                    </td>
+                                                                    <td style="width: 145px;"></td>
+                                                                {% endif %}
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr> 
+                                    </tbody>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-</html>
+{% endblock %}
