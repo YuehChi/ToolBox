@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import path
 # Use include() to add paths from the catalog application
@@ -22,14 +23,13 @@ from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('toolfamily/', include('toolfamily.urls')),
-    path('accounts/login/', RedirectView.as_view(url='/toolfamily/', permanent=True)),
-    path('', RedirectView.as_view(url='/toolfamily/home/', permanent=True)),
-
-    # path('accounts/', include('django.contrib.auth.urls')),#Add Django site authentication urls (for login, logout, password management)
+    *i18n_patterns(path('admin/', admin.site.urls)),
+    # path('rosetta/', include('rosetta.urls')),
+    *i18n_patterns(path('toolfamily/', include('toolfamily.urls'))),
+    *i18n_patterns(path('accounts/login/', RedirectView.as_view(url='/toolfamily/', permanent=True))),
+    *i18n_patterns(path('', RedirectView.as_view(url='/toolfamily/home/', permanent=True))),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
- 
 
+# urlpatterns += i18n_patterns(
+#     path('toolfamily/', include('toolfamily.urls'))+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

@@ -1,10 +1,11 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html style="--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 245,197,72;--bs-body-bg: rgb(244, 244, 243);--bs-success: rgb(134, 81, 64) ;--bs-success-rgb: 134,81,64;">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>台大工具箱 NTU ToolBox</title>
+    <title>{% trans "台大工具箱" %}</title>
     {% if alert %}
         <script type="text/javascript">
             alert({{ sign_up_message|safe }});
@@ -19,27 +20,36 @@
 <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="72" style="background: rgb(244, 244, 243);">
     <nav class="navbar navbar-light navbar-expand-md fixed-top" style="background: rgb(244,244,243);height: 50px;color: rgb(165, 141, 141);border-radius: 0px;border-style: outset;border-top-style: none;border-right-style: none;border-bottom-width: 1px;border-bottom-style: solid;border-left-style: none;border-left-color: rgb(165, 141, 141);">
         <div class="container-fluid"><a class="navbar-brand" href="#">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            {% get_current_language as CURRENT_LANGUAGE %}
+            {% get_available_languages as AVAILABLE_LANGUAGES %}
+            {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
             <div class="collapse navbar-collapse d-md-flex d-lg-flex justify-content-md-end align-items-md-center justify-content-lg-end align-items-lg-center" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="#" style="font-size: 12px;margin-left: -2px;margin-right: 8px;">繁體中文</a></li>
+                    {% for language in languages %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="/{{ language.code }}/toolfamily/" style="font-size: 12px;margin-left: -2px;margin-right: 8px;" {% if language.code == CURRENT_LANGUAGE %} class="active"{% endif %}>
+                        {{ language.name_local }}
+                      </a>
+                    </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
     </nav>
-    
+
     <section class="d-flex justify-content-center align-items-center align-content-center align-self-center me-auto portfolio" id="portfolio" style="--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 24,188,156;margin-top: 54px;">
         <div class="row justify-content-center align-items-center">
             <div class="col-md-8 col-lg-6" style="width: 600px;">
                 {% load static %}
                 <div class="container" style="width: 500px;margin-right: 0px;margin-left: 39px;margin-top: 111px;padding-right: 24px;"><img src="{% static 'images/NTU%20TOOLBOX.png' %}" style="margin-top: 0px;margin-left: 21px;width: 414px;">
                     <hr style="margin-top: 32px;border-width: 2px;border-top-width: 2px;border-top-color: rgb(165, 141, 141);border-right-width: 2px;border-right-color: rgb(165, 141, 141);border-bottom-width: 2px;border-bottom-color: rgb(165, 141, 141);border-left-width: 2px;border-left-color: rgb(165, 141, 141);">
-                    <h5 class="text-center font-weight-light mb-0" style="margin-top: 8px;color: rgb(214, 210, 206);"><strong>專屬台大人的委託平台</strong><br></h5>
+                    <h5 class="text-center font-weight-light mb-0" style="margin-top: 8px;color: rgb(214, 210, 206);"><strong>{% trans "專屬台大人的委託平台" %}</strong><br></h5>
                 </div>
             </div>
             <div class="col-md-10" style="height: 500px;width: 600px;">
                 <div class="container" style="width: 400px;margin-right: 0px;margin-left: 89px;margin-top: 35px;padding: 0px;padding-top: 0px;padding-right: 154px;color: rgb(165, 141, 141);">
                     {% load static %}
-                    <h1 style="font-family: Montserrat, sans-serif;text-align: center;color: rgb(123, 99, 99);font-size: 50px;margin-right: -150px;">會員登入</h1><img class="img-fluid mb-5" src="{% static 'images/人頭1.png' %}" style="margin-left: 142px;margin-right: 0px;margin-top: 20px;height: 93px;">
+                    <h1 style="font-family: Montserrat, sans-serif;text-align: center;color: rgb(123, 99, 99);font-size: 50px;margin-right: -150px;">{% trans "會員登入" %}</h1><img class="img-fluid mb-5" src="{% static 'images/人頭1.png' %}" style="margin-left: 142px;margin-right: 0px;margin-top: 20px;height: 93px;">
                     <div style="margin-right: -48px;height: 210px;margin-top: -19px;margin-left: 24px;">
                         <span style="color: Tomato; margin-left: 82px;">
                             {% if messages %}
@@ -59,20 +69,20 @@
                                 <div class="row" style="margin-top: -15px;">
                                     <div class="col" style="height: 36px;"><input class="form-control form-control-sm" type="password" id="password" name="password" placeholder="輸入密碼" style="font-size: 16px;padding-top: 6px;height: 36px;width: 216px;text-align: center;" required=true /></div>
                                 </div>
-                            </div><a href="/toolfamily/forget/" style="color: rgb(123, 99, 99);margin-left: -34px;">忘記密碼？</a>
+                            </div><a href="/toolfamily/forget/" style="color: rgb(123, 99, 99);margin-left: -34px;">{% trans "忘記密碼？" %}</a>
                             <div class="control-group" style="height: 60px;width: 191px;margin-left: -2px;"><button class="btn btn-primary" type="submit" style="background: rgb(245, 197, 72);border-top-color: rgb(245, 197, 72);border-right-color: rgb(245, 197, 72);border-bottom-color: rgb(245, 197, 72);border-left-color: rgb(245, 197, 72);width: 189.9844px;border-radius: 8px;margin-left: 0px;margin-top: 14px;height: 32px;text-align: center;font-size: 19px;line-height: 17.5px;">登入</button></div>
-                            <a href="/toolfamily/register/" style="color: rgb(123, 99, 99);margin-left: 29px;margin-top: -2px;"><strong>還不是會員？</strong>註冊</a>
+                            <a href="/toolfamily/register/" style="color: rgb(123, 99, 99);margin-left: 29px;margin-top: -2px;"><strong>{% trans "還不是會員？" %}</strong>{% trans "註冊" %}</a>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        
+
     </section>
-    
+
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <script src="/static/js/freelancer.js"></script>
-    
+
 </body>
 
 </html>

@@ -41,11 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'toolfamily.apps.ToolfamilyConfig', ##將應用添加進INSTALLED_APPS
+    # 'rosetta',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',#Manages sessions across requests
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',#Associates users with requests using sessions.
@@ -120,7 +122,20 @@ TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
+
+from django.utils.translation import gettext_lazy as _
+
+LANGUAGES = (
+    ('en', _('English')),
+    ('zh-hant', _('繁體中文')),
+)
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale/',
+]
 
 
 # Static files (CSS, JavaScript, Images)
