@@ -7,13 +7,14 @@ $(document).ready(function(){
     $('#select-pagination').on('change', function() {
         console.log($(this).val())
         //advancedSearchSubmit()
-        console.log($('#get-input-casetype').html())
-        console.log($('#form-input-casetype').val())
+
+        console.log($('#select-pagination option:selected').val())
+        $('#forminput-page').val($('#select-pagination option:selected').val())
         getDefault()
         advancedSearchSubmit()
-        $('#forminput-page').val($('#select-pagination option:selected').val())
-        console.log($('#get-input-casetype').html())
-        console.log($('#form-input-casetype').val())
+        //$('#forminput-page').val($('#select-pagination option:selected').val())
+        console.log($('#select-pagination option:selected').val())
+
         $('#advanced-search-form').submit()
     })
 
