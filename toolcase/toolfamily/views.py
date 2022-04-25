@@ -569,6 +569,10 @@ def viewOtherUser(request, user_id):
     userData = UserDetail.objects.filter(user_id=user_id).values(*dataCol)[0]
     userData['work_num'] = viewedUser.work_num  # 接案數
     userData['publish_num'] = viewedUser.publish_num  # 發案數
+    if viewedUser.icon:
+        userData['icon'] = {'url': viewedUser.icon.url}
+    else:
+        userData['icon'] = None
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
