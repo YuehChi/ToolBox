@@ -325,6 +325,22 @@ def case_profile(request ,case_id):
     user_id = temp_user.publisher.user_id
     user_detail = UserDetail.objects.filter(user_id = user_id)
 
+    # user can take or not
+    user = request.user.user_detail
+    case = Case.objects.get(Q(case_id=pk_key))
+    button_status = 0
+    try:
+        CommissionRecord.objects.get(Q(commissioned_user=user) & Q(case=case))
+    except:
+        try:
+            CaseWillingness.objects.get(Q(willing_user=user) & Q(apply_case=case))
+        except:
+            button_status = 1  # can sign up the case
+        else:
+            button_status = 2  # show "cancel the case"
+    else:
+        button_status = 3  # cannot press the button never
+
     return render(request,'case/profile.html',locals())
 
 #-------------一個CASE的編輯資訊-------------
