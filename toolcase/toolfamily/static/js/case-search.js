@@ -7,6 +7,7 @@ $(document).ready(function(){
     $('#select-pagination').on('change', function() {
         console.log($(this).val())
         advancedSearchSubmit()
+        $('#forminput-page').val($('#select-pagination option:selected').val())
         $('#advanced-search-form').submit()
     })
 
@@ -71,6 +72,7 @@ $(document).ready(function(){
     $('#button-advanced-search').click(function(){
 
         advancedSearchSubmit()
+        $('#forminput-page').val('1')
         $('#advanced-search-form').submit()
 
 
@@ -239,8 +241,7 @@ function advancedSearchSubmit(){
     //     $('#forminput-field').prop("checked", true)
     // }
     
-    // ---------- Page ----------
-    $('#forminput-page').val($('#select-pagination option:selected').val())
+
 
     // ---------- Num ----------
     var num = $('#select-num').val()
