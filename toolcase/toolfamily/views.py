@@ -606,13 +606,24 @@ def user_publish_record(request):
     willing_list = CaseWillingness.objects.all().prefetch_related('apply_case')
 
     # numbers of toolmen for each case
+    # average rate for each case
     number = dict()
+    avg_rate = dict()
     for case in case_list:
         if case.case_status.status_id in [1, 2]:
             number[case.case_id] = 0
             for record in record_list:
                 if record.case == case and record.user_status.status_id != 4:
                     number[case.case_id] += 1
+        elif case.case_status.status_id in [3, 4]:
+            avg_rate[case.case_id] = 0
+            cnt = 0
+            for record in record_list:
+                if record.case == case and record.rate_worker_to_publisher != None:
+                    avg_rate[case.case_id] += record.rate_worker_to_publisher
+                    cnt += 1
+                if cnt != 0:
+                    avg_rate[case.case_id] /= cnt
 
     # check the status should turn back to 1 or not
     for key, value in number.items():

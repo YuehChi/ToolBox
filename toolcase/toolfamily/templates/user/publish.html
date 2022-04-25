@@ -416,6 +416,11 @@
                                         </td>
                                         <td>
                                             {% comment %} 我得到的星星ＱＱ 我需要value {% endcomment %}
+                                            {% for key2, val2 in avg_rate.items %}
+                                                {% if key2 == case.case_id %}
+                                                    <span>{{val2}}</span>
+                                                {% endif %}
+                                            {% endfor %}
                                             <span id="starph{{ case.case_id }}">
                                                 <script>
                                                     var starId = "starph{{ case.case_id }}"
