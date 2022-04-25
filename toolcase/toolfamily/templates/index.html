@@ -72,6 +72,32 @@
         <tbody>
     </table>
 
+    {% if new_case.has_other_pages %}
+    <ul class="pagination">
+
+        {% if new_case.has_previous %}
+            <li><a href="?page_new={{ new_case.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+
+        {% for i in new_case.paginator.page_range %}
+            {% if new_case.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
+            {% else %}
+        <li><a href="?page_new={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if new_case.has_next %}
+            <li><a href="?page_new={{ new_case.next_page_number }}">&raquo;</a></li>
+        {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+
+
     <h1>popular_case_show</h1>
      <table class="table">
         <thead>
@@ -136,6 +162,31 @@
             {% endfor%}
         <tbody>
     </table>
+
+     {% if most_case.has_other_pages %}
+    <ul class="pagination">
+
+        {% if most_case.has_previous %}
+            <li><a href="?page_new={{ most_case.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+
+        {% for i in most_case.paginator.page_range %}
+            {% if most_case.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
+            {% else %}
+        <li><a href="?page_new={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if most_case.has_next %}
+            <li><a href="?page_new={{ most_case.next_page_number }}">&raquo;</a></li>
+        {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+    {% endif %}
  
 
 
