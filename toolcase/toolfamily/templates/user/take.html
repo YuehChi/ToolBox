@@ -240,7 +240,7 @@
                                             {% comment %} 確認alert都還沒做 {% endcomment %}
                                             {% for key, value in deadline.items %}
                                                 {% if commission.commissionrecord_id == key %}
-                                                <td style="line-height: 50px;">還剩 {{value}}</td>
+                                                <td style="line-height: 50px;">還剩 {{commission.case.ended_datetime}}</td>
                                                 {% endif %}
                                             {% endfor %}
                                             <td>
