@@ -40,6 +40,7 @@
         <input class="d-none" type="checkbox" name="case_field" id="forminput-case-field">
         <input class="d-none" type="checkbox" name="case_type" id="forminput-case-type">
         <input class="d-none" type="text" name ="case_query" id="forminput-case-query">
+        <input class="d-none" type="num" name="page" id="forminput-case-page">
         <input class="d-none" type="submit" id="search-submit" >
 
         <div class="container  d-flex justify-content-end" style="margin-top: 50px;"">
@@ -112,6 +113,7 @@
                     <input class="d-none" id="forminput-constraint" type="text" name ="constraint">
                     <input class="d-none" id="forminput-location" type="text" name ="location">
                     <input class="d-none" id="forminput-con" type="text" value="1" name="con">
+                    <input class="d-none" id="forminput-page" type="number" name="page">
                     <input class="d-none" id="advanced-search-submit" type="submit">
 
                     
@@ -131,6 +133,9 @@
                     <span class="d-block" id="get-input-work">{{work}}</span>
                     <span class="d-block" id="get-input-constraint">{{constraint}}</span>
                     <span class="d-block" id="get-input-location">{{location}}</span>
+
+                    <span class="d-block" id="get-input-page">3</span>
+                    <span class="d-block" id="get-input-total-page">20</span>
 
 
 
@@ -240,7 +245,6 @@
                                             <option class="item" value="1">小於三天</option>
                                             <option class="item" value="2">小於一週</option>
                                             <option class="item" value="3">小於一個月</option>
-                                            <option class="item" value="4">一個月以上</option>
                                         </div>
                                     </select>
                                 </div>
@@ -308,10 +312,7 @@
                                         </span>
                                     </div>
                                     <div class="text-end d-inline-block" style="height: auto;width: auto;vertical-align: baseline;">
-                                        <select class="select-filter" style="outline: none;">
-                                            <option value="1" selected="">1 / 10頁</option>
-                                            <option value="2">2 / 10頁</option>
-                                            <option value="3">3 / 10頁</option>
+                                        <select id="select-pagination" class="select-filter" style="outline: none;">
                                         </select>
                                         <select class="select-filter" style="margin-left: 10px;outline: none;">
                                             <option value="1" selected="">時間 新→舊</option>

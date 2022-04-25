@@ -3,6 +3,15 @@ $(document).ready(function(){
     
     getDefault()
 
+    // ---------- Pagination ----------
+    $('#select-pagination').on('change', function() {
+        console.log($(this).val())
+        advancedSearchSubmit()
+        $('#advanced-search-form').submit()
+    })
+
+
+    // ---------- Second Num Filter ----------
     if ($('#select-num').val() == "3"){
         $('.case-card').each(function(){
 
@@ -62,7 +71,7 @@ $(document).ready(function(){
     $('#button-advanced-search').click(function(){
 
         advancedSearchSubmit()
-        $('#advanced-search-form').submit();
+        $('#advanced-search-form').submit()
 
 
     });
@@ -70,7 +79,40 @@ $(document).ready(function(){
 
 });
 
-function getDefault(){
+function appendPageOption(page, total_page){
+    console.log(page)
+    console.log(total_page)
+    for (var i=1; i< total_page+1; i++){
+        var page_text = i + ' /' + total_page + '頁'
+        if(i != page){
+            $('#select-pagination').append($('<option>').val(i).text(page_text));
+        }
+        else{
+            console.log(i)
+            $('#select-pagination').append($('<option>').val(i).text(page_text).attr('selected',true));
+        }
+        
+    }
+
+
+    
+}
+
+function getDefault(){  
+
+    if($('#get-input-page').text() == ""){
+        var page = 1
+        var total_page = parseInt($('#get-input-total-page').text())
+        appendPageOption(page, total_page)
+    }
+    else{
+        var page = parseInt($('#get-input-page').text()) 
+        var total_page = parseInt($('#get-input-total-page').text())
+        appendPageOption(page, total_page)
+    }
+
+
+
     if ($('#get-input-casetype').html() != ""){
         var type_id = 'check-type-'+$('#get-input-casetype').html()
 
@@ -93,6 +135,7 @@ function getDefault(){
         $('#'+field_id).prop("checked", true);
     }
 
+    // ---------- Num ----------
     var num = $('#get-input-num').html()
     console.log(num)
     if ( num == "1"){
@@ -111,6 +154,7 @@ function getDefault(){
         $('#select-num option').filter('[value=4]').attr('selected', true)
     }
 
+    // ---------- Work Mode ----------
     if ($('#get-input-work').html() == '100000000000000000'){
         $('#radio-workmode-0').prop('checked', true)
     }
@@ -121,15 +165,60 @@ function getDefault(){
         $('#radio-workmode-2').prop('checked', true)
     }
 
-    if($('#get-input-caselist').html() != ""){
+    // ---------- Enddate ----------
+    var cd = new Date()
+    var ed = $('#get-input-enddate').html()
+    cd.setDate(cd.getDate() +4)
+    cd = cd.toISOString().substr(0, 10)
+    if (cd == ed){
+        $('#select-enddate option').filter('[value=1]').attr('selected', true)
+    }
 
-        console.log()
-        var str_list = $('#get-input-caselist').html().slice(1,-1).split(', ')
-        var str_arr = []
-        str_list.forEach(element => str_arr.push(element) );
+    cd = new Date()
+    cd.setDate(cd.getDate() +8)
+    cd = cd.toISOString().substr(0, 10)
+    if (cd == ed){
+        $('#select-enddate option').filter('[value=2]').attr('selected', true)
+    }
+
+    cd = new Date()
+    cd.setMonth(cd.getMonth() +1)
+    cd = cd.toISOString().substr(0, 10)
+    if (cd == ed){
+        $('#select-enddate option').filter('[value=3]').attr('selected', true)
+    }
+
+    // ---------- Input: Preference & Location ----------
+    if($('#get-input-constraint').html() != 'None'){
+        $('#input-preference').val($('#get-input-constraint').html())
+    }
+
+    if($('#get-input-location').html() != 'None'){
+        $('#input-location').val($('#get-input-location').html())
+    }
+    
+    
+
+
+    if($('#get-input-caselist').html() != "" ){
+
+        if($('#get-input-caselist').html() != "['']"){
+            console.log('emptyyyyyyyyyy')
+            var str_list = $('#get-input-caselist').html().slice(1,-1).split(', ')
+            var str_arr = []
+            str_list.forEach(element => str_arr.push(element));
+            
+            
+            $("#forminput-caselist").val(str_arr)
+        }
+        else{
+            $('#get-input-caselist').html('')
+        }
+        console.log($('#get-input-caselist').html())
         
-        
-        $("#forminput-caselist").val(str_arr)
+    }
+    else{
+        console.log('is empty')
     }
 
 }
@@ -150,6 +239,8 @@ function advancedSearchSubmit(){
     //     $('#forminput-field').prop("checked", true)
     // }
     
+    // ---------- Page ----------
+    $('#forminput-page').val($('#select-pagination option:selected').val())
 
     // ---------- Num ----------
     var num = $('#select-num').val()
@@ -219,6 +310,7 @@ function advancedSearchSubmit(){
     console.log($('#forminput-constraint').val())
     console.log($('#forminput-location').val())
     console.log($("#forminput-caselist").val())
+    console.log($('#forminput-page').val())
     
     if(typeof  $('input[name="field"]:checked').val() === "undefined" && typeof  $('input[name="type"]:checked').val() === "undefined"){
         $('#forminput-con').val('0')
