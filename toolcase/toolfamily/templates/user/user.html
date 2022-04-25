@@ -8,7 +8,7 @@
         <div class="justify-content-center" style="margin-top: 80px;">
             <ul class="tab-list" style="text-align: center;display:block;">
                 <li class="list-group-item member bold" m="1"><a href="javascript:void(0)" style="color: rgb(134, 81, 64);">會員中心</a></li>
-                <li class="list-group-item member" m="2"><a href="javascript:void(0)" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li>
+                <!-- <li class="list-group-item member" m="2"><a href="javascript:void(0)" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li> -->
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">委託管理</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">委託紀錄</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的追蹤</a></li>
@@ -18,17 +18,15 @@
         </div>
     </div>
     <div class="col-sm-10 tab" style="margin-top: 60px;">
-        <!-- 個人資訊主頁 -->
-        <div c="1" class="" style="height: 500px;margin-top: 20px;margin-right: 10px;">
-            <div style="z-index: 3;">
-                <div style="background-color: rgb(134, 81, 64);width: 100px;height: 30px;margin-bottom: -15px;margin-left: 15px;text-align: center;color: #ffffff;position:relative;">
+        <!-- 會員中心 -->
+        <div c="1" class="" style="margin-top: 20px;margin-right: 10px;">
+            <div class="container-fuild">
+                <label style="z-index: 3;background-color: rgb(134, 81, 64);width: 100px;height: 30px;line-height:30px;margin-bottom: -15px;margin-left: 15px;text-align: center;color: #ffffff;position:relative;font-weight: bold">
                     個人資料
-                </div>
-            </div>
-            <div class="container" style="background: #ffffff;border-radius: .25rem">
-                <div class="row justify-content-center" style="z-index: 1;">
-                    <div class="col-md-4" style="max-width: 70%;width: 250px;">
-                        <div>
+                </label>
+                <div class="row justify-content-center" style="z-index: 1;background: #ffffff;border-radius: .25rem">
+                    <div class="col-md" style="max-width: 70%;width: 250px;">
+                        <div class="row justify-content-center">
                         {% if user.icon %}  {# 有圖才顯示 #}
                             <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;" src="{{ user.icon.url }}">
                         {% else %}
@@ -36,14 +34,16 @@
                         {% endif %}
                         </div>
                         <!----------User Rate---------->
-                        <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 10px;">
-                            <div id="user-rate" class="d-flex justify-content-center align-items-center">
-                            <i class="fa fa-star star-color"></i><i class="fa fa-star star-color"></i><i class="fa fa-star star-color"></i><i class="fa fa-star star-color"></i><i class="material-icons star-color">star_half</i>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center align-items-center" style="margin-bottom: 10px;">
+                                <div id="user-rate" class="d-flex justify-content-center align-items-center">
+                                <i class="fa fa-star star-color"></i><i class="fa fa-star star-color"></i><i class="fa fa-star star-color"></i><i class="fa fa-star star-color"></i><i class="material-icons star-color">star_half</i>
+                                </div>
+                                <span id="user-ratenum" style="color: #865140;font-size: 14px">({{接評價人數}})   </span>
                             </div>
-                            <span id="user-ratenum" style="color: #865140;font-size: 14px">({{接評價人數}})   </span>
                         </div>
                     </div>
-                    <div class="col-md-8" style="margin-top: 10px;margin-bottom: 10px;">
+                    <div class="col-md" style="margin-top: 10px;margin-bottom: 10px;">
                         <div>
                             <span style="color:  rgb(38, 29, 29);font-size: 20px;font-weight: bold">{{user.name}}</span>
                             {% if user.nickname %}
@@ -60,56 +60,51 @@
                             {% if user.department %}
                             <p style="color:  rgb(38, 29, 29);">系所:{{user.department}}</p>
                             {% endif %}
+                            <button class="btn member" m="2" type="button" style="padding: 2px 12px;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;color: #ffffff;">編輯個人資訊</button>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="" style="margin-top: 10px;background: #ffffff;">
+                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">接案數量</p>
+                            <p style="margin: 0 auto;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">{{ user.work_num }}</p>
+                            <!-- <p style="text-align: right;padding-right: 20px;">件</p> -->
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="" style="margin-top: 10px;background: #ffffff;">
+                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">發案數量</p>
+                            <p style="margin: 0 auto;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">{{ user.publish_num }}</p>
+                            <!-- <p style="text-align: right;padding-right: 20px;">件</p> -->
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="container" style="margin-top: 10px;">
-                <div class="row">
-                    <div class="col-md-4" style="border-width: 0px;">
-                        <div class="border rounded" style="background: #ffffff;border: 1px solid #EEEEEE ;">
-                            <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;">接案數量</p>
-                            <p style="text-align: center;font-size: 70px;color: rgb(134, 81, 64);">{{ user.work_num }}</p>
-                            <p style="text-align: right;padding-right: 20px;">件</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="border rounded" style="background: #ffffff;border-style: solid;border-color: #EEEEEE;">
-                            <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;">發案數量</p>
-                            <p style="text-align: center;font-size: 70px;color: rgb(134, 81, 64);">{{ user.publish_num }}</p>
-                            <p style="text-align: right;padding-right: 20px;">件</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <img style="width: 200px;height: 200px;" src="/static/images/clipboard-image-1.png">
-                        <!-- <div class="border rounded" style="border: 1px solid #EEEEEE ;">
-                            <p style="color: rgb(134, 81, 64);text-align: center;margin-top: 5px;border-width: 0px;">評價分數</p>
-                            <p style="color: rgb(134, 81, 64);font-size: 70px;text-align: center;">{{ user.rate|floatformat:"2" }}{# 保留2位小數 #}</p>
-                            <p style="text-align: right;padding-right: 20px;">分</p>
-                        </div> -->
+            <div class="container-fuild">
+                <label style="z-index: 3;background-color: rgb(134, 81, 64);width: 100px;height: 30px;line-height:30px;margin-top: 10px;margin-bottom: -50px;margin-left: 15px;text-align: center;color: #ffffff;font-weight: bold">
+                    自我介紹
+                </label>
+                <div class="row" style="z-index: 1;background: #ffffff;border-radius: .25rem;">
+                    <div style="">
+                        <pre style="color:  rgb(38, 29, 29);margin-top: 15px;margin-left: 30px;margin-right: 30px;white-space: break-spaces;">{{user.information}}</pre>
                     </div>
                 </div>
             </div>
-            <div class="container" style="background: #ffffff;margin-top: 10px;">
-                <div class="row">
-                    <div style="max-width: 70%;width: 250px;">
-                        <p style="color:  rgb(38, 29, 29);"><pre>{{user.information}}</pre></p>
-                    </div>
-                </div>
-            </div>
-            <div class="container" style="background: #ffffff;margin-top: 10px;">
-                <div class="row">
-                    <div style="max-width: 70%;width: 250px;">
-                        <p style="color:  rgb(38, 29, 29);"><pre>{{user.contact}}</pre></p>
+            <div class="container-fuild">
+                <label style="z-index: 3;background-color: rgb(134, 81, 64);width: 100px;height: 30px;line-height:30px;margin-top: 10px;margin-bottom: -50px;margin-left: 15px;text-align: center;color: #ffffff;font-weight: bold">
+                    聯絡資訊
+                </label>
+                <div class="row" style="z-index: 1;background: #ffffff;border-radius: .25rem;">
+                    <div style="">
+                        <pre style="color:  rgb(38, 29, 29);margin-top: 15px;margin-left: 30px;margin-right: 30px;white-space: break-spaces;">{{user.contact}}</pre>
                     </div>
                 </div>
             </div>
         </div>
         <!-- 編輯個人資訊 -->
-        <div c="2"  class="tab-inner hide" style="background: #ffffff;margin-top: 20px;margin-right: 10px;">
+        <div c="2"  class="tab-inner hide" style="background: #ffffff;margin-top: 20px;margin-right: 10px;border-radius: .25rem">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-md-6" style="max-width: 70%;width: 250px;">
+                    <div class="col-md-6" style="max-width: 70%;width: 250px;margin-top: 20px;">
                         <form action="{% url 'user-icon-update' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div>
@@ -129,14 +124,15 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-md-6" style="margin-top: 10px;">
+                    <div class="col-md-6" style="margin-top: 20px;">
                         <form action="{% url 'user-profile-update' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div>
-                                <p style="color:  rgb(38, 29, 29);">email：{{ user.account_mail}}</p>
-                                <p style="color:  rgb(38, 29, 29);">姓名：<input class="border rounded form-control" type="text" name="name" value="{{ user.name }}"></p>
-                                <p style="color:  rgb(38, 29, 29);">匿稱：<input class="border rounded form-control" type="text" name="nickname" value="{{ user.nickname }}"></p>
-                                <p style="color:  rgb(38, 29, 29);">性別：</p>
+
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">email：{{ user.account_mail}}</p>
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">姓名：<input class="border rounded form-control" type="text" name="name" value="{{ user.name }}"></p>
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">匿稱：<input class="border rounded form-control" type="text" name="nickname" value="{{ user.nickname }}"></p>
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;margin-bottom: -5px;">性別：</p>
                                 <div class="form-check">
                                 {% if user.gender == 0 %}
                                     <input  type="radio" name="gender" value="1"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;">男
@@ -155,15 +151,19 @@
                                     <input class="form-check-input" type="radio" id="formCheck-1">女
                                     <input class="form-check-input" type="radio" id="formCheck-3"><label class="form-check-label" for="formCheck-3">不透漏</label> -->
                                 </div>
-                                <p style="color:  rgb(38, 29, 29);">系所：<input class="border rounded form-control" type="text" name="department" value="{{ user.department }}"></p>
-                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);">自我介紹：</p>
-                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);"></p><textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;" name="information">{{ user.information }}</textarea></p>
-                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);">聯絡資訊</p>
-                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);"></p><textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;" name="contact">{{ user.contact }}</textarea></p>
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;margin-top: 5px;">系所：
+                                    <input class="border rounded form-control" type="text" name="department" value="{{ user.department }}">
+                                </p>
+                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);font-weight: bold;">自我介紹：</p>
+                                <textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;margin-top: -15px;" name="information">{{ user.information }}</textarea>
+                                
+                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);font-weight: bold;margin-top: 15px;">聯絡資訊：</p>
+                                <textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;margin-top: -15px;" name="contact">{{ user.contact }}</textarea>
+                                
                             </div>
-                            <div style="text-align: center;margin-bottom: 20px;">
-                                <button class="btn btn-primary border rounded" type="button" style="background: rgb(255,255,255);color: rgb(134,81,64);border: 2px solid rgb(134,81,64) ;">取消</button>
-                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交">
+                            <div style="text-align: center;margin-top:20px;margin-bottom: 20px;">
+                                <button class="btn btn-primary border rounded member" m="1" type="button" style="background: rgb(255,255,255);color: rgb(134,81,64);border: 2px solid rgb(134,81,64) ;">取消</button>
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-left: 20px;"  value="提交">
                                 <div>{{ userDataForm.errors }}</div>  <!-- 顯示錯誤訊息 ex.資料格式錯誤 -->
                                 <div>{{ userDataForm.non_field_errors }}</div>  <!-- 顯示錯誤訊息 ex.必填項目未填 -->
                             </div>

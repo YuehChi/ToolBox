@@ -8,7 +8,6 @@
         <div class="justify-content-center" style="margin-top: 80px;">
             <ul class="tab-list" style="text-align: center;display:block;">
                 <li class="list-group-item member" m="1"><a href="{%url 'my-user-profile'%}" style="color: rgb(134, 81, 64);">會員中心</a></li>
-                <li class="list-group-item member" m="2"><a href="javascript:void(0)" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">委託管理</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">委託紀錄</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的追蹤</a></li>
@@ -25,20 +24,32 @@
                     <div class="col-md-6" style="max-width: 70%;width: 250px;margin-top: 20px;">
                         <form action="{% url 'user-password-update' %}" method="POST">
                             {% csrf_token %}
-                            <span style="color:  rgb(38, 29, 29);">
-                                請輸入您的舊密碼：
-                                <input class="border rounded form-control" type="password" name="oldPassword" required>
-                            </span>
-                            <p style="color:  rgb(38, 29, 29);">
-                                請輸入新密碼：
-                                <input class="border rounded form-control" type="password" name="newPassword" required>
-                            </p>
-                            <p style="color:  rgb(38, 29, 29);">
-                                請再次輸入新密碼：
-                                <input class="border rounded form-control" type="password" name="confirmNewPassword" required>
-                            </p>
-                            <div style="text-align: center;margin-bottom: 20px;">
-                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交">
+                            <div class="row form-row" style="margin-top: 10px;">
+                                <div class="col-12 form-group">
+                                    <label class="form-label" style="font-weight: bold;">
+                                        請輸入您的舊密碼：
+                                    <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="password" id="input-title" name="oldPassword" style="width: 100%;" required>
+                                </div>
+                            </div>
+                            <div class="row form-row" style="margin-top: 10px;">
+                                <div class="col-12 form-group">
+                                    <label class="form-label" style="font-weight: bold;">
+                                        請輸入新密碼：
+                                    <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="password" id="input-title" name="newPassword" style="width: 100%;" required>
+                                </div>
+                            </div>
+                            <div class="row form-row" style="margin-top: 10px;">
+                                <div class="col-12 form-group">
+                                    <label class="form-label" style="font-weight: bold;">
+                                        請再次輸入新密碼：
+                                    <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="password" id="input-title" name="confirmNewPassword" style="width: 100%;" required>
+                                </div>
+                            </div>
+                            <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;"  value="提交">
                                 <!-- 顯示自訂錯誤訊息 -->
                                 {% for error in messages %}
                                 <div>{{ error }}</div>

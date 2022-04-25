@@ -53,7 +53,7 @@
                         <a class="dropdown-item" href="#" style="color: #5e4949;">我的委託</a>
                         <a class="dropdown-item" href="#" style="color: #5e4949;">委託紀錄</a>
                         <a class="dropdown-item" href="#" style="color: #5e4949;">我的追蹤</a>
-                        <a class="dropdown-item" href="#" style="color: #5e4949;">設定</a>
+                        <a class="dropdown-item" href="#" style="color: #5e4949;">更改密碼</a>
                         <a class="dropdown-item" href="{% url 'logout' %}" style="color: #5e4949;">登出</a>
                     </div>
                 </div>
@@ -65,29 +65,7 @@
 <div class="container-fluid">
 
 <div class="row">
-  <div class="col-sm-2">
-  {% block sidebar %}
-  <ul class="sidebar-nav">
-    <li><a href="{% url 'index'%}">Home</a></li>
-  </ul>
-
-  <ul class="sidebar-nav">
-    <li><a href="{% url 'case-new'%}">新增case</a></li>
-    <li><a href="{% url 'case-search'%}">查詢case</a></li>
-
-
-
-   {% if user.is_authenticated %}
-     <li>User: {{ user.get_username }}</li>
-     <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-   {% else %}
-     <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-   {% endif %}
-  </ul>
-
-  {% endblock %}
-  </div>
-  <div class="col-sm-10 ">
+  <div class="col-sm-12 ">
   {% block content %}{% endblock %}
 
   {% block pagination %}

@@ -5,3 +5,8 @@
 .bold{
     font-weight:bold
 }
+
+.star-color {
+    color: #f5c548;
+    font-size: 16px;
+}
