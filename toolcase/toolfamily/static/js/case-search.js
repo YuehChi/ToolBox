@@ -6,8 +6,14 @@ $(document).ready(function(){
     // ---------- Pagination ----------
     $('#select-pagination').on('change', function() {
         console.log($(this).val())
+        //advancedSearchSubmit()
+        console.log($('#get-input-casetype').html())
+        console.log($('#form-input-casetype').val())
+        getDefault()
         advancedSearchSubmit()
         $('#forminput-page').val($('#select-pagination option:selected').val())
+        console.log($('#get-input-casetype').html())
+        console.log($('#form-input-casetype').val())
         $('#advanced-search-form').submit()
     })
 
@@ -100,6 +106,57 @@ function appendPageOption(page, total_page){
     
 }
 
+function paginatorSubmit(){
+
+    
+    // // ---------- Caselist ----------
+    // if($('#get-input-caselist').html() != "" ){
+
+    //     if($('#get-input-caselist').html() != "['']"){
+    //         console.log('emptyyyyyyyyyy')
+    //         var str_list = $('#get-input-caselist').html().slice(1,-1).split(', ')
+    //         var str_arr = []
+    //         str_list.forEach(element => str_arr.push(element));
+            
+            
+    //         $("#forminput-caselist").val(str_arr)
+    //     }
+    //     else{
+    //         $('#get-input-caselist').html('')
+    //         $("#forminput-caselist").val()
+    //     }   
+    // }
+
+    // $('#advanced-search-case-query').val('')
+
+    // // ---------- Num ----------
+    // $('#forminput-num').val($('#get-input-num').html())
+
+
+    // if ($('#get-input-type').html() != ""){
+    //     var type_id = 'check-type-'+$('#get-input-type').html()
+    //     $('#'+type_id).prop("checked", true);
+    // }
+
+    
+    // if ($('#get-input-field').html() != ""){
+    //     var field_id = 'check-field-'+$('#get-input-field').html()
+    //     $('#'+field_id).prop("checked", true);
+    // }
+
+    // $('#forminput-date')
+    // $('#forminput-work')
+    // $('#forminput-constraint')
+    // $('#forminput-location')
+    // $('#forminput-con')
+    // $('#forminput-page')
+    //$('#advanced-search-form').submit()
+
+
+
+
+}
+
 function getDefault(){  
 
     if($('#get-input-page').text() == ""){
@@ -120,10 +177,18 @@ function getDefault(){
 
         $('#'+type_id).prop("checked", true);
     }
+    else{
+        var group = "input:checkbox[name='type']";
+        $(group).prop("checked", false);
+    }
 
     if ($('#get-input-casefield').html() != ""){
         var field_id = 'check-field-'+$('#get-input-casefield').html()
         $('#'+field_id).prop("checked", true);
+    }
+    else{
+        var group = "input:checkbox[name='field']";
+        $(group).prop("checked", false);
     }
 
     if ($('#get-input-type').html() != ""){
