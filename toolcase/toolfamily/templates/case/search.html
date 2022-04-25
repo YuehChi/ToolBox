@@ -1,11 +1,6 @@
 {% extends "base_generic.html" %}
 {% block content %}
 
-{% if alert %}
-    <script type="text/javascript">
-        alert({{erro|safe}});
-    </script>
-{% endif %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -117,25 +112,25 @@
                     <input class="d-none" id="advanced-search-submit" type="submit">
 
                     
-                    <span class="d-block" id="get-input-casetype">{{type_value}}</span>
-                    <span class="d-block" id="get-input-casefield">{{field_value}}</span>
-                    <span class="d-block" id="get-input-caselist">{{query_list}}</span>
+                    <span class="d-none" id="get-input-casetype">{{type_value}}</span>
+                    <span class="d-none" id="get-input-casefield">{{field_value}}</span>
+                    <span class="d-none" id="get-input-caselist">{{query_list}}</span>
 
                     {% for t in type %}
-                    <span class="d-block" id="get-input-type">{{t}}</span>
+                    <span class="d-none" id="get-input-type">{{t}}</span>
                     {% endfor %}
 
                     {% for f in field %}
-                    <span class="d-block" id="get-input-field">{{f}}</span>
+                    <span class="d-none" id="get-input-field">{{f}}</span>
                     {% endfor %}
-                    <span class="d-block" id="get-input-num">{{num}}</span>
-                    <span class="d-block" id="get-input-enddate">{{date_time}}</span>
-                    <span class="d-block" id="get-input-work">{{work}}</span>
-                    <span class="d-block" id="get-input-constraint">{{constraint}}</span>
-                    <span class="d-block" id="get-input-location">{{location}}</span>
+                    <span class="d-none" id="get-input-num">{{num}}</span>
+                    <span class="d-none" id="get-input-enddate">{{date_time}}</span>
+                    <span class="d-none" id="get-input-work">{{work}}</span>
+                    <span class="d-none" id="get-input-constraint">{{constraint}}</span>
+                    <span class="d-none" id="get-input-location">{{location}}</span>
 
-                    <span class="d-block" id="get-input-page">{{result_case.number}}</span>
-                    <span class="d-block" id="get-input-total-page">{{num_pages}}</span>
+                    <span class="d-none" id="get-input-page">{{result_case.number}}</span>
+                    <span class="d-none" id="get-input-total-page">{{num_pages}}</span>
 
 
 
@@ -308,7 +303,7 @@
                                     <img class="decorate-icon" src="/static/images/clipboard-image-1.png">
                                     <div class="d-inline-block" style="height: auto;flex: 1">
                                         <span class="d-lg-flex d-inline-block justify-content-start" style="padding-left: 60px;">
-                                        所有案件 ─ 共&nbsp;<span id="case-length" style="color: #865140;">{{ result_case|length }}</span>&nbsp;件<br>
+                                        所有案件 ─ 共&nbsp;<span id="case-length" style="color: #865140;">{{ num_case }}</span>&nbsp;件<br>
                                         </span>
                                     </div>
                                     <div class="text-end d-inline-block" style="height: auto;width: auto;vertical-align: baseline;">
