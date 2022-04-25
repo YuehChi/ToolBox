@@ -471,7 +471,32 @@
                                 {% endfor%}
                                 
                             </div><!----------End Case Card---------->
+                             {% if result_case.has_other_pages %}
+                                <ul class="pagination">
 
+                                    {% if result_case.has_previous %}
+                                        <li><a href="?page_all={{ result_case.previous_page_number }}">&laquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><span>&laquo;</span></li>
+                                    {% endif %}
+
+                                    {% for i in result_case.paginator.page_range %}
+                                        {% if result_case.number == i %}
+                                            <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
+                                        {% else %}
+                                    <li><a href="?page_all={{ i }}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if result_case.has_next %}
+                                        <li><a href="?page_all={{ result_case.next_page_number }}">&raquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><span>&raquo;</span></li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+
+                            
                             
                         </div>
                     </div>
