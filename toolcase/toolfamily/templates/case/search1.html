@@ -14,6 +14,9 @@
         {% csrf_token %}
          <div>
             <P>簡單搜尋</p>
+            <label>頁面: </label>
+            <label><input type="checkbox" value="1" name="page"> 1</label>
+            <label><input type="checkbox" value="2" name="page"> 2</label>
              {% if type_value %}
                 </p>回傳單一搜尋-type值:{{type_value}}</p>
              {% endif %}
@@ -163,5 +166,30 @@
             {% endfor%}
         <tbody>
     </table> 
+      {% if result_case.has_other_pages %}
+        <ul class="pagination">
+
+            {% if result_case.has_previous %}
+                <li><a href="?page_all={{ result_case.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+
+            {% for i in result_case.paginator.page_range %}
+                {% if result_case.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
+                {% else %}
+            <li><a href="?page_all={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if result_case.has_next %}
+                <li><a href="?page_all={{ result_case.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
 
 {% endblock %}

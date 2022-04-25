@@ -314,7 +314,6 @@ def case_profile_edit(request,case_id):
 @login_required
 def case_search(request):
 
-    page_all = request.GET.get('page_all', 1)
     if request.method == "POST" :
 
         # 定義參數
@@ -326,7 +325,7 @@ def case_search(request):
         erro = ''
 
         # 頁面資訊
-        page = request.Post.get('page',1)
+        page = request.POST.get('page',1)
 
         # 查詢資訊資訊
         # == 單一查詢 ==
@@ -664,6 +663,7 @@ def case_search(request):
                     return render(request,'case/search.html',locals()) 
 
     # 預設畫面，代所有case
+    page_all = request.GET.get('page_all', 1)
     result_case = Case.objects.filter(shown_public=True)
     result_case = calPage_index(result_case,page_all)
     case_fields = Case_Field.objects.all()
@@ -687,6 +687,9 @@ def case_search1(request):
         erro = ''
 
         # 查詢資訊資訊
+        # 頁面資訊
+        page = request.POST.get('page',1)
+
         # == 單一查詢 ==
         query_o.append(request.POST.get('case_type'))
         query_o.append(request.POST.get('case_field'))
@@ -755,6 +758,7 @@ def case_search1(request):
                     id_list.append(i.case_id)
                     print(i.case_id,i.case.title,i.case.publisher,i.case.case_status.status_name ,i.case_type.type_name)
                 result_case = Case.objects.filter(case_id__in=id_list ).all()
+                result_case = calPage(result_case,page)
                 case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
                 case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                 type_value = query_o[0]
@@ -772,6 +776,7 @@ def case_search1(request):
                     id_list.append(i.case_id)
                     print(i.case_id,i.case.title,i.case.publisher,i.case.case_status.status_name ,i.case_field.field_name)
                 result_case = Case.objects.filter(case_id__in=id_list ).all()
+                result_case = calPage(result_case,page)
                 case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                 case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                 field_value = query_o[1]
@@ -790,6 +795,7 @@ def case_search1(request):
                 for i in temp_case:
                     id_list.append(i.case_id)
                 result_case = Case.objects.filter(case_id__in=id_list ).all()
+                result_case = calPage(result_case,page)
                 case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                 case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
                 case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
@@ -920,6 +926,7 @@ def case_search1(request):
                         print("其他五個選項沒有輸入，關鍵字結果與type 和 field的交集結果:",id_list)
 
                         result_case = Case.objects.filter(case_id__in=id_list ).all()
+                        result_case = calPage(result_case,page)
                         case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                         case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                         case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
@@ -929,6 +936,7 @@ def case_search1(request):
                         id_list = temp_id_list
                         print("其他五個選項沒有輸入，type 和 field的聯集結果:",id_list)
                         result_case = Case.objects.filter(case_id__in=id_list ).all()
+                        result_case = calPage(result_case,page)
                         case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                         case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                         case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
@@ -945,6 +953,7 @@ def case_search1(request):
                         query_id_list = list(set(id_list)  & set(query_list))
                         print("和其他5個選項 交集 關鍵字 與 type 和 field的結果 " ,query_id_list)
                         result_case = Case.objects.filter(case_id__in=query_id_list ).all()
+                        result_case = calPage(result_case,page)
                         case_types = Case_Type.objects.filter(case_id__in=query_id_list ).all()
                         case_photo = CasePhoto.objects.filter(case_id__in=query_id_list ).all()
                         case_fields = Case_Field.objects.filter(case_id__in=query_id_list ).all()
@@ -952,6 +961,7 @@ def case_search1(request):
 
                     print("和其他5個選項 交集 type 和 field的結果 id_list:" ,id_list)
                     result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    result_case = calPage(result_case,page)
                     case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                     case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                     case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
@@ -965,6 +975,7 @@ def case_search1(request):
                     alert = True
                     erro =json.dumps("請輸入搜尋條件")
                     result_case = Case.objects.filter(shown_public=True)
+                    result_case = calPage(result_case,page)
                     case_fields = Case_Field.objects.all()
                     case_types = Case_Type.objects.all()
                     case_photo = CasePhoto.objects.all()
@@ -978,6 +989,7 @@ def case_search1(request):
                     print("其他五個選項與關鍵字交集結果:",id_list)
 
                     result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    result_case = calPage(result_case,page)
                     case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                     case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                     case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
@@ -988,6 +1000,7 @@ def case_search1(request):
                     id_list = temp2_id_list
                     print("其他五個選項相互交集結果:",id_list)
                     result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    result_case = calPage(result_case,page)
                     case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
                     case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                     case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
@@ -995,7 +1008,9 @@ def case_search1(request):
                     return render(request,'case/search1.html',locals()) 
 
     # 預設畫面，代所有case
+    page_all = request.GET.get('page_all', 1)
     result_case = Case.objects.filter(shown_public=True)
+    result_case = calPage(result_case,page_all)
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()

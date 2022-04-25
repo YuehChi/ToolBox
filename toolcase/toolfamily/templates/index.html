@@ -167,7 +167,7 @@
     <ul class="pagination">
 
         {% if most_case.has_previous %}
-            <li><a href="?page_new={{ most_case.previous_page_number }}">&laquo;</a></li>
+            <li><a href="?page_most={{ most_case.previous_page_number }}">&laquo;</a></li>
         {% else %}
             <li class="disabled"><span>&laquo;</span></li>
         {% endif %}
@@ -176,12 +176,12 @@
             {% if most_case.number == i %}
                 <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
             {% else %}
-        <li><a href="?page_new={{ i }}">{{ i }}</a></li>
+        <li><a href="?page_most={{ i }}">{{ i }}</a></li>
             {% endif %}
         {% endfor %}
 
         {% if most_case.has_next %}
-            <li><a href="?page_new={{ most_case.next_page_number }}">&raquo;</a></li>
+            <li><a href="?page_most={{ most_case.next_page_number }}">&raquo;</a></li>
         {% else %}
             <li class="disabled"><span>&raquo;</span></li>
         {% endif %}
