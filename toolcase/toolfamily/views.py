@@ -127,7 +127,7 @@ def timeout(request):
             case.save()
 
             msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動完成案件。"
-            notice = Notice.objects.create(user=data.case.publisher, message=msg)
+            notice = Notice.objects.create(user=case.publisher, message=msg)
             notice.save()
 
     # apply timeout
