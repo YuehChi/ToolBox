@@ -25,6 +25,7 @@ $(document).ready(function(){
     $('#search-form').on('keypress', function(e) {
         if ($('#search-keyword').val() != ""){
             $('#forminput-case-query').val($('#search-keyword').val())
+            $('#forminput-case-page').val('1')
             $('#search-from').submit()
         }
         else {
@@ -35,6 +36,7 @@ $(document).ready(function(){
     $('#link-search-keyword').click(function(){
         if ($('#search-keyword').val() != ""){
             $('#forminput-case-query').val($('#search-keyword').val())
+            $('#forminput-case-page').val('1')
             $('#search-from').submit()
         }
     });
@@ -45,6 +47,7 @@ $(document).ready(function(){
         $('#forminput-case-field').val($(this).data("value"))
         $('#forminput-case-field').prop("checked", true);
         $('#forminput-case-query').val("")
+        $('#forminput-case-page').val('1')
         $('#search-form').submit()
     })
 
@@ -53,6 +56,7 @@ $(document).ready(function(){
         $('#forminput-case-type').val($(this).data("value"))
         $('#forminput-case-type').prop("checked", true);
         $('#forminput-case-query').val("")
+        $('#forminput-case-page').val('1')
         $('#search-form').submit()
     })
 
