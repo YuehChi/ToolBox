@@ -835,6 +835,7 @@ def delete_commission(request, commission_id):
     # set sender/receiver as publisher or toolman
     commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
     case = commission.case
+    origin_case = case.case_id
 
     # first time cancel
     if commission.user_status.status_id == 2:
@@ -886,6 +887,7 @@ def delete_commission(request, commission_id):
 def finish_commission(request, commission_id):
 
     commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
+    origin_case = commission.case.case_id
 
     # status=2 represent that toolman apply for consummation
     if commission.user_status.status_id == 2:
@@ -925,6 +927,7 @@ def rate(request):
 
     commission = CommissionRecord.objects.get(Q(commissionrecord_id=id))
     user = request.user.user_detail
+    origin_case = commission.case.case_id
 
     # publisher gives rating for toolman
     if user == commission.case.publisher:
