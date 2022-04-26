@@ -780,7 +780,7 @@ def cancel_willingess(request, case_id):
     except:
         pass
 
-    origin_page = "take_sign"
+    messages.info(request, 'take_sign', extra_tags='origin_page')
     return redirect('user-take-record')
 
 
@@ -821,11 +821,13 @@ def build_commission(request):
         case.case_status = Status.objects.get(Q(status_id=2))
         case.save()
 
+        messages.info(request, case.case_id, extra_tags='origin_case')
+
     except:
         # choose nobody
         pass
 
-    origin_page = "publish"
+    messages.info(request, 'publish', extra_tags='origin_page')
     return redirect('user-publish-record')
 
 
@@ -837,7 +839,7 @@ def delete_commission(request, commission_id):
     # set sender/receiver as publisher or toolman
     commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
     case = commission.case
-    origin_case = case.case_id
+    messages.info(request, case.case_id, extra_tags='origin_case')
 
     # first time cancel
     if commission.user_status.status_id == 2:
@@ -854,10 +856,10 @@ def delete_commission(request, commission_id):
             commission.save()
 
         if sender == commission.commissioned_user:
-            origin_page = "taking"
+            messages.info(request, 'taking', extra_tags='origin_page')
             return redirect('user-take-record')
         else:
-            origin_page = "publish"
+            messages.info(request, 'publish', extra_tags='origin_page')
             return redirect('user-publish-record')
 
     # both cancel the case
@@ -881,10 +883,10 @@ def delete_commission(request, commission_id):
         case.save()
     
     if sender == commission.commissioned_user:
-        origin_page = "taking"
+        messages.info(request, 'taking', extra_tags='origin_page')
         return redirect('user-take-record')
     else:
-        origin_page = "publish"
+        messages.info(request, 'publish', extra_tags='origin_page')
         return redirect('user-publish-record')
 
 
@@ -893,7 +895,7 @@ def delete_commission(request, commission_id):
 def finish_commission(request, commission_id):
 
     commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
-    origin_case = commission.case.case_id
+    messages.info(request, commission.case.case_id, extra_tags='origin_case')
 
     # status=2 represent that toolman apply for consummation
     if commission.user_status.status_id == 2:
@@ -903,7 +905,7 @@ def finish_commission(request, commission_id):
         commission.finish_datetime = datetime.datetime.now()
         commission.save()
 
-        origin_page = "taking"
+        messages.info(request, 'taking', extra_tags='origin_page')
 
         return redirect('user-take-record')
 
@@ -915,7 +917,7 @@ def finish_commission(request, commission_id):
         commission.doublecheck_datetime = datetime.datetime.now()
         commission.save()
 
-        origin_page = "publish"
+        messages.info(request, 'publish', extra_tags='origin_page')
 
         return redirect('user-publish-record')
 
@@ -939,7 +941,7 @@ def rate(request):
 
     commission = CommissionRecord.objects.get(Q(commissionrecord_id=id))
     user = request.user.user_detail
-    origin_case = commission.case.case_id
+    messages.info(request, commission.case.case_id, extra_tags='origin_case')
 
     # publisher gives rating for toolman
     if user == commission.case.publisher:
@@ -954,9 +956,9 @@ def rate(request):
         toolman.save()
 
         if commission.case.case_status.status_id in [3, 4]:
-            origin_page = "take_his"
+            messages.info(request, 'take_his', extra_tags='origin_page')
         else:
-            origin_page = "taking"
+            messages.info(request, 'taking', extra_tags='origin_page')
 
         return redirect('user-publish-record')
 
@@ -973,9 +975,9 @@ def rate(request):
         publisher.save()
 
         if commission.case.case_status.status_id in [3, 4]:
-            origin_page = "publish_his"
+            messages.info(request, 'publish_his', extra_tags='origin_page')
         else:
-            origin_page = "publish"
+            messages.info(request, 'publish', extra_tags='origin_page')
 
         return redirect('user-take-record')
 
