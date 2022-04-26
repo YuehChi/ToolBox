@@ -780,6 +780,7 @@ def cancel_willingess(request, case_id):
     except:
         pass
 
+    origin_page = "take_sign"
     return redirect('user-take-record')
 
 
@@ -824,6 +825,7 @@ def build_commission(request):
         # choose nobody
         pass
 
+    origin_page = "publish"
     return redirect('user-publish-record')
 
 
@@ -852,8 +854,10 @@ def delete_commission(request, commission_id):
             commission.save()
 
         if sender == commission.commissioned_user:
+            origin_page = "taking"
             return redirect('user-take-record')
         else:
+            origin_page = "publish"
             return redirect('user-publish-record')
 
     # both cancel the case
@@ -877,8 +881,10 @@ def delete_commission(request, commission_id):
         case.save()
     
     if sender == commission.commissioned_user:
+        origin_page = "taking"
         return redirect('user-take-record')
     else:
+        origin_page = "publish"
         return redirect('user-publish-record')
 
 
@@ -896,6 +902,9 @@ def finish_commission(request, commission_id):
         commission.user_status = Status.objects.get(Q(status_id=7))
         commission.finish_datetime = datetime.datetime.now()
         commission.save()
+
+        origin_page = "taking"
+
         return redirect('user-take-record')
 
     # status=7 represent that publisher confirm the task
@@ -905,6 +914,9 @@ def finish_commission(request, commission_id):
         commission.user_status = Status.objects.get(Q(status_id=3))
         commission.doublecheck_datetime = datetime.datetime.now()
         commission.save()
+
+        origin_page = "publish"
+
         return redirect('user-publish-record')
 
 
@@ -941,6 +953,11 @@ def rate(request):
         toolman.rate_num  = toolman.rate_num + 1
         toolman.save()
 
+        if commission.case.case_status.status_id in [3, 4]:
+            origin_page = "take_his"
+        else:
+            origin_page = "taking"
+
         return redirect('user-publish-record')
 
     # toolman gives rating for publisher
@@ -954,6 +971,11 @@ def rate(request):
         publisher.rate  = new_rate
         publisher.rate_num  = publisher.rate_num + 1
         publisher.save()
+
+        if commission.case.case_status.status_id in [3, 4]:
+            origin_page = "publish_his"
+        else:
+            origin_page = "publish"
 
         return redirect('user-take-record')
 
