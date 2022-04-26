@@ -1,7 +1,8 @@
 $(document).ready(function() {
+    //image preview
     $("#id_icon").change(function(){
-        //當檔案改變後，做一些事 
-        readURL(this);   // this代表<input id="id_icon">
+        //file changed
+        readURL(this);   // this: <input id="id_icon">
      });
     function readURL(input){
         if(input.files && input.files[0]){
@@ -12,6 +13,7 @@ $(document).ready(function() {
             reader.readAsDataURL(input.files[0]);
         }
     }
+    //sidebar font-weight
     $('.member').click(function(){
         var target = $(this).attr('m');
         $('.tab').children("[c='"+target+"']").removeClass('hide').siblings().addClass('hide');

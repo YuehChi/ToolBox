@@ -1,27 +1,8 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>case-profile</title>
-    <link rel="stylesheet" href="\static\bootstrap\css\bootstrap.min.css">
-    <link rel="stylesheet" href="\static\fonts\font-awesome.min.css">
-    <link rel="stylesheet" href="\static\fonts\material-icons.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Simonetta">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto Serif TC">
-    <link rel="stylesheet" href="\static\css\case-profile-styles.css">
-
-
-
-</head>
-
-<body class="cn_font" style="background: #f4f4f3;">
-        
+<link rel="stylesheet" href="\static\css\case-profile-styles.css">
+<script src="\static\js\case-profile.js"></script>
     <!----------Image Board---------->
     <div class="container" style="margin-top: 50PX;height: 100px;width: 100%;margin-right: 0px;margin-left: 0px;padding-right: 0px;padding-left: 0px;max-width: none;">
         <div class="row" style="height: 100px;width: 100%;margin: 0px;">
@@ -444,9 +425,9 @@
                 </span>
                 <span style="display: none" id="get-user-nickname">
                 {% if user.nickname == "" %}
-                    {{user.name}}
+                    <a href="{% url 'others-user-profile' user.user_id %}">{{user.name}}</a> 
                 {% else %}
-                    {{user.nickname}}
+                <a href="{% url 'others-user-profile' user.user_id %}">{{user.nickname}}</a> 
                 {%endif%}
                 </span>
                 <span style="display: none;" id="get-user-gender">
@@ -470,13 +451,4 @@
 
         </div>
     </div>
-
-
-    <script src="\static\bootstrap\js\bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
-    <script src="\static\js\case-profile.js"></script>
-    
-</body>
-
-</html>
 {% endblock %}
