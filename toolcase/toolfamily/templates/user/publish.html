@@ -27,19 +27,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <style>
-    
+    /* address style */
+    a.link_title:link {
+        color:rgba(134, 81, 64);
+        text-decoration: none;
+    }
+    a.link_title:visited{
+        color:rgba(134, 81, 64);
+    }
+    a.link_title:hover{
+    color:rgb(204,195,190);
+    }
+
+    a.case_title:link{
+        color: rgb(60,46,47);
+        text-decoration: none;
+    }
+    a.case_title:visited{
+        color: rgb(60,46,47);
+    }
+
+    a.case_title:hover{
+        color: rgba(134, 81, 64);
+    }
+
+    /* star */
     .checked {
-    color: #FFED85;
+    color: #f3d16d;
     }
     .unchecked {
-        color: rgba(198, 189, 189, 0.893);
+    color: #f3d16d;
+    }
+    .helfchecked {
+    color: #f3d16d;
     }
 
     fieldset, label { margin: 0; padding: 0; }
     body{ margin: 20px; }
     h1 { font-size: 1.5em; margin: 10px; }
     
-    /****** Style Star Rating Widget *****/
+    /*  Style Star Rating Widget  */
     
     .rating { 
       border: none;
@@ -48,8 +75,8 @@
     
     .rating > input { display: none; } 
     .rating > label:before { 
-      margin: 5px;
-      font-size: 1.25em;
+      margin: 0px;
+      font-size: 16px;
       font-family: FontAwesome;
       display: inline-block;
       content: "\f005";
@@ -69,12 +96,12 @@
     
     .rating > input:checked ~ label, /* show gold star when clicked */
     .rating:not(:checked) > label:hover, /* hover current star */
-    .rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+    .rating:not(:checked) > label:hover ~ label { color: #f3d16d;  } /* hover previous stars in list */
     
     .rating > input:checked + label:hover, /* hover current star when changing rating */
     .rating > input:checked ~ label:hover,
     .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-    .rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+    .rating > input:checked ~ label:hover ~ label { color: #f3d16d;  } 
     </style>
 {% load static %}
 <script >
@@ -84,10 +111,12 @@
 
         if (document.getElementById(id).src == url){
             document.getElementById(id).src = "{% static 'images/Vector.png' %}";
+            
         } else{
             document.getElementById(id).src = "{% static 'images/Vector2.png' %}";
         }
     }
+    
     function changeTime(oriTime, ouputId, status){
         var yyyy = oriTime.split('年')[0]
         var mm = oriTime.split('年')[1].split('月')[0]
@@ -142,13 +171,18 @@
     }
 
     function getStar(starId,value){
-        var stringA = "<span class='fa fa-star checked'></span>"
-        var stringB = "<span class='fa fa-star unchecked'></span>"
+        var stringA = "<span class='fa fa-star checked' style='font-size:16px'></span>"
+        var stringB = "<span class='fa fa-star-o unchecked' style='font-size:16px'></span>"
+        var stringC = "<span class='fa fa-star-half-o helfchecked' style='font-size:16px'></span>"
         var result = ""
-        for (i = 0; i < value; i++){
+        valueInt = parseInt(value)
+        for (i = 0; i < valueInt; i++){
             result= result+stringA
         }
-        var los = 5-value
+        if ((value-valueInt)!=0){
+            result= result+stringC
+        }
+        var los = 5-Math.ceil(value)
         for(j = 0; j<los; j++){
             result = result+stringB
         }
@@ -171,6 +205,7 @@
                             <div class="dropdown-menu" style="font-size: 12px;text-align: justify;"><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按發布時間</a><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按結束時間</a><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按狀態</a></div>
                         </div>
                     </div>
+                    <p id="aa"></p>
                     <div class="underlineEffects" style="margin-top: -55px;width: 523px;">
                         <ul style="margin-left: 40px;margin-bottom: 0px;">
                             <li><a id="publishA" href="javascript:void(0);" onclick="changePage('publish');" style="color: rgb(94, 73, 73);">我的委託</a></li>
@@ -200,11 +235,11 @@
                                     {% for key, value in number.items %}
                                         {% if key == case.case_id %}
                                         
-                                        
                                         <tr>
                                             {% load static %}
+                                            
                                             <td style="width: 80.297px;padding-right: 0px;padding-left: 20px;padding-bottom: 0px;">
-                                                <button class="btn btn-primary" onclick="changeImage({{ case.case_id }})" type="button" data-bs-toggle="collapse" data-bs-target="#M{{ case.case_id }}" aria-expanded="false" aria-controls="M{{ case.case_id }}"  style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;">
+                                                <button id="B{{ case.case_id }}" class="btn btn-primary" onclick="changeImage({{ case.case_id }})" type="button" data-bs-toggle="collapse" data-bs-target="#M{{ case.case_id }}" aria-expanded="false" aria-controls="M{{ case.case_id }}"  style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;">
                                                     <img id="{{ case.case_id }}" src="{% static 'images/Vector2.png' %}">
                                                 </button>
                                             </td>
@@ -225,7 +260,7 @@
                                                     {% else %}
                                                 {% endif %}
                                             </td>
-                                            <td style="width: 260px;"><a href="{% url 'case-profile' case.case_id %}" style="color: rgb(60,46,47);line-height: 35px;padding-bottom: 0px;">{{case.title}}</a></td>
+                                            <td style="width: 260px;"><a class="case_title" href="{% url 'case-profile' case.case_id %}" style="line-height: 35px;padding-bottom: 0px;">{{case.title}}</a></td>
                                             
                                         
                                             <td colspan="2" style="width: 98.766px;line-height: 34px;color: rgb(121, 110, 110); padding-bottom: 0px;" id="enddate{{ case.case_id }}">
@@ -266,7 +301,7 @@
                                                                         {% endif %}
                                                                     </td>
                                                                     <td style="line-height: 16px; width: 150.188px;">
-                                                                        <a href="#" style="color: rgb(134,81,64);line-height: 41px;">{{record.commissioned_user.nickname}}
+                                                                        <a class="link_title" href="#" style="line-height: 41px;">{{record.commissioned_user.nickname}}
                                                                             {% load static %} 
                                                                             {% if record.commissioned_user.gender == 0 %}
                                                                                 {% load static %}
@@ -306,7 +341,7 @@
                                                                             <button class="btn btn-primary" type="button" onclick="window.location='/toolfamily/user/delete/{{record.commissionrecord_id}}'" style="width: 127.2812px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">解除</button>
                                                                         </td>
                                                                     {% elif record.user_status.status_id == 3 %}
-                                                                        <td style="width: 150px;line-height: 56px;padding-right: 0px;padding-left: 0px;color: rgb(85,58,58);" colspan="3">評價&nbsp;&nbsp;
+                                                                        <td style="width: 150px;line-height: 56px;color: rgb(85,58,58);" colspan="3">評價&nbsp;&nbsp;
                                                                             {% if record.rate_publisher_to_worker %}
                                                                                 <span id="star{{record.commissioned_user.account_mail}}{{ case.case_id }}">
                                                                                     <script>
@@ -315,7 +350,7 @@
                                                                                         getStar(starId, value );</script>
                                                                                 </span>
                                                                             {% else %}
-                                                                            <form action="/toolfamily/user/rate/" method="post" >
+                                                                            <form action="/toolfamily/user/rate/" method="post" style="margin-left: 35px; margin-top: -56px;"onSubmit="return confirm('確定送出評價？');" >
                                                                                 {% csrf_token %}
                                                                                 <fieldset class="rating">
                                                                                     <input type="submit" id="field{{record.commissioned_user.account_mail}}{{ case.case_id }}_star5" name="{{record.commissionrecord_id}}" value="5" /><label class = "full" for="field{{record.commissioned_user.account_mail}}{{ case.case_id }}_star5"></label>
@@ -537,5 +572,11 @@
         </div>
     </div>
 </body>
+<script>
+    // 我需要轉跳回來的時候拿到他剛剛按送出的case.case_id <可能要取別的變數名稱（？>
+    // $("#B28").attr('aria-expanded','true');
+    // changeImage(); 
+    // $("#M28").removeClass('collapse').addClass('collapse show');
+</script>
 {% endblock %}
 </html>>

@@ -52,8 +52,8 @@
     color: #f3d16d;
     }
     fieldset, label { margin: 0; padding: 0; }
-        body{ margin: 20px; }
-        h1 { font-size: 1.5em; margin: 10px; }
+    body{ margin: 20px; }
+    h1 { font-size: 1.5em; margin: 10px; }
 </style>
 
 <script>
@@ -115,9 +115,9 @@
                         <ul style="color: rgb(94, 73, 73); margin-bottom: 0px;">
                             <li style="font-size: 14px;">已有 {{cnt}} 個工具人，最多再選取 {{last}} 人 &nbsp;&nbsp;</li>
                             <li style="font-size: 14px;">
-                                <form action="/toolfamily/user/build/" method="post">
+                                <form action="/toolfamily/user/build/" onSubmit="return confirm('確定送出委託?');">
                                     {% csrf_token %}
-                                    <button class="btn btn-primary" onclick="if(confirm('確認送出委託請求?')) this.form.submit();" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">送出</button>
+                                    <button class="btn btn-primary" type="submit" id="send" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">送出</button>
                                     <button class="btn btn-primary" type="reset" id="reset" style="height: 24px;font-size: 14px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">重置</button>
                                 </form>
                             </li>
@@ -203,6 +203,11 @@
                         </table>
 
                         <script>
+                        
+                        if ({{last}}==0){
+                            $("input").attr('disabled',true);
+                            $("#send").attr('disabled',true);
+                        }
                         function check(count,id){
                             if (count>{{last}}){ 
                                 $("input").attr('disabled',true);
@@ -210,8 +215,14 @@
                             }else{
                                 $("input").attr('disabled',false);
                             }
+                            if(count != 0){
+                                $("#send").attr('disabled',false);
+                            }else{
+                                $("#send").attr('disabled',true);
+                            }
                         }
                         count = 0;
+                        check(count,"");
                         $(".btn_select").click(function() {
                             num = $(this).attr("id");
                             if ($(this).attr("value") == "選擇") {
@@ -235,6 +246,7 @@
                                 $("#content" + num).remove();
                             }
                             check(count,num);
+
                             
                         });
 
