@@ -63,11 +63,14 @@
         let hours = (ms / (1000 * 60 * 60)).toFixed(0);
         let days = (ms / (1000 * 60 * 60 * 24)).toFixed(0);
         if (seconds < 60) return seconds + " 秒";
-        else if (minutes < 60) return minutes + " 分";
+        else if (minutes < 60) return minutes + " 分鐘";
         else if (hours < 24) return hours + " 小時";
         else return days + " 天"
     }
     function getStar(starId,value){
+        if (value =="None"){
+            value = 0;
+        } 
         var stringA = "<span class='fa fa-star checked'></span>"
         var stringB = "<span class='fa fa-star-o unchecked'></span>"
         var stringC = "<span class='fa fa-star-half-o helfchecked'></span>"
@@ -115,7 +118,7 @@
                         <ul style="color: rgb(94, 73, 73); margin-bottom: 0px;">
                             <li style="font-size: 14px;">已有 {{cnt}} 個工具人，最多再選取 {{last}} 人 &nbsp;&nbsp;</li>
                             <li style="font-size: 14px;">
-                                <form action="/toolfamily/user/build/" onSubmit="return confirm('確定送出委託?');" method="post">
+                                <form action="/toolfamily/user/build/" method="post" onSubmit="return confirm('確定送出委託?');">
                                     {% csrf_token %}
                                     <button class="btn btn-primary" type="submit" id="send" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">送出</button>
                                     <button class="btn btn-primary" type="reset" id="reset" style="height: 24px;font-size: 14px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">重置</button>

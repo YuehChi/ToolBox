@@ -149,28 +149,31 @@
         let hours = (ms / (1000 * 60 * 60)).toFixed(0);
         let days = (ms / (1000 * 60 * 60 * 24)).toFixed(0);
         if (seconds < 60) return seconds + " 秒";
-        else if (minutes < 60) return minutes + " 分";
+        else if (minutes < 60) return minutes + " 分鐘";
         else if (hours < 24) return hours + " 小時";
         else return days + " 天"
     }
     function changePage(Page){
-        if (Page == "history"){
-            document.getElementById("history").style.display="";
+        if (Page == "publish_his"){
+            document.getElementById("publish_his").style.display="";
             document.getElementById("publish").style.display="none";
 
-            document.getElementById("historyA").style.color="rgb(94, 73, 73)";
+            document.getElementById("publish_hisA").style.color="rgb(94, 73, 73)";
             document.getElementById("publishA").style.color="rgb(204,195,190)";
         }else{
             document.getElementById("publish").style.display="";
-            document.getElementById("history").style.display="none";
+            document.getElementById("publish_his").style.display="none";
 
-            document.getElementById("historyA").style.color="rgb(204,195,190";
+            document.getElementById("publish_hisA").style.color="rgb(204,195,190";
             document.getElementById("publishA").style.color="rgb(94, 73, 73)";
         }
         
     }
 
     function getStar(starId,value){
+        if (value =="None"){
+            value = 0;
+        } 
         var stringA = "<span class='fa fa-star checked' style='font-size:16px'></span>"
         var stringB = "<span class='fa fa-star-o unchecked' style='font-size:16px'></span>"
         var stringC = "<span class='fa fa-star-half-o helfchecked' style='font-size:16px'></span>"
@@ -189,7 +192,16 @@
 
         document.getElementById(starId).innerHTML=result
     }
-    
+    // copy
+
+    function copy(id){
+        var r = document.createRange();
+        r.selectNode(document.getElementById(id));
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(r);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+    }
     
 </script>
 <body style="background: rgb(244,244,243);">
@@ -205,11 +217,11 @@
                             <div class="dropdown-menu" style="font-size: 12px;text-align: justify;"><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按發布時間</a><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按結束時間</a><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按狀態</a></div>
                         </div>
                     </div>
-                    <p id="aa"></p>
+                    
                     <div class="underlineEffects" style="margin-top: -55px;width: 523px;">
                         <ul style="margin-left: 40px;margin-bottom: 0px;">
                             <li><a id="publishA" href="javascript:void(0);" onclick="changePage('publish');" style="color: rgb(94, 73, 73);">我的委託</a></li>
-                            <li><a id="historyA" href="javascript:void(0);" onclick="changePage('history');">歷史紀錄</a></li>
+                            <li><a id="publish_hisA" href="javascript:void(0);" onclick="changePage('publish_his');">歷史紀錄</a></li>
                         </ul>
                     </div>
                     <div id="publish">
@@ -239,7 +251,7 @@
                                             {% load static %}
                                             
                                             <td style="width: 80.297px;padding-right: 0px;padding-left: 20px;padding-bottom: 0px;">
-                                                <button id="B{{ case.case_id }}" class="btn btn-primary" onclick="changeImage({{ case.case_id }})" type="button" data-bs-toggle="collapse" data-bs-target="#M{{ case.case_id }}" aria-expanded="false" aria-controls="M{{ case.case_id }}"  style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;">
+                                                <button id="B{{ case.case_id }}" class="btn btn-primary" onclick="changeImage('{{ case.case_id }}')" type="button" data-bs-toggle="collapse" data-bs-target="#M{{ case.case_id }}" aria-expanded="false" aria-controls="M{{ case.case_id }}"  style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;">
                                                     <img id="{{ case.case_id }}" src="{% static 'images/Vector2.png' %}">
                                                 </button>
                                             </td>
@@ -253,7 +265,8 @@
                                             </td>
                                             <td style="width: 30px; padding-top: 12px;padding-right: 0px;padding-left: 0px;">
                                                 {% if value == 0 %}
-                                                    <button class="btn btn-primary" type="button" onclick="window.location='{% url 'case-profile' case.case_id %}'" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;">
+                                                {% comment %}{% endcomment %}
+                                                    <button class="btn btn-primary" type="button" onclick="window.location='toolfamily/case/profile/{{case.case_id}}/edit/'" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;">
                                                         {% load static %}
                                                         <img src="{% static 'images/Mode%20edit.png' %}" style="margin-right: 30px;">
                                                     </button>
@@ -296,11 +309,14 @@
                                                                 <tr style="font-size: 12px;background: #ffffff;">
                                                                     <td style="width: 70.844px;">
                                                                         {% if record.commissioned_user.icon %}
-                                                                        {% load static %}
-                                                                        <img class="rounded-circle" src="{{record.commissioned_user.icon.url}}" style="width: 43px;margin-left: 20px;margin-top: 7px;">
+                                                                            <img class="rounded-circle" src="{{record.commissioned_user.icon.url}}" style="width: 43px;margin-left: 20px;margin-top: 7px;">
+                                                                        {% else %}
+                                                                            {% load static %}
+                                                                            <img  class="rounded-circle" src="{% static 'images/default_icon_1.png' %}" style="width: 43px;margin-left: 20px;margin-top: 7px;">
                                                                         {% endif %}
                                                                     </td>
                                                                     <td style="line-height: 16px; width: 150.188px;">
+                                                                        {% comment %} {% url 'others-user-profile' record.commissioned_user.user_id %} {% endcomment %} 
                                                                         <a class="link_title" href="#" style="line-height: 41px;">{{record.commissioned_user.nickname}}
                                                                             {% load static %} 
                                                                             {% if record.commissioned_user.gender == 0 %}
@@ -324,15 +340,20 @@
                                                                             </span>
                                                                         </div>
                                                                     </td>
-                                                                    <td style="width: 91.344px;line-height: 53px;"><button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button><button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Person_add.png' %}"></button></td>
-                                                                    <td style="line-height: 58px;width: 203.812px;color: rgb(85,58,58);">
+                                                                    <!-- 追蹤、檢舉 -->
+                                                                    <td style="width: 91.344px;line-height: 53px;">
+                                                                        <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
+                                                                        <!-- <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Person_add.png' %}"></button> -->
+                                                                    </td>
+                                                                    <td id="contact{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 58px;width: 203.812px;color: rgb(85,58,58);">
                                                                         {% if contact != None %}
                                                                             {{record.commissioned_user.contact}}
                                                                         {% else %}
                                                                             {{record.commissioned_user.account_mail}}
                                                                         {% endif %}
                                                                         {% load static %}
-                                                                        <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
+                                                                        <!-- copy -->
+                                                                        <button onclick="copy('contact{{record.commissioned_user.account_mail}}{{ case.case_id }}')" class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
                                                                     </td>
                                                                     {% if record.user_status.status_id == 2 %}
                                                                         <td style="line-height: 50px;" colspan="3"></td>
@@ -371,7 +392,7 @@
                                                                         <td style="width: 150px;line-height: 56px;padding-right: 0px;padding-left: 0px;text-align: center;color: rgb(38, 86, 56);" colspan="3">已發起解除請求，等待對方回覆！</td>
                                                                         <td style="line-height: 30px;">
                                                                             <button class="btn btn-primary" type="button" disabled="disabled" style="width: 127.2812px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成</button>
-                                                                            <button class="btn btn-primary" type="button" disabled="disabled" style="width: 127.812px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">解除中</button>
+                                                                            <button class="btn btn-primary" type="button" disabled="disabled" style="width: 127.812px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">解除中...</button>
                                                                         </td>
                                                                     {% elif record.user_status.status_id == 6 %}
                                                                         <td style="width: 150px;line-height: 56px;padding-right: 0px;padding-left: 0px;text-align: center;color: rgb(200, 4, 4);" colspan="3">對方已發出取消請求，請即時確認！</td>
@@ -403,7 +424,7 @@
                     </div>
 
 <!-- history -->
-                    <div id="history" style="display: none;">
+                    <div id="publish_his" style="display: none;">
                         <div style="width: 873px;margin-left: 50px;margin-top: 5px;margin-right: 50px;">
                             <table class="table table-borderless">
                                 <tbody>
@@ -426,7 +447,7 @@
                                     <tr>
                                         {% load static %}
                                         <td style="width: 80.297px;padding-right: 0px;padding-left: 20px;padding-bottom: 0px;">
-                                            <button class="btn btn-primary" onclick="changeImage({{ case.case_id }})" type="button" data-bs-toggle="collapse" data-bs-target="#M{{ case.case_id }}" aria-expanded="false" aria-controls="M{{ case.case_id }}"  style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;">
+                                            <button class="btn btn-primary" onclick="changeImage('{{ case.case_id }}')" type="button" data-bs-toggle="collapse" data-bs-target="#M{{ case.case_id }}" aria-expanded="false" aria-controls="M{{ case.case_id }}"  style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;">
                                                 <img id="{{ case.case_id }}" src="{% static 'images/Vector2.png' %}">
                                             </button>
                                         </td>
@@ -438,10 +459,10 @@
                                                 changeTime(oriTime, ouputId, "s");
                                             </script>
                                         </td>
-                                        <td style="width: 285px;"><a href="{% url 'case-profile' case.case_id %}" style="color: rgb(60,46,47);line-height: 35px;padding-bottom: 0px;">{{case.title}}</a></td>
+                                        <td style="width: 285px;"><a class="case_title" href="{% url 'case-profile' case.case_id %}" style="line-height: 35px;padding-bottom: 0px;">{{case.title}}</a></td>
                                         
                                     
-                                        <td colspan="2" style="width: 80px;line-height: 34px;color: rgb(121, 110, 110); padding-bottom: 0px;" id="enddateh{{ case.case_id }}">
+                                        <td colspan="2" style="width: 80px;line-height: 35px;color: rgb(121, 110, 110); padding-bottom: 0px;" id="enddateh{{ case.case_id }}">
                                             {{case.ended_datetime}}
                                             <script> 
                                                 var oriTime = "{{case.ended_datetime}}"
@@ -449,29 +470,28 @@
                                                 changeTime(oriTime, ouputId ,"s");
                                             </script>
                                         </td>
-                                        <td>
-                                            {% comment %} 我得到的星星ＱＱ 我需要value {% endcomment %}
+                                        <td style="line-height: 35px">
                                             {% for key2, val2 in avg_rate.items %}
-                                                {% if key2 == case.case_id %}
-                                                    <span>{{val2}}</span>
+                                                {% if key2 == case.case_id %}  
+                                                <span id="starph{{ case.case_id }}">
+                                                    {{val2}}
+                                                    <script>
+                                                        var starId = "starph{{ case.case_id }}"
+                                                        var value = "{{val2}}"
+                                                        getStar(starId, value );
+                                                    </script>
+                                                </span>
                                                 {% endif %}
                                             {% endfor %}
-                                            <span id="starph{{ case.case_id }}">
-                                                <script>
-                                                    var starId = "starph{{ case.case_id }}"
-                                                    var value = " 0"
-                                                    getStar(starId, value );
-                                                </script>
-                                            </span>
                                         </td>
 
-                                        <td colspan="2" style="width: 50px;line-height: 34px;color: rgb(61,46,47);padding-bottom: 0px;">{{case.case_status.status_name}}</td>
+                                        <td colspan="2" style="width: 50px;line-height: 35px;color: rgb(61,46,47);padding-bottom: 0px;">{{case.case_status.status_name}}</td>
                                             
                                     </tr>
                                         <tr>
                                             <td colspan="9" style="padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px; ">
                                                 <div class="collapse" id="M{{ case.case_id }}">
-                                                    <table class="table tableContain">
+                                                    <table class="table tableContain table-borderless">
                                                         <tbody>
                                                             <tr>
                                                                 <td colspan="9" style="background: #f4f4f3;color: rgb(134,81,64);">&nbsp; &nbsp; &nbsp;已選名單</td>
@@ -481,11 +501,15 @@
                                                                 <tr style="font-size: 12px;background: #ffffff;">
                                                                     <td style="width: 70.844px;">
                                                                         {% if record.commissioned_user.icon %}
-                                                                        <img class="rounded-circle" src="{{record.commissioned_user.icon.url}}" style="width: 43px;margin-left: 20px;margin-top: 7px;">
+                                                                            <img class="rounded-circle" src="{{record.commissioned_user.icon.url}}" style="width: 43px;margin-left: 20px;margin-top: 7px;">
+                                                                        {% else %}
+                                                                            {% load static %}
+                                                                            <img  class="rounded-circle" src="{% static 'images/default_icon_1.png' %}" style="width: 43px;margin-left: 20px;margin-top: 7px;">
                                                                         {% endif %}
                                                                     </td>
                                                                     <td style="line-height: 16px;width: 150.188px;">
-                                                                        <a href="#" style="color: rgb(134,81,64);line-height: 41px;">{{record.commissioned_user.nickname}}
+                                                                        {% comment %} {% url 'others-user-profile' record.commissioned_user.user_id %} {% endcomment %}
+                                                                        <a class="link_title" href="#" style="line-height: 41px;">{{record.commissioned_user.nickname}}
                                                                             {% load static %} 
                                                                             {% if record.commissioned_user.gender == 0 %}
                                                                                 {% load static %}
@@ -509,15 +533,18 @@
                                                                         </div>
                                                                     </td>
                                                                     <!-- 追蹤、檢舉 -->
-                                                                    <td style="width: 91.344px;line-height: 53px;"><button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button><button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Person_add.png' %}"></button></td>
-                                                                    <td style="line-height: 58px;width: 203.812px;color: rgb(85,58,58);">
+                                                                    <td style="width: 91.344px;line-height: 53px;">
+                                                                        <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
+                                                                        <!-- <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Person_add.png' %}"></button> -->
+                                                                    </td>
+                                                                    <td id ="contacth{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 58px;width: 203.812px;color: rgb(85,58,58);">
                                                                         {% if contact != None %}
                                                                             {{record.commissioned_user.contact}}
                                                                         {% else %}
                                                                             {{record.commissioned_user.account_mail}}
                                                                         {% endif %}
                                                                         {% load static %}
-                                                                        <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
+                                                                        <button onclick="copy('contacth{{record.commissioned_user.account_mail}}{{ case.case_id }}')" class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
                                                                     </td>
                                                                     {% if record.user_status.status_id == 3 %}
                                                                         <td style="width: 150px; line-height: 56px;color: rgb(85,58,58);" colspan="3">評價&nbsp;&nbsp;
@@ -529,7 +556,7 @@
                                                                                         getStar(starId, value );</script>
                                                                                 </span>
                                                                             {% else %}
-                                                                            <form action="/toolfamily/user/rate/" method="post" >
+                                                                            <form action="/toolfamily/user/rate/" method="post" style="margin-left: 35px; margin-top: -56px;"onSubmit="return confirm('確定送出評價？');">
                                                                                 {% csrf_token %}
                                                                                 <fieldset class="rating">
                                                                                     <input type="submit" id="field{{record.commissioned_user.account_mail}}{{ case.case_id }}_star5" name="{{record.commissionrecord_id}}" value="5" /><label class = "full" for="field{{record.commissioned_user.account_mail}}{{ case.case_id }}_star5"></label>
@@ -571,12 +598,27 @@
             </div>
         </div>
     </div>
+    {% if messages %}
+    {% for message in messages %}
+        {% if 'origin_case' in message.extra_tags %}
+           <!-- <p style="color: #ca6c38;"> {{ message }} </p> -->
+           
+           <script>
+            if( '{{ message }}' != ''){
+                $("#B{{ message }}").attr('aria-expanded','true');
+                changeImage('{{ message }}'); 
+                $("#M{{ message }}").removeClass('collapse').addClass('collapse show');
+            }
+            </script>
+        {% elif 'origin_page' in message.extra_tags %}
+            <script>
+            if( '{{ message }}' != ''){
+                changePage('{{ message }}');
+            }
+            </script>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
 </body>
-<script>
-    // 我需要轉跳回來的時候拿到他剛剛按送出的case.case_id <可能要取別的變數名稱（？>
-    // $("#B28").attr('aria-expanded','true');
-    // changeImage(); 
-    // $("#M28").removeClass('collapse').addClass('collapse show');
-</script>
 {% endblock %}
 </html>>
