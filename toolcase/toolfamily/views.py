@@ -975,9 +975,9 @@ def rate(request):
         toolman.save()
 
         if commission.case.case_status.status_id in [3, 4]:
-            messages.info(request, 'take_his', extra_tags='origin_page')
+            messages.info(request, 'publish_his', extra_tags='origin_page')
         else:
-            messages.info(request, 'taking', extra_tags='origin_page')
+            messages.info(request, 'publish', extra_tags='origin_page')
 
         return redirect('user-publish-record')
 
@@ -993,10 +993,10 @@ def rate(request):
         publisher.rate_num  = publisher.rate_num + 1
         publisher.save()
 
-        if commission.case.case_status.status_id in [3, 4]:
-            messages.info(request, 'publish_his', extra_tags='origin_page')
+        if commission.user_status.status_id in [3, 4]:
+            messages.info(request, 'take_his', extra_tags='origin_page')
         else:
-            messages.info(request, 'publish', extra_tags='origin_page')
+            messages.info(request, 'taking', extra_tags='origin_page')
 
         return redirect('user-take-record')
 
