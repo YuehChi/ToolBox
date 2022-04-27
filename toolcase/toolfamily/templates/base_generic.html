@@ -50,8 +50,8 @@
                     </a>
                     <div class="dropdown-menu" style="margin: 0;padding: 7px 0px;margin-left: -30px;font-size: 12px;width: 100px;min-width: 100px;margin-top: 11px;border-width: 0px;background: rgb(244,244,243);text-align: center;color: #5e4949;">
                         <a class="dropdown-item member" m="1" href="{% url 'my-user-profile'%}" style="color: #5e4949;">會員中心</a>
-                        <a class="dropdown-item" href="#" style="color: #5e4949;">我的委託</a>
-                        <a class="dropdown-item" href="#" style="color: #5e4949;">委託紀錄</a>
+                        <a class="dropdown-item" href="{% url 'user-publish-record'%}" style="color: #5e4949;">我的委託</a>
+                        <a class="dropdown-item" href="{% url 'user-take-record'%}" style="color: #5e4949;">委託紀錄</a>
                         <a class="dropdown-item" href="#" style="color: #5e4949;">我的追蹤</a>
                         <a class="dropdown-item" href="{% url 'user-password-update' %}" style="color: #5e4949;">更改密碼</a>
                         <a class="dropdown-item" href="{% url 'logout' %}" style="color: #5e4949;">登出</a>
