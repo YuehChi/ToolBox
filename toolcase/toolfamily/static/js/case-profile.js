@@ -1,5 +1,31 @@
 $(document).ready(function() {
 
+    
+    // --------------- Take Button Status ---------------
+    var tbtn_status = $('#get_take_btn_status').html()
+    var case_id = $('#case-id').html()
+
+    if (tbtn_status == '1'){
+        $('#button-case-commission').click(function(){
+            alert('1')
+            window.location = '/toolfamily/case/take/'+case_id
+        })
+    }
+    else if (tbtn_status == '2'){
+        $('#button-case-commission').click(function(){
+            alert('2')
+            window.location = '/toolfamily/case/cancel/'+case_id
+        })
+    }
+    else if (tbtn_status == '3'){
+        $('#button-case-commission').prop('disabled', true);
+    }
+    else{
+        $('#button-case-commission').click(function(){
+            alert('Take commission error!!')
+        })
+    }
+
     // --------------- Case Edit Button ---------------
     if($('#get-user-id').html() == $('#get-loginuser-id').html()){
         $('#link-edit').removeClass('d-none')
@@ -12,6 +38,7 @@ $(document).ready(function() {
     if(case_status == '徵求'){
         $('#case-status').html('徵求中')
     }
+
 
 
 

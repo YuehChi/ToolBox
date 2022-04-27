@@ -42,7 +42,7 @@
             <div class="row">
                 <div class="col" style="align-items: flex-end; line-height: 40px;">
                     <div id="div-search-allcase">
-                        <a class="main-color" href="#" id="link-search-allcase">全部案件</a>
+                        <a class="main-color" href="#" id="link-search-allcase" style="text-decoration: none !important;">全部案件</a>
                     </div>
                 </div>
 
@@ -131,7 +131,6 @@
 
                     <span class="d-none" id="get-input-page">{{result_case.number}}</span>
                     <span class="d-none" id="get-input-total-page">{{num_pages}}</span>
-
 
 
                     <div class="card">
@@ -309,12 +308,12 @@
                                     <div class="text-end d-inline-block" style="height: auto;width: auto;vertical-align: baseline;">
                                         <select id="select-pagination" class="select-filter" style="outline: none;">
                                         </select>
-                                        <select class="select-filter" style="margin-left: 10px;outline: none;">
+                                        <!-----<select class="select-filter" style="margin-left: 10px;outline: none;">
                                             <option value="1" selected="">時間 新→舊</option>
                                             <option value="2">時間 舊→新</option>
                                             <option value="2">追蹤人數</option>
                                             <option value="4">應徵人數</option>
-                                        </select>
+                                        </select>----->
                                     </div>
                                 </div>
                                 <hr class="mt-2 mb-0">
@@ -342,11 +341,17 @@
                                                     <!----------Case Main Info---------->
                                                     <div class="col-10 col-md-8">                                                  
                                                     
-                                                        <h4 style="color: rgb(38,29,29);font-weight: bold;font-size: 18px;margin-bottom: 0px;width: 90%;">
+                                                        <h4 class="d-inline-block" style="color: rgb(38,29,29);font-weight: bold;font-size: 18px;margin-bottom: 0px;">
                                                             <a class="d-none d-xl-block a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:25}}</a>
                                                             <a class="d-none d-md-block d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:18}}</a>
                                                             <a class="d-md-none d-lg-none d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:15}}</a>
+                                                            
                                                         </h4>
+                                                        <span id="case-status" class="justify-content-center align-items-center" >
+                                                            {% if case.case_status.status_name == "徵求" %}
+                                                                徵求中
+                                                            {% endif %}
+                                                        </span>
                                                         <!----------Second Info---------->
                                                         <div class="mt-1 d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;">
                                                             <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 16px;">confirmation_number</i>
@@ -403,9 +408,9 @@
                                                             {%endif%}
                                                         {% endfor %}
 
-                                                        <!----------Bookmark---------->
+                                                        <!----------Bookmark
 
-                                                        <img class="i-case-bookmark" src="/static/images/bookmark-outline-icon.png">
+                                                        <img class="i-case-bookmark" src="/static/images/bookmark-outline-icon.png">---------->
                                                     </div>
 
                                                     <!----------User Main Info---------->
