@@ -118,9 +118,9 @@
                         <ul style="color: rgb(94, 73, 73); margin-bottom: 0px;">
                             <li style="font-size: 14px;">已有 {{cnt}} 個工具人，最多再選取 {{last}} 人 &nbsp;&nbsp;</li>
                             <li style="font-size: 14px;">
-                                <form action="/toolfamily/user/build/" method="post" onSubmit="return confirm('確定送出委託?');">
+                                <form action="/toolfamily/user/build/" method="post" >
                                     {% csrf_token %}
-                                    <button class="btn btn-primary" type="submit" id="send" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">送出</button>
+                                    <button class="btn btn-primary" type="submit" onClick="return confirm('確定送出委託?');" id="send" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">送出</button>
                                     <button class="btn btn-primary" type="reset" id="reset" style="height: 24px;font-size: 14px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">重置</button>
                                 </form>
                             </li>
@@ -198,69 +198,77 @@
                                         <td colspan="2" style="width: 100px;line-height: 43px;color: rgb(121, 110, 110);" class="select" id="text_{{data.casewillingness_id}}">未選</td>
                                         
                                         <td colspan="2" style="width: 150px;line-height: 40px;padding-bottom: 0px;">
-                                            <input type="button" class=" btn_select btn btn-primary " value="選擇" id="{{data.casewillingness_id}}" type="button" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">
-                                        </td>
-                                    </tr>
+                                            <input disabled type="button"  class=" btn_select btn btn-primary " value="選擇" id="{{data.casewillingness_id}}" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">
+                                            <p hidden="hidden" id="notic{{data.casewillingness_id}}" style="font-size: 12px;color:#ca6c38 ;">你的工具人已經徵滿了喔！</p>
+                                            <script>
+                        
+                                                if ('{{last}}'==0){
+                                                    $("input").attr('hidden',true);
+                                                    $("#send").attr('disabled',true);
+                                                    $("#notic{{data.casewillingness_id}}").attr('hidden',false);
+                                                }
+                                            </script>   
+                                        </tr>
+                                        
                                 {% endfor%}
                             </tbody>
                         </table>
 
                         <script>
-                        
-                        if ({{last}}==0){
-                            $("input").attr('disabled',true);
-                            $("#send").attr('disabled',true);
-                        }
-                        function check(count,id){
-                            if (count>{{last}}){ 
-                                $("input").attr('disabled',true);
-                                $("#"+ num).attr('disabled',false);
-                            }else{
-                                $("input").attr('disabled',false);
-                            }
-                            if(count != 0){
-                                $("#send").attr('disabled',false);
-                            }else{
-                                $("#send").attr('disabled',true);
-                            }
-                        }
-                        count = 0;
-                        check(count,"");
-                        $(".btn_select").click(function() {
-                            num = $(this).attr("id");
-                            if ($(this).attr("value") == "選擇") {
-                                count++;
-                                $(this).val("取消");
-                                $(this).css("background", "#7b3b20")
-                                $("#text_" + num).html("已選");
-                                $("<input>").attr({
-                                    type: "hidden",
-                                    id: "content" + num,
-                                    class: "toolman",
-                                    name: "toolman",
-                                    value: num,
-                                }).appendTo("form");
-                            }
-                            else {
-                                count--;
-                                $(this).val("選擇");
-                                $(this).css("background", "#ca6c38")
-                                $("#text_" + num).html("未選");
-                                $("#content" + num).remove();
-                            }
-                            check(count,num);
+                            function check(count,id){
+                                if (count<'{{last}}'){ 
+                                    $("input").attr('disabled',false);
+                                }else{
+                                    $(".btn_select").attr('disabled',true);
+                                    $("#"+ id).attr('disabled',false);
+                                }
 
-                            
-                        });
 
-                        $("#reset").click(function() {
-                            $(".toolman").remove();
-                            $(".select").html("未選");
-                            $(".btn_select").val("選擇")
-                            $(".btn_select").css("background", "#ca6c38")
+                                if(count != 0){
+                                    $("#send").attr('disabled',false);
+                                }else{
+                                    $("#send").attr('disabled',true);
+                                }
+                            }
                             count = 0;
-                            check(count,num);
-                        });
+                            check(count,"");
+                            $(".btn_select").click(function() {
+                                num = $(this).attr("id");
+                                if ($(this).attr("value") == "選擇") {
+                                    count++;
+                                    $(this).val("取消");
+                                    $(this).css("background", "#7b3b20")
+                                    $("#text_" + num).html("已選");
+                                    $("<input>").attr({
+                                        type: "hidden",
+                                        id: "content" + num,
+                                        class: "toolman",
+                                        name: "toolman",
+                                        value: num,
+                                    }).appendTo("form");
+                                    
+                                }
+                                else {
+                                    count--;
+                                    $(this).val("選擇");
+                                    $(this).css("background", "#ca6c38")
+                                    $("#text_" + num).html("未選");
+                                    $("#content" + num).remove();
+                                }
+                                check(count,num);
+                                
+
+                                
+                            });
+
+                            $("#reset").click(function() {
+                                $(".toolman").remove();
+                                $(".select").html("未選");
+                                $(".btn_select").val("選擇")
+                                $(".btn_select").css("background", "#ca6c38")
+                                count = 0;
+                                check(count,num);
+                            });
                         </script>
 
                     </div>
