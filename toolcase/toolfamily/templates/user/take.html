@@ -313,9 +313,11 @@
                                                 
                                             </td>
                                         {% elif commission.user_status.status_id == 5 %}
-                                            <td style="text-align: center;width: 150px;line-height: 50px;font-size: 15px;">委託人已發出取消請求</td>
+                                            <td style="text-align: center;width: 150px;line-height: 50px;font-size: 15px;">對方發出取消請求</td>
                                             <td style="width: 80px; text-align: center;">
-                                                <button class="btn btn-primary" type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'" value="確認取消" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">確認取消</button>
+                                                <button class="btn btn-primary" type="button" disabled value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成</button><br>
+                                                <button class="btn btn-primary" type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'"  value="確認取消" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">確認取消</button>
+                                                
                                             </td>
                                         {% elif commission.user_status.status_id == 6 %}
                                             <td style="text-align: center;width: 150px;line-height: 50px;font-size: 15px;">等待對方確認取消</td>
@@ -348,7 +350,7 @@
                                                                             <img  class="rounded-circle" src="{% static 'images/default_icon_1.png' %}" style="width: 43px;margin-top: 10px;">
                                                                         {% endif %}
                                                                     
-                                                                    <div style="margin-top: -56px; margin-left: 55px;">
+                                                                    <div style="margin-top: -50px; margin-left: 55px;">
                                                                         {% comment %} {% url 'others-user-profile' commission.case.publisher.user_id %} {% endcomment %}
                                                                         <a class="link_title" href="#" style="">{{commission.case.publisher.nickname}}
                                                                             {% load static %} 
