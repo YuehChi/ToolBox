@@ -10,8 +10,8 @@
             <ul class="tab-list" style="text-align: center;display:block;">
                 <li class="list-group-item member bold" m="1"><a href="javascript:void(0)" style="color: rgb(134, 81, 64);">會員中心</a></li>
                 <!-- <li class="list-group-item member" m="2"><a href="javascript:void(0)" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li> -->
-                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">委託管理</a></li>
-                <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">委託紀錄</a></li>
+                <li class="list-group-item"><a href="{%url 'user-publish-record'%}" style="color: rgb(134, 81, 64) ;"></a>我的委託</li>
+                <li class="list-group-item"><a href="{%url 'user-take-record'%}" style="color: rgb(134, 81, 64) ;">我的接案</a></li>
                 <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的追蹤</a></li>
                 <li class="list-group-item"><a href="{% url 'user-password-update' %}" style="color: rgb(134, 81, 64) ;">更改密碼</a></li>
                 <li class="list-group-item"><a href="{% url 'logout' %}" style="color: rgb(134, 81, 64) ;">登出</a></li>
