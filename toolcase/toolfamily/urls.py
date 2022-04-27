@@ -41,6 +41,7 @@ urlpatterns += [
 #           TAKE URLS               #
 #####################################
 urlpatterns += [
+    path('user/cancel/<int:case_id>', views.user_cancel_willingess, name='user-cancel-willingess'),
     path('user/publish/', views.user_publish_record, name='user-publish-record'),
     path('user/publish/<int:case_id>', views.user_publish_applicant, name='user-publish-applicant'),
     path('user/take/', views.user_take_record, name='user-take-record'),

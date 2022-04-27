@@ -768,7 +768,7 @@ def take_case(request, case_id):
     return redirect('case-profile', case_id=case_id)
 
 
-# ---------cancel willingness---------
+# ---------cancel willingness for case---------
 @login_required
 def cancel_willingess(request, case_id):
     
@@ -780,8 +780,27 @@ def cancel_willingess(request, case_id):
     except:
         pass
 
+    button_status = 1
+
+    return render(request,'case/profile.html',locals())
+
+
+
+# ---------cancel willingness for user---------
+@login_required
+def user_cancel_willingess(request, case_id):
+    
+    case = Case.objects.get(Q(case_id=case_id))
+    user = request.user.user_detail
+    try:
+        willingness = CaseWillingness.objects.get(Q(apply_case=case) & Q(willing_user=user))
+        willingness.delete()
+    except:
+        pass
+
     messages.info(request, 'take_sign', extra_tags='origin_page')
     return redirect('user-take-record')
+
 
 
 # ---------build commission---------
