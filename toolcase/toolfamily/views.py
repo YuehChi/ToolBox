@@ -963,7 +963,7 @@ def viewUser(request):
 def viewOtherUser(request, user_id):
     current_user = get_object_or_404(  # 找出自己是哪個 user; 找不到則回傳 404 error
         UserDetail,
-        django_user=request.current_user,
+        django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
 
     # 找要看的是哪個 user

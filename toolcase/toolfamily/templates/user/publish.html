@@ -266,7 +266,7 @@
                                             <td style="width: 30px; padding-top: 12px;padding-right: 0px;padding-left: 0px;">
                                                 {% if value == 0 %}
                                                 {% comment %}{% endcomment %}
-                                                    <button class="btn btn-primary" type="button" onclick="window.location='toolfamily/case/profile/{{case.case_id}}/edit/'" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;">
+                                                    <button class="btn btn-primary" type="button" onclick="window.location='/toolfamily/case/profile/{{case.case_id}}/edit/'" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;">
                                                         {% load static %}
                                                         <img src="{% static 'images/Mode%20edit.png' %}" style="margin-right: 30px;">
                                                     </button>
@@ -316,8 +316,10 @@
                                                                         {% endif %}
                                                                     </td>
                                                                     <td style="line-height: 16px; width: 150.188px;">
-                                                                        {% comment %} {% url 'others-user-profile' record.commissioned_user.user_id %} {% endcomment %} 
-                                                                        <a class="link_title" href="#" style="line-height: 41px;">{{record.commissioned_user.nickname}}
+                                                                        {% comment %}
+                                                                        {% url 'others-user-profile' record.commissioned_user.user_id %}
+                                                                        {% endcomment %}
+                                                                        <a class="link_title" href="{% url 'others-user-profile' record.commissioned_user.user_id %}" style="line-height: 41px;">{{record.commissioned_user.nickname}}
                                                                             {% load static %} 
                                                                             {% if record.commissioned_user.gender == 0 %}
                                                                                 {% load static %}
@@ -509,7 +511,7 @@
                                                                     </td>
                                                                     <td style="line-height: 16px;width: 150.188px;">
                                                                         {% comment %} {% url 'others-user-profile' record.commissioned_user.user_id %} {% endcomment %}
-                                                                        <a class="link_title" href="#" style="line-height: 41px;">{{record.commissioned_user.nickname}}
+                                                                        <a class="link_title" href="{% url 'others-user-profile' record.commissioned_user.user_id %}" style="line-height: 41px;">{{record.commissioned_user.nickname}}
                                                                             {% load static %} 
                                                                             {% if record.commissioned_user.gender == 0 %}
                                                                                 {% load static %}

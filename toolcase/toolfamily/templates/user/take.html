@@ -352,7 +352,7 @@
                                                                     
                                                                     <div style="margin-top: -50px; margin-left: 55px;">
                                                                         {% comment %} {% url 'others-user-profile' commission.case.publisher.user_id %} {% endcomment %}
-                                                                        <a class="link_title" href="#" style="">{{commission.case.publisher.nickname}}
+                                                                        <a class="link_title" href="{% url 'others-user-profile' commission.case.publisher.user_id %}" style="">{{commission.case.publisher.nickname}}
                                                                             {% load static %} 
                                                                             {% if commission.case.publisher.gender == 0 %}
                                                                                 {% load static %}
@@ -494,7 +494,7 @@
                                         </td>
                                         <td colspan="2" style="width: 150px;">
                                             {% comment %} {% url 'case-profile' commission.case.case_id %}{% endcomment %}
-                                            <a class="case_title" href="#" style="line-height: 50px;padding-bottom: 0px;">
+                                            <a class="case_title" href="{% url 'case-profile' commission.case.case_id %}" style="line-height: 50px;padding-bottom: 0px;">
                                                 {{commission.case.title}}
                                             </a>
                                         </td>
@@ -534,7 +534,7 @@
                                                                     
                                                                     <div style="margin-left: 55px; margin-top: -40px; height: 50px;line-height: 20px;">
                                                                         {% comment %} {% url 'others-user-profile' commission.case.publisher.user_id %} {% endcomment %}
-                                                                        <a class="link_title" href="#" style="">{{commission.case.publisher.nickname}}
+                                                                        <a class="link_title" href="{% url 'others-user-profile' commission.case.publisher.user_id %}" style="">{{commission.case.publisher.nickname}}
                                                                             {% load static %} 
                                                                             {% if commission.case.publisher.gender == 0 %}
                                                                                 {% load static %}
