@@ -1,0 +1,51 @@
+.underlineEffects ul {
+  padding: 0;
+  list-style: none;
+  display: table;
+  text-align: center;
+}
+
+.underlineEffects li {
+  display: table-cell;
+  position: relative;
+  padding: 15px 0;
+}
+
+.underlineEffects a {
+  color: rgb(204,195,190);
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.15em;
+  display: inline-block;
+  padding: 15px 20px;
+  position: relative;
+  
+}
+
+.underlineEffects a:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: rgb(94,73,73);
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+  
+}
+
+.underlineEffects a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.underlineEffects a:hover {
+  color: #5e4949;
+}
+
+.table {
+  color: rgb(134,81,64);
+}
+

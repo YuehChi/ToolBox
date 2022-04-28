@@ -1,15 +1,19 @@
 from django.urls import path
 from . import views
 
+
+#####################################
+#           AUTH URLS               #
+#####################################
 urlpatterns = [
     path('', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
     path('register/', views.register, name='register'),
-    path('register/check', views.check_mail_used, name='check-mail-used'),
-    path('activate/<str:token>', views.active, name='active'),
+    path('register/check/', views.check_mail_used, name='check-mail-used'),
+    path('activate/<str:token>/', views.active, name='active'),
     path('forget/', views.forget, name='forget'),
-    path('reset/<str:token>', views.reset, name='reset'),
-    path('home/', views.index, name='index')
+    path('reset/<str:token>/', views.reset, name='reset'),
+    path('home/', views.index, name='index'),
 ]
 
 
@@ -33,3 +37,19 @@ urlpatterns += [
     path('case/search/', views.case_search,name='case-search'),
 ]
 
+#####################################
+#           TAKE URLS               #
+#####################################
+urlpatterns += [
+    path('user/cancel/<int:case_id>', views.user_cancel_willingess, name='user-cancel-willingess'),
+    path('user/publish/', views.user_publish_record, name='user-publish-record'),
+    path('user/publish/<int:case_id>', views.user_publish_applicant, name='user-publish-applicant'),
+    path('user/take/', views.user_take_record, name='user-take-record'),
+    path('user/build/', views.build_commission, name='build-commission'),
+    path('user/delete/<int:commission_id>/', views.delete_commission, name='delete-commission'),
+    path('user/finish/<int:commission_id>/', views.finish_commission, name='finish-commission'),
+    path('user/rate/', views.rate, name='rate'),
+
+    path('case/take/<int:case_id>',views.take_case, name='take-case'),
+    path('case/cancel/<int:case_id>', views.cancel_willingess, name='cancel-willingess'),
+]

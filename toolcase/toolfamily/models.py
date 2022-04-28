@@ -32,6 +32,8 @@ DB內的刪除怎麼處理
         - on_delete=models.PROTECT 阻止外鍵被刪除
 """
 
+User._meta.get_field('username')._unique = False
+
 
 # 生成 n 個字符的隨機字串（目前沒在使用）
 def randomStr(n=6):
@@ -257,6 +259,28 @@ class FollowCase(models.Model):
 
     def __str__(self):  # 拿去 print() 時要怎麼顯示
         return f'{self.user} follows {self.followed_case}.'
+
+
+# 通知
+class Notice(models.Model):
+    notice_id = models.AutoField(primary_key=True, editable=False)
+    user = models.ForeignKey(UserDetail,
+        related_name='notice_user',
+        verbose_name='通知使用者',
+        on_delete=models.CASCADE)
+    message = models.TextField(
+        default='', blank=True,
+        verbose_name='通知內容')
+    created_datetime = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='通知建立時間')
+
+    class Meta:
+        verbose_name = '通知'
+
+    def __str__(self):
+        return f'notice {self.message} for user {self.user}.'
+
 
 
 

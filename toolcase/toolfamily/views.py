@@ -1,24 +1,218 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from calendar import c
+from datetime import timedelta
+import os, django, json, smtplib, base64, imaplib, time
+from email.mime.text import MIMEText
+from urllib import request
+from site import USER_SITE
+import re
 from .models import *
 from .forms import *
-from django.conf import settings
-from django.contrib.auth.decorators import login_required, permission_required
-import os  # 為了在上傳新檔時刪除舊檔
+
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from django.db.models import Q
-from django.contrib import messages, auth
-import django, json, smtplib
+from django.db.models import Q, F
 from django.dispatch import receiver
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.hashers import check_password, make_password
-from django.contrib.auth.backends import ModelBackend
-import base64
-from itsdangerous import URLSafeTimedSerializer as utsr
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
 
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.backends import ModelBackend
 
+from itsdangerous import URLSafeTimedSerializer as utsr
+
+#########################################
+#                 TOOLS                 #
+#########################################
+
+# ---------------def Token-----------------
+class Token:
+    def __init__(self, security_key):
+        self.security_key = security_key
+        self.salt = base64.b64encode(security_key.encode('UTF-8'))
+    def generate_validate_token(self, username):
+        serializer = utsr(self.security_key)
+        return serializer.dumps(username, self.salt)
+    def confirm_validate_token(self, token, expiration=3600):
+        serializer = utsr(self.security_key)
+        return serializer.loads(token, salt=self.salt, max_age=expiration)
+    def remove_validate_token(self, token):
+        serializer = utsr(self.security_key)
+        return serializer.loads(token, salt=self.salt)
+token_confirm = Token(django_settings.SECRET_KEY)
+
+
+
+# ----------------def ajax response----------------
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+
+# ---------check timeout---------
+def timeout(request):
+    user = request.user.user_detail
+    all_publish = Case.objects.filter(publisher=user)  # all cases the user publish
+    all_case = Case.objects.all()  # all cases
+    all_commission = CommissionRecord.objects.filter(Q(commissioned_user=user) | Q(case__in=all_publish))  # all commission the user own and take
+    finish = Status.objects.get(Q(status_id=3))
+    close = Status.objects.get(Q(status_id=4))
+
+    # finish case if all of toolmen are done
+    for case in all_publish:
+        if case.case_status.status_id in [1, 2]:
+            commission = CommissionRecord.objects.filter(case=case)
+            cnt = 0
+            for data in commission:
+                if data.user_status.status_id == 3:
+                    cnt += 1
+            if cnt >= case.num:
+                case.case_status = finish
+                case.save()
+
+                msg = f"案件編號#{case.case_id} {case.title}，所有工具人都已完成委託，案件完成！"
+                notice = Notice.objects.create(user=user, message=msg)
+                notice.save()
+
+
+    # case timeout
+    for case in all_case:
+        if case.case_status.status_id in [1, 2] and datetime.datetime.now().astimezone() > case.ended_datetime:
+            willing = CaseWillingness.objects.filter(apply_case=case)
+            commission = CommissionRecord.objects.filter(case=case)
+            
+            # cancel all willingness
+            for data in willing:
+                data.delete()
+                msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動取消報名。"
+                notice = Notice.objects.create(user=data.willing_user, message=msg)
+                notice.save()
+
+            for data in commission:
+                # change conducting and applying for finish -> to finish status
+                if data.user_status.status_id in [2, 7]:
+                    data.user_status.status_id = finish
+                    data.doublecheck_datetime = datetime.datetime.now()
+                    data.save()
+                    
+                    msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動完成委託。"
+                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
+                    notice.save()
+
+                # change applying for publisher sending delete -> to close
+                elif data.user_status.status_id == 5:
+                    data.user_status.status_id = close
+                    data.doublecheck_datetime = datetime.datetime.now()
+                    data.save()
+                    
+                    msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動解除委託。"
+                    notice = Notice.objects.create(user=data.case.publisher, message=msg)
+                    notice.save()
+
+                # change applying for toolman sending delete -> to close
+                elif data.user_status.status_id == 6:
+                    data.user_status.status_id = close
+                    data.doublecheck_datetime = datetime.datetime.now()
+                    data.save()
+                    
+                    msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動解除委託。"
+                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
+                    notice.save()
+
+            # update case status
+            case.case_status = finish
+            case.save()
+
+            msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動完成案件。"
+            notice = Notice.objects.create(user=case.publisher, message=msg)
+            notice.save()
+
+    # apply timeout
+    for data in all_commission:
+        if data.finish_datetime != None:
+            delta = datetime.datetime.now().astimezone() - data.finish_datetime
+            if  delta.seconds > 259200:
+                
+                # publisher apply for delete, user=publisher
+                if data.user_status.status_id == 5:
+                    data.user_status = close
+                    data.doublecheck_datetime = datetime.datetime.now()
+                    data.save()
+
+                    # user = publisher
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            委託人 {data.case.publisher.nickname} 發起解除請求，\
+                            工具人 {data.commissioned_user.nickname} 未於三日內確認，\
+                            系統自動解除委託。"
+
+                    # user = toolman
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            委託人 {data.commissioned_user.nickname} 發起解除請求，\
+                            工具人 {data.case.publisher.nickname} 未於三日內確認，\
+                            系統自動解除委託。"
+
+                    notice = Notice.objects.create(user=data.case.publisher, message=msg)
+                    notice.save()
+                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
+                    notice.save()
+
+                # toolman apply for delete
+                elif data.user_status.status_id == 6:
+                    data.user_status = close
+                    data.doublecheck_datetime = datetime.datetime.now()
+                    data.save()
+
+                    # user = publisher
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            工具人 {data.commissioned_user.nickname} 發起解除請求，\
+                            委託人 {data.case.publisher.nickname} 未於三日內確認，\
+                            系統自動解除委託。"
+
+                    # user = toolman
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            工具人 {data.case.publisher.nickname} 發起解除請求，\
+                            委託人 {data.commissioned_user.nickname} 未於三日內確認，\
+                            系統自動解除委託。"
+
+                    notice = Notice.objects.create(user=data.case.publisher, message=msg)
+                    notice.save()
+                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
+                    notice.save()
+
+                # toolman apply finish
+                elif data.user_status.status_id == 7:
+                    data.user_status = finish
+                    data.doublecheck_datetime = datetime.datetime.now()
+                    data.save()
+
+                    # user = publisher
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            工具人 {data.commissioned_user.nickname} 發起完成請求，\
+                            委託人 {data.case.publisher.nickname} 未於三日內確認，\
+                            系統自動完成委託。"
+
+                    # user = toolman
+                    msg = f"案件編號#{data.case.case_id} {data.case.title}，\
+                            工具人 {data.case.publisher.nickname} 發起完成請求，\
+                            委託人 {data.commissioned_user.nickname} 未於三日內確認，\
+                            系統自動完成委託。"
+
+                    notice = Notice.objects.create(user=data.case.publisher, message=msg)
+                    notice.save()
+                    notice = Notice.objects.create(user=data.commissioned_user, message=msg)
+                    notice.save()
+
+    notice = Notice.objects.filter(Q(user=user)).order_by('-created_datetime')[:10]
+    return notice
+
+
+
+#####################################
+#            HOME PAGE              #
+#####################################
 @login_required
 def index(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -31,9 +225,9 @@ def index(request):
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
 
-
-    #list_case = Case.objects.select_related('case_status')
-    return render(request,'index.html',locals()) #之後要改
+    notice = timeout(request)
+    
+    return render(request, 'index.html', locals())
 
 
 
@@ -144,6 +338,22 @@ def case_profile(request ,case_id):
     temp_user = Case.objects.get(Q(case_id=pk_key) & Q(shown_public=True))
     user_id = temp_user.publisher.user_id
     user_detail = UserDetail.objects.filter(user_id = user_id)
+
+    # user can take or not
+    user = request.user.user_detail
+    case = Case.objects.get(Q(case_id=pk_key))
+    button_status = 0
+    try:
+        CommissionRecord.objects.get(Q(commissioned_user=user) & Q(case=case))
+    except:
+        try:
+            CaseWillingness.objects.get(Q(willing_user=user) & Q(apply_case=case))
+        except:
+            button_status = 1  # can sign up the case
+        else:
+            button_status = 2  # show "cancel the case"
+    else:
+        button_status = 3  # cannot press the button never
 
     return render(request,'case/profile.html',locals())
 
@@ -270,7 +480,7 @@ def case_search(request):
 
 
 #####################################
-#           USER VIEWS              #
+#            USER MODULE            #
 #####################################
 # ------ 使用者資料頁面 ------
 @login_required
@@ -367,7 +577,7 @@ def updateUserIcon(request):
                     if userUpdate.icon:  # 若有舊檔，就刪除
                         try:
                             oldUrl = userUpdate.icon.url[1:]  # 去掉最前面的斜線
-                            oldUrl = os.path.join(settings.BASE_DIR, oldUrl)
+                            oldUrl = os.path.join(django_settings.BASE_DIR, oldUrl)
                             print('find old icon and remove file', oldUrl)
                             os.remove(oldUrl)
                         except Exception as ex:
@@ -404,30 +614,413 @@ def updateUserIcon(request):
 
 
 
+# ------------user publish record------------
+@login_required
+def user_publish_record(request):
+
+    timeout(request)
+
+    # all case the user publish
+    user = request.user.user_detail.user_id
+    publisher = UserDetail.objects.get(user_id=user)
+    case_list = Case.objects.filter(publisher=publisher)
+
+    # time left
+    deadline = {}
+    for data in case_list:
+        if data.case_status.status_id in [1, 2]:
+            delta = data.ended_datetime - datetime.datetime.now().astimezone()
+            if delta.days > 30:
+                deadline[data.case_id] = f"{delta.days // 30} 個月"
+            elif delta.days > 0:
+                deadline[data.case_id] = f"{delta.days} 天"
+            elif delta.seconds > 3600:
+                deadline[data.case_id] = f"{delta.seconds // 3600} 小時"
+            else:
+                deadline[data.case_id] = "不到一小時"
+
+    # show all of the toolmen
+    record_list = CommissionRecord.objects.all().prefetch_related('case')
+    willing_list = CaseWillingness.objects.all().prefetch_related('apply_case')
+
+    # numbers of toolmen for each case
+    # average rate for each case
+    number = dict()
+    avg_rate = dict()
+    for case in case_list:
+        if case.case_status.status_id in [1, 2]:
+            number[case.case_id] = 0
+            for record in record_list:
+                if record.case == case and record.user_status.status_id != 4:
+                    number[case.case_id] += 1
+        elif case.case_status.status_id in [3, 4]:
+            avg_rate[case.case_id] = 0
+            cnt = 0
+            for record in record_list:
+                if record.case == case and record.rate_worker_to_publisher != None:
+                    avg_rate[case.case_id] += record.rate_worker_to_publisher
+                    cnt += 1
+                if cnt != 0:
+                    avg_rate[case.case_id] /= cnt
+
+    # check the status should turn back to 1 or not
+    for key, value in number.items():
+        if value == 0:
+            case = Case.objects.get(Q(case_id=key))
+            case.case_status = Status.objects.get(Q(status_id=1))
+            case.save()
+
+    # number of applicants
+    willing = dict()
+    for case in case_list:
+        willing[case.case_id] = 0
+        for data in willing_list:
+            if data.apply_case == case:
+                try:
+                    CommissionRecord.objects.get(Q(commissioned_user=data.willing_user) & Q(case=case))
+                except:
+                    willing[case.case_id] += 1               
+    
+    return render(request, 'user/publish.html', locals())
+
+
+# ---------applicants for each case---------
+@login_required
+def user_publish_applicant(request, case_id):
+
+    timeout(request)
+
+    # all applicants for all cases
+    case = Case.objects.get(Q(case_id=case_id))
+    all_willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
+    all_commission = CommissionRecord.objects.filter(case=case)
+
+    # is commissioned or not
+    all_user = set()
+    willingness = []
+    cnt = 0
+    for data in all_willing:  # pick the newest one for all users
+        all_user.add(data.willing_user)
+    for user in all_user:
+        newest_willing = all_willing.filter(willing_user=user).order_by('-created_datetime')[0]
+        newest_commission = all_commission.filter(commissioned_user=user).order_by('-created_datetime')
+        if len(newest_commission) == 0:  # commissioned not yet
+            willingness.append(newest_willing)
+        elif newest_willing.created_datetime > newest_commission[0].created_datetime:  # a new willingness
+            willingness.append(newest_willing)
+
+    # count the number of conducting user
+    for user in all_user:
+        commission = CommissionRecord.objects.filter(Q(case=case) & Q(commissioned_user=user))
+        for record in commission:
+            if record.user_status.status_id != 4:
+                cnt += 1
+    last = case.num - cnt
+
+    return render(request, 'user/applicant.html', locals())
+
+
+
+# ------------user take record------------
+@login_required
+def user_take_record(request):
+
+    timeout(request)
+
+    # all willingness the user takes
+    user = request.user.user_detail
+    all_willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(willing_user=user)
+    all_commission = CommissionRecord.objects.filter(Q(commissioned_user=user))
+
+    # is commissioned or not
+    all_case = set()
+    willingness = []
+    for data in all_willing:  # all cases
+        all_case.add(data.apply_case)
+    for case in all_case:  # pick the newest one for all cases
+        newest_willing = all_willing.filter(apply_case=case).order_by('-created_datetime')[0]
+        newest_commission = all_commission.filter(case=case).order_by('-created_datetime')
+        if len(newest_commission) == 0:  # commissioned not yet
+            willingness.append(newest_willing)
+        elif newest_willing.created_datetime > newest_commission[0].created_datetime:  # a new willingness
+            willingness.append(newest_willing)
+
+    # all commissions the user takes
+    record = CommissionRecord.objects.all().prefetch_related('case').filter(commissioned_user=user)
+    conduct = []
+    close = []
+    deadline = {}
+    for data in record:
+        status = data.user_status.status_id
+        if status == 2 or status == 5 or status == 6 or status == 7:
+            conduct.append(data)
+            if status == 2:
+                delta = data.case.ended_datetime - datetime.datetime.now().astimezone()
+                if delta.days > 30:
+                    deadline[data.commissionrecord_id] = f"{delta.days // 30} 個月"
+                elif delta.days > 0:
+                    deadline[data.commissionrecord_id] = f"{delta.days} 天"
+                elif delta.seconds > 3600:
+                    deadline[data.commissionrecord_id] = f"{delta.seconds // 3600} 小時"
+                else:
+                    deadline[data.commissionrecord_id] = "不到一小時"
+        elif status == 3 or status == 4:
+            close.append(data)
+
+    return render(request, 'user/take.html', locals())
+
+
+
 #########################################
-#                 TOOLS                 #
+#           USER-CASE  MODULE           #
 #########################################
 
-# ---------------def Token-----------------
-class Token:
-    def __init__(self, security_key):
-        self.security_key = security_key
-        self.salt = base64.b64encode(security_key.encode('UTF-8'))
-    def generate_validate_token(self, username):
-        serializer = utsr(self.security_key)
-        return serializer.dumps(username, self.salt)
-    def confirm_validate_token(self, token, expiration=3600):
-        serializer = utsr(self.security_key)
-        return serializer.loads(token, salt=self.salt, max_age=expiration)
-    def remove_validate_token(self, token):
-        serializer = utsr(self.security_key)
-        return serializer.loads(token, salt=self.salt)
-token_confirm = Token(django_settings.SECRET_KEY)
+# ---------tool man sign up cases---------
+@login_required
+def take_case(request, case_id):
+
+    # foreign key
+    case = Case.objects.get(Q(case_id=case_id))
+    user = UserDetail.objects.get(Q(django_user=request.user))
+    
+    # create a case willingness
+    willingness = CaseWillingness.objects.create(apply_case=case, willing_user=user)
+    willingness.save()
+
+    return redirect('case-profile', case_id=case_id)
 
 
-# ----------------def ajax response----------------
-def is_ajax(request):
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+# ---------cancel willingness for case---------
+@login_required
+def cancel_willingess(request, case_id):
+    
+    case = Case.objects.get(Q(case_id=case_id))
+    user = request.user.user_detail
+    try:
+        willingness = CaseWillingness.objects.get(Q(apply_case=case) & Q(willing_user=user))
+        willingness.delete()
+    except:
+        pass
+
+    button_status = 1
+
+    return render(request,'case/profile.html',locals())
+
+
+
+# ---------cancel willingness for user---------
+@login_required
+def user_cancel_willingess(request, case_id):
+    
+    case = Case.objects.get(Q(case_id=case_id))
+    user = request.user.user_detail
+    try:
+        willingness = CaseWillingness.objects.get(Q(apply_case=case) & Q(willing_user=user))
+        willingness.delete()
+    except:
+        pass
+
+    messages.info(request, 'take_sign', extra_tags='origin_page')
+    return redirect('user-take-record')
+
+
+
+# ---------build commission---------
+@login_required
+def build_commission(request):
+    
+    try:
+        # get case willingness id
+        body = request.body.decode('utf-8').split('&toolman=')[1:]
+        toolmanInfoList = []
+
+        # create commission record
+        for id in body:
+            willingness = CaseWillingness.objects.get(Q(casewillingness_id=id))
+            case = willingness.apply_case
+            toolman = willingness.willing_user
+            status = Status.objects.get(Q(status_id=2))
+            toolmanInfoList.append(willingness.willing_user)
+
+            record = CommissionRecord.objects.create(case=case,
+                                                     commissioned_user=toolman,
+                                                     user_status=status)
+            record.save()
+
+        # create notice for publisher
+        msg = f"您已對 案件編號#{case.case_id} {case.title} 成立委託，請至 我的委託 查看工具人聯繫方式。"
+        notice = Notice.objects.create(user=request.user.user_detail, message=msg)
+        notice.save()
+
+        # create notice for all toolmen
+        msg = f"案件編號#{case.case_id} {case.title}，委託人 {request.user.user_detail.nickname} 已成立委託，請至 我的接案 查看委託人聯繫方式。"
+        for user in toolmanInfoList:
+            notice = Notice.objects.create(user=user, message=msg)
+            notice.save()
+
+        # change case status
+        case.case_status = Status.objects.get(Q(status_id=2))
+        case.save()
+
+        messages.info(request, case.case_id, extra_tags='origin_case')
+
+    except:
+        # choose nobody
+        pass
+
+    messages.info(request, 'publish', extra_tags='origin_page')
+    return redirect('user-publish-record')
+
+
+
+# ---------delete commission---------
+@login_required
+def delete_commission(request, commission_id):
+
+    # set sender/receiver as publisher or toolman
+    commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
+    case = commission.case
+    messages.info(request, case.case_id, extra_tags='origin_case')
+
+    # first time cancel
+    if commission.user_status.status_id == 2:
+        sender = request.user.user_detail
+        if commission.commissioned_user == sender:
+            receiver = commission.case.publisher
+            commission.user_status = Status.objects.get(Q(status_id=6))
+            commission.finish_datetime = datetime.datetime.now()
+            commission.save()
+        else:
+            receiver = commission.commissioned_user
+            commission.user_status = Status.objects.get(Q(status_id=5))
+            commission.finish_datetime = datetime.datetime.now()
+            commission.save()
+
+        if sender == commission.commissioned_user:
+            messages.info(request, 'taking', extra_tags='origin_page')
+            return redirect('user-take-record')
+        else:
+            messages.info(request, 'publish', extra_tags='origin_page')
+            return redirect('user-publish-record')
+
+    # both cancel the case
+    elif commission.user_status.status_id == 5:
+        sender = commission.commissioned_user
+        receiver = commission.case.publisher
+    elif commission.user_status.status_id == 6:
+        sender = commission.case.publisher
+        receiver = commission.commissioned_user
+    commission.user_status = Status.objects.get(Q(status_id=4))
+    commission.doublecheck_datetime = datetime.datetime.now()
+    commission.save()
+
+    # if there is no commission, change the case status
+    close_status = Status.objects.get(Q(status_id=4))
+    result = CommissionRecord.objects.filter(Q(case=case) & ~Q(user_status=close_status))
+    if result.exists():
+        pass
+    else:
+        case.case_status = Status.objects.get(Q(status_id=1))
+        case.save()
+    
+    if sender == commission.commissioned_user:
+        messages.info(request, 'taking', extra_tags='origin_page')
+        return redirect('user-take-record')
+    else:
+        messages.info(request, 'publish', extra_tags='origin_page')
+        return redirect('user-publish-record')
+
+
+# ---------finish commission---------
+@login_required
+def finish_commission(request, commission_id):
+
+    commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
+    messages.info(request, commission.case.case_id, extra_tags='origin_case')
+
+    # status=2 represent that toolman apply for consummation
+    if commission.user_status.status_id == 2:
+
+        # change status
+        commission.user_status = Status.objects.get(Q(status_id=7))
+        commission.finish_datetime = datetime.datetime.now()
+        commission.save()
+
+        messages.info(request, 'taking', extra_tags='origin_page')
+
+        return redirect('user-take-record')
+
+    # status=7 represent that publisher confirm the task
+    else:
+
+        # change status
+        commission.user_status = Status.objects.get(Q(status_id=3))
+        commission.doublecheck_datetime = datetime.datetime.now()
+        commission.save()
+
+        messages.info(request, 'publish', extra_tags='origin_page')
+
+        return redirect('user-publish-record')
+
+
+
+# ---------give rate---------
+@login_required
+def rate(request):
+
+    # get id and rate from request body
+    body = request.body.decode('utf-8').split('&')
+    for data in body:
+        try:
+            int(data.split('=')[0])
+        except:
+            pass
+        else:
+            id = int(data.split('=')[0])
+            rate = int(data.split('=')[1])
+            break
+
+    commission = CommissionRecord.objects.get(Q(commissionrecord_id=id))
+    user = request.user.user_detail
+    messages.info(request, commission.case.case_id, extra_tags='origin_case')
+
+    # publisher gives rating for toolman
+    if user == commission.case.publisher:
+        commission.rate_publisher_to_worker = rate
+        commission.save()
+
+        toolman = commission.commissioned_user
+        ori_rate = toolman.rate * toolman.rate_num
+        new_rate = (ori_rate + rate) / (toolman.rate_num + 1)
+        toolman.rate  = new_rate
+        toolman.rate_num  = toolman.rate_num + 1
+        toolman.save()
+
+        if commission.case.case_status.status_id in [3, 4]:
+            messages.info(request, 'publish_his', extra_tags='origin_page')
+        else:
+            messages.info(request, 'publish', extra_tags='origin_page')
+
+        return redirect('user-publish-record')
+
+    # toolman gives rating for publisher
+    else:
+        commission.rate_worker_to_publisher = rate
+        commission.save()
+
+        publisher = commission.case.publisher
+        ori_rate = publisher.rate * publisher.rate_num
+        new_rate = (ori_rate + rate) / (publisher.rate_num + 1)
+        publisher.rate  = new_rate
+        publisher.rate_num  = publisher.rate_num + 1
+        publisher.save()
+
+        if commission.user_status.status_id in [3, 4]:
+            messages.info(request, 'take_his', extra_tags='origin_page')
+        else:
+            messages.info(request, 'taking', extra_tags='origin_page')
+
+        return redirect('user-take-record')
 
 
 
@@ -437,6 +1030,21 @@ def is_ajax(request):
 
 # ----------------login------------------
 def login(request):
+
+    # check mail validation
+    if 'first_refresh' in request.session and request.session['first_refresh'] == False:
+        request.session['first_refresh'] = True
+        return redirect('register')
+
+    # check url timeout or not
+    all_user = User.objects.all()
+    for data in all_user:
+        if data.user_detail.isActive == False:
+            if (datetime.datetime.now().astimezone() -  data.date_joined).seconds > 3600:
+                user_detail = UserDetail.objects.get(Q(django_user=data))
+                user_detail.delete()
+                data.delete()
+
     # show message for register
     if 'messages' in request.session:
         alert = True
@@ -476,28 +1084,56 @@ def login(request):
             messages.warning(request,'使用者帳號或密碼錯誤')
         return redirect('login')
 
-    return render(request, 'login.html', locals())
+    return render(request, 'auth/login.html', locals())
 
 
 # -----------customize authentication-----------
 class CustomizeUserBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            user = UserDetail.objects.get(Q(account_mail=username))
-        except UserDetail.DoesNotExist as e:
+            django_user = User.objects.get(Q(email=username))
+        except User.DoesNotExist as e:
             return None
-        if check_password(password, user.django_user.password):
-            return user.django_user
+        if check_password(password, django_user.password):
+            return django_user
 
 
 # ----------------logout------------------
 def logout(request):
+
     auth.logout(request)
     return HttpResponseRedirect('/')
 
 
 # ----------------register------------------
 def register(request):
+
+    # check email validation
+    if 'mail_validation' in request.session:
+        mailserver = imaplib.IMAP4_SSL('imap.gmail.com', 993)
+        mailserver.login(django_settings.EMAIL_HOST_USER, django_settings.EMAIL_HOST_PASSWORD)
+        status, count1 = mailserver.select('Inbox')
+        time.sleep(2)
+        status, count2 = mailserver.select('Inbox')
+        status, data = mailserver.fetch(count2[0], '(UID BODY[TEXT])')
+        ori_mail = data[0][1].decode('utf-8').split('<')[1].split('>')[0]
+        mailserver.close()
+        mailserver.logout()
+
+        if ori_mail == request.session['mail_validation']:
+            ori_user = User.objects.get(Q(email=ori_mail))
+            ori_user.delete()
+
+            request.session['messages'] = "對不起，您使用的註冊信箱無效。\n請確認信箱後重新註冊。"
+            del request.session['mail_validation']
+            del request.session['first_refresh']
+            return HttpResponseRedirect('/')
+
+        request.session['messages'] = "請查看信箱點擊連結以完成註冊驗證。\n連結有效期為1個小時。"
+        del request.session['mail_validation']
+        del request.session['first_refresh']
+        return HttpResponseRedirect('/')
+
     if request.method == 'POST':
         username = request.POST.get('username')
         account = request.POST.get('account')
@@ -517,6 +1153,8 @@ def register(request):
 
         try:
             send_mail(title, msg, email_from, receiver, fail_silently=False)
+            request.session['mail_validation'] = account
+            request.session['first_refresh'] = False
         except:
             messages.warning(request,'信箱格式錯誤或已註冊')
             return redirect('register')
@@ -529,23 +1167,26 @@ def register(request):
         userDetail = UserDetail.objects.create(name=username, django_user=user, account_mail=account, salt=password)
         userDetail.save()
 
-        request.session['messages'] = "請查看信箱點擊連結以完成註冊驗證。\n連結有效期為1個小時。"
         return HttpResponseRedirect('/')
 
-    return render(request, 'register.html', locals())
+    return render(request, 'auth/register.html', locals())
 
 
 # ------------email verification-------------
 def active(request, token):
+
     # timeout
     try:
         username = token_confirm.confirm_validate_token(token)
     except:
         username = token_confirm.remove_validate_token(token)
-        user = User.objects.get(Q(username=username))
-        userDetail = UserDetail.objects.get(Q(django_user=user))
-        userDetail.delete()
-        user.delete()
+        try:
+            user = User.objects.get(Q(username=username))
+            userDetail = UserDetail.objects.get(Q(django_user=user))
+            userDetail.delete()
+            user.delete()
+        except:
+            pass
         request.session['messages'] = "對不起，驗證連結已過期。\n請重新註冊。"
         return HttpResponseRedirect('/')
 
@@ -569,6 +1210,7 @@ def active(request, token):
 
 # --------------forget password----------------
 def forget(request):
+
     if request.method == 'POST':
         account = request.POST.get('account')
         print(account)
@@ -597,11 +1239,12 @@ def forget(request):
             messages.warning(request,'帳號不存在')
             return redirect('forget')
 
-    return render(request, 'forget_pwd.html', locals())
+    return render(request, 'auth/forget_pwd.html', locals())
 
 
 # --------------reset password----------------
 def reset(request, token):
+
     # timeout
     try:
         username = token_confirm.confirm_validate_token(token)
@@ -629,12 +1272,13 @@ def reset(request, token):
         request.session['messages'] = "密碼更改成功！"
         return HttpResponseRedirect('/')
 
-    return render(request, 'reset_pwd.html', locals())
+    return render(request, 'auth/reset_pwd.html', locals())
 
 
 # -----------check register email-------------
 @csrf_exempt
 def check_mail_used(request):
+
     # parse json
     account = json.loads(request.body).get('email')
 
