@@ -16,6 +16,37 @@ from django.dispatch import receiver
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
+from datetime import date , datetime ,timedelta
+from django.utils.timezone import now
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+
+
+def calPage (data_list , page):
+
+    paginator = Paginator(data_list,10)
+    count_page = paginator.num_pages
+    try:
+        totalpage_length = paginator.page(page)
+    except PageNotAnInteger:
+        totalpage_length = paginator.page(1)
+    except EmptyPage:
+        totalpage_length = paginator.page(paginator.num_pages)
+
+    return totalpage_length , count_page
+
+def calPage_index (data_list , page):
+
+    paginator = Paginator(data_list,5)
+    count_page = paginator.num_pages
+    try:
+        totalpage_length = paginator.page(page)
+    except PageNotAnInteger:
+        totalpage_length = paginator.page(1)
+    except EmptyPage:
+        totalpage_length = paginator.page(paginator.num_pages)
+
+    return totalpage_length, count_page
 
 # from datetime import date
 
@@ -230,6 +261,17 @@ def index(request):
         isActive=True)  # 若是被停權的 user，一樣 404
 
     list_case = Case.objects.filter(shown_public=True)
+
+    # 最新的case
+    new_case = Case.objects.filter(shown_public=True)
+    page_new = request.GET.get('page_new', 1)
+    new_case , num_pages = calPage_index(new_case,page_new)
+
+    # 最多瀏覽的case
+    page_most = request.GET.get('page_most', 1)
+    most_case = Case.objects.filter(shown_public=True).order_by('-pageviews')
+    most_case , num_pages = calPage_index(most_case,page_new)
+
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
@@ -238,7 +280,36 @@ def index(request):
 
     return render(request, 'index.html', locals())
 
+# 合併5張表
+#   list_case = Case.objects.filter(shown_public=True)
+#     case_fields = Case_Field.objects.all()
+#     case_types = Case_Type.objects.all()
+#     case_photo = CasePhoto.objects.all()
 
+#     case_detail = {}
+
+#     for i in case_fields:
+#         for j in case_types:
+#             for k in case_photo:
+#                 if i.case_id == j.case_id == k.case_id:
+#                         case_detail = {
+#                         "case_id" : i.case_id ,
+#                         "title" : i.case.title,
+#                         "publisher" :i.case.publisher,
+#                         "reward" :i.case.reward,
+#                         "num" :i.case.num,
+#                         "work" :i.case.work,
+#                         "pageviews" :i.case.pageviews,
+#                         "location" :i.case.location,
+#                         "description" :i.case.description,
+#                         "constraint" :i.case.constraint,
+#                         "started_datetime" :i.case.started_datetime,
+#                         "ended_datetime" :i.case.ended_datetime,
+#                         "case_status" :i.case.case_status.status_name ,
+#                         "case_field" :i.case_field.field_name,
+#                         "case_type" :j.case_type.type_name ,
+#                         "image" : k.image,
+#                         }
 
 #####################################
 #           CASE MODULE             #
@@ -331,6 +402,7 @@ def case_profile(request ,case_id):
         isActive=True)  # 若是被停權的 user，一樣 404
 
     pk_key = case_id
+    check_user_id = request.user.user_detail.user_id
 
     #瀏覽人數+1
     temp_case = Case.objects.get(case_id=pk_key)
@@ -375,13 +447,16 @@ def case_profile_edit(request,case_id):
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
 
+    alert = False
     pk_key = case_id
     user_id = request.user.user_detail.user_id
     # 找出哪一筆case
     case = Case.objects.get(case_id=pk_key)
+    # print(case.case_status.status_id)
+    # print(case.case_status.status_id == 1)
 
     # 確認是不是case的發布人
-    if case.publisher.user_id == user_id:
+    if case.publisher.user_id == user_id and case.case_status.status_id == 1:
 
         if request.method == "POST" :
 
@@ -465,8 +540,18 @@ def case_profile_edit(request,case_id):
 
     # 不是該case的發布人無權限編輯
     else :
-        messages.warning(request, "You don't have right to edit the case.")
-        return redirect('index')
+        alert = True
+        erro =json.dumps("You don't have right to edit the case.")
+        print("erro:",erro)
+        print("alert:",alert)
+        new_case = Case.objects.filter(shown_public=True)
+        most_case = Case.objects.filter(shown_public=True).order_by('-pageviews')
+        case_fields = Case_Field.objects.all()
+        case_types = Case_Type.objects.all()
+        case_photo = CasePhoto.objects.all()
+
+        return render(request,'index.html',locals()) #之後要改
+
 
 
 # -------------CASE資訊搜尋-------------
@@ -477,83 +562,376 @@ def case_search(request):
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
 
-    case = Case.objects.first()
-    print(case.ended_datetime.date())
-    print("++++++++++++++++++++++++++++++++++++++++++++++")
-
     if request.method == "POST" :
-        query = []
-        query_num = []
-        query_date = []
-        verrify = 0
+
+        # 定義參數
+        query_o = []
+        vertify = 0
+        check = 0   #判斷是不是都沒填
+        check2 = 0   #判斷是不是除了type和field 都沒有填
+        alert = False
+        erro = ''
+
+        # 頁面資訊
+        page = request.POST.get('page',1)
 
         # 查詢資訊資訊
-        query.append(request.POST.get('case_id'))
-        query.append(request.POST.get('title'))
-        query.append(request.POST.get('description'))
-        query.append(request.POST.get('reward'))
-        query.append(request.POST.get('location'))
-        query.append(request.POST.get('constraint'))
-        query_num.append(request.POST.get('num'))
-        query_num.append(request.POST.get('work'))
-        query_date.append(request.POST.get('date1'))
-        query_date.append(request.POST.get('date2'))
-
-
-        for i in range(6):
-            if query[i] == '':
-                 query[i] = 'None'
-                 verrify += 1
-
+        # == 單一查詢 ==
+        query_o.append(request.POST.get('case_type'))
+        query_o.append(request.POST.get('case_field'))
+        query_o.append(request.POST.get('case_query'))
         for i in range(2):
-            if query_num[i] == '':
-                 query_num[i] = 100000000000
-                 verrify += 1
+            if query_o[i] == None:
+                    vertify += 1
+        if query_o[2] == '':
+            vertify += 1
+        print("vertify:" , vertify)
 
-        for i in range(2):
-            if query_date[i] == '':
-                query_date[i] = date.today()
-                verrify += 1
+        # == 複合查詢 ==
+        type = request.POST.getlist('type')
+        field = request.POST.getlist('field')
+        num  = request.POST.get('num')
+        date_time = request.POST.get('date_time')
+        work = request.POST.get('work')
+        constraint = request.POST.get('constraint')
+        location = request.POST.get('location')
+
+        # == 複合查詢- 是否要交集領域/類型 ==
+        con = request.POST.get('con')
+
+        # == 複合查詢- 關鍵字 ==
+        key= request.POST.get('query_list')
+        print("*********key:",key)
+        print(key == '' )
+        print(key == None)
+        query_list = []
+
+        if key == None:
+            query_list.append('')
+        else :
+            key_arr = key.split(',')
+            print(key_arr)
+            if key_arr [0] == '' :
+                query_list = key_arr
+            else:
+                for s in key_arr:
+                    query_list.append(int(s))
+        print("query_list:",query_list)
+        print( query_list[0] != '' )
+
+        if len(type) == 0 :
+            check += 1
+        if len(field) == 0 :
+            check += 1
+        if  num == '':
+            num = 0
+            check += 1
+            check2 += 1
+        if  work == '':
+            work = 100000000000000000
+            check += 1
+            check2 += 1
+        if date_time == '':
+            date_time = now().date() + timedelta(days=-1)
+            date_time = "2000-01-01"
+            check += 1
+            check2 += 1
+        if constraint =='':
+            constraint = "None"
+            check += 1
+            check2 += 1
+        if location =='':
+            location = "None"
+            check += 1
+            check2 += 1
+
+        print("check:" , check)
+        print("check2:" , check2)
+        print("Querry: " , query_o[0] ,query_o[1],query_o[2])
+        print("Q: " , type ,field,num,date_time,work,constraint,location,con)
+        print("========================================================")
+
+        # == 單一查詢判斷 ==
+        if vertify < 3:
+            # ==== 單一查詢 - 類型 ====
+            if query_o[0] != None:
+                print("single search for type :" ,query_o[1])
+                id_list =[]
+                case_types = Case_Type.objects.filter(case_type= query_o[0]).all()
+                for i in case_types:
+                    id_list.append(i.case_id)
+                    print(i.case_id,i.case.title,i.case.publisher,i.case.case_status.status_name ,i.case_type.type_name)
+                result_case = Case.objects.filter(case_id__in=id_list ).all()
+                num_case = len(id_list)
+                result_case, num_pages = calPage(result_case,page)
+                case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                type_value = query_o[0]
+                print("type_value:",type_value)
+                print("id_list",id_list)
+                print("num_case",num_case)
 
 
-        print("*************** Querry: " , query ,query_num,query_date )
+                return render(request,'case/search.html',locals())
 
-        if verrify < 10:
+            # ==== 單一查詢 - 領域 ====
+            elif query_o[1] != None:
+                print("single search for field :" ,query_o[1])
+                id_list =[]
+                case_fields = Case_Field.objects.filter(case_field=query_o[1] ).all()
+                for i in case_fields:
+                    id_list.append(i.case_id)
+                    print(i.case_id,i.case.title,i.case.publisher,i.case.case_status.status_name ,i.case_field.field_name)
+                result_case = Case.objects.filter(case_id__in=id_list ).all()
+                num_case = len(id_list)
+                result_case, num_pages = calPage(result_case,page)
+                case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                field_value = query_o[1]
+                print("field_value:",field_value)
+                print("id_list",id_list,"\n")
 
-            result_case = Case.objects.filter(Q(case_id__icontains=query[0]) |Q(title__icontains=query[1]) |  Q(description__icontains=query[2]) |
-            Q(reward__icontains=query[3]) | Q(location__icontains=query[4]) | Q(constraint__icontains=query[5])  |  Q(ended_datetime__date__range=[query_date[0],query_date[1]])|
-            Q(num__icontains=query_num[0]) | Q(work__icontains=query_num[1])  & Q(shown_public=True) )
+                return render(request,'case/search.html',locals())
 
-            case_fields = Case_Field.objects.all()
-            case_types = Case_Type.objects.all()
-            case_photo = CasePhoto.objects.all()
+            # ==== 單一查詢 - 關鍵字 ====
+            else:
+                print("single search for key_word :" ,query_o[2])
+                id_list =[]
+                query_list = []
+                temp_case = Case.objects.filter(Q(title__icontains=query_o[2]) |  Q(description__icontains=query_o[2]) |
+                Q(reward__icontains=query_o[2]) | Q(location__icontains=query_o[2]) | Q(constraint__icontains=query_o[2])  & Q(shown_public=True) )
+                for i in temp_case:
+                    id_list.append(i.case_id)
+                result_case = Case.objects.filter(case_id__in=id_list ).all()
+                num_case = len(id_list)
+                result_case, num_pages = calPage(result_case,page)
+                case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                query_list = id_list
+                print("id_list",id_list,"\n")
 
-            return render(request,'case/search.html',locals())
+                return render(request,'case/search.html',locals())
 
+        # == 複合查詢判斷 ==
         else:
-            result_case = Case.objects.filter(shown_public=True)
-            case_fields = Case_Field.objects.all()
-            case_types = Case_Type.objects.all()
-            case_photo = CasePhoto.objects.all()
+            print("Compound search  :" ,type ,field,num,date_time,work,constraint,location,con)
 
-            messages.warning(request, "請輸入搜尋條件")
-            return render(request,'case/search.html',locals())
+            # === 複合查詢判斷 - type =====
+            temp_id_list =[]
+            for i in type:
+                # print("i:",i)
+                temp_types = Case_Type.objects.filter(case_type= i).all()
+                for j in temp_types:
+                    temp_id_list.append(j.case_id)
+            print("temp_id_list: " , temp_id_list)
 
+            # === 複合查詢判斷 - field =====
+            for i in field:
+                temp_types = Case_Field.objects.filter(case_field= i).all()
+                for j in temp_types:
+                    temp_id_list.append(j.case_id)
+            print("temp_id_list: " , temp_id_list)
+
+            # === 複合查詢判斷 - other訊息
+            temp = []  # 個別case值
+            temp2 = [] # 存成list
+            check_list = [] # 0代表無值; 1代表有值
+            temp2_id_list =[] #用來紀錄交集其他5個選項
+
+            ## 人數
+            if num == 0:
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter(Q(num__lte=num) & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("num_temp:",temp2)
+
+            ## 日期
+            if date_time == "2000-01-01":
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(ended_datetime__date__lte = date_time)& Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("date_temp:",temp2)
+
+            ## 工作
+            if  work == 100000000000000000:
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(work=work) & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("work_temp:",temp2)
+
+            ## 偏好
+            if  constraint == "None":
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(constraint__icontains=constraint) & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("constraint_temp:",temp2)
+
+            ## 地點
+            if  location == "None":
+                check_list.append(0)
+                temp2.append(0)
+            else:
+                temp_case = Case.objects.filter( Q(location__icontains=location)  & Q(shown_public=True))
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
+            print("location_temp:",temp2)
+
+            record = []
+            print("check_list:",check_list)
+            # 交集複合搜尋的其他選項
+            for i in range(5):
+                if check_list[i] == 1:
+                    record.append(i)
+            print("record: ",record)
+
+            if len(record) !=0 :
+                for i in range(len(record)):
+                    num = record[i]
+                    #print(i)
+                    if i == 0 :
+                        temp2_id_list = temp2[num]
+                        #print("temp2_id_list:",temp2_id_list)
+                        #print("temp2[i]:",temp2[num])
+                    else:
+                        temp2_id_list = list(set(temp2_id_list) & set(temp2[num]))
+
+            print("temp2_id_list:",temp2_id_list)
+
+            # === 複合查詢id結果 - 交集類型/類型
+            if con == "1":
+
+                # 若其他5個選項空值，應該直接輸出type 和 field的結果
+                if check2 == 5:
+
+                    # 關鍵字結果與type 和 field的交集結果
+                    if query_list[0] != ''  :
+                        id_list = []
+                        id_list = list(set(temp_id_list)  & set(query_list))
+                        print("其他五個選項沒有輸入，關鍵字結果與type 和 field的交集結果:",id_list)
+
+                        result_case = Case.objects.filter(case_id__in=id_list ).all()
+                        num_case = len(id_list)
+                        result_case , num_pages = calPage(result_case,page)
+                        case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                        case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                        case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                        return render(request,'case/search.html',locals())
+
+                    else:
+                        id_list = temp_id_list
+                        print("其他五個選項沒有輸入，type 和 field的聯集結果:",id_list)
+                        result_case = Case.objects.filter(case_id__in=id_list ).all()
+                        num_case = len(id_list)
+                        result_case, num_pages = calPage(result_case,page)
+                        case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                        case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                        case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+
+                        return render(request,'case/search.html',locals())
+
+                # 若其他5個選項有交集出結果，則繼續和 type 和 field的結果進行交集
+                else:
+                    id_list = list(set(temp_id_list)  & set(temp2_id_list))
+
+                    # === 複合查詢id結果 - 交集類型/類型/關鍵字
+                    if  query_list[0] != '' :
+                        query_id_list = []
+                        query_id_list = list(set(id_list)  & set(query_list))
+                        print("和其他5個選項 交集 關鍵字 與 type 和 field的結果 " ,query_id_list)
+                        result_case = Case.objects.filter(case_id__in=query_id_list ).all()
+                        num_case = len(query_id_list)
+                        result_case , num_pages= calPage(result_case,page)
+                        case_types = Case_Type.objects.filter(case_id__in=query_id_list ).all()
+                        case_photo = CasePhoto.objects.filter(case_id__in=query_id_list ).all()
+                        case_fields = Case_Field.objects.filter(case_id__in=query_id_list ).all()
+                        return render(request,'case/search.html',locals())
+
+                    print("和其他5個選項 交集 type 和 field的結果 id_list:" ,id_list)
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    num_case = len(id_list)
+                    result_case, num_pages = calPage(result_case,page)
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search.html',locals())
+
+
+            else:
+                # 使用者未輸入任何資訊在進階搜尋時
+                if check == 7:
+                    alert = True
+                    erro =json.dumps("請輸入搜尋條件")
+                    result_case = Case.objects.filter(shown_public=True)
+                    num_case = Case.objects.filter(shown_public=True).count()
+                    result_case , num_pages= calPage(result_case,page)
+                    case_fields = Case_Field.objects.all()
+                    case_types = Case_Type.objects.all()
+                    case_photo = CasePhoto.objects.all()
+                    return render(request,'case/search.html',locals())
+
+
+                # === 複合查詢id結果 -關鍵字與其他五個選項交集
+                if query_list[0] != ''  :
+                    id_list = []
+                    id_list = list(set(temp2_id_list)  & set(query_list))
+                    print("其他五個選項與關鍵字交集結果:",id_list)
+
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    num_case = len(id_list)
+                    result_case, num_pages = calPage(result_case,page)
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+                    return render(request,'case/search.html',locals())
+
+                # === 其他五個選項交集結果
+                else:
+                    id_list = temp2_id_list
+                    print("其他五個選項相互交集結果:",id_list)
+                    result_case = Case.objects.filter(case_id__in=id_list ).all()
+                    num_case = len(id_list)
+                    result_case , num_pages= calPage(result_case,page)
+                    case_types = Case_Type.objects.filter(case_id__in=id_list ).all()
+                    case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
+                    case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
+
+                    return render(request,'case/search.html',locals())
+
+    # 預設畫面，代所有case
     result_case = Case.objects.filter(shown_public=True)
+    num_case = Case.objects.filter(shown_public=True).count()
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
 
-    #list_case = Case.objects.select_related('case_status')
     return render(request,'case/search.html',locals())
 
-    result_case = Case.objects.filter(shown_public=True)
-    case_fields = Case_Field.objects.all()
-    case_types = Case_Type.objects.all()
-    case_photo = CasePhoto.objects.all()
 
-    #list_case = Case.objects.select_related('case_status')
-    return render(request,'case/search.html',locals())
+
 
 
 
@@ -760,258 +1138,10 @@ def updatePassword(request):
 # ------------user publish record------------
 @login_required
 def user_publish_record(request):
-
-    # all case the user publish
-    user = request.user.user_detail.user_id
-    publisher = UserDetail.objects.get(user_id=user)
-    case_list = Case.objects.filter(publisher=publisher)
-
-    # show all of the toolmen
-    record_list = CommissionRecord.objects.all().prefetch_related('case')
-
-    # numbers of toolmen for each case
-    number = dict()
-    for case in case_list:
-        number[case.case_id] = 0
-        for record in record_list:
-            if record.case == case and record.user_status.status_id != 4:
-                number[case.case_id] += 1
-
-    # check the status should turn back to 1 or not
-    for key, value in number.items():
-        if value == 0:
-            case = Case.objects.get(Q(case_id=key))
-            case.case_status = Status.objects.get(Q(status_id=1))
-            case.save()
-
-
-    # 判斷已結束的案件
-
-    return render(request, 'user/publish.html', locals())
-
-
-# ---------applicants for each case---------
-@login_required
-def user_publish_applicant(request, case_id):
-
-    # all applicants for all cases
-    case = Case.objects.get(Q(case_id=case_id))
-    all_willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
-    all_commission = CommissionRecord.objects.filter(case=case)
-
-    # is commissioned or not
-    all_user = set()
-    willingness = []
-    cnt = 0
-    for data in all_willing:  # pick the newest one for all users
-        all_user.add(data.willing_user)
-    for user in all_user:
-        newest_willing = all_willing.filter(willing_user=user).order_by('-created_datetime')[0]
-        newest_commission = all_commission.filter(commissioned_user=user).order_by('-created_datetime')
-        if len(newest_commission) == 0:  # commissioned not yet
-            willingness.append(newest_willing)
-        elif newest_willing.created_datetime > newest_commission[0].created_datetime:  # a new willingness
-            willingness.append(newest_willing)
-
-    # count the number of conducting user
-    for user in all_user:
-        commission = CommissionRecord.objects.filter(Q(case=case) & Q(commissioned_user=user))
-        for record in commission:
-            if record.user_status.status_id != 4:
-                cnt += 1
-    last = case.num - cnt
-
-    # 評價
-
-    return render(request, 'user/applicant.html', locals())
-
-
-# ------------user take record------------
-@login_required
-def user_take_record(request):
-
-    # all willingness the user takes
-    user = request.user.user_detail
-    all_willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(willing_user=user)
-    all_commission = CommissionRecord.objects.filter(Q(commissioned_user=user))
-
-    # is commissioned or not
-    all_case = set()
-    willingness = []
-    for data in all_willing:  # all cases
-        all_case.add(data.apply_case)
-    for case in all_case:  # pick the newest one for all cases
-        newest_willing = all_willing.filter(apply_case=case).order_by('-created_datetime')[0]
-        newest_commission = all_commission.filter(case=case).order_by('-created_datetime')
-        if len(newest_commission) == 0:  # commissioned not yet
-            willingness.append(newest_willing)
-        elif newest_willing.created_datetime > newest_commission[0].created_datetime:  # a new willingness
-            willingness.append(newest_willing)
-
-    # all commissions the user takes
-    record = CommissionRecord.objects.all().prefetch_related('case').filter(commissioned_user=user)
-    conduct = []
-    close = []
-    for data in record:
-        status = data.user_status.status_id
-        if status == 2 or status == 5 or status == 6 or status == 7:
-            conduct.append(data)
-        elif status == 3 or status == 4:
-            close.append(data)
-
-    # 丟case資訊回去
-
-    # 評價
-
-    return render(request, 'user/take.html', locals())
-
-
-
-#########################################
-#           USER-CASE  MODULE           #
-#########################################
-
-# ---------tool man sign up cases---------
-@login_required
-def take_case(request, case_id):
-
-    # foreign key
-    case = Case.objects.get(Q(case_id=case_id))
-    user = UserDetail.objects.get(Q(django_user=request.user))
-
-    # create a case willingness
-    willingness = CaseWillingness.objects.create(apply_case=case, willing_user=user)
-    willingness.save()
-
-    return redirect('case-profile', case_id=case_id)
-
-
-# ---------cancel willingness---------
-@login_required
-def cancel_willingess(request, case_id):
-
-    case = Case.objects.get(Q(case_id=case_id))
-    user = request.user.user_detail
-    try:
-        willingness = CaseWillingness.objects.get(Q(apply_case=case) & Q(willing_user=user))
-        willingness.delete()
-    except:
-        pass
-
-    return redirect('user-take-record')
-
-
-# ---------build commission---------
-@login_required
-def build_commission(request):
-
-    try:
-        # get case willingness id
-        body = request.body.decode('utf-8').split('&toolman=')[1:]
-
-        # create commission record
-        for id in body:
-            willingness = CaseWillingness.objects.get(Q(casewillingness_id=id))
-            case = willingness.apply_case
-            toolman = willingness.willing_user
-            status = Status.objects.get(Q(status_id=2))
-
-            record = CommissionRecord.objects.create(case=case,
-                                                    commissioned_user=toolman,
-                                                    user_status=status)
-            record.save()
-
-        # change case status
-        case.case_status = Status.objects.get(Q(status_id=2))
-        case.save()
-
-    except:
-        # choose nobody
-        pass
-
-    return redirect('user-publish-record')
-
-
-# ---------delete commission---------
-@login_required
-def delete_commission(request, commission_id):
-
-    # set sender/receiver as publisher or toolman
-    commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
-    case = commission.case
-
-    # first time cancel
-    if commission.user_status.status_id == 2:
-        sender = request.user.user_detail
-        if commission.commissioned_user == sender:
-            receiver = commission.case.publisher
-            commission.user_status = Status.objects.get(Q(status_id=6))
-            commission.finish_datetime = datetime.datetime.now()
-            commission.save()
-        else:
-            receiver = commission.commissioned_user
-            commission.user_status = Status.objects.get(Q(status_id=5))
-            commission.finish_datetime = datetime.datetime.now()
-            commission.save()
-
-        if sender == commission.commissioned_user:
-            return redirect('user-take-record')
-        else:
-            return redirect('user-publish-record')
-
-    # both cancel the case
-    elif commission.user_status.status_id == 5:
-        sender = commission.commissioned_user
-        receiver = commission.case.publisher
-    elif commission.user_status.status_id == 6:
-        sender = commission.case.publisher
-        receiver = commission.commissioned_user
-    commission.user_status = Status.objects.get(Q(status_id=4))
-    commission.save()
-
-    # if there is no commission, change the case status
-    result = CommissionRecord.objects.filter(Q(case=case) & (~Q(user_status=1) | ~Q(user_status=4)))
-    if result.exists():
-        pass
-    else:
-        case.case_status = Status.objects.get(Q(status_id=1))
-        case.save()
-
-    if sender == commission.commissioned_user:
-        return redirect('user-take-record')
-    else:
-        return redirect('user-publish-record')
-
-
-# ---------finish commission---------
-@login_required
-def finish_commission(request, commission_id):
-
-    commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
-
-    # status=2 represent that toolman apply for consummation
-    if commission.user_status.status_id == 2:
-
-        # change status
-        commission.user_status = Status.objects.get(Q(status_id=7))
-        commission.finish_datetime = datetime.datetime.now()
-        commission.save()
-        return redirect('user-take-record')
-
-    # status=7 represent that publisher confirm the task
-    else:
-
-        # change status
-        commission.user_status = Status.objects.get(Q(status_id=3))
-        commission.doublecheck_datetime = datetime.datetime.now()
-        commission.save()
-        return redirect('user-publish-record')
-
-
-
-# ------------user publish record------------
-@login_required
-def user_publish_record(request):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
 
     timeout(request)
 
@@ -1082,6 +1212,10 @@ def user_publish_record(request):
 # ---------applicants for each case---------
 @login_required
 def user_publish_applicant(request, case_id):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
 
     timeout(request)
 
@@ -1119,6 +1253,10 @@ def user_publish_applicant(request, case_id):
 # ------------user take record------------
 @login_required
 def user_take_record(request):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
 
     timeout(request)
 
@@ -1682,6 +1820,13 @@ def check_mail_used(request):
         return JsonResponse({"message": ""})
     except:
         return JsonResponse({"message": "帳號未被使用"})
+
+
+
+
+#########################################
+#               API MODULE              #
+#########################################
 
 
 @api_view(['GET'])
