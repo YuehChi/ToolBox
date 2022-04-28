@@ -21,9 +21,15 @@ urlpatterns = [
 #           USER URLS               #
 #####################################
 urlpatterns += [
-    path('user/profile/', views.viewUser, name='user-profile'),
+    path('user/profile/', views.viewUser, name='my-user-profile'),
+    path('user/profile/<int:user_id>/', views.viewOtherUser, name='others-user-profile'),
     path('user/profile/update/', views.updateUser, name='user-profile-update'),
     path('user/icon/update/', views.updateUserIcon, name='user-icon-update'),
+    path('user/password/update/', views.updatePassword, name='user-password-update'),
+    path('user/publish/', views.user_publish_record, name='user-publish-record'),
+    path('user/publish/<int:case_id>', views.user_publish_applicant, name='user-publish-applicant'),
+    path('user/build/', views.build_commission, name='build-commission'),
+    path('user/take/', views.user_take_record, name='user-take-record'),
 ]
 
 #####################################

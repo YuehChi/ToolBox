@@ -17,6 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
 
+from datetime import date ,datetime
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.hashers import check_password, make_password
@@ -468,21 +469,90 @@ def case_search(request):
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
 
-    list_case = Case.objects.filter(shown_public=True)
+    case = Case.objects.first()
+    print(case.ended_datetime.date())
+    print("++++++++++++++++++++++++++++++++++++++++++++++")
+
+    if request.method == "POST" :
+        query = []
+        query_num = []
+        query_date = []
+        verrify = 0
+
+        # 查詢資訊資訊
+        query.append(request.POST.get('case_id'))
+        query.append(request.POST.get('title'))
+        query.append(request.POST.get('description'))
+        query.append(request.POST.get('reward'))
+        query.append(request.POST.get('location'))
+        query.append(request.POST.get('constraint'))
+        query_num.append(request.POST.get('num'))
+        query_num.append(request.POST.get('work'))
+        query_date.append(request.POST.get('date1'))
+        query_date.append(request.POST.get('date2'))
+
+
+        for i in range(6):
+            if query[i] == '':
+                 query[i] = 'None'
+                 verrify += 1
+
+        for i in range(2):
+            if query_num[i] == '':
+                 query_num[i] = 100000000000
+                 verrify += 1
+
+        for i in range(2):
+            if query_date[i] == '':
+                query_date[i] = date.today()
+                verrify += 1
+
+
+        print("*************** Querry: " , query ,query_num,query_date )
+
+        if verrify < 10:
+
+            result_case = Case.objects.filter(Q(case_id__icontains=query[0]) |Q(title__icontains=query[1]) |  Q(description__icontains=query[2]) |
+            Q(reward__icontains=query[3]) | Q(location__icontains=query[4]) | Q(constraint__icontains=query[5])  |  Q(ended_datetime__date__range=[query_date[0],query_date[1]])|
+            Q(num__icontains=query_num[0]) | Q(work__icontains=query_num[1])  & Q(shown_public=True) )
+
+            case_fields = Case_Field.objects.all()
+            case_types = Case_Type.objects.all()
+            case_photo = CasePhoto.objects.all()
+
+            return render(request,'case/search.html',locals())
+
+        else:
+            result_case = Case.objects.filter(shown_public=True)
+            case_fields = Case_Field.objects.all()
+            case_types = Case_Type.objects.all()
+            case_photo = CasePhoto.objects.all()
+
+            messages.warning(request, "請輸入收尋條件")
+            return render(request,'case/search.html',locals())
+
+    result_case = Case.objects.filter(shown_public=True)
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
 
+    #list_case = Case.objects.select_related('case_status')
+    return render(request,'case/search.html',locals())
+
+    result_case = Case.objects.filter(shown_public=True)
+    case_fields = Case_Field.objects.all()
+    case_types = Case_Type.objects.all()
+    case_photo = CasePhoto.objects.all()
 
     #list_case = Case.objects.select_related('case_status')
-    return render(request,'case/search.html',locals()) #之後要改
+    return render(request,'case/search.html',locals())
 
 
 
 #####################################
 #            USER MODULE            #
 #####################################
-# ------ 使用者資料頁面 ------
+# ------ 自己的個人資訊頁面 ------
 @login_required
 def viewUser(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -494,27 +564,6 @@ def viewUser(request):
     userDataForm = UserDetailModelForm(instance=user)
     print(f'get data of {user}.')
 
-    # 取得使用者資料
-    dataCol = [  # 要取得哪些欄位 #目前沒作用
-        'name',
-        'nickname',
-        'account_mail',
-        'gender',
-        'department',
-        'work',
-        'information',
-        'icon',
-        'rate',
-        'rate_num',
-        'work_num',
-        'publish_num',
-        'commissioned_status',
-        'commissioning_status',
-        'verification',
-        'created_datetime',
-        'last_login_datetime'
-        ]
-
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
         'user': user,
@@ -523,7 +572,50 @@ def viewUser(request):
     return render(request, 'user/user.html', content)
 
 
-# ------ 更新使用者資料 ------
+# ------ 瀏覽其他使用者的資料 ------
+@login_required
+def viewOtherUser(request, user_id):
+    user = get_object_or_404(  # 找出自己是哪個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+
+    # 找要看的是哪個 user
+    viewedUser = get_object_or_404(  # 找出要看的 user; 找不到則回傳 404 error
+        UserDetail,
+        user_id=user_id,
+        isActive=True)  # 若是被停權的 user，一樣 404
+    if user == viewedUser:  # 若就是自己本人，則導到自己的頁面
+        return redirect('my-user-profile')
+
+    # 取得使用者資料
+    dataCol = [  # 要取得哪些欄位  # 注意：@property的欄位不能用.values()抓
+        'nickname',
+        'gender',
+        'department',
+        'work',  # 偏好的工作方式
+        'information',  # 自我介紹
+        'icon',  # 大頭貼
+        'rate',  # 評價
+        'rate_num',  # 評價的人數
+        ]
+    userData = UserDetail.objects.filter(user_id=user_id).values(*dataCol)[0]
+    userData['work_num'] = viewedUser.work_num  # 接案數
+    userData['publish_num'] = viewedUser.publish_num  # 發案數
+    if viewedUser.icon:
+        userData['icon'] = {'url': viewedUser.icon.url}
+    else:
+        userData['icon'] = None
+
+    # 整理資訊並回傳
+    content = {  # 要傳入模板的資訊
+        'user': user,
+        'viewed_user': userData
+        }
+    return render(request, 'user/user_profile.html', content)
+
+
+# ------ 更新個人資訊 ------
 @login_required
 def updateUser(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -541,7 +633,7 @@ def updateUser(request):
             userUpdate.account_mail = user.account_mail  # 自動填入email
             userUpdate.save()  # 實際更改資料庫
             print('User data has been update.')
-            return redirect('user-profile')  # 重定向並刷新個資分頁的資訊
+            return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
         else:
             print('The form is not valid.')
             userDataForm = formPost  # 保留剛剛POST的分析結果，以顯示錯誤訊息
@@ -554,7 +646,7 @@ def updateUser(request):
     return render(request, 'user/user.html/', content)
 
 
-# ------ 更新使用者頭像 ------
+# ------ 更新頭像 ------
 @login_required
 def updateUserIcon(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -565,8 +657,6 @@ def updateUserIcon(request):
 
     # POST: 更改使用者資料
     if request.method == 'POST':
-        print('\n\nrequest.POST:', request.POST)
-        print('request.FILES:', request.FILES)
         iconPost = UserIconForm(request.POST, instance=user)  # 改頭像的表單
         if iconPost.is_valid():
             userUpdate = iconPost.save(commit=False)  # 先暫存，還不更改資料庫
@@ -587,10 +677,11 @@ def updateUserIcon(request):
                     print('Can not save user icon:', ex)
             userUpdate.save()  # 實際更改資料庫
             print('User data has been update.')
-            return redirect('user-profile')  # 重定向並刷新個資分頁的資訊
+            return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
         else:
             print('The form is not valid.')
             userDataForm = iconPost  # 保留剛剛POST的分析結果，以顯示錯誤訊息
+            return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
@@ -611,6 +702,302 @@ def updateUserIcon(request):
         context={'num_visits': num_visits,
                  'user_name': user_name},
     )
+
+
+# ------ 更新密碼（需要再次輸入舊密碼）------
+@login_required
+def updatePassword(request):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+
+    # 重新確認密碼
+    if request.method == 'POST':
+        print(request.POST)
+        # 重新確認密碼
+        oldPassword = request.POST.get('oldPassword')
+        django_user = auth.authenticate(
+            username=user.account_mail,
+            password=oldPassword)
+
+        if not django_user:
+            print('Wrong password!')
+            messages.error(request, 'Wrong password!')
+            return redirect('user-password-update')  # 返回並顯示錯誤訊息
+
+        # reset password（用和忘記密碼一樣的方式）
+        newPassword = request.POST.get('newPassword')
+        confirm = request.POST.get('confirmNewPassword')
+        print(newPassword, confirm)
+        if newPassword != confirm:
+            print('Different two passwords!')
+            messages.error(request, 'New passwords are not equal!')
+            return redirect('user-password-update')  # 返回並顯示錯誤訊息
+
+        # update datebase
+        django_user.password = make_password(newPassword)
+        django_user.save()
+
+        user.salt = django_user.password
+        user.save()
+
+        request.session['messages'] = "密碼更改成功！"
+        return HttpResponseRedirect('/')  # 自動登出，導到會員登入頁面
+
+    # GET: 導向改密碼頁面
+    return render(request, 'user/user_reset_pwd.html', locals())
+
+
+# ------------user publish record------------
+@login_required
+def user_publish_record(request):
+
+    # all case the user publish
+    user = request.user.user_detail.user_id
+    publisher = UserDetail.objects.get(user_id=user)
+    case_list = Case.objects.filter(publisher=publisher)
+
+    # show all of the toolmen
+    record_list = CommissionRecord.objects.all().prefetch_related('case')
+
+    # numbers of toolmen for each case
+    number = dict()
+    for case in case_list:
+        number[case.case_id] = 0
+        for record in record_list:
+            if record.case == case and record.user_status.status_id != 4:
+                number[case.case_id] += 1
+
+    # check the status should turn back to 1 or not
+    for key, value in number.items():
+        if value == 0:
+            case = Case.objects.get(Q(case_id=key))
+            case.case_status = Status.objects.get(Q(status_id=1))
+            case.save()
+
+
+    # 判斷已結束的案件
+    
+    return render(request, 'user/publish.html', locals())
+
+
+# ---------applicants for each case---------
+@login_required
+def user_publish_applicant(request, case_id):
+
+    # all applicants for all cases
+    case = Case.objects.get(Q(case_id=case_id))
+    all_willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(apply_case=case)
+    all_commission = CommissionRecord.objects.filter(case=case)
+
+    # is commissioned or not
+    all_user = set()
+    willingness = []
+    cnt = 0
+    for data in all_willing:  # pick the newest one for all users
+        all_user.add(data.willing_user)
+    for user in all_user:
+        newest_willing = all_willing.filter(willing_user=user).order_by('-created_datetime')[0]
+        newest_commission = all_commission.filter(commissioned_user=user).order_by('-created_datetime')
+        if len(newest_commission) == 0:  # commissioned not yet
+            willingness.append(newest_willing)
+        elif newest_willing.created_datetime > newest_commission[0].created_datetime:  # a new willingness
+            willingness.append(newest_willing)
+
+    # count the number of conducting user
+    for user in all_user:
+        commission = CommissionRecord.objects.filter(Q(case=case) & Q(commissioned_user=user))
+        for record in commission:
+            if record.user_status.status_id != 4:
+                cnt += 1
+    last = case.num - cnt
+
+    # 評價
+
+    return render(request, 'user/applicant.html', locals())
+
+
+# ------------user take record------------
+@login_required
+def user_take_record(request):
+
+    # all willingness the user takes
+    user = request.user.user_detail
+    all_willing = CaseWillingness.objects.all().prefetch_related('apply_case').filter(willing_user=user)
+    all_commission = CommissionRecord.objects.filter(Q(commissioned_user=user))
+
+    # is commissioned or not
+    all_case = set()
+    willingness = []
+    for data in all_willing:  # all cases
+        all_case.add(data.apply_case)
+    for case in all_case:  # pick the newest one for all cases
+        newest_willing = all_willing.filter(apply_case=case).order_by('-created_datetime')[0]
+        newest_commission = all_commission.filter(case=case).order_by('-created_datetime')
+        if len(newest_commission) == 0:  # commissioned not yet
+            willingness.append(newest_willing)
+        elif newest_willing.created_datetime > newest_commission[0].created_datetime:  # a new willingness
+            willingness.append(newest_willing)
+
+    # all commissions the user takes
+    record = CommissionRecord.objects.all().prefetch_related('case').filter(commissioned_user=user)
+    conduct = []
+    close = []
+    for data in record:
+        status = data.user_status.status_id
+        if status == 2 or status == 5 or status == 6 or status == 7:
+            conduct.append(data)
+        elif status == 3 or status == 4:
+            close.append(data)
+        
+    # 丟case資訊回去
+
+    # 評價
+
+    return render(request, 'user/take.html', locals())
+
+
+
+#########################################
+#           USER-CASE  MODULE           #
+#########################################
+
+# ---------tool man sign up cases---------
+@login_required
+def take_case(request, case_id):
+
+    # foreign key
+    case = Case.objects.get(Q(case_id=case_id))
+    user = UserDetail.objects.get(Q(django_user=request.user))
+
+    # create a case willingness
+    willingness = CaseWillingness.objects.create(apply_case=case, willing_user=user)
+    willingness.save()
+
+    return redirect('case-profile', case_id=case_id)
+
+
+# ---------cancel willingness---------
+@login_required
+def cancel_willingess(request, case_id):
+    
+    case = Case.objects.get(Q(case_id=case_id))
+    user = request.user.user_detail
+    try:
+        willingness = CaseWillingness.objects.get(Q(apply_case=case) & Q(willing_user=user))
+        willingness.delete()
+    except:
+        pass
+
+    return redirect('user-take-record')
+
+
+# ---------build commission---------
+@login_required
+def build_commission(request):
+    
+    try:
+        # get case willingness id
+        body = request.body.decode('utf-8').split('&toolman=')[1:]
+
+        # create commission record
+        for id in body:
+            willingness = CaseWillingness.objects.get(Q(casewillingness_id=id))
+            case = willingness.apply_case
+            toolman = willingness.willing_user
+            status = Status.objects.get(Q(status_id=2))
+
+            record = CommissionRecord.objects.create(case=case,
+                                                    commissioned_user=toolman,
+                                                    user_status=status)
+            record.save()
+
+        # change case status
+        case.case_status = Status.objects.get(Q(status_id=2))
+        case.save()
+
+    except:
+        # choose nobody
+        pass
+
+    return redirect('user-publish-record')
+
+
+# ---------delete commission---------
+@login_required
+def delete_commission(request, commission_id):
+
+    # set sender/receiver as publisher or toolman
+    commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
+    case = commission.case
+
+    # first time cancel
+    if commission.user_status.status_id == 2:
+        sender = request.user.user_detail
+        if commission.commissioned_user == sender:
+            receiver = commission.case.publisher
+            commission.user_status = Status.objects.get(Q(status_id=6))
+            commission.finish_datetime = datetime.datetime.now()
+            commission.save()
+        else:
+            receiver = commission.commissioned_user
+            commission.user_status = Status.objects.get(Q(status_id=5))
+            commission.finish_datetime = datetime.datetime.now()
+            commission.save()
+
+        if sender == commission.commissioned_user:
+            return redirect('user-take-record')
+        else:
+            return redirect('user-publish-record')
+
+    # both cancel the case
+    elif commission.user_status.status_id == 5:
+        sender = commission.commissioned_user
+        receiver = commission.case.publisher
+    elif commission.user_status.status_id == 6:
+        sender = commission.case.publisher
+        receiver = commission.commissioned_user
+    commission.user_status = Status.objects.get(Q(status_id=4))
+    commission.save()
+
+    # if there is no commission, change the case status
+    result = CommissionRecord.objects.filter(Q(case=case) & (~Q(user_status=1) | ~Q(user_status=4)))
+    if result.exists():
+        pass
+    else:
+        case.case_status = Status.objects.get(Q(status_id=1))
+        case.save()
+    
+    if sender == commission.commissioned_user:
+        return redirect('user-take-record')
+    else:
+        return redirect('user-publish-record')
+
+
+# ---------finish commission---------
+@login_required
+def finish_commission(request, commission_id):
+
+    commission = CommissionRecord.objects.get(Q(commissionrecord_id=commission_id))
+
+    # status=2 represent that toolman apply for consummation
+    if commission.user_status.status_id == 2:
+
+        # change status
+        commission.user_status = Status.objects.get(Q(status_id=7))
+        commission.finish_datetime = datetime.datetime.now()
+        commission.save()
+        return redirect('user-take-record')
+
+    # status=7 represent that publisher confirm the task
+    else:
+
+        # change status
+        commission.user_status = Status.objects.get(Q(status_id=3))
+        commission.doublecheck_datetime = datetime.datetime.now()
+        commission.save()
+        return redirect('user-publish-record')
 
 
 

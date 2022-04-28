@@ -1,0 +1,85 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="\static\css\user.css">
+<script src="\static\js\user_rate.js" type="text/javascript"></script>
+<div class="row">
+    <div class="tab col-md-10" style="margin:0px auto;margin-top: 60px;">
+        <div style="margin-top: 20px;margin-right: 10px;">
+            <div class="container-fuild">
+                <label style="z-index: 3;background-color: rgb(134, 81, 64);width: 100px;height: 30px;line-height:30px;margin-bottom: -15px;margin-left: 15px;text-align: center;color: #ffffff;position:relative;font-weight: bold">
+                    個人資料
+                </label>
+                <div class="row justify-content-center" style="z-index: 1;background: #ffffff;border-radius: .25rem">
+                    <div class="col-md" style="max-width: 70%;width: 250px;">
+                        <div class="row justify-content-center">
+                        {% if viewed_user.icon %}  {# 有圖才顯示 #}
+                            <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;" src="{{ viewed_user.icon.url }}">
+                        {% else %}
+                            <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;" src="\static\images\default_icon_1.png">
+                        {% endif %}
+                        </div>
+                        <!----------User Rate---------->
+                        <div class="col-12 d-flex justify-content-center align-items-center" style="margin-bottom: 10px;">
+                            <div id="user-rate" class="d-flex justify-content-center align-items-center"></div>
+                            <span id="user-ratenum" style="color: #865140;font-size: 14px">(1)</span>
+                        </div>
+                        <span style="display: none;" id="get-user-rate">
+                            {{viewed_user.rate}}
+                        </span>
+                        <span style="display: none;" id="get-user-ratenum">
+                            {{viewed_user.rate_num}}
+                        </span>
+                    </div>
+                    <div class="col-md" style="margin-top: 10px;margin-bottom: 10px;">
+                        <div>
+                            <!-- <span style="color:  rgb(38, 29, 29);font-size: 20px;font-weight: bold">{{user.name}}</span> -->
+                            {% if viewed_user.nickname %}
+                            <span style="color:  rgb(38, 29, 29);font-size: 20px;font-weight: bold">{{viewed_user.nickname}}</span>
+                            {% else %}
+                            <span style="color:  rgb(38, 29, 29);font-size: 20px;font-weight: bold">匿名</span>
+                            {% endif %}
+
+                            {% if viewed_user.gender == 0 %}
+                                <span style="color:  rgb(38, 29, 29);"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;"></span>
+                            {% elif viewed_user.gender == 1 %}
+                                <span style="color:  rgb(38, 29, 29);"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;"></span>
+                            {% elif viewed_user.gender == 2 %}
+                                <span style="color:  rgb(38, 29, 29);"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;"></span>
+                            {% endif %}
+                            {% if viewed_user.department %}
+                            <p style="color:  rgb(38, 29, 29);">系所:{{viewed_user.department}}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="" style="margin-top: 10px;background: #ffffff;">
+                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">接案數量</p>
+                            <p style="margin: 0 auto;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">{{ viewed_user.work_num }}</p>
+                            <!-- <p style="text-align: right;padding-right: 20px;">件</p> -->
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="" style="margin-top: 10px;background: #ffffff;">
+                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">發案數量</p>
+                            <p style="margin: 0 auto;margin-bottom: 15px;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">{{ viewed_user.publish_num }}</p>
+                            <!-- <p style="text-align: right;padding-right: 20px;">件</p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fuild">
+                <label style="z-index: 3;background-color: rgb(134, 81, 64);width: 100px;height: 30px;line-height:30px;margin-top: 10px;margin-bottom: -50px;margin-left: 15px;text-align: center;color: #ffffff;font-weight: bold">
+                    自我介紹
+                </label>
+                <div class="row" style="z-index: 1;background: #ffffff;border-radius: .25rem;">
+                    <div style="">
+                        <pre style="color:  rgb(38, 29, 29);margin-top: 15px;margin-left: 30px;margin-right: 30px;white-space: break-spaces;">{{viewed_user.information}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -7,6 +7,7 @@ from .models import *
 class UserDetailAdmin(admin.ModelAdmin):
     save_as = True
     list_display = (
+        'user_id',
         '__str__',
         'account_mail',
         'gender_shown',
@@ -51,6 +52,15 @@ class CaseAdmin(admin.ModelAdmin):
     readonly_fields = ('created_datetime', 'last_change', 'case_id')
 admin.site.register(Case, CaseAdmin)
 
+class CasePhotoAdmin(admin.ModelAdmin):
+    save_as = True
+    list_display = (
+        'casephoto_id',
+        'case',
+        'image',
+    )
+    readonly_fields = ('casephoto_id',)
+admin.site.register(CasePhoto, CasePhotoAdmin)
 
 
 class CaseWillingnessAdmin(admin.ModelAdmin):
@@ -101,7 +111,6 @@ admin.site.register(Report, ReportAdmin)
 
 # 這邊是不做處理、直接用預設介面的後台
 admin.site.register(Status)
-admin.site.register(CasePhoto)
 admin.site.register(Type)
 admin.site.register(Case_Type)
 admin.site.register(Field)
