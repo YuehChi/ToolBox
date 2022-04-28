@@ -1,5 +1,6 @@
 var number = 0
 var upload_img_log = []
+var upload_img_files = []
 $(document).ready(function() {
   $('#button-post').click(function(){
     console.log('click')
@@ -11,24 +12,36 @@ $(document).ready(function() {
     var startdate = new Date();
     startdate = startdate.getFullYear() + '-' + String(startdate. getMonth() + 1). padStart(2, '0') + '-' + String(startdate. getDate()). padStart(2, '0') +' '+ startdate.getHours() + ":" + startdate.getMinutes() + ":" + startdate.getSeconds();
     var enddate = $('#input-enddate').val().split('/')
-    enddate = enddate[2] + '-' + enddate[0] + '-' + enddate[1]
+    enddate = enddate[2] + '-' + enddate[0] + '-' + enddate[1] + ' 23:59:59'
     $('#forminput-enddate').val(enddate)                                 // Ended Datetime
     $('#forminput-startdate').val(startdate)
     $('#forminput-num').val($('#input-num').val())                    // Required Num
     $('#forminput-work').val($('#input-work').val())                  // Work Mode
-    $('#forminput-constraint').val($('#input-preference').val())      // Constraint
+    $('#forminput-constraint').val($('#input-preference').val())      // Constraint-
     $('#forminput-location').val($('#input-location').val())          // Location
-
+    
     var description = $('#textarea-description').val()
 
-    //console.log(upload_img_log)
+    console.log(upload_img_log)
     var uplod_img_submit = []
     upload_img_log.forEach(function(value, index, object){
       uplod_img_submit.push(value[1])
     });
-    $('#forminput-images').attr('files', uplod_img_submit)
-    //console.log($('#test').files())
-    console.log($('#forminput-images').val())
+    
+    //$('#forminput-images').attr('files', uplod_img_submit)
+    // const iii = document.getElementById('forminput-images')
+    // console.log(new fileListItems(uplod_img_submit))
+    // iii.files = new fileListItems(uplod_img_submit)
+    $('#forminput-images').prop('files', new fileListItems(uplod_img_submit))
+    // $('#forminput-images').prop('files', new fileListItems(uplod_img_submit).files)
+    console.log($('#forminput-images').prop('files'))
+    //console.log($('#test').prop('files'))
+
+
+    // $('#forminput-images').attr('files', uplod_img_submit)
+    // var fileInput = document.getElementById("test");
+    // console.log(fileInput.files)
+    // console.log($('#forminput-images').val())
     
     postImg()
    // description = description.replaceAll('\n', '<br>')
@@ -55,11 +68,17 @@ $(document).ready(function() {
   var counter = 1
   $("#input-img").change(function (){
     $('#span-input-file-validation').removeClass('d-block').addClass('d-none')
-    console.log($(this).val())
+    // console.log($(this).val())
     // console.log("change!")
-    // console.log($(this).prop('files')[0])
 
-    var upload_img = $(this).prop('files')[0]
+    //console.log($(this).prop('files')[0])
+
+    // generate random file name and create new file
+    var iname = $(this).prop('files')[0].lastModified.toString() + randomLetter() +'.' + $(this).prop('files')[0].type.split('/')[1]
+    console.log(iname)
+    const upload_img = new File([$(this).prop('files')[0]], iname , {type: $(this).prop('files')[0].type});
+    //console.log(upload_img)
+    //var upload_img = $(this).prop('files')[0]
     // console.log(upload_img.size * 	0.000001)
 
     if(upload_img.size * 	0.000001 > 2) {
@@ -67,7 +86,8 @@ $(document).ready(function() {
       $(this).val(null);
     }
     else {
-      upload_img_log.push([counter, $(this).prop('files')])
+
+      upload_img_log.push([counter, upload_img])
       var reader = new FileReader();
 
       var target_div_id = 'updiv_' + counter
@@ -133,7 +153,7 @@ $(document).ready(function() {
   var location_temp = ""
   $('#radio-check-location').click(function(){
     var source = $(this).attr('src').split("/");
-
+    
     console.log($(this).val());
     if(source[source.length -1] == 'check-circle-outline.png'){
       location_temp = $('#input-location').val()
@@ -146,7 +166,7 @@ $(document).ready(function() {
       $("#input-location").val(location_temp);
       $(this).attr('src', '/static/images/check-circle-outline.png')
     }
-
+  
   });
 
   //---------------------Work Mode Radio Button----------------------
@@ -199,3 +219,24 @@ function postImg(event) {
   }
   
 }
+
+function randomLetter(length) {
+    var result     = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < 15; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+/**
+ * @params {File[]} files Array of files to add to the FileList
+ * @return {FileList}
+ */
+ function fileListItems (files) {
+  var b = new ClipboardEvent("").clipboardData || new DataTransfer()
+  for (var i = 0, len = files.length; i<len; i++) b.items.add(files[i])
+  return b.files
+}
+

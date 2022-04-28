@@ -1,11 +1,45 @@
 $(document).ready(function() {
 
+    
+    // --------------- Take Button Status ---------------
+    var tbtn_status = $('#get_take_btn_status').html()
+    var case_id = $('#case-id').html()
+
+    if (tbtn_status == '1'){
+        $('#button-case-commission').click(function(){
+            alert('1')
+            window.location = '/toolfamily/case/take/'+case_id
+        })
+    }
+    else if (tbtn_status == '2'){
+        $('#button-case-commission').click(function(){
+            alert('2')
+            window.location = '/toolfamily/case/cancel/'+case_id
+        })
+    }
+    else if (tbtn_status == '3'){
+        $('#button-case-commission').prop('disabled', true);
+    }
+    else{
+        $('#button-case-commission').click(function(){
+            alert('Take commission error!!')
+        })
+    }
+
+    // --------------- Case Edit Button ---------------
+    if($('#get-user-id').html() == $('#get-loginuser-id').html()){
+        $('#link-edit').removeClass('d-none')
+        $('#case-buttons').addClass('d-none')
+    }
+
     // --------------- Case Status ---------------
     var case_status = $('#get-case-status').html()
     console.log('case_status:' + case_status)
     if(case_status == '徵求'){
         $('#case-status').html('徵求中')
     }
+
+
 
 
     // --------------- Case Time ---------------
@@ -15,7 +49,13 @@ $(document).ready(function() {
     var date =  enddate.split('年')[1].split('月')[1].split('日')[0]
     enddate = new Date(month + '/' + date + '/' + year)
     var currentdate = new Date();
-    var remainday = enddate.getDate() - currentdate.getDate()
+
+    var remainday = convertMS(Math.abs((enddate.getTime() - currentdate.getTime())))
+    //var remainday = enddate.getDate() - currentdate.getDate()
+
+    console.log(enddate)
+    console.log(currentdate)
+    console.log(remainday)
     enddate = year + '/' + month + '/' + date
 
     var startdate = $('#get-case-startdate').html()
@@ -25,7 +65,9 @@ $(document).ready(function() {
     startdate = year + '/' + month + '/' + date
 
 
-    $('#case-time').html(startdate + ' ~ ' + enddate + ' 還剩' + remainday + '天')
+
+    $('#case-time').html(startdate + ' ~ ' + enddate + ' 還剩' + remainday)
+    
 
 
     // --------------- Case Description ---------------
@@ -50,7 +92,7 @@ $(document).ready(function() {
             if(i<show_num){
                 // console.log('i<show_num')
                 // console.log(imgitems_html)
-                imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block" src="' + case_images[i].src + '" alt="Slide Image"></div>'
+                imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block show-type" src="' + case_images[i].src + '" alt="Slide Image"></div>'
             }
             else{
                 console.log('i>show_num')
@@ -59,13 +101,13 @@ $(document).ready(function() {
                     // console.log(imgitems_html)
                     imgitems_html = imgitems_html + '</div></div>'
                     imgitems_html = imgitems_html + '<div class="carousel-item"><div class="row">'
-                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block" src="' + case_images[i].src + '" alt="Slide Image"></div>'
+                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block show-type" src="' + case_images[i].src + '" alt="Slide Image"></div>'
                     imgindicator_html = imgindicator_html + '<li data-bs-target="#carousel-case-images" data-bs-slide-to="'+ Math.floor(i/show_num) +'"></li>'
                 }
                 else{
                     // console.log('i%show_num != 0 || i==0')
                     // console.log(imgitems_html)
-                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block" src="' + case_images[i].src + '" alt="Slide Image"></div>'
+                    imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block show-type" src="' + case_images[i].src + '" alt="Slide Image"></div>'
                 }
             }
         }
@@ -110,7 +152,8 @@ $(document).ready(function() {
     // ------------------------------ User ------------------------------
     $('#user-nickname').html($('#get-user-nickname').html())
     $('#user-department').html($('#get-user-department').html())
-    $('#user-icon').attr('src', $('#get-user-icon').html())
+    //$('#user-icon').attr('src', $('#get-user-icon').html())
+    $('#user-icon').css('background-image', 'url('+$('#get-user-icon').html()+')')
     // $('#user-icon').attr('style', "background-image:" + $('#get-user-icon').html())
     console.log($('#get-user-lastlogintime').html())
     // --------------- User Gender ---------------
@@ -142,51 +185,9 @@ $(document).ready(function() {
     lastlogin = new Date(year, month-1, date, hour, minutes)
 
 
-    function convertMS(millisecondes){
-        let seconds = millisecondes / 1000
-        if(seconds < 60){
-            return '不到1分鐘前'
-        }
-        else{
-            let minutes = seconds / 60
-            if (minutes < 60){
-                console.log('minutes:' + Math.floor(minutes))
-                return Math.floor(minutes).toString() + ' 分鐘前'
-            }
-            else{
-                let hours = minutes/60
-                if (hours < 24){
-                    console.log('hours:' + hours)
-                    return Math.floor(hours).toString() + ' 小時前'
-                }
-                else{
-                    let days = hours/24
-                    if(days < 31){
-                        console.log('days:' + days)
-                        return Math.floor(days).toString() + ' 天前'
-                    }
-                    else{
-                        let months = days/30
-                        if(months < 12){
-                            console.log('months:' + months)
-                            return Math.floor(months).toString() + ' 個月前'
-                        }
-                        else{
-                            let years = months/12
-                            console.log('years:' + years)
-                            return Math.floor(years).toString() + ' 年前'
-                        }
-                    }
-                }
-            }
-
-        }
-        
-    }
-
     var llt = convertMS(Math.abs((currentdate.getTime() - lastlogin.getTime())))
     console.log(llt)
-    $('#user-lastlogintime').html('上次登入: ' + llt)
+    $('#user-lastlogintime').html('上次登入: ' + llt + '前')
 
     // --------------- User Rate ---------------
     console.log($('#get-user-rate').html())
@@ -228,9 +229,46 @@ $(document).ready(function() {
     console.log($('#get-user-lastlogintime').html())
 
 
-
-
-
-
-
 });
+
+function convertMS(millisecondes){
+    let seconds = millisecondes / 1000
+    if(seconds < 60){
+        return '不到1分鐘'
+    }
+    else{
+        let minutes = seconds / 60
+        if (minutes < 60){
+            console.log('minutes:' + Math.floor(minutes))
+            return Math.floor(minutes).toString() + ' 分鐘'
+        }
+        else{
+            let hours = minutes/60
+            if (hours < 24){
+                console.log('hours:' + hours)
+                return Math.floor(hours).toString() + ' 小時'
+            }
+            else{
+                let days = hours/24
+                if(days < 31){
+                    console.log('days:' + days)
+                    return Math.floor(days).toString() + ' 天'
+                }
+                else{
+                    let months = days/30
+                    if(months < 12){
+                        console.log('months:' + months)
+                        return Math.floor(months).toString() + ' 個月'
+                    }
+                    else{
+                        let years = months/12
+                        console.log('years:' + years)
+                        return Math.floor(years).toString() + ' 年'
+                    }
+                }
+            }
+        }
+
+    }
+    
+}
