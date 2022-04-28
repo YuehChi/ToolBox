@@ -37,32 +37,32 @@
                         <!----------User Rate---------->
                         <div class="col-12 d-flex justify-content-center align-items-center" style="margin-bottom: 10px;">
                             <div id="user-rate" class="d-flex justify-content-center align-items-center"></div>
-                            <span id="user-ratenum" style="color: #865140;font-size: 14px">(1)</span>
+                            <span id="user-ratenum" style="color: #865140;font-size: 14px">(?)</span>
                         </div>
                         <span style="display: none;" id="get-user-rate">
-                            {{user.rate}}
+                            {{current_user.rate}}
                         </span>
                         <span style="display: none;" id="get-user-ratenum">
-                            {{user.rate_num}}
+                            {{current_user.rate_num}}
                         </span>
 
                     </div>
                     <div class="col-md" style="margin-top: 10px;margin-bottom: 10px;">
                         <div>
-                            <span style="color:  rgb(38, 29, 29);font-size: 20px;font-weight: bold">{{user.name}}</span>
-                            {% if user.nickname %}
-                            <span style="color:  rgb(38, 29, 29);"> |{{user.nickname}}</span>
+                            <span style="color:  rgb(38, 29, 29);font-size: 20px;font-weight: bold">{{current_user.name}}</span>
+                            {% if current_user.nickname %}
+                            <span style="color:  rgb(38, 29, 29);"> |{{current_user.nickname}}</span>
                             {% endif %}
 
-                            {% if user.gender == 0 %}
+                            {% if current_user.gender == 0 %}
                                 <span><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;"></span>
-                            {% elif user.gender == 1 %}
+                            {% elif current_user.gender == 1 %}
                                 <span><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;"></span>
-                            {% elif user.gender == 2 %}
+                            {% elif current_user.gender == 2 %}
                                 <span><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;"></span>
                             {% endif %}
-                            {% if user.department %}
-                            <p style="color:  rgb(38, 29, 29);">系所:{{user.department}}</p>
+                            {% if current_user.department %}
+                            <p style="color:  rgb(38, 29, 29);">系所:{{current_user.department}}</p>
                             {% endif %}
                             <button class="btn member" m="2" type="button" style="padding: 2px 12px;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;color: #ffffff;">編輯個人資訊</button>
                         </div>
@@ -70,14 +70,14 @@
                     <div class="col-md">
                         <div class="" style="margin-top: 10px;background: #ffffff;">
                             <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">接案數量</p>
-                            <p style="margin: 0 auto;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">{{ user.work_num }}</p>
+                            <p style="margin: 0 auto;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">{{ current_user.work_num }}</p>
                             <!-- <p style="text-align: right;padding-right: 20px;">件</p> -->
                         </div>
                     </div>
                     <div class="col-md">
                         <div class="" style="margin-top: 10px;background: #ffffff;">
                             <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">發案數量</p>
-                            <p style="margin: 0 auto;margin-bottom: 15px;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">{{ user.publish_num }}</p>
+                            <p style="margin: 0 auto;margin-bottom: 15px;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">{{ current_user.publish_num }}</p>
                             <!-- <p style="text-align: right;padding-right: 20px;">件</p> -->
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                 </label>
                 <div class="row" style="z-index: 1;background: #ffffff;border-radius: .25rem;">
                     <div style="">
-                        <pre style="color:  rgb(38, 29, 29);margin-top: 15px;margin-left: 30px;margin-right: 30px;white-space: break-spaces;">{{user.information}}</pre>
+                        <pre style="color:  rgb(38, 29, 29);margin-top: 15px;margin-left: 30px;margin-right: 30px;white-space: break-spaces;">{{current_user.information}}</pre>
                     </div>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                 </label>
                 <div class="row" style="z-index: 1;background: #ffffff;border-radius: .25rem;">
                     <div style="">
-                        <pre style="color:  rgb(38, 29, 29);margin-top: 15px;margin-left: 30px;margin-right: 30px;white-space: break-spaces;">{{user.contact}}</pre>
+                        <pre style="color:  rgb(38, 29, 29);margin-top: 15px;margin-left: 30px;margin-right: 30px;white-space: break-spaces;">{{current_user.contact}}</pre>
                     </div>
                 </div>
             </div>
@@ -112,8 +112,8 @@
                         <form action="{% url 'user-icon-update' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div>
-                            {% if user.icon %}  {#有圖片才顯示#}
-                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" id="preview_img" src="{{ user.icon.url }}">
+                            {% if current_user.icon %}  {#有圖片才顯示#}
+                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" id="preview_img" src="{{ current_user.icon.url }}">
                             {% else %}
                                 <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" id="preview_img" src="\static\images\default_icon_1.png">
                             {% endif %}
@@ -133,20 +133,20 @@
                             {% csrf_token %}
                             <div>
 
-                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">email：{{ user.account_mail}}</p>
-                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">姓名：<input class="border rounded form-control" type="text" name="name" value="{{ user.name }}"></p>
-                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">匿稱：<input class="border rounded form-control" type="text" name="nickname" value="{{ user.nickname }}"></p>
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">email：{{ current_user.account_mail}}</p>
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">姓名：<input class="border rounded form-control" type="text" name="name" value="{{ current_user.name }}"></p>
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">匿稱：<input class="border rounded form-control" type="text" name="nickname" value="{{ current_user.nickname }}"></p>
                                 <p style="color:  rgb(38, 29, 29);font-weight: bold;margin-bottom: -5px;">性別：</p>
                                 <div class="form-check">
-                                {% if user.gender == 0 %}
+                                {% if current_user.gender == 0 %}
                                     <input  type="radio" name="gender" value="1"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;">男
                                     <input  type="radio" name="gender" value="2"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;">女
                                     <input  type="radio" name="gender" value="0" checked="checked"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;">不願透漏
-                                {% elif user.gender == 1 %}
+                                {% elif current_user.gender == 1 %}
                                     <input  type="radio" name="gender" value="1" checked="checked"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;">男
                                     <input  type="radio" name="gender" value="2"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;">女
                                     <input  type="radio" name="gender" value="0"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;">不願透漏
-                                {% elif user.gender == 2 %}
+                                {% elif current_user.gender == 2 %}
                                     <input  type="radio" name="gender" value="1"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;">男
                                     <input  type="radio" name="gender" value="2" checked="checked"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;">女
                                     <input  type="radio" name="gender" value="0"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;">不願透漏
@@ -156,13 +156,13 @@
                                     <input class="form-check-input" type="radio" id="formCheck-3"><label class="form-check-label" for="formCheck-3">不透漏</label> -->
                                 </div>
                                 <p style="color:  rgb(38, 29, 29);font-weight: bold;margin-top: 5px;">系所：
-                                    <input class="border rounded form-control" type="text" name="department" value="{{ user.department }}">
+                                    <input class="border rounded form-control" type="text" name="department" value="{{ current_user.department }}">
                                 </p>
                                 <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);font-weight: bold;">自我介紹：</p>
-                                <textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;margin-top: -15px;" name="information">{{ user.information }}</textarea>
+                                <textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;margin-top: -15px;" name="information">{{ current_user.information }}</textarea>
                                 
                                 <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);font-weight: bold;margin-top: 15px;">聯絡資訊：</p>
-                                <textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;margin-top: -15px;" name="contact">{{ user.contact }}</textarea>
+                                <textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;margin-top: -15px;" name="contact">{{ current_user.contact }}</textarea>
                                 
                             </div>
                             <div style="text-align: center;margin-top:20px;margin-bottom: 20px;">

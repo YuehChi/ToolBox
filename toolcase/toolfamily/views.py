@@ -20,6 +20,20 @@ from datetime import date ,timedelta
 from django.utils.timezone import now
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.backends import ModelBackend
+
+from itsdangerous import URLSafeTimedSerializer as utsr
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import generics
+from rest_framework import status, permissions
+from toolfamily.serializers import CaseSerializer, ReportSerializer
+from django.http.request import QueryDict
+
 
 
 def calPage (data_list , page):
@@ -48,21 +62,7 @@ def calPage_index (data_list , page):
 
     return totalpage_length, count_page
 
-# from datetime import date
 
-from django.contrib import messages, auth
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.hashers import check_password, make_password
-from django.contrib.auth.backends import ModelBackend
-
-from itsdangerous import URLSafeTimedSerializer as utsr
-
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import generics
-from rest_framework import status, permissions
-from toolfamily.serializers import CaseSerializer, ReportSerializer
-from django.http.request import QueryDict
 
 #########################################
 #                 TOOLS                 #
@@ -255,7 +255,7 @@ def timeout(request):
 #####################################
 @login_required
 def index(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -280,12 +280,12 @@ def index(request):
 
     return render(request, 'index.html', locals())
 
-# 合併5張表 
+# 合併5張表
 #   list_case = Case.objects.filter(shown_public=True)
 #     case_fields = Case_Field.objects.all()
 #     case_types = Case_Type.objects.all()
 #     case_photo = CasePhoto.objects.all()
-    
+
 #     case_detail = {}
 
 #     for i in case_fields:
@@ -318,7 +318,7 @@ def index(request):
 #-------------新增CASE---------------
 @login_required
 def case_new(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -396,7 +396,7 @@ def case_new(request):
 #-------------一個CASE的詳細資訊-------------
 @login_required
 def case_profile(request ,case_id):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -442,7 +442,7 @@ def case_profile(request ,case_id):
 #-------------一個CASE的編輯資訊-------------
 @login_required
 def case_profile_edit(request,case_id):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -551,13 +551,13 @@ def case_profile_edit(request,case_id):
         case_photo = CasePhoto.objects.all()
 
         return render(request,'index.html',locals()) #之後要改
- 
+
 
 
 # -------------CASE資訊搜尋-------------
 @login_required
 def case_search(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -566,7 +566,7 @@ def case_search(request):
 
         # 定義參數
         query_o = []
-        vertify = 0 
+        vertify = 0
         check = 0   #判斷是不是都沒填
         check2 = 0   #判斷是不是除了type和field 都沒有填
         alert = False
@@ -582,7 +582,7 @@ def case_search(request):
         query_o.append(request.POST.get('case_query'))
         for i in range(2):
             if query_o[i] == None:
-                    vertify += 1 
+                    vertify += 1
         if query_o[2] == '':
             vertify += 1
         print("vertify:" , vertify)
@@ -597,27 +597,27 @@ def case_search(request):
         location = request.POST.get('location')
 
         # == 複合查詢- 是否要交集領域/類型 ==
-        con = request.POST.get('con')  
+        con = request.POST.get('con')
 
-        # == 複合查詢- 關鍵字 == 
+        # == 複合查詢- 關鍵字 ==
         key= request.POST.get('query_list')
         print("*********key:",key)
         print(key == '' )
         print(key == None)
-        query_list = [] 
+        query_list = []
 
         if key == None:
             query_list.append('')
-        else : 
+        else :
             key_arr = key.split(',')
-            print(key_arr) 
+            print(key_arr)
             if key_arr [0] == '' :
                 query_list = key_arr
             else:
                 for s in key_arr:
                     query_list.append(int(s))
-        print("query_list:",query_list) 
-        print( query_list[0] != '' ) 
+        print("query_list:",query_list)
+        print( query_list[0] != '' )
 
         if len(type) == 0 :
             check += 1
@@ -629,30 +629,30 @@ def case_search(request):
             check2 += 1
         if  work == '':
             work = 100000000000000000
-            check += 1 
+            check += 1
             check2 += 1
         if date_time == '':
-            date_time = now().date() + timedelta(days=-1) 
+            date_time = now().date() + timedelta(days=-1)
             date_time = "2000-01-01"
             check += 1
-            check2 += 1 
+            check2 += 1
         if constraint =='':
             constraint = "None"
             check += 1
-            check2 += 1 
+            check2 += 1
         if location =='':
             location = "None"
             check += 1
-            check2 += 1 
+            check2 += 1
 
         print("check:" , check)
         print("check2:" , check2)
         print("Querry: " , query_o[0] ,query_o[1],query_o[2])
         print("Q: " , type ,field,num,date_time,work,constraint,location,con)
         print("========================================================")
-    
+
         # == 單一查詢判斷 ==
-        if vertify < 3: 
+        if vertify < 3:
             # ==== 單一查詢 - 類型 ====
             if query_o[0] != None:
                 print("single search for type :" ,query_o[1])
@@ -671,7 +671,7 @@ def case_search(request):
                 print("id_list",id_list)
                 print("num_case",num_case)
 
-              
+
                 return render(request,'case/search.html',locals())
 
             # ==== 單一查詢 - 領域 ====
@@ -690,15 +690,15 @@ def case_search(request):
                 field_value = query_o[1]
                 print("field_value:",field_value)
                 print("id_list",id_list,"\n")
-                
-                return render(request,'case/search.html',locals()) 
+
+                return render(request,'case/search.html',locals())
 
             # ==== 單一查詢 - 關鍵字 ====
             else:
                 print("single search for key_word :" ,query_o[2])
                 id_list =[]
                 query_list = []
-                temp_case = Case.objects.filter(Q(title__icontains=query_o[2]) |  Q(description__icontains=query_o[2]) | 
+                temp_case = Case.objects.filter(Q(title__icontains=query_o[2]) |  Q(description__icontains=query_o[2]) |
                 Q(reward__icontains=query_o[2]) | Q(location__icontains=query_o[2]) | Q(constraint__icontains=query_o[2])  & Q(shown_public=True) )
                 for i in temp_case:
                     id_list.append(i.case_id)
@@ -711,8 +711,8 @@ def case_search(request):
                 query_list = id_list
                 print("id_list",id_list,"\n")
 
-                return render(request,'case/search.html',locals()) 
-        
+                return render(request,'case/search.html',locals())
+
         # == 複合查詢判斷 ==
         else:
             print("Compound search  :" ,type ,field,num,date_time,work,constraint,location,con)
@@ -723,14 +723,14 @@ def case_search(request):
                 # print("i:",i)
                 temp_types = Case_Type.objects.filter(case_type= i).all()
                 for j in temp_types:
-                    temp_id_list.append(j.case_id) 
+                    temp_id_list.append(j.case_id)
             print("temp_id_list: " , temp_id_list)
 
             # === 複合查詢判斷 - field =====
             for i in field:
                 temp_types = Case_Field.objects.filter(case_field= i).all()
                 for j in temp_types:
-                    temp_id_list.append(j.case_id) 
+                    temp_id_list.append(j.case_id)
             print("temp_id_list: " , temp_id_list)
 
             # === 複合查詢判斷 - other訊息
@@ -750,7 +750,7 @@ def case_search(request):
                 temp2.append(temp)
                 check_list.append(1)
             print("num_temp:",temp2)
-              
+
             ## 日期
             if date_time == "2000-01-01":
                 check_list.append(0)
@@ -762,7 +762,7 @@ def case_search(request):
                 temp2.append(temp)
                 check_list.append(1)
             print("date_temp:",temp2)
-                
+
             ## 工作
             if  work == 100000000000000000:
                 check_list.append(0)
@@ -821,8 +821,8 @@ def case_search(request):
             print("temp2_id_list:",temp2_id_list)
 
             # === 複合查詢id結果 - 交集類型/類型
-            if con == "1": 
-                
+            if con == "1":
+
                 # 若其他5個選項空值，應該直接輸出type 和 field的結果
                 if check2 == 5:
 
@@ -839,7 +839,7 @@ def case_search(request):
                         case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                         case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
                         return render(request,'case/search.html',locals())
-                    
+
                     else:
                         id_list = temp_id_list
                         print("其他五個選項沒有輸入，type 和 field的聯集結果:",id_list)
@@ -850,12 +850,12 @@ def case_search(request):
                         case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                         case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
 
-                        return render(request,'case/search.html',locals()) 
+                        return render(request,'case/search.html',locals())
 
                 # 若其他5個選項有交集出結果，則繼續和 type 和 field的結果進行交集
                 else:
                     id_list = list(set(temp_id_list)  & set(temp2_id_list))
-                   
+
                     # === 複合查詢id結果 - 交集類型/類型/關鍵字
                     if  query_list[0] != '' :
                         query_id_list = []
@@ -878,9 +878,9 @@ def case_search(request):
                     case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
 
                     return render(request,'case/search.html',locals())
-            
 
-            else: 
+
+            else:
                 # 使用者未輸入任何資訊在進階搜尋時
                 if check == 7:
                     alert = True
@@ -891,9 +891,9 @@ def case_search(request):
                     case_fields = Case_Field.objects.all()
                     case_types = Case_Type.objects.all()
                     case_photo = CasePhoto.objects.all()
-                    return render(request,'case/search.html',locals()) 
+                    return render(request,'case/search.html',locals())
 
-                
+
                 # === 複合查詢id結果 -關鍵字與其他五個選項交集
                 if query_list[0] != ''  :
                     id_list = []
@@ -907,7 +907,7 @@ def case_search(request):
                     case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                     case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
                     return render(request,'case/search.html',locals())
-                
+
                 # === 其他五個選項交集結果
                 else:
                     id_list = temp2_id_list
@@ -919,7 +919,7 @@ def case_search(request):
                     case_photo = CasePhoto.objects.filter(case_id__in=id_list ).all()
                     case_fields = Case_Field.objects.filter(case_id__in=id_list ).all()
 
-                    return render(request,'case/search.html',locals()) 
+                    return render(request,'case/search.html',locals())
 
     # 預設畫面，代所有case
     result_case = Case.objects.filter(shown_public=True)
@@ -928,7 +928,7 @@ def case_search(request):
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
 
-    return render(request,'case/search.html',locals()) 
+    return render(request,'case/search.html',locals())
 
 
 
@@ -941,18 +941,18 @@ def case_search(request):
 # ------ 自己的個人資訊頁面 ------
 @login_required
 def viewUser(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
 
     # 更改使用者資料的表單
-    userDataForm = UserDetailModelForm(instance=user)
-    print(f'get data of {user}.')
+    userDataForm = UserDetailModelForm(instance=current_user)
+    print(f'get data of {current_user}.')
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
-        'user': user,
+        'current_user': current_user,
         'userDataForm': userDataForm,
         }
     return render(request, 'user/user.html', content)
@@ -961,7 +961,7 @@ def viewUser(request):
 # ------ 瀏覽其他使用者的資料 ------
 @login_required
 def viewOtherUser(request, user_id):
-    user = get_object_or_404(  # 找出自己是哪個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出自己是哪個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -971,7 +971,7 @@ def viewOtherUser(request, user_id):
         UserDetail,
         user_id=user_id,
         isActive=True)  # 若是被停權的 user，一樣 404
-    if user == viewedUser:  # 若就是自己本人，則導到自己的頁面
+    if current_user == viewedUser:  # 若就是自己本人，則導到自己的頁面
         return redirect('my-user-profile')
 
     # 取得使用者資料
@@ -995,7 +995,7 @@ def viewOtherUser(request, user_id):
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
-        'user': user,
+        'current_user': current_user,
         'viewed_user': userData
         }
     return render(request, 'user/user_profile.html', content)
@@ -1004,19 +1004,19 @@ def viewOtherUser(request, user_id):
 # ------ 更新個人資訊 ------
 @login_required
 def updateUser(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
-    userDataForm = UserDetailModelForm(instance=user)  # 預計要傳的表單資料
+    userDataForm = UserDetailModelForm(instance=current_user)  # 預計要傳的表單資料
 
     # POST: 更改使用者資料
     if request.method == 'POST':
         print('\n\nrequest.POST:', request.POST)
-        formPost = UserDetailModelForm(request.POST, instance=user)
+        formPost = UserDetailModelForm(request.POST, instance=current_user)
         if formPost.is_valid():
             userUpdate = formPost.save(commit=False)  # 先暫存，還不更改資料庫
-            userUpdate.account_mail = user.account_mail  # 自動填入email
+            userUpdate.account_mail = current_user.account_mail  # 自動填入email
             userUpdate.save()  # 實際更改資料庫
             print('User data has been update.')
             return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
@@ -1026,7 +1026,7 @@ def updateUser(request):
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
-        'user': user,
+        'current_user': current_user,
         'userDataForm': userDataForm,
         }
     return render(request, 'user/user.html/', content)
@@ -1035,7 +1035,7 @@ def updateUser(request):
 # ------ 更新頭像 ------
 @login_required
 def updateUserIcon(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -1043,11 +1043,11 @@ def updateUserIcon(request):
 
     # POST: 更改使用者資料
     if request.method == 'POST':
-        iconPost = UserIconForm(request.POST, instance=user)  # 改頭像的表單
+        iconPost = UserIconForm(request.POST, instance=current_user)  # 改頭像的表單
         if iconPost.is_valid():
             userUpdate = iconPost.save(commit=False)  # 先暫存，還不更改資料庫
-            userUpdate.name = user.name  # 自動填入name
-            userUpdate.account_mail = user.account_mail  # 自動填入email
+            userUpdate.name = current_user.name  # 自動填入name
+            userUpdate.account_mail = current_user.account_mail  # 自動填入email
             if request.FILES:  # 若有上傳圖片
                 try:
                     if userUpdate.icon:  # 若有舊檔，就刪除
@@ -1071,7 +1071,7 @@ def updateUserIcon(request):
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
-        'user': user,
+        'current_user': current_user,
         'userDataForm': userDataForm,
         }
     return render(request, 'user/user.html/', content)
@@ -1093,7 +1093,7 @@ def updateUserIcon(request):
 # ------ 更新密碼（需要再次輸入舊密碼）------
 @login_required
 def updatePassword(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -1104,7 +1104,7 @@ def updatePassword(request):
         # 重新確認密碼
         oldPassword = request.POST.get('oldPassword')
         django_user = auth.authenticate(
-            username=user.account_mail,
+            username=current_user.account_mail,
             password=oldPassword)
 
         if not django_user:
@@ -1125,8 +1125,8 @@ def updatePassword(request):
         django_user.password = make_password(newPassword)
         django_user.save()
 
-        user.salt = django_user.password
-        user.save()
+        current_user.salt = django_user.password
+        current_user.save()
 
         request.session['messages'] = "密碼更改成功！"
         return HttpResponseRedirect('/')  # 自動登出，導到會員登入頁面
@@ -1138,7 +1138,7 @@ def updatePassword(request):
 # ------------user publish record------------
 @login_required
 def user_publish_record(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -1204,15 +1204,15 @@ def user_publish_record(request):
                 try:
                     CommissionRecord.objects.get(Q(commissioned_user=data.willing_user) & Q(case=case))
                 except:
-                    willing[case.case_id] += 1               
-    
+                    willing[case.case_id] += 1
+
     return render(request, 'user/publish.html', locals())
 
 
 # ---------applicants for each case---------
 @login_required
 def user_publish_applicant(request, case_id):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -1253,7 +1253,7 @@ def user_publish_applicant(request, case_id):
 # ------------user take record------------
 @login_required
 def user_take_record(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -1315,7 +1315,7 @@ def take_case(request, case_id):
     # foreign key
     case = Case.objects.get(Q(case_id=case_id))
     user = UserDetail.objects.get(Q(django_user=request.user))
-    
+
     # create a case willingness
     willingness = CaseWillingness.objects.create(apply_case=case, willing_user=user)
     willingness.save()
@@ -1326,7 +1326,7 @@ def take_case(request, case_id):
 # ---------cancel willingness for case---------
 @login_required
 def cancel_willingess(request, case_id):
-    
+
     case = Case.objects.get(Q(case_id=case_id))
     user = request.user.user_detail
     try:
@@ -1344,7 +1344,7 @@ def cancel_willingess(request, case_id):
 # ---------cancel willingness for user---------
 @login_required
 def user_cancel_willingess(request, case_id):
-    
+
     case = Case.objects.get(Q(case_id=case_id))
     user = request.user.user_detail
     try:
@@ -1361,7 +1361,7 @@ def user_cancel_willingess(request, case_id):
 # ---------build commission---------
 @login_required
 def build_commission(request):
-    
+
     try:
         # get case willingness id
         body = request.body.decode('utf-8').split('&toolman=')[1:]
@@ -1455,7 +1455,7 @@ def delete_commission(request, commission_id):
     else:
         case.case_status = Status.objects.get(Q(status_id=1))
         case.save()
-    
+
     if sender == commission.commissioned_user:
         messages.info(request, 'taking', extra_tags='origin_page')
         return redirect('user-take-record')
