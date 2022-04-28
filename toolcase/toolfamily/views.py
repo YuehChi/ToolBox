@@ -1,3 +1,4 @@
+from tokenize import String
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from .models import *
 from .forms import *
@@ -612,3 +613,48 @@ def check_mail_used(request):
         return JsonResponse({"message": ""})
     except:
         return JsonResponse({"message": "帳號未被使用"})
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import generics
+from rest_framework import status, permissions
+from toolfamily.models import Case
+from toolfamily.serializers import CaseSerializer, ReportSerializer
+from django.http.request import QueryDict
+
+
+@api_view(['GET'])
+def case_detail(request, pk):
+    try:
+        case = Case.objects.get(pk=pk)
+    except Case.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == 'GET':
+        serializer = CaseSerializer(case)
+        return Response(serializer.data)
+
+class Case_list(generics.ListAPIView):
+    queryset = Case.objects.all()
+    serializer_class = CaseSerializer
+    def post(self, request, format=None):
+        if isinstance(request.data, QueryDict):
+            request.data._mutable = True
+            request.data["publisher"] = str(request.user.pk) 
+        serializer = CaseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class ReportList(generics.ListAPIView):
+    queryset = Report.objects.all()
+    serializer_class = ReportSerializer
+    def post(self, request, format=None):
+        serializer = ReportSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]

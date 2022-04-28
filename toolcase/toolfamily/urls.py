@@ -33,3 +33,11 @@ urlpatterns += [
     path('case/search/', views.case_search,name='case-search'),
 ]
 
+#####################################
+#           API URLS               #
+#####################################
+urlpatterns += [
+    path('cases/', views.Case_list.as_view()),
+    path('cases/<int:pk>', views.case_detail),
+    path('reports/', views.ReportList.as_view()),
+]

@@ -30,6 +30,8 @@ urlpatterns = [
     *i18n_patterns(path('accounts/login/', RedirectView.as_view(url='/toolfamily/', permanent=True))),
     *i18n_patterns(path('', RedirectView.as_view(url='/toolfamily/home/', permanent=True))),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+urlpatterns += [
+    path('api-auth/', include('rest_framework.urls')),
+]
 # urlpatterns += i18n_patterns(
 #     path('toolfamily/', include('toolfamily.urls'))+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

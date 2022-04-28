@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'toolfamily.apps.ToolfamilyConfig', ##將應用添加進INSTALLED_APPS
+    'rest_framework'
     # 'rosetta',
 ]
-
+ROOT_URLCONF = 'toolcase.urls'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',#Manages sessions across requests
