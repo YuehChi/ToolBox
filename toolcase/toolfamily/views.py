@@ -17,7 +17,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
 
-from datetime import date ,datetime
+from datetime import date 
+
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.hashers import check_password, make_password
