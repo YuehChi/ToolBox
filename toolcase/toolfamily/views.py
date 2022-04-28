@@ -1040,7 +1040,7 @@ def updateUserIcon(request):
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
-    userDataForm = UserDetailModelForm(instance=user)  # 預計要傳的表單資料
+    userDataForm = UserDetailModelForm(instance=current_user)  # 預計要傳的表單資料
 
     # POST: 更改使用者資料
     if request.method == 'POST':
