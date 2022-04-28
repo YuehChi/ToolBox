@@ -1,19 +1,7 @@
 {% extends "base_generic.html" %}
 <!DOCTYPE html>
 <html lang="en">
-{% block sidebar %}
-    <div class="col-md-6 d-none d-md-block" style="width: 192px;margin-top: 80px;">
-        <ul class="list-group">
-            <li class="list-group-item" style="background: rgb(241,241,241);text-align: center;font-size: 12px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);text-align: center;font-size: 16px;">會員中心</a></li>
-            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">編輯個人資訊</a></li>
-            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">我的委託</a></li>
-            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">我的接案</a></li>
-            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">我的追蹤</a></li>
-            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;border-bottom-style: none;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">設定</a></li>
-            <li class="list-group-item" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;"><a href="#" style="color: rgb(134, 81, 64);background: rgb(241,241,241);text-align: center;font-size: 16px;">登出</a></li>
-        </ul>
-    </div>
-{% endblock %}
+{% load static %}
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 
 {% block content %}
@@ -52,7 +40,7 @@
     color: #f3d16d;
     }
     fieldset, label { margin: 0; padding: 0; }
-    body{ margin: 20px; }
+    
     h1 { font-size: 1.5em; margin: 10px; }
 </style>
 
@@ -92,10 +80,23 @@
 </script>
 
 <body style="background: rgb(244,244,243);">
-    <div class="container" style="width: 1317px;">
+    <div class="container-fuild">
         
-        <div class="row" style="width: 1222px;margin-right: 30px;margin-right: 30px;">
-            <div class="col-md-6" style="width: 1027px; border-bottom-style: none;margin-top: 80px; padding-right: 0px;padding-left: 0px;">
+        <div class="row" >
+            <div class="d-none d-md-block col-sm-2">
+                <div class="justify-content-center" style="margin-top: 80px;">
+                    <ul class="tab-list" style="text-align: center;display:block;">
+                        <li class="list-group-item member " m="1"><a href="{%url 'my-user-profile'%}" style="color: rgb(134, 81, 64);">會員中心</a></li>
+                        <!-- <li class="list-group-item member" m="2"><a href="javascript:void(0)" style="color: rgb(134, 81, 64) ;">編輯個人資訊</a></li> -->
+                        <li class="list-group-item"><a href="{%url 'user-publish-record'%}" style="color: rgb(134, 81, 64) ;">我的委託</a></li>
+                        <li class="list-group-item"><a href="{%url 'user-take-record'%}" style="color: rgb(134, 81, 64) ;">我的接案</a></li>
+                        <li class="list-group-item"><a href="#" style="color: rgb(134, 81, 64) ;">我的追蹤</a></li>
+                        <li class="list-group-item"><a href="{% url 'user-password-update' %}" style="color: rgb(134, 81, 64) ;">更改密碼</a></li>
+                        <li class="list-group-item"><a href="{% url 'logout' %}" style="color: rgb(134, 81, 64) ;">登出</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-10" style="margin-top: 80px;">
                 {% load static %}
                 <div class="border rounded" style="background: #ffffff;width: 990px;margin-left: 22px;box-shadow: 1px 1px rgba(191,191,191,0.81);"><img src="{% static 'images/Ellipse%204.png' %}" style="margin-top: 50px;margin-left: 405px;">
                     <h1 class="fw-bold text-center" style="color: rgb(94, 73, 73);margin-top: -52px;font-size: 30px;">應徵名單</h1>
