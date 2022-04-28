@@ -224,7 +224,7 @@ def timeout(request):
 #####################################
 @login_required
 def index(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -247,7 +247,7 @@ def index(request):
 #-------------新增CASE---------------
 @login_required
 def case_new(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -325,7 +325,7 @@ def case_new(request):
 #-------------一個CASE的詳細資訊-------------
 @login_required
 def case_profile(request ,case_id):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -370,7 +370,7 @@ def case_profile(request ,case_id):
 #-------------一個CASE的編輯資訊-------------
 @login_required
 def case_profile_edit(request,case_id):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -472,7 +472,7 @@ def case_profile_edit(request,case_id):
 # -------------CASE資訊搜尋-------------
 @login_required
 def case_search(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -536,7 +536,7 @@ def case_search(request):
             case_types = Case_Type.objects.all()
             case_photo = CasePhoto.objects.all()
 
-            messages.warning(request, "請輸入收尋條件")
+            messages.warning(request, "請輸入搜尋條件")
             return render(request,'case/search.html',locals())
 
     result_case = Case.objects.filter(shown_public=True)
@@ -563,18 +563,18 @@ def case_search(request):
 # ------ 自己的個人資訊頁面 ------
 @login_required
 def viewUser(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
 
     # 更改使用者資料的表單
-    userDataForm = UserDetailModelForm(instance=user)
-    print(f'get data of {user}.')
+    userDataForm = UserDetailModelForm(instance=current_user)
+    print(f'get data of {current_user}.')
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
-        'user': user,
+        'current_user': current_user,
         'userDataForm': userDataForm,
         }
     return render(request, 'user/user.html', content)
@@ -583,9 +583,9 @@ def viewUser(request):
 # ------ 瀏覽其他使用者的資料 ------
 @login_required
 def viewOtherUser(request, user_id):
-    user = get_object_or_404(  # 找出自己是哪個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出自己是哪個 user; 找不到則回傳 404 error
         UserDetail,
-        django_user=request.user,
+        django_user=request.current_user,
         isActive=True)  # 若是被停權的 user，一樣 404
 
     # 找要看的是哪個 user
@@ -593,7 +593,7 @@ def viewOtherUser(request, user_id):
         UserDetail,
         user_id=user_id,
         isActive=True)  # 若是被停權的 user，一樣 404
-    if user == viewedUser:  # 若就是自己本人，則導到自己的頁面
+    if current_user == viewedUser:  # 若就是自己本人，則導到自己的頁面
         return redirect('my-user-profile')
 
     # 取得使用者資料
@@ -617,7 +617,7 @@ def viewOtherUser(request, user_id):
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
-        'user': user,
+        'current_user': current_user,
         'viewed_user': userData
         }
     return render(request, 'user/user_profile.html', content)
@@ -626,19 +626,19 @@ def viewOtherUser(request, user_id):
 # ------ 更新個人資訊 ------
 @login_required
 def updateUser(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
-    userDataForm = UserDetailModelForm(instance=user)  # 預計要傳的表單資料
+    userDataForm = UserDetailModelForm(instance=current_user)  # 預計要傳的表單資料
 
     # POST: 更改使用者資料
     if request.method == 'POST':
         print('\n\nrequest.POST:', request.POST)
-        formPost = UserDetailModelForm(request.POST, instance=user)
+        formPost = UserDetailModelForm(request.POST, instance=current_user)
         if formPost.is_valid():
             userUpdate = formPost.save(commit=False)  # 先暫存，還不更改資料庫
-            userUpdate.account_mail = user.account_mail  # 自動填入email
+            userUpdate.account_mail = current_user.account_mail  # 自動填入email
             userUpdate.save()  # 實際更改資料庫
             print('User data has been update.')
             return redirect('my-user-profile')  # 重定向並刷新個資分頁的資訊
@@ -648,7 +648,7 @@ def updateUser(request):
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
-        'user': user,
+        'current_user': current_user,
         'userDataForm': userDataForm,
         }
     return render(request, 'user/user.html/', content)
@@ -657,7 +657,7 @@ def updateUser(request):
 # ------ 更新頭像 ------
 @login_required
 def updateUserIcon(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -665,11 +665,11 @@ def updateUserIcon(request):
 
     # POST: 更改使用者資料
     if request.method == 'POST':
-        iconPost = UserIconForm(request.POST, instance=user)  # 改頭像的表單
+        iconPost = UserIconForm(request.POST, instance=current_user)  # 改頭像的表單
         if iconPost.is_valid():
             userUpdate = iconPost.save(commit=False)  # 先暫存，還不更改資料庫
-            userUpdate.name = user.name  # 自動填入name
-            userUpdate.account_mail = user.account_mail  # 自動填入email
+            userUpdate.name = current_user.name  # 自動填入name
+            userUpdate.account_mail = current_user.account_mail  # 自動填入email
             if request.FILES:  # 若有上傳圖片
                 try:
                     if userUpdate.icon:  # 若有舊檔，就刪除
@@ -693,7 +693,7 @@ def updateUserIcon(request):
 
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
-        'user': user,
+        'current_user': current_user,
         'userDataForm': userDataForm,
         }
     return render(request, 'user/user.html/', content)
@@ -715,7 +715,7 @@ def updateUserIcon(request):
 # ------ 更新密碼（需要再次輸入舊密碼）------
 @login_required
 def updatePassword(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -726,7 +726,7 @@ def updatePassword(request):
         # 重新確認密碼
         oldPassword = request.POST.get('oldPassword')
         django_user = auth.authenticate(
-            username=user.account_mail,
+            username=current_user.account_mail,
             password=oldPassword)
 
         if not django_user:
@@ -747,8 +747,8 @@ def updatePassword(request):
         django_user.password = make_password(newPassword)
         django_user.save()
 
-        user.salt = django_user.password
-        user.save()
+        current_user.salt = django_user.password
+        current_user.save()
 
         request.session['messages'] = "密碼更改成功！"
         return HttpResponseRedirect('/')  # 自動登出，導到會員登入頁面
