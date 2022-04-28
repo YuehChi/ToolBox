@@ -109,7 +109,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-6" style="max-width: 70%;width: 250px;margin-top: 20px;">
-                        <form action="{% url 'current_user-icon-update' %}" method="POST" enctype="multipart/form-data">
+                        <form action="{% url 'user-icon-update' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div>
                             {% if current_user.icon %}  {#有圖片才顯示#}

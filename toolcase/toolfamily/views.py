@@ -16,9 +16,23 @@ from django.dispatch import receiver
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
-from datetime import date , datetime ,timedelta
+from datetime import date, timedelta
 from django.utils.timezone import now
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.backends import ModelBackend
+
+from itsdangerous import URLSafeTimedSerializer as utsr
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import generics
+from rest_framework import status, permissions
+from toolfamily.serializers import CaseSerializer, ReportSerializer
+from django.http.request import QueryDict
 
 
 
@@ -48,21 +62,7 @@ def calPage_index (data_list , page):
 
     return totalpage_length, count_page
 
-# from datetime import date
 
-from django.contrib import messages, auth
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.hashers import check_password, make_password
-from django.contrib.auth.backends import ModelBackend
-
-from itsdangerous import URLSafeTimedSerializer as utsr
-
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import generics
-from rest_framework import status, permissions
-from toolfamily.serializers import CaseSerializer, ReportSerializer
-from django.http.request import QueryDict
 
 #########################################
 #                 TOOLS                 #

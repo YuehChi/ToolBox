@@ -229,7 +229,9 @@
                                                                 <div class="col-12 d-flex justify-content-center align-items-center">
                                                                     <div class="text-center">
                                                                         <a href="#">
-                                                                            <div class="img-circular" id="user-icon"   style="background-image: url('{{case.publisher.icon.url}}');">
+                                                                            <div class="img-circular" id="user-icon"   style="
+                                                                            {% if case.publisher.icon %}background-image: url('{{case.publisher.icon.url}}');
+                                                                            {% endif %}">
                                                                             </div>
                                                                         </a>
                                                                     </div>
@@ -422,7 +424,9 @@
                                                                 <div class="col-12 d-flex justify-content-center align-items-center">
                                                                     <div class="text-center">
                                                                         <a href="#">
-                                                                            <div class="img-circular" id="user-icon"   style="background-image: url('{{case.publisher.icon.url}}');">
+                                                                            <div class="img-circular" id="user-icon"   style="
+                                                                            {% if case.publisher.icon %}background-image: url('{{case.publisher.icon.url}}');
+                                                                            {% endif %}">
                                                                             </div>
                                                                         </a>
                                                                     </div>
