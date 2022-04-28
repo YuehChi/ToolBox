@@ -679,7 +679,7 @@ def case_search(request):
     page_all = request.GET.get('page_all', 1)
     result_case = Case.objects.filter(shown_public=True)
     num_case = Case.objects.filter(shown_public=True).count()
-    result_case, num_pages = calPage_index(result_case,page_all)
+    result_case, num_pages = calPage(result_case,page_all)
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
