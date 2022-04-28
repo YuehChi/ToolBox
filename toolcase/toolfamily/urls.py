@@ -59,3 +59,12 @@ urlpatterns += [
     path('case/take/<int:case_id>',views.take_case, name='take-case'),
     path('case/cancel/<int:case_id>', views.cancel_willingess, name='cancel-willingess'),
 ]
+
+#####################################
+#           API URLS               #
+#####################################
+urlpatterns += [
+    path('cases/', views.Case_list.as_view()),
+    path('cases/<int:pk>', views.case_detail),
+    path('reports/', views.ReportList.as_view()),
+]

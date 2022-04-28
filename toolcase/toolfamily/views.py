@@ -1,5 +1,5 @@
 from calendar import c
-from datetime import timedelta
+from datetime import timedelta, date
 import os, django, json, smtplib, base64, imaplib, time
 from email.mime.text import MIMEText
 from urllib import request
@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
 
-from datetime import date 
+# from datetime import date
 
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required, permission_required
@@ -25,6 +25,13 @@ from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.backends import ModelBackend
 
 from itsdangerous import URLSafeTimedSerializer as utsr
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import generics
+from rest_framework import status, permissions
+from toolfamily.serializers import CaseSerializer, ReportSerializer
+from django.http.request import QueryDict
 
 #########################################
 #                 TOOLS                 #
@@ -85,7 +92,7 @@ def timeout(request):
         if case.case_status.status_id in [1, 2] and datetime.datetime.now().astimezone() > case.ended_datetime:
             willing = CaseWillingness.objects.filter(apply_case=case)
             commission = CommissionRecord.objects.filter(case=case)
-            
+
             # cancel all willingness
             for data in willing:
                 data.delete()
@@ -99,7 +106,7 @@ def timeout(request):
                     data.user_status.status_id = finish
                     data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
-                    
+
                     msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動完成委託。"
                     notice = Notice.objects.create(user=data.commissioned_user, message=msg)
                     notice.save()
@@ -109,7 +116,7 @@ def timeout(request):
                     data.user_status.status_id = close
                     data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
-                    
+
                     msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動解除委託。"
                     notice = Notice.objects.create(user=data.case.publisher, message=msg)
                     notice.save()
@@ -119,7 +126,7 @@ def timeout(request):
                     data.user_status.status_id = close
                     data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
-                    
+
                     msg = f"案件編號#{case.case_id} {case.title} 已經到期，系統自動解除委託。"
                     notice = Notice.objects.create(user=data.commissioned_user, message=msg)
                     notice.save()
@@ -137,7 +144,7 @@ def timeout(request):
         if data.finish_datetime != None:
             delta = datetime.datetime.now().astimezone() - data.finish_datetime
             if  delta.seconds > 259200:
-                
+
                 # publisher apply for delete, user=publisher
                 if data.user_status.status_id == 5:
                     data.user_status = close
@@ -228,7 +235,7 @@ def index(request):
     case_photo = CasePhoto.objects.all()
 
     notice = timeout(request)
-    
+
     return render(request, 'index.html', locals())
 
 
@@ -779,7 +786,7 @@ def user_publish_record(request):
 
 
     # 判斷已結束的案件
-    
+
     return render(request, 'user/publish.html', locals())
 
 
@@ -851,7 +858,7 @@ def user_take_record(request):
             conduct.append(data)
         elif status == 3 or status == 4:
             close.append(data)
-        
+
     # 丟case資訊回去
 
     # 評價
@@ -882,7 +889,7 @@ def take_case(request, case_id):
 # ---------cancel willingness---------
 @login_required
 def cancel_willingess(request, case_id):
-    
+
     case = Case.objects.get(Q(case_id=case_id))
     user = request.user.user_detail
     try:
@@ -897,7 +904,7 @@ def cancel_willingess(request, case_id):
 # ---------build commission---------
 @login_required
 def build_commission(request):
-    
+
     try:
         # get case willingness id
         body = request.body.decode('utf-8').split('&toolman=')[1:]
@@ -969,7 +976,7 @@ def delete_commission(request, commission_id):
     else:
         case.case_status = Status.objects.get(Q(status_id=1))
         case.save()
-    
+
     if sender == commission.commissioned_user:
         return redirect('user-take-record')
     else:
@@ -1067,8 +1074,8 @@ def user_publish_record(request):
                 try:
                     CommissionRecord.objects.get(Q(commissioned_user=data.willing_user) & Q(case=case))
                 except:
-                    willing[case.case_id] += 1               
-    
+                    willing[case.case_id] += 1
+
     return render(request, 'user/publish.html', locals())
 
 
@@ -1170,7 +1177,7 @@ def take_case(request, case_id):
     # foreign key
     case = Case.objects.get(Q(case_id=case_id))
     user = UserDetail.objects.get(Q(django_user=request.user))
-    
+
     # create a case willingness
     willingness = CaseWillingness.objects.create(apply_case=case, willing_user=user)
     willingness.save()
@@ -1181,7 +1188,7 @@ def take_case(request, case_id):
 # ---------cancel willingness for case---------
 @login_required
 def cancel_willingess(request, case_id):
-    
+
     case = Case.objects.get(Q(case_id=case_id))
     user = request.user.user_detail
     try:
@@ -1199,7 +1206,7 @@ def cancel_willingess(request, case_id):
 # ---------cancel willingness for user---------
 @login_required
 def user_cancel_willingess(request, case_id):
-    
+
     case = Case.objects.get(Q(case_id=case_id))
     user = request.user.user_detail
     try:
@@ -1216,7 +1223,7 @@ def user_cancel_willingess(request, case_id):
 # ---------build commission---------
 @login_required
 def build_commission(request):
-    
+
     try:
         # get case willingness id
         body = request.body.decode('utf-8').split('&toolman=')[1:]
@@ -1310,7 +1317,7 @@ def delete_commission(request, commission_id):
     else:
         case.case_status = Status.objects.get(Q(status_id=1))
         case.save()
-    
+
     if sender == commission.commissioned_user:
         messages.info(request, 'taking', extra_tags='origin_page')
         return redirect('user-take-record')
@@ -1675,3 +1682,40 @@ def check_mail_used(request):
         return JsonResponse({"message": ""})
     except:
         return JsonResponse({"message": "帳號未被使用"})
+
+
+@api_view(['GET'])
+def case_detail(request, pk):
+    try:
+        case = Case.objects.get(pk=pk)
+    except Case.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CaseSerializer(case)
+        return Response(serializer.data)
+
+class Case_list(generics.ListAPIView):
+    queryset = Case.objects.all()
+    serializer_class = CaseSerializer
+    def post(self, request, format=None):
+        if isinstance(request.data, QueryDict):
+            request.data._mutable = True
+            request.data["publisher"] = str(request.user.pk)
+        serializer = CaseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class ReportList(generics.ListAPIView):
+    queryset = Report.objects.all()
+    serializer_class = ReportSerializer
+    def post(self, request, format=None):
+        serializer = ReportSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]

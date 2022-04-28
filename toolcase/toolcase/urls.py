@@ -23,17 +23,6 @@ from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
-# urlpatterns = [
-#     *i18n_patterns(path('admin/', admin.site.urls)),
-#     # path('rosetta/', include('rosetta.urls')),
-#     *i18n_patterns(path('toolfamily/', include('toolfamily.urls'))),
-#     *i18n_patterns(path('accounts/login/', RedirectView.as_view(url='/toolfamily/', permanent=True))),
-#     *i18n_patterns(path('', RedirectView.as_view(url='/toolfamily/home/', permanent=True))),
-# ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-# urlpatterns += i18n_patterns(
-#     path('toolfamily/', include('toolfamily.urls'))+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('toolfamily/', include('toolfamily.urls')),
