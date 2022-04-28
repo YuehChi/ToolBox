@@ -924,6 +924,7 @@ def case_search(request):
     # 預設畫面，代所有case
     result_case = Case.objects.filter(shown_public=True)
     num_case = Case.objects.filter(shown_public=True).count()
+    result_case , num_pages= calPage(result_case,1)
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
