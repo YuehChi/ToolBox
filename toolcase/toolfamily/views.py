@@ -1138,7 +1138,7 @@ def updatePassword(request):
 # ------------user publish record------------
 @login_required
 def user_publish_record(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -1212,7 +1212,7 @@ def user_publish_record(request):
 # ---------applicants for each case---------
 @login_required
 def user_publish_applicant(request, case_id):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
@@ -1253,7 +1253,7 @@ def user_publish_applicant(request, case_id):
 # ------------user take record------------
 @login_required
 def user_take_record(request):
-    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
