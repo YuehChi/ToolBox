@@ -32,12 +32,12 @@ $(document).ready(function() {
         $('#case-buttons').addClass('d-none')
     }
 
-    // --------------- Case Status ---------------
-    var case_status = $('#get-case-status').html()
-    console.log('case_status:' + case_status)
-    if(case_status == '徵求'){
-        $('#case-status').html('徵求中')
-    }
+    // // --------------- Case Status ---------------
+    // var case_status = $('#get-case-status').html()
+    // console.log('case_status:' + case_status)
+    // if(case_status == '徵求'){
+    //     $('#case-status').html('徵求中')
+    // }
 
 
 

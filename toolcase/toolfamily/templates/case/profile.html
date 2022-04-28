@@ -158,8 +158,13 @@
                                 <!----------Case Status & Time---------->
                                 <div class="row">
                                     <div class="col-12 d-flex align-items-center" style="background: rgba(245,197,72,0);width: auto;padding-left: 0px;">
-                                        <span id="case-status" class="d-flex justify-content-center align-items-center" style="background: #f5c548;padding-left: 8px;padding-right: 8px;font-size: 14px;border-radius: 5px;font-weight: bold;">
-                                        </span>
+                                        {% if case.case_status.status_name == "徵求" %}
+                                            <span id="case-status" class="justify-content-center align-items-center" style=" background: #f5c548 !important">徵求中</span>
+                                        {% elif case.case_status.status_name == "進行" %}
+                                            <span id="case-status" class="justify-content-center align-items-center" style="background: #dc3545">委託中</span>
+                                        {% elif case.case_status.status_name == "完成" %}  
+                                            <span id="case-status" class="justify-content-center align-items-center" style="background: #c4c4c4">已完成</span>
+                                        {% endif %}
                                         <i class="material-icons" style="font-size: 14px;margin-bottom: 0px;margin-left: 10px;color: #a58d8d;">access_time</i>
                                         <span id="case-time" style="font-size: 12px;color: #a58d8d;">
                                         2022/03/27 ~ 2022/04/01 還剩3天

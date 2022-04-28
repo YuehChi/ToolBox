@@ -16,7 +16,7 @@ from django.dispatch import receiver
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
-from datetime import date , datetime ,timedelta
+from datetime import date ,timedelta
 from django.utils.timezone import now
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -260,17 +260,17 @@ def index(request):
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
 
-    list_case = Case.objects.filter(shown_public=True)
+   
    
     # 最新的case
     new_case = Case.objects.filter(shown_public=True)
-    page_new = request.GET.get('page_new', 1)
-    new_case , num_pages = calPage_index(new_case,page_new)
+    # page_new = request.GET.get('page_new', 1)
+    # new_case , num_pages = calPage_index(new_case,page_new)
     
     # 最多瀏覽的case
-    page_most = request.GET.get('page_most', 1)
+    # page_most = request.GET.get('page_most', 1)
     most_case = Case.objects.filter(shown_public=True).order_by('-pageviews')
-    most_case , num_pages = calPage_index(most_case,page_new)
+    # most_case , num_pages = calPage_index(most_case,page_new)
 
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
