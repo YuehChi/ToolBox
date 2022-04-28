@@ -28,8 +28,8 @@
                 <div class="row justify-content-center" style="z-index: 1;background: #ffffff;border-radius: .25rem">
                     <div class="col-md" style="max-width: 70%;width: 250px;">
                         <div class="row justify-content-center">
-                        {% if user.icon %}  {# 有圖才顯示 #}
-                            <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;" src="{{ user.icon.url }}">
+                        {% if current_user.icon %}  {# 有圖才顯示 #}
+                            <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;" src="{{ current_user.icon.url }}">
                         {% else %}
                             <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;" src="\static\images\default_icon_1.png">
                         {% endif %}
