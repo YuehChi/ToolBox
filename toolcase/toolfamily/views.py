@@ -21,6 +21,11 @@ from django.core.mail import send_mail
 
 @login_required
 def index(request):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+
     list_case = Case.objects.filter(shown_public=True)
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
@@ -39,6 +44,10 @@ def index(request):
 #-------------新增CASE---------------
 @login_required
 def case_new(request):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
 
     if request.method == "POST" :
 
@@ -109,9 +118,14 @@ def case_new(request):
 
     return render(request,'case/new.html')
 
+
 #-------------一個CASE的詳細資訊-------------
 @login_required
 def case_profile(request ,case_id):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
 
     pk_key = case_id
 
@@ -133,9 +147,14 @@ def case_profile(request ,case_id):
 
     return render(request,'case/profile.html',locals())
 
+
 #-------------一個CASE的編輯資訊-------------
 @login_required
 def case_profile_edit(request,case_id):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
 
     pk_key = case_id
     user_id = request.user.user_detail.user_id
@@ -230,9 +249,14 @@ def case_profile_edit(request,case_id):
         messages.warning(request, "You don't have right to edit the case.")
         return redirect('index')
 
+
 # -------------CASE資訊搜尋-------------
 @login_required
 def case_search(request):
+    user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
 
     list_case = Case.objects.filter(shown_public=True)
     case_fields = Case_Field.objects.all()
@@ -245,12 +269,10 @@ def case_search(request):
 
 
 
-
-
 #####################################
 #           USER VIEWS              #
 #####################################
-# 使用者資料頁面
+# ------ 使用者資料頁面 ------
 @login_required
 def viewUser(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -291,7 +313,7 @@ def viewUser(request):
     return render(request, 'user/user.html', content)
 
 
-
+# ------ 更新使用者資料 ------
 @login_required
 def updateUser(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -322,7 +344,7 @@ def updateUser(request):
     return render(request, 'user/user.html/', content)
 
 
-
+# ------ 更新使用者頭像 ------
 @login_required
 def updateUserIcon(request):
     user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
@@ -380,6 +402,8 @@ def updateUserIcon(request):
                  'user_name': user_name},
     )
 
+
+
 #########################################
 #                 TOOLS                 #
 #########################################
@@ -400,10 +424,10 @@ class Token:
         return serializer.loads(token, salt=self.salt)
 token_confirm = Token(django_settings.SECRET_KEY)
 
+
 # ----------------def ajax response----------------
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
-
 
 
 
@@ -454,6 +478,7 @@ def login(request):
 
     return render(request, 'login.html', locals())
 
+
 # -----------customize authentication-----------
 class CustomizeUserBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
@@ -464,10 +489,12 @@ class CustomizeUserBackend(ModelBackend):
         if check_password(password, user.django_user.password):
             return user.django_user
 
+
 # ----------------logout------------------
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/')
+
 
 # ----------------register------------------
 def register(request):
@@ -507,6 +534,7 @@ def register(request):
 
     return render(request, 'register.html', locals())
 
+
 # ------------email verification-------------
 def active(request, token):
     # timeout
@@ -537,6 +565,7 @@ def active(request, token):
     except User.DoesNotExist: # user doesn't exist
         request.session['messages'] = "對不起，您所驗證的帳號不存在。\n請重新註冊。"
         return HttpResponseRedirect('/')
+
 
 # --------------forget password----------------
 def forget(request):
@@ -570,6 +599,7 @@ def forget(request):
 
     return render(request, 'forget_pwd.html', locals())
 
+
 # --------------reset password----------------
 def reset(request, token):
     # timeout
@@ -600,6 +630,7 @@ def reset(request, token):
         return HttpResponseRedirect('/')
 
     return render(request, 'reset_pwd.html', locals())
+
 
 # -----------check register email-------------
 @csrf_exempt
