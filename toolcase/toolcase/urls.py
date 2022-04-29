@@ -25,7 +25,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     *i18n_patterns(path('admin/', admin.site.urls)),
-    # path('rosetta/', include('rosetta.urls')),
     *i18n_patterns(path('toolfamily/', include('toolfamily.urls'))),
     *i18n_patterns(path('accounts/login/', RedirectView.as_view(url='/toolfamily/', permanent=True))),
     *i18n_patterns(path('', RedirectView.as_view(url='/toolfamily/home/', permanent=True))),
