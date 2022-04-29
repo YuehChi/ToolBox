@@ -1,6 +1,9 @@
 $(document).ready(function(){
 
     $('.dropdown-toggle').dropdown()
+    
+
+
 
     //--------------- Hover ---------------
     $('#dropdown-field').hover(function(){

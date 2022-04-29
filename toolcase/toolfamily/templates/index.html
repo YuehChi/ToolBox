@@ -26,7 +26,7 @@
         </div>
     
         <!----------Search Bar---------->
-        <form class = "from"  action="" enctype="multipart/form-data" method="POST" id="search-form">
+        <form class = "from"   action="/toolfamily/case/search/" enctype="multipart/form-data" method="POST" id="search-form">
             {% csrf_token %}
             <input class="d-none" type="checkbox" name="case_field" id="forminput-case-field">
             <input class="d-none" type="checkbox" name="case_type" id="forminput-case-type">
@@ -164,9 +164,9 @@
                                                             {% if case.case_status.status_name == "徵求" %}
                                                                 <span id="case-status" class="justify-content-center align-items-center" style=" background: #f5c548 !important">徵求中</span>
                                                             {% elif case.case_status.status_name == "進行" %}
-                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #dc3545">委託中</span>
+                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d43747;color: white">委託中</span>
                                                             {% elif case.case_status.status_name == "完成" %}  
-                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #c4c4c4">已完成</span>
+                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d6d6d6">已完成</span>
                                                             {% endif %}
                                                             <!----------Second Info---------->
                                                             <div class="mt-1 d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;">
@@ -230,7 +230,7 @@
                                                         </div>
 
                                                         <!----------User Main Info---------->
-                                                        <div class="d-lg-flex justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
+                                                        <div class="justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
                                                             <div class="row">
                                                                 <!----------User Icon---------->
                                                                 <div class="col-12 d-flex justify-content-center align-items-center">
@@ -239,7 +239,7 @@
                                                                             {% if case.publisher.icon %}
                                                                                 <div class="img-circular" id="user-icon"   style="background-image: url({{case.publisher.icon.url}});"></div>
                                                                             {% else %}
-                                                                                <div class="img-circular" id="user-icon"   style="background-image: url('/staitc/images/default_icon_1.png');"></div>
+                                                                                <div class="img-circular" id="user-icon"   style="background-image: url('/static/images/default_icon_1.png');"></div>
 
                                                                             {% endif %}
                                                                             </div>
@@ -262,7 +262,7 @@
                                                                 <!----------User Nickname---------->
                                                                 <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
                                                                     <span id="user-nickname" style="font-size: 14px;text-align: center;font-weight: bold;">
-                                                                    {% if user.nickname == "" %}
+                                                                    {% if case.publisher.nickname == "" %}
                                                                         {{case.publisher.name}}
                                                                     {% else %}
                                                                         {{case.publisher.nickname}}
@@ -361,11 +361,13 @@
                                                                 <a class="d-md-none d-lg-none d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:15}}</a>
                                                                 
                                                             </h4>
-                                                            <span id="case-status" class="justify-content-center align-items-center" >
-                                                                {% if case.case_status.status_name == "徵求" %}
-                                                                    徵求中
-                                                                {% endif %}
-                                                            </span>
+                                                            {% if case.case_status.status_name == "徵求" %}
+                                                                <span id="case-status" class="justify-content-center align-items-center" style=" background: #f5c548 !important">徵求中</span>
+                                                            {% elif case.case_status.status_name == "進行" %}
+                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d43747;color: white">委託中</span>
+                                                            {% elif case.case_status.status_name == "完成" %}  
+                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d6d6d6">已完成</span>
+                                                            {% endif %}
                                                             <!----------Second Info---------->
                                                             <div class="mt-1 d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;">
                                                                 <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 16px;">confirmation_number</i>
@@ -428,7 +430,7 @@
                                                         </div>
 
                                                         <!----------User Main Info---------->
-                                                        <div class="d-lg-flex justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
+                                                        <div class="justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
                                                             <div class="row">
                                                                 <!----------User Icon---------->
                                                                 <div class="col-12 d-flex justify-content-center align-items-center">
@@ -437,7 +439,7 @@
                                                                             {% if case.publisher.icon %}
                                                                                 <div class="img-circular" id="user-icon"   style="background-image: url({{case.publisher.icon.url}});"></div>
                                                                             {% else %}
-                                                                                <div class="img-circular" id="user-icon"   style="background-image: url('/staitc/images/default_icon_1.png');"></div>
+                                                                                <div class="img-circular" id="user-icon"   style="background-image: url('/static/images/default_icon_1.png');"></div>
 
                                                                             {% endif %}
                                                                         </a>
@@ -446,9 +448,9 @@
 
                                                                 <!----------User Rate---------->
                                                                 <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
-                                                                    <div id="user-rate-{{case.case_id}}" class=" d-flex justify-content-center align-items-center">
+                                                                    <div id="user-rate-most-{{case.case_id}}" class=" d-flex justify-content-center align-items-center">
                                                                         <script>
-                                                                            $('#user-rate-{{case.case_id}}').html(userRate({{case.publisher.rate}}));    // assuming f() is defined in script.js
+                                                                            $('#user-rate-most-{{case.case_id}}').html(userRate({{case.publisher.rate}}));    // assuming f() is defined in script.js
                                                                         </script>
                                                                     </div>
                                                                     <span id="user-ratenum" style="color: #865140;font-size: 14px">
@@ -458,8 +460,8 @@
 
                                                                 <!----------User Nickname---------->
                                                                 <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
-                                                                    <span id="user-nickname" style="font-size: 14px;text-align: center;font-weight: bold;">
-                                                                    {% if user.nickname == "" %}
+                                                                    <span id="user-nickname-most" style="font-size: 14px;text-align: center;font-weight: bold;">
+                                                                    {% if case.publisher.nickname == "" %}
                                                                         {{case.publisher.name}}
                                                                     {% else %}
                                                                         {{case.publisher.nickname}}
@@ -470,9 +472,9 @@
 
                                                                 <!----------User Last Login Time---------->
                                                                 <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <span class="justify-content-center align-items-center text-center" id="user-lastlogintime-{{case.case_id}}" style="font-size: 8px;margin-top: 3px;color: #b8b3b3;">
+                                                                    <span class="justify-content-center align-items-center text-center" id="user-lastlogintime-most-{{case.case_id}}" style="font-size: 8px;margin-top: 3px;color: #b8b3b3;">
                                                                         <script>
-                                                                            $('#user-lastlogintime-{{case.case_id}}').html(userLastLogin('{{case.publisher.last_login}}')); 
+                                                                            $('#user-lastlogintime-most-{{case.case_id}}').html(userLastLogin('{{case.publisher.last_login}}')); 
                                                                         </script>
                                                                     </span>
                                                                 </div>

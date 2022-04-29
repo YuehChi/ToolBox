@@ -56,11 +56,11 @@
 }
 
 .keyword_input:hover {
-    background: #eee;
-    border-bottom-color: #865140;
-    border-bottom: 1px solid;
-    border-bottom-left-radius: 0ch;
-    border-bottom-right-radius: 0ch;
+    background: #eee !important;
+    border-bottom-color: #865140!important;
+    border-bottom: 1px solid!important;
+    border-bottom-left-radius: 0ch!important;
+    border-bottom-right-radius: 0ch!important;
 }
   
 .keyword_input::-webkit-input-placeholder {

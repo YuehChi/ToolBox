@@ -809,14 +809,14 @@ def case_search(request):
 
             if len(record) !=0 :
                 for i in range(len(record)):
-                    num = record[i]
+                    num_record = record[i]
                     #print(i)
                     if i == 0 :
-                        temp2_id_list = temp2[num]
+                        temp2_id_list = temp2[num_record]
                         #print("temp2_id_list:",temp2_id_list)
                         #print("temp2[i]:",temp2[num])
                     else:
-                        temp2_id_list = list(set(temp2_id_list) & set(temp2[num]))
+                        temp2_id_list = list(set(temp2_id_list) & set(temp2[num_record]))
 
             print("temp2_id_list:",temp2_id_list)
 

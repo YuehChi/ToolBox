@@ -31,7 +31,7 @@
     </div>
 
     <!----------Search Bar---------->
-    <form class = "from"  action="" enctype="multipart/form-data" method="POST" id="search-form">
+    <form class = "from"  action="/toolfamily/case/search/" enctype="multipart/form-data" method="POST" id="search-form">
         {% csrf_token %}
         <input class="d-none" type="checkbox" name="case_field" id="forminput-case-field">
         <input class="d-none" type="checkbox" name="case_type" id="forminput-case-type">
@@ -351,9 +351,9 @@
                                                         {% if case.case_status.status_name == "徵求" %}
                                                                 <span id="case-status" class="justify-content-center align-items-center" style=" background: #f5c548 !important">徵求中</span>
                                                         {% elif case.case_status.status_name == "進行" %}
-                                                               <span id="case-status" class="justify-content-center align-items-center" style="background: #dc3545">委託中</span>
+                                                               <span id="case-status" class="justify-content-center align-items-center" style="background: #d43747;color: white">委託中</span>
                                                         {% elif case.case_status.status_name == "完成" %}  
-                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #c4c4c4">已完成</span>
+                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d6d6d6">已完成</span>
                                                         {% endif %}
                                                         
                                                         <!----------Second Info---------->

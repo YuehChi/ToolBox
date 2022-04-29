@@ -82,7 +82,6 @@ $(document).ready(function(){
         $('#forminput-page').val('1')
         $('#advanced-search-form').submit()
 
-
     });
 
 
@@ -365,19 +364,19 @@ function advancedSearchSubmit(){
         $('#forminput-work').val(parseInt($('input[name="workmode"]:checked').val()))
     }
 
-    console.log($('#input-preference').val() == '')
+    // console.log($('#input-preference').val() == '')
     $('#forminput-constraint').val($('#input-preference').val())
     $('#forminput-location').val($('#input-location').val())
 
-    console.log($('#forminput-type').val())
-    console.log($('#forminput-field').val())
+    // console.log($('#forminput-type').val())
+    // console.log($('#forminput-field').val())
     console.log($('#forminput-num').val())
-    console.log($('#forminput-date').val())
-    console.log($('#forminput-work').val())
-    console.log($('#forminput-constraint').val())
-    console.log($('#forminput-location').val())
-    console.log($("#forminput-caselist").val())
-    console.log($('#forminput-page').val())
+    // console.log($('#forminput-date').val())
+    // console.log($('#forminput-work').val())
+    // console.log($('#forminput-constraint').val())
+    // console.log($('#forminput-location').val())
+    // console.log($("#forminput-caselist").val())
+    // console.log($('#forminput-page').val())
     
     if(typeof  $('input[name="field"]:checked').val() === "undefined" && typeof  $('input[name="type"]:checked').val() === "undefined"){
         $('#forminput-con').val('0')

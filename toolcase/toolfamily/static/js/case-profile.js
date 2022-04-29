@@ -5,19 +5,23 @@ $(document).ready(function() {
     var tbtn_status = $('#get_take_btn_status').html()
     var case_id = $('#case-id').html()
 
-    if (tbtn_status == '1'){
+    var case_status = $('#get-case-status').html()
+    console.log(case_status)
+    console.log(case_status == "完成")
+
+    if (tbtn_status == '1' &&  case_status != "完成"){
         $('#button-case-commission').click(function(){
             alert('1')
             window.location = '/toolfamily/case/take/'+case_id
         })
     }
-    else if (tbtn_status == '2'){
+    else if (tbtn_status == '2' &&  case_status != "完成"){
         $('#button-case-commission').click(function(){
             alert('2')
             window.location = '/toolfamily/case/cancel/'+case_id
         })
     }
-    else if (tbtn_status == '3'){
+    else if (tbtn_status == '3' || case_status == "完成"){
         $('#button-case-commission').prop('disabled', true);
     }
     else{
