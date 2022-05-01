@@ -420,14 +420,9 @@ def case_profile(request ,case_id):
     user_id = temp_user.publisher.user_id
     user_detail = UserDetail.objects.filter(user_id = user_id)
 
-    # cancel case or not
-    case = Case.objects.get(Q(case_id=pk_key))
-    if 'button_status' in request.session:
-        idx = request.session['button_status']
-        del request.session['button_status']
-
     # user can take or not
     button_status = 0
+    case = Case.objects.get(Q(case_id=pk_key))
     try:
         CommissionRecord.objects.get(Q(commissioned_user=request.user.user_detail) & Q(case=case))
     except:
@@ -1339,8 +1334,6 @@ def cancel_willingess(request, case_id):
         willingness.delete()
     except:
         pass
-
-    request.session['button_status'] = 2
 
     return redirect('case-profile', case_id=case_id)
 
