@@ -420,15 +420,19 @@ def case_profile(request ,case_id):
     user_id = temp_user.publisher.user_id
     user_detail = UserDetail.objects.filter(user_id = user_id)
 
-    # user can take or not
-    user = request.user.user_detail
+    # cancel case or not
     case = Case.objects.get(Q(case_id=pk_key))
+    if 'button_status' in request.session:
+        idx = request.session['button_status']
+        del request.session['button_status']
+
+    # user can take or not
     button_status = 0
     try:
-        CommissionRecord.objects.get(Q(commissioned_user=user) & Q(case=case))
+        CommissionRecord.objects.get(Q(commissioned_user=request.user.user_detail) & Q(case=case))
     except:
         try:
-            CaseWillingness.objects.get(Q(willing_user=user) & Q(apply_case=case))
+            CaseWillingness.objects.get(Q(willing_user=request.user.user_detail) & Q(apply_case=case))
         except:
             button_status = 1  # can sign up the case
         else:
@@ -1336,9 +1340,9 @@ def cancel_willingess(request, case_id):
     except:
         pass
 
-    button_status = 1
+    request.session['button_status'] = 2
 
-    return render(request,'case/profile.html',locals())
+    return redirect('case-profile', case_id=case_id)
 
 
 
