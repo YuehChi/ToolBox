@@ -3,21 +3,30 @@ $(document).ready(function() {
     
     // --------------- Take Button Status ---------------
     var tbtn_status = $('#get_take_btn_status').html()
-    var case_id = $('#case-id').html()
+    console.log(tbtn_status)
+    var case_id = $('#get-case-id').val()
 
     var case_status = $('#get-case-status').html()
     console.log(case_status)
-    console.log(case_status == "完成")
+    console.log($('#get-case-enddate').html())
+    //console.log(case_status == "完成")
+    //console.log(case_id)
 
     if (tbtn_status == '1' &&  case_status != "完成"){
         $('#button-case-commission').click(function(){
-            alert('1')
+            //alert('1')
+            //console.log(case_id)
+            //console.log('/toolfamily/case/take/'+case_id)
             window.location = '/toolfamily/case/take/'+case_id
         })
     }
     else if (tbtn_status == '2' &&  case_status != "完成"){
+        $('#button-case-commission').html('取消報名')
+        $('#button-case-commission').removeClass('btn-take-case')
+        $('#button-case-commission').addClass('btn-cancel-take-case')
         $('#button-case-commission').click(function(){
-            alert('2')
+            //alert('2')
+            //console.log('/toolfamily/case/cancel/'+case_id)
             window.location = '/toolfamily/case/cancel/'+case_id
         })
     }
