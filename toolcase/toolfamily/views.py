@@ -134,7 +134,7 @@ def timeout(request):
             for data in commission:
                 # change conducting and applying for finish -> to finish status
                 if data.user_status.status_id in [2, 7]:
-                    data.user_status.status_id = finish
+                    data.user_status = finish
                     data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
 
@@ -144,7 +144,7 @@ def timeout(request):
 
                 # change applying for publisher sending delete -> to close
                 elif data.user_status.status_id == 5:
-                    data.user_status.status_id = close
+                    data.user_status = close
                     data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
 
@@ -154,7 +154,7 @@ def timeout(request):
 
                 # change applying for toolman sending delete -> to close
                 elif data.user_status.status_id == 6:
-                    data.user_status.status_id = close
+                    data.user_status = close
                     data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
 
