@@ -1,2 +1,2 @@
-web: gunicorn toolcase.wsgi
 release: python manage.py migrate
+web: gunicorn toolcase.wsgi
