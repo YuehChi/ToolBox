@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="\static\css\search-bar-styles.css">
 
        
-    <script src="\static\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
     <script src="\static\js\case-profile.js"></script>
     <script src="\static\js\search-bar.js"></script>
@@ -378,7 +377,7 @@
                                     <!----------Profile Button---------->
                                     <div class="col-12 d-flex justify-content-center align-items-center" style="height: 50px;margin-top: 6px;">
                                         <span class="d-none" id="get_take_btn_status">{{button_status}}</span>
-                                        <button class="btn btn-primary d-flex justify-content-center align-items-center" id="button-case-commission" type="button" style="height: 150px;width:150px;display: block;color: #3d2d27;background: #f5c548;border-color: #86514000;height: 85%;max-width: 300px">
+                                        <button class="btn-take-case btn btn-primary d-flex justify-content-center align-items-center" id="button-case-commission" type="button">
                                         我有意願
                                         </button>
                                     </div>
@@ -394,6 +393,7 @@
             </div>
             
             <!----------Catch Parms---------->
+            <input style="display: none" type="number" id="get-case-id" value="{{case.case_id}}">
             <span style="display: none" id="get-case-status">{{case.case_status.status_name}}</span>
             <span style="display: none" id="get-case-enddate">{{case.ended_datetime}}</span>
             <span style="display: none" id="get-case-startdate">{{case.started_datetime}}</span>

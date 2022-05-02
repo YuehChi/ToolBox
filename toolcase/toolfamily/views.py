@@ -421,14 +421,13 @@ def case_profile(request ,case_id):
     user_detail = UserDetail.objects.filter(user_id = user_id)
 
     # user can take or not
-    user = request.user.user_detail
-    case = Case.objects.get(Q(case_id=pk_key))
     button_status = 0
+    case = Case.objects.get(Q(case_id=pk_key))
     try:
-        CommissionRecord.objects.get(Q(commissioned_user=user) & Q(case=case))
+        CommissionRecord.objects.get(Q(commissioned_user=request.user.user_detail) & Q(case=case))
     except:
         try:
-            CaseWillingness.objects.get(Q(willing_user=user) & Q(apply_case=case))
+            CaseWillingness.objects.get(Q(willing_user=request.user.user_detail) & Q(apply_case=case))
         except:
             button_status = 1  # can sign up the case
         else:
@@ -1336,9 +1335,7 @@ def cancel_willingess(request, case_id):
     except:
         pass
 
-    button_status = 1
-
-    return render(request,'case/profile.html',locals())
+    return redirect('case-profile', case_id=case_id)
 
 
 
@@ -1573,6 +1570,8 @@ def login(request):
     # check url timeout or not
     all_user = User.objects.all()
     for data in all_user:
+        # if data.ok == False:
+        #     print("ok")
         if data.user_detail.isActive == False:
             if (datetime.datetime.now().astimezone() -  data.date_joined).seconds > 3600:
                 user_detail = UserDetail.objects.get(Q(django_user=data))

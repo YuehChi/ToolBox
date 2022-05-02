@@ -26,6 +26,36 @@
   font-weight: bold !important;
 }
 
+.btn-take-case {
+  height: 150px!important;
+  width:150px!important;
+  display: block!important;
+  color: #3d2d27!important;
+  background: #f5c548!important;
+  border-color: #86514000!important;
+  height: 85%!important;
+  max-width: 300px!important;
+}
+
+.btn-take-case:hover {
+  background: #e6ad20!important;
+}
+
+.btn-cancel-take-case {
+  height: 150px!important;
+  width:150px!important;
+  display: block!important;
+  color: #3d2d27!important;
+  background: #c5c5c4 !important;
+  border-color: #86514000!important;
+  height: 85%!important;
+  max-width: 300px!important;
+}
+.btn-cancel-take-case:hover {
+  background: #a0a0a0 !important;
+}
+
+
 .img-circular{
   width: 100px;
   height: 100px;
