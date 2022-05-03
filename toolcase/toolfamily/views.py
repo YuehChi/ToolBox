@@ -134,7 +134,7 @@ def timeout(request):
             for data in commission:
                 # change conducting and applying for finish -> to finish status
                 if data.user_status.status_id in [2, 7]:
-                    data.user_status.status_id = finish
+                    data.user_status = finish
                     data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
 
@@ -144,7 +144,7 @@ def timeout(request):
 
                 # change applying for publisher sending delete -> to close
                 elif data.user_status.status_id == 5:
-                    data.user_status.status_id = close
+                    data.user_status = close
                     data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
 
@@ -154,7 +154,7 @@ def timeout(request):
 
                 # change applying for toolman sending delete -> to close
                 elif data.user_status.status_id == 6:
-                    data.user_status.status_id = close
+                    data.user_status = close
                     data.doublecheck_datetime = datetime.datetime.now()
                     data.save()
 
@@ -389,8 +389,7 @@ def case_new(request):
 
         return redirect('case-profile',case_id = pk_key)
 
-
-    return render(request,'case/new.html')
+    return render(request,'case/new.html',{'current_user':current_user})
 
 
 #-------------一個CASE的詳細資訊-------------
@@ -976,6 +975,7 @@ def viewOtherUser(request, user_id):
 
     # 取得使用者資料
     dataCol = [  # 要取得哪些欄位  # 注意：@property的欄位不能用.values()抓
+        'name',
         'nickname',
         'gender',
         'department',
@@ -1570,8 +1570,6 @@ def login(request):
     # check url timeout or not
     all_user = User.objects.all()
     for data in all_user:
-        # if data.ok == False:
-        #     print("ok")
         if data.user_detail.isActive == False:
             if (datetime.datetime.now().astimezone() -  data.date_joined).seconds > 3600:
                 user_detail = UserDetail.objects.get(Q(django_user=data))
