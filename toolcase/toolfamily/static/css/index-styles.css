@@ -21,6 +21,14 @@ a {
 }
 }
 
+.page-link {
+  color: #7b6363;
+}
+
+.page-active-link {
+  color: #353232;
+}
+
 .i-case-bookmark {
     color: #865140;
     position: absolute;

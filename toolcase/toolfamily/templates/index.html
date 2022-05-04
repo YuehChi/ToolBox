@@ -100,12 +100,16 @@
                 </div>
         
 
-                <form class = "from"   action="/toolfamily/home/" enctype="multipart/form-data" method="POST" id="index-form">
-
-                    <input class="d-inline" name="page_new" type="number" id="forminput-page-new">
-                    <input class="d-inline" name="page_most" type="number" id="forminput-page-most">
+                
   
-                    <div class="col-12 col-md-9">
+                <div class="col-12 col-md-9">
+                    <form class = "from"   action="/toolfamily/home/" enctype="multipart/form-data" method="POST" id="index-form">
+                        {% csrf_token %}
+                        <input class="d-inline" name="page_new" type="number" id="forminput-page-new">
+                        <input class="d-inline" name="page_most" type="number" id="forminput-page-most">
+                        <input class="d-none" type="submit" id="forminput-submit">
+                        <span class="d-inline">{{new_case.number}}</span>
+                        <span class="d-inline">{{most_case.number}}</span>
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
@@ -123,9 +127,13 @@
 
                                             {% for i in new_case.paginator.page_range %}
                                                 {% if new_case.number == i %}
-                                                    <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
+                                                    <li class="active">
+                                                        <span>{{i}} <span class="sr-only"></span></span>
+                                                    </li>
                                                 {% else %}
-                                            <li><a href="?page_new={{ i }}">{{ i }}</a></li>
+                                                    <li>
+                                                        <a href="#" class="page-link page-new">{{i}}</a>
+                                                    </li>
                                                 {% endif %}
                                             {% endfor %}
 
@@ -136,6 +144,43 @@
                                             {% endif %}
                                         </ul>
                                         {% endif %}
+
+
+                                        <!--Pagination-->
+                                        
+                                            <ul class="pagination justify-content-center">
+                                            {% if new_case.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ new_case.previous_page_number }}">＜</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="True">＜</a>
+                                                </li>
+                                            {% endif %}
+                                            {% for i in new_case.paginator.page_range %}
+                                                {% if new_case.number == i %}
+                                                <li class="page-item" aria-current="page" aria-disabled="True">
+                                                    <span class="page-link">
+                                                    {{ i }}
+                                                    </span>
+                                                </li>
+                                                {% else %}
+                                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if movies.has_next %}
+                                                <li class="page-item">
+                                                <a class="page-link" href="?page={{ new_case.next_page_number }}">＞</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                <a class="page-link" href="#" tabindex="-1" aria-disabled="True">＞</a>
+                                                </li>
+                                            {% endif %}
+                                            </ul>
+                                       
+                                        <!--end of Pagination-->
                                     </div>
                                     <!----------Case Card---------->
                                     <div id="case-cards">
@@ -508,14 +553,14 @@
                                     
                                 </div>
                             </div>
-                        </div>
-                    
-                    </div>
+                        </div><!-------End of Most Case-->
+                    </form>    
+                </div>
 
                 </div>
             </div>
 
-        </form>
+        
 
         <div>     
             <p> new_case_case_id : 應徵人數 </p>

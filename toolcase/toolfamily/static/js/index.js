@@ -16,6 +16,11 @@ $(document).ready(function(){
         $('#advanced-search-form').submit()
     })
 
+    // ---------- Enabled Enter To Submit ----------
+    $('#index-form').on('keypress', function(e) {
+        return e.which !== 13;
+    });
+
 
 
 
