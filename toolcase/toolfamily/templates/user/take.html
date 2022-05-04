@@ -360,7 +360,14 @@
                                                                         
                                                                         <div style="margin-top: -50px; margin-left: 55px;">
                                                                             {% comment %} {% url 'others-user-profile' commission.case.publisher.user_id %} {% endcomment %}
-                                                                            <a class="link_title" href="{% url 'others-user-profile' commission.case.publisher.user_id %}" style="">{{commission.case.publisher.nickname}}
+                                                                            <a class="link_title" href="{% url 'others-user-profile' commission.case.publisher.user_id %}" style="">
+                                                                                {% if commission.case.publisher.nickname != "" %}
+                                                                                    {{commission.case.publisher.nickname}}
+                                                                                {% else %}
+                                                                                    {{commission.case.publisher.name}}
+                                                                                {% endif %}
+                                                                                
+                                                                                
                                                                                 {% load static %} 
                                                                                 {% if commission.case.publisher.gender == 0 %}
                                                                                     {% load static %}
@@ -542,7 +549,13 @@
                                                                     
                                                                     <div style="margin-left: 55px; margin-top: -50px;">
                                                                         {% comment %} {% url 'others-user-profile' commission.case.publisher.user_id %} {% endcomment %}
-                                                                        <a class="link_title" href="{% url 'others-user-profile' commission.case.publisher.user_id %}" style="">{{commission.case.publisher.nickname}}
+                                                                        <a class="link_title" href="{% url 'others-user-profile' commission.case.publisher.user_id %}" style="">
+                                                                            {% if commission.case.publisher.nickname != "" %}
+                                                                                {{commission.case.publisher.nickname}}
+                                                                            {% else %}
+                                                                                {{commission.case.publisher.name}}
+                                                                            {% endif %}
+                                                                            
                                                                             {% load static %} 
                                                                             {% if commission.case.publisher.gender == 0 %}
                                                                                 {% load static %}

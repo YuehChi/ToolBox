@@ -167,7 +167,13 @@
                                             {% endif %}
                                         </td>
                                         <td style="font-size: 14px; line-height: 16px;color: rgb(121, 110, 110);width: 200px;">
-                                            <a class="link_title" href="#" style="line-height: 30px;">{{data.willing_user.name}}
+                                            <a class="link_title" href="#" style="line-height: 30px;">
+                                                {% if data.willing_user.nickname != "" %}
+                                                    {{data.willing_user.nickname}}
+                                                {% else %}
+                                                    {{data.willing_user.name}}
+                                                {% endif %}
+                                                
                                                 {% load static %} 
                                                 {% if data.willing_user.gender == 0 %}
                                                     {% load static %}

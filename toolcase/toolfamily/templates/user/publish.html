@@ -337,7 +337,12 @@
                                                                                 {% comment %}
                                                                                 {% url 'others-user-profile' record.commissioned_user.user_id %}
                                                                                 {% endcomment %}
-                                                                                <a class="link_title" href="{% url 'others-user-profile' record.commissioned_user.user_id %}" style="line-height: 41px;">{{record.commissioned_user.nickname}}
+                                                                                <a class="link_title" href="{% url 'others-user-profile' record.commissioned_user.user_id %}" style="line-height: 41px;">
+                                                                                    {% if record.commissioned_user.nickname != "" %}
+                                                                                        {{record.commissioned_user.nickname}}
+                                                                                    {% else %}
+                                                                                        {{record.commissioned_user.name}}
+                                                                                    {% endif %}
                                                                                     {% load static %} 
                                                                                     {% if record.commissioned_user.gender == 0 %}
                                                                                         {% load static %}
@@ -543,7 +548,13 @@
                                                                         </td>
                                                                         <td class="d-block" style="line-height: 18px;width: 200px;">
                                                                             {% comment %} {% url 'others-user-profile' record.commissioned_user.user_id %} {% endcomment %}
-                                                                            <a class="link_title" href="{% url 'others-user-profile' record.commissioned_user.user_id %}" style="line-height: 41px;">{{record.commissioned_user.nickname}}
+                                                                            <a class="link_title" href="{% url 'others-user-profile' record.commissioned_user.user_id %}" style="line-height: 41px;">
+                                                                                {% if record.commissioned_user.nickname != "" %}
+                                                                                    {{record.commissioned_user.nickname}}
+                                                                                {% else %}
+                                                                                    {{record.commissioned_user.name}}
+                                                                                {% endif %}
+
                                                                                 {% load static %} 
                                                                                 {% if record.commissioned_user.gender == 0 %}
                                                                                     {% load static %}

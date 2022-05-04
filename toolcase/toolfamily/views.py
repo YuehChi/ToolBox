@@ -376,8 +376,7 @@ def case_new(request):
 
         return redirect('case-profile',case_id = pk_key)
 
-
-    return render(request,'case/new.html')
+    return render(request,'case/new.html',{'current_user':current_user})
 
 
 #-------------一個CASE的詳細資訊-------------
@@ -1022,6 +1021,7 @@ def viewOtherUser(request, user_id):
 
     # 取得使用者資料
     dataCol = [  # 要取得哪些欄位  # 注意：@property的欄位不能用.values()抓
+        'name',
         'nickname',
         'gender',
         'department',
