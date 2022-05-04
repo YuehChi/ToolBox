@@ -18,6 +18,11 @@
                             {% if viewed_user.icon %} {# 有圖才顯示 #}
                             <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;"
                                 src="{{ viewed_user.icon.url }}">
+                            {# <div style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;
+                            background-image: url({{ viewed_user.icon.url }});
+                            background-repeat: no-repeat;
+                            background-position: center center;
+                            background-size: cover;"></div> #}
                             {% else %}
                             <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;"
                                 src="\static\images\default_icon_1.png">
