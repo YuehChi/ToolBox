@@ -99,408 +99,423 @@
                     {% endfor %}
                 </div>
         
+
+                <form class = "from"   action="/toolfamily/home/" enctype="multipart/form-data" method="POST" id="index-form">
+
+                    <input class="d-inline" name="page_new" type="number" id="forminput-page-new">
+                    <input class="d-inline" name="page_most" type="number" id="forminput-page-most">
   
-                <div class="col-12 col-md-9">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="d-inline-block">
-                                    <h1 class="d-inline-block" style="width: auto;"><span>最新案件</span></h1>
+                    <div class="col-12 col-md-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="d-inline-block">
+                                        <h1 class="d-inline-block" style="width: auto;"><span>最新案件</span></h1>
+                                        
+                                        {% if new_case.has_other_pages %}
+                                        <ul class="pagination">
+
+                                            {% if new_case.has_previous %}
+                                                <li><a href="?page_new={{ new_case.previous_page_number }}">&laquo;</a></li>
+                                            {% else %}
+                                                <li class="disabled"><span>&laquo;</span></li>
+                                            {% endif %}
+
+                                            {% for i in new_case.paginator.page_range %}
+                                                {% if new_case.number == i %}
+                                                    <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
+                                                {% else %}
+                                            <li><a href="?page_new={{ i }}">{{ i }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% if new_case.has_next %}
+                                                <li><a href="?page_new={{ new_case.next_page_number }}">&raquo;</a></li>
+                                            {% else %}
+                                                <li class="disabled"><span>&raquo;</span></li>
+                                            {% endif %}
+                                        </ul>
+                                        {% endif %}
+                                    </div>
+                                    <!----------Case Card---------->
+                                    <div id="case-cards">
+                                        {% for case in new_case%}
+                                            <div class="col-12 case-card" id="case-card-{{case.case_id}}">
+                                                <span class="d-none filter-num">{{case.num}}</span>
+                                                <span class="d-none filter-enddate">{{case.ended_datetime}}</span>
+
+
+                                                <div class="card case-card case-counter">
+                                                    <div class="card-body" style="padding-bottom: 5px;">
+                                                        <div class="row">
+                                                            <!----------Applyication Num---------->
+                                                            <div class="col-2" style="position: relative;">
+                                                                <div class="img-box" style="display: flex!important;align-items: center;position:absolute;">
+                                                                    {% for key,value in new_apply.items %}
+                                                                        {% if key == case.case_id %}
+                                                                                <span class="en_font" id="s-apply-num-v" style="font-size: 24px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">{{value}}</span>
+                                                                        {% endif %}
+                                                                    {% endfor%}
+                                                                    <span id="s-apply-num-t" style="font-size: 12px;color: #f4f4f3;position: absolute;left: 25%;bottom: 20%;">應徵中</span>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <!----------Case Main Info---------->
+                                                            <div class="col-10 col-md-8">                                                  
+                                                            
+                                                                <h4 class="d-inline-block" style="color: rgb(38,29,29);font-weight: bold;font-size: 18px;margin-bottom: 0px;">
+                                                                    <a class="d-none d-xl-block a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:25}}</a>
+                                                                    <a class="d-none d-md-block d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:18}}</a>
+                                                                    <a class="d-md-none d-lg-none d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:15}}</a>
+                                                                    
+                                                                </h4>
+                                                                {% if case.case_status.status_name == "徵求" %}
+                                                                    <span id="case-status" class="justify-content-center align-items-center" style=" background: #f5c548 !important">徵求中</span>
+                                                                {% elif case.case_status.status_name == "進行" %}
+                                                                    <span id="case-status" class="justify-content-center align-items-center" style="background: #d43747;color: white">委託中</span>
+                                                                {% elif case.case_status.status_name == "完成" %}  
+                                                                    <span id="case-status" class="justify-content-center align-items-center" style="background: #d6d6d6">已完成</span>
+                                                                {% endif %}
+                                                                <!----------Second Info---------->
+                                                                <div class="mt-1 d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;">
+                                                                    <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 16px;">confirmation_number</i>
+                                                                    <span style="color: #865140;margin-right: 5px;font-size: 16px;">
+                                                                    {{case.reward}}
+                                                                    </span>
+                                                                    
+                                                                    <span style="color: #865140;margin-right: 5px;margin-left: 5px;">|</span>
+                                                                    
+                                                                    <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">people</i>
+                                                                    <span class="case-mum" id="case-num-{{case.case_id}}" style="margin-right: 5px;color: #865140;">
+                                                                        {{case.num}}人
+                                                                    </span>
+                                                                    
+                                                                    <span style="margin-left: 5px;margin-right: 5px;color: #865140;">|</span>
+                                                                    
+                                                                    <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">location_on</i>
+                                                                    <span style="margin-right: 5px;color: #865140;">
+                                                                        {{ case.location|truncatechars_html:10 }}
+                                                                    </span>
+                                                                    
+                                                                    <span style="margin-right: 5px;margin-right: 5px;color: #865140;">|</span>
+                                                                    
+                                                                    <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">build</i>
+                                                                    <span style="margin-right: 5px;color: #865140;">
+                                                                        {% if case.work == 1 %}
+                                                                        需到現場
+                                                                        {% else %}
+                                                                        線上
+                                                                        {%endif%}
+                                                                    </span>
+                                                                </div>
+
+                                                                <!----------Description---------->
+                                                                <p class="mt-3 mb-3" id="case-description" style="color: #261d1d;font-size: 14px;height: auto;line-height: 18px;width: 90%;margin-bottom: 10px;">
+                                                                    {% if case.description == "" %}
+                                                                        <font color="#746a6a">無案件詳細描述。</font>
+                                                                    {% else %}
+                                                                        {{ case.description|truncatechars_html:35 }}
+                                                                    {% endif %}
+                                                                </p>
+
+                                                                <hr style="color: #5e4949;margin-top: 3px;margin-bottom: 3px;">
+
+                                                                <!----------Fields & Types---------->
+                                                                {% for case_field in case_fields %}
+                                                                    {% if case_field.case_id == case.case_id%}
+                                                                        <a class="d-inline tag" href="#">#{{case_field.case_field.field_name}}</a>
+                                                                    {%endif%}
+                                                                {% endfor %}
+                                                                {% for case_type in case_types %}
+                                                                    {% if case_type.case_id == case.case_id%}
+                                                                        <a class="d-inline tag" href="#">#{{case_type.case_type.type_name}}</a>
+                                                                    {%endif%}
+                                                                {% endfor %}
+
+                                                                <!----------Bookmark
+
+                                                                <img class="i-case-bookmark" src="/static/images/bookmark-outline-icon.png">---------->
+                                                            </div>
+
+                                                            <!----------User Main Info---------->
+                                                            <div class="justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
+                                                                <div class="row">
+                                                                    <!----------User Icon---------->
+                                                                    <div class="col-12 d-flex justify-content-center align-items-center">
+                                                                        <div class="text-center">
+                                                                            <a href="#">
+                                                                                {% if case.publisher.icon %}
+                                                                                    <div class="img-circular" id="user-icon"   style="background-image: url({{case.publisher.icon.url}});"></div>
+                                                                                {% else %}
+                                                                                    <div class="img-circular" id="user-icon"   style="background-image: url('/static/images/default_icon_1.png');"></div>
+
+                                                                                {% endif %}
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!----------User Rate---------->
+                                                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
+                                                                        <div id="user-rate-{{case.case_id}}" class=" d-flex justify-content-center align-items-center">
+                                                                            <script>
+                                                                                $('#user-rate-{{case.case_id}}').html(userRate({{case.publisher.rate}}));    // assuming f() is defined in script.js
+                                                                            </script>
+                                                                        </div>
+                                                                        <span id="user-ratenum" style="color: #865140;font-size: 14px">
+                                                                        ({{case.publisher.rate_num}})
+                                                                        </span>
+                                                                    </div>
+
+                                                                    <!----------User Nickname---------->
+                                                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
+                                                                        <span id="user-nickname" style="font-size: 14px;text-align: center;font-weight: bold;">
+                                                                        {% if case.publisher.nickname == "" %}
+                                                                            {{case.publisher.name}}
+                                                                        {% else %}
+                                                                            {{case.publisher.nickname}}
+                                                                        {%endif%}
+                                                                        </span>
+                                                
+                                                                    </div>
+
+                                                                    <!----------User Last Login Time---------->
+                                                                    <div class="col-12 d-flex justify-content-center align-items-center">
+                                                                        <span class="justify-content-center align-items-center text-center" id="user-lastlogintime-{{case.case_id}}" style="font-size: 8px;margin-top: 3px;color: #b8b3b3;">
+                                                                            <script>
+                                                                                $('#user-lastlogintime-{{case.case_id}}').html(userLastLogin('{{case.publisher.last_login}}')); 
+                                                                            </script>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+                                                <hr class="mt-1 mb-0" style="border: none;width: 98%; height: 1px;margin: auto;opacity: 0.5;border-color: #5e4949;color: #5e4949;">
+                                            
+                                        {% endfor%}
+                                        
+                                    </div><!----------End Case Card---------->
+
                                     
-                                    {% if new_case.has_other_pages %}
+                                </div>
+                            </div>
+                        </div>
+                    
+
+
+
+                        <div class="card mt-5">
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="d-inline-block">
+                                    <h1>熱門案件</h1>
+                                    {% if most_case.has_other_pages %}
                                     <ul class="pagination">
 
-                                        {% if new_case.has_previous %}
-                                            <li><a href="?page_new={{ new_case.previous_page_number }}">&laquo;</a></li>
+                                        {% if most_case.has_previous %}
+                                            <li><a href="?page_most={{ most_case.previous_page_number }}">&laquo;</a></li>
                                         {% else %}
                                             <li class="disabled"><span>&laquo;</span></li>
                                         {% endif %}
 
-                                        {% for i in new_case.paginator.page_range %}
-                                            {% if new_case.number == i %}
+                                        {% for i in most_case.paginator.page_range %}
+                                            {% if most_case.number == i %}
                                                 <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
                                             {% else %}
-                                        <li><a href="?page_new={{ i }}">{{ i }}</a></li>
+                                        <li><a href="?page_most={{ i }}">{{ i }}</a></li>
                                             {% endif %}
                                         {% endfor %}
 
-                                        {% if new_case.has_next %}
-                                            <li><a href="?page_new={{ new_case.next_page_number }}">&raquo;</a></li>
+                                        {% if most_case.has_next %}
+                                            <li><a href="?page_most={{ most_case.next_page_number }}">&raquo;</a></li>
                                         {% else %}
                                             <li class="disabled"><span>&raquo;</span></li>
                                         {% endif %}
                                     </ul>
                                     {% endif %}
-                                </div>
-                                <!----------Case Card---------->
-                                <div id="case-cards">
-                                    {% for case in new_case%}
-                                        <div class="col-12 case-card" id="case-card-{{case.case_id}}">
-                                            <span class="d-none filter-num">{{case.num}}</span>
-                                            <span class="d-none filter-enddate">{{case.ended_datetime}}</span>
+                                    </div>
+                                    <!----------Case Card---------->
+                                    <div id="case-cards">
+                                        {% for case in most_case%}
+                                            <div class="col-12 case-card" id="case-card-{{case.case_id}}">
+                                                <span class="d-none filter-num">{{case.num}}</span>
+                                                <span class="d-none filter-enddate">{{case.ended_datetime}}</span>
 
 
-                                            <div class="card case-card case-counter">
-                                                <div class="card-body" style="padding-bottom: 5px;">
-                                                    <div class="row">
-                                                        <!----------Applyication Num---------->
-                                                        <div class="col-2" style="position: relative;">
-                                                            <div class="img-box" style="display: flex!important;align-items: center;position:absolute;">
-                                                                <span class="en_font" id="s-apply-num-v" style="font-size: 24px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">25</span>
-                                                                <span id="s-apply-num-t" style="font-size: 12px;color: #f4f4f3;position: absolute;left: 25%;bottom: 20%;">應徵中</span>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <!----------Case Main Info---------->
-                                                        <div class="col-10 col-md-8">                                                  
-                                                        
-                                                            <h4 class="d-inline-block" style="color: rgb(38,29,29);font-weight: bold;font-size: 18px;margin-bottom: 0px;">
-                                                                <a class="d-none d-xl-block a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:25}}</a>
-                                                                <a class="d-none d-md-block d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:18}}</a>
-                                                                <a class="d-md-none d-lg-none d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:15}}</a>
-                                                                
-                                                            </h4>
-                                                            {% if case.case_status.status_name == "徵求" %}
-                                                                <span id="case-status" class="justify-content-center align-items-center" style=" background: #f5c548 !important">徵求中</span>
-                                                            {% elif case.case_status.status_name == "進行" %}
-                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d43747;color: white">委託中</span>
-                                                            {% elif case.case_status.status_name == "完成" %}  
-                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d6d6d6">已完成</span>
-                                                            {% endif %}
-                                                            <!----------Second Info---------->
-                                                            <div class="mt-1 d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;">
-                                                                <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 16px;">confirmation_number</i>
-                                                                <span style="color: #865140;margin-right: 5px;font-size: 16px;">
-                                                                {{case.reward}}
-                                                                </span>
-                                                                
-                                                                <span style="color: #865140;margin-right: 5px;margin-left: 5px;">|</span>
-                                                                
-                                                                <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">people</i>
-                                                                <span class="case-mum" id="case-num-{{case.case_id}}" style="margin-right: 5px;color: #865140;">
-                                                                    {{case.num}}人
-                                                                </span>
-                                                                
-                                                                <span style="margin-left: 5px;margin-right: 5px;color: #865140;">|</span>
-                                                                
-                                                                <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">location_on</i>
-                                                                <span style="margin-right: 5px;color: #865140;">
-                                                                    {{ case.location|truncatechars_html:10 }}
-                                                                </span>
-                                                                
-                                                                <span style="margin-right: 5px;margin-right: 5px;color: #865140;">|</span>
-                                                                
-                                                                <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">build</i>
-                                                                <span style="margin-right: 5px;color: #865140;">
-                                                                    {% if case.work == 1 %}
-                                                                    需到現場
-                                                                    {% else %}
-                                                                    線上
-                                                                    {%endif%}
-                                                                </span>
+                                                <div class="card case-card case-counter">
+                                                    <div class="card-body" style="padding-bottom: 5px;">
+                                                        <div class="row">
+                                                            <!----------Applyication Num---------->
+                                                            <div class="col-2" style="position: relative;">
+                                                                <div class="img-box" style="display: flex!important;align-items: center;position:absolute;">
+                                                                    {% for key,value in most_apply.items %}
+                                                                        {% if key == case.case_id %}
+                                                                                <span class="en_font" id="s-apply-num-v" style="font-size: 24px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">{{value}}</span>
+                                                                        {% endif %}
+                                                                    {% endfor%}
+                                                                    <span id="s-apply-num-t" style="font-size: 12px;color: #f4f4f3;position: absolute;left: 25%;bottom: 20%;">應徵中</span>
+                                                                </div>
                                                             </div>
 
-                                                            <!----------Description---------->
-                                                            <p class="mt-3 mb-3" id="case-description" style="color: #261d1d;font-size: 14px;height: auto;line-height: 18px;width: 90%;margin-bottom: 10px;">
-                                                                {% if case.description == "" %}
-                                                                    <font color="#746a6a">無案件詳細描述。</font>
-                                                                {% else %}
-                                                                    {{ case.description|truncatechars_html:35 }}
+
+                                                            <!----------Case Main Info---------->
+                                                            <div class="col-10 col-md-8">                                                  
+                                                            
+                                                                <h4 class="d-inline-block" style="color: rgb(38,29,29);font-weight: bold;font-size: 18px;margin-bottom: 0px;">
+                                                                    <a class="d-none d-xl-block a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:25}}</a>
+                                                                    <a class="d-none d-md-block d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:18}}</a>
+                                                                    <a class="d-md-none d-lg-none d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:15}}</a>
+                                                                    
+                                                                </h4>
+                                                                {% if case.case_status.status_name == "徵求" %}
+                                                                    <span id="case-status" class="justify-content-center align-items-center" style=" background: #f5c548 !important">徵求中</span>
+                                                                {% elif case.case_status.status_name == "進行" %}
+                                                                    <span id="case-status" class="justify-content-center align-items-center" style="background: #d43747;color: white">委託中</span>
+                                                                {% elif case.case_status.status_name == "完成" %}  
+                                                                    <span id="case-status" class="justify-content-center align-items-center" style="background: #d6d6d6">已完成</span>
                                                                 {% endif %}
-                                                            </p>
-
-                                                            <hr style="color: #5e4949;margin-top: 3px;margin-bottom: 3px;">
-
-                                                            <!----------Fields & Types---------->
-                                                            {% for case_field in case_fields %}
-                                                                {% if case_field.case_id == case.case_id%}
-                                                                    <a class="d-inline tag" href="#">#{{case_field.case_field.field_name}}</a>
-                                                                {%endif%}
-                                                            {% endfor %}
-                                                            {% for case_type in case_types %}
-                                                                {% if case_type.case_id == case.case_id%}
-                                                                    <a class="d-inline tag" href="#">#{{case_type.case_type.type_name}}</a>
-                                                                {%endif%}
-                                                            {% endfor %}
-
-                                                            <!----------Bookmark
-
-                                                            <img class="i-case-bookmark" src="/static/images/bookmark-outline-icon.png">---------->
-                                                        </div>
-
-                                                        <!----------User Main Info---------->
-                                                        <div class="justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
-                                                            <div class="row">
-                                                                <!----------User Icon---------->
-                                                                <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <div class="text-center">
-                                                                        <a href="#">
-                                                                            {% if case.publisher.icon %}
-                                                                                <div class="img-circular" id="user-icon"   style="background-image: url({{case.publisher.icon.url}});"></div>
-                                                                            {% else %}
-                                                                                <div class="img-circular" id="user-icon"   style="background-image: url('/static/images/default_icon_1.png');"></div>
-
-                                                                            {% endif %}
-                                                                            </div>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!----------User Rate---------->
-                                                                <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
-                                                                    <div id="user-rate-{{case.case_id}}" class=" d-flex justify-content-center align-items-center">
-                                                                        <script>
-                                                                            $('#user-rate-{{case.case_id}}').html(userRate({{case.publisher.rate}}));    // assuming f() is defined in script.js
-                                                                        </script>
-                                                                    </div>
-                                                                    <span id="user-ratenum" style="color: #865140;font-size: 14px">
-                                                                    ({{case.publisher.rate_num}})
+                                                                <!----------Second Info---------->
+                                                                <div class="mt-1 d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;">
+                                                                    <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 16px;">confirmation_number</i>
+                                                                    <span style="color: #865140;margin-right: 5px;font-size: 16px;">
+                                                                    {{case.reward}}
+                                                                    </span>
+                                                                    
+                                                                    <span style="color: #865140;margin-right: 5px;margin-left: 5px;">|</span>
+                                                                    
+                                                                    <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">people</i>
+                                                                    <span class="case-mum" id="case-num-{{case.case_id}}" style="margin-right: 5px;color: #865140;">
+                                                                        {{case.num}}人
+                                                                    </span>
+                                                                    
+                                                                    <span style="margin-left: 5px;margin-right: 5px;color: #865140;">|</span>
+                                                                    
+                                                                    <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">location_on</i>
+                                                                    <span style="margin-right: 5px;color: #865140;">
+                                                                        {{ case.location|truncatechars_html:10 }}
+                                                                    </span>
+                                                                    
+                                                                    <span style="margin-right: 5px;margin-right: 5px;color: #865140;">|</span>
+                                                                    
+                                                                    <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">build</i>
+                                                                    <span style="margin-right: 5px;color: #865140;">
+                                                                        {% if case.work == 1 %}
+                                                                        需到現場
+                                                                        {% else %}
+                                                                        線上
+                                                                        {%endif%}
                                                                     </span>
                                                                 </div>
 
-                                                                <!----------User Nickname---------->
-                                                                <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
-                                                                    <span id="user-nickname" style="font-size: 14px;text-align: center;font-weight: bold;">
-                                                                    {% if case.publisher.nickname == "" %}
-                                                                        {{case.publisher.name}}
+                                                                <!----------Description---------->
+                                                                <p class="mt-3 mb-3" id="case-description" style="color: #261d1d;font-size: 14px;height: auto;line-height: 18px;width: 90%;margin-bottom: 10px;">
+                                                                    {% if case.description == "" %}
+                                                                        <font color="#746a6a">無案件詳細描述。</font>
                                                                     {% else %}
-                                                                        {{case.publisher.nickname}}
-                                                                    {%endif%}
-                                                                    </span>
-                                            
-                                                                </div>
+                                                                        {{ case.description|truncatechars_html:35 }}
+                                                                    {% endif %}
+                                                                </p>
 
-                                                                <!----------User Last Login Time---------->
-                                                                <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <span class="justify-content-center align-items-center text-center" id="user-lastlogintime-{{case.case_id}}" style="font-size: 8px;margin-top: 3px;color: #b8b3b3;">
-                                                                        <script>
-                                                                            $('#user-lastlogintime-{{case.case_id}}').html(userLastLogin('{{case.publisher.last_login}}')); 
-                                                                        </script>
-                                                                    </span>
+                                                                <hr style="color: #5e4949;margin-top: 3px;margin-bottom: 3px;">
+
+                                                                <!----------Fields & Types---------->
+                                                                {% for case_field in case_fields %}
+                                                                    {% if case_field.case_id == case.case_id%}
+                                                                        <a class="d-inline tag" href="#">#{{case_field.case_field.field_name}}</a>
+                                                                    {%endif%}
+                                                                {% endfor %}
+                                                                {% for case_type in case_types %}
+                                                                    {% if case_type.case_id == case.case_id%}
+                                                                        <a class="d-inline tag" href="#">#{{case_type.case_type.type_name}}</a>
+                                                                    {%endif%}
+                                                                {% endfor %}
+
+                                                                <!----------Bookmark
+
+                                                                <img class="i-case-bookmark" src="/static/images/bookmark-outline-icon.png">---------->
+                                                            </div>
+
+                                                            <!----------User Main Info---------->
+                                                            <div class="justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
+                                                                <div class="row">
+                                                                    <!----------User Icon---------->
+                                                                    <div class="col-12 d-flex justify-content-center align-items-center">
+                                                                        <div class="text-center">
+                                                                            <a href="#">
+                                                                                {% if case.publisher.icon %}
+                                                                                    <div class="img-circular" id="user-icon"   style="background-image: url({{case.publisher.icon.url}});"></div>
+                                                                                {% else %}
+                                                                                    <div class="img-circular" id="user-icon"   style="background-image: url('/static/images/default_icon_1.png');"></div>
+
+                                                                                {% endif %}
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!----------User Rate---------->
+                                                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
+                                                                        <div id="user-rate-most-{{case.case_id}}" class=" d-flex justify-content-center align-items-center">
+                                                                            <script>
+                                                                                $('#user-rate-most-{{case.case_id}}').html(userRate({{case.publisher.rate}}));    // assuming f() is defined in script.js
+                                                                            </script>
+                                                                        </div>
+                                                                        <span id="user-ratenum" style="color: #865140;font-size: 14px">
+                                                                        ({{case.publisher.rate_num}})
+                                                                        </span>
+                                                                    </div>
+
+                                                                    <!----------User Nickname---------->
+                                                                    <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
+                                                                        <span id="user-nickname-most" style="font-size: 14px;text-align: center;font-weight: bold;">
+                                                                        {% if case.publisher.nickname == "" %}
+                                                                            {{case.publisher.name}}
+                                                                        {% else %}
+                                                                            {{case.publisher.nickname}}
+                                                                        {%endif%}
+                                                                        </span>
+                                                
+                                                                    </div>
+
+                                                                    <!----------User Last Login Time---------->
+                                                                    <div class="col-12 d-flex justify-content-center align-items-center">
+                                                                        <span class="justify-content-center align-items-center text-center" id="user-lastlogintime-most-{{case.case_id}}" style="font-size: 8px;margin-top: 3px;color: #b8b3b3;">
+                                                                            <script>
+                                                                                $('#user-lastlogintime-most-{{case.case_id}}').html(userLastLogin('{{case.publisher.last_login}}')); 
+                                                                            </script>
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
+
+
                                                     </div>
-
-
-
                                                 </div>
+                                                <hr class="mt-1 mb-0" style="border: none;width: 98%; height: 1px;margin: auto;opacity: 0.5;border-color: #5e4949;color: #5e4949;">
                                             </div>
-                                            <hr class="mt-1 mb-0" style="border: none;width: 98%; height: 1px;margin: auto;opacity: 0.5;border-color: #5e4949;color: #5e4949;">
+                                        {% endfor%}
                                         
-                                    {% endfor%}
+                                    </div><!----------End Case Card---------->
+
                                     
-                                </div><!----------End Case Card---------->
-
-                                
-                            </div>
-                        </div>
-                    </div>
-                
-
-
-
-                    <div class="card mt-5">
-                        <div class="card-body">
-                            <div class="row">
-
-                                <div class="d-inline-block">
-                                <h1>熱門案件</h1>
-                                {% if most_case.has_other_pages %}
-                                <ul class="pagination">
-
-                                    {% if most_case.has_previous %}
-                                        <li><a href="?page_most={{ most_case.previous_page_number }}">&laquo;</a></li>
-                                    {% else %}
-                                        <li class="disabled"><span>&laquo;</span></li>
-                                    {% endif %}
-
-                                    {% for i in most_case.paginator.page_range %}
-                                        {% if most_case.number == i %}
-                                            <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
-                                        {% else %}
-                                    <li><a href="?page_most={{ i }}">{{ i }}</a></li>
-                                        {% endif %}
-                                    {% endfor %}
-
-                                    {% if most_case.has_next %}
-                                        <li><a href="?page_most={{ most_case.next_page_number }}">&raquo;</a></li>
-                                    {% else %}
-                                        <li class="disabled"><span>&raquo;</span></li>
-                                    {% endif %}
-                                </ul>
-                                {% endif %}
                                 </div>
-                                <!----------Case Card---------->
-                                <div id="case-cards">
-                                    {% for case in most_case%}
-                                        <div class="col-12 case-card" id="case-card-{{case.case_id}}">
-                                            <span class="d-none filter-num">{{case.num}}</span>
-                                            <span class="d-none filter-enddate">{{case.ended_datetime}}</span>
-
-
-                                            <div class="card case-card case-counter">
-                                                <div class="card-body" style="padding-bottom: 5px;">
-                                                    <div class="row">
-                                                        <!----------Applyication Num---------->
-                                                        <div class="col-2" style="position: relative;">
-                                                            <div class="img-box" style="display: flex!important;align-items: center;position:absolute;">
-                                                                <span class="en_font" id="s-apply-num-v" style="font-size: 24px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">25</span>
-                                                                <span id="s-apply-num-t" style="font-size: 12px;color: #f4f4f3;position: absolute;left: 25%;bottom: 20%;">應徵中</span>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <!----------Case Main Info---------->
-                                                        <div class="col-10 col-md-8">                                                  
-                                                        
-                                                            <h4 class="d-inline-block" style="color: rgb(38,29,29);font-weight: bold;font-size: 18px;margin-bottom: 0px;">
-                                                                <a class="d-none d-xl-block a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:25}}</a>
-                                                                <a class="d-none d-md-block d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:18}}</a>
-                                                                <a class="d-md-none d-lg-none d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:15}}</a>
-                                                                
-                                                            </h4>
-                                                            {% if case.case_status.status_name == "徵求" %}
-                                                                <span id="case-status" class="justify-content-center align-items-center" style=" background: #f5c548 !important">徵求中</span>
-                                                            {% elif case.case_status.status_name == "進行" %}
-                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d43747;color: white">委託中</span>
-                                                            {% elif case.case_status.status_name == "完成" %}  
-                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d6d6d6">已完成</span>
-                                                            {% endif %}
-                                                            <!----------Second Info---------->
-                                                            <div class="mt-1 d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;">
-                                                                <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 16px;">confirmation_number</i>
-                                                                <span style="color: #865140;margin-right: 5px;font-size: 16px;">
-                                                                {{case.reward}}
-                                                                </span>
-                                                                
-                                                                <span style="color: #865140;margin-right: 5px;margin-left: 5px;">|</span>
-                                                                
-                                                                <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">people</i>
-                                                                <span class="case-mum" id="case-num-{{case.case_id}}" style="margin-right: 5px;color: #865140;">
-                                                                    {{case.num}}人
-                                                                </span>
-                                                                
-                                                                <span style="margin-left: 5px;margin-right: 5px;color: #865140;">|</span>
-                                                                
-                                                                <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">location_on</i>
-                                                                <span style="margin-right: 5px;color: #865140;">
-                                                                    {{ case.location|truncatechars_html:10 }}
-                                                                </span>
-                                                                
-                                                                <span style="margin-right: 5px;margin-right: 5px;color: #865140;">|</span>
-                                                                
-                                                                <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">build</i>
-                                                                <span style="margin-right: 5px;color: #865140;">
-                                                                    {% if case.work == 1 %}
-                                                                    需到現場
-                                                                    {% else %}
-                                                                    線上
-                                                                    {%endif%}
-                                                                </span>
-                                                            </div>
-
-                                                            <!----------Description---------->
-                                                            <p class="mt-3 mb-3" id="case-description" style="color: #261d1d;font-size: 14px;height: auto;line-height: 18px;width: 90%;margin-bottom: 10px;">
-                                                                {% if case.description == "" %}
-                                                                    <font color="#746a6a">無案件詳細描述。</font>
-                                                                {% else %}
-                                                                    {{ case.description|truncatechars_html:35 }}
-                                                                {% endif %}
-                                                            </p>
-
-                                                            <hr style="color: #5e4949;margin-top: 3px;margin-bottom: 3px;">
-
-                                                            <!----------Fields & Types---------->
-                                                            {% for case_field in case_fields %}
-                                                                {% if case_field.case_id == case.case_id%}
-                                                                    <a class="d-inline tag" href="#">#{{case_field.case_field.field_name}}</a>
-                                                                {%endif%}
-                                                            {% endfor %}
-                                                            {% for case_type in case_types %}
-                                                                {% if case_type.case_id == case.case_id%}
-                                                                    <a class="d-inline tag" href="#">#{{case_type.case_type.type_name}}</a>
-                                                                {%endif%}
-                                                            {% endfor %}
-
-                                                            <!----------Bookmark
-
-                                                            <img class="i-case-bookmark" src="/static/images/bookmark-outline-icon.png">---------->
-                                                        </div>
-
-                                                        <!----------User Main Info---------->
-                                                        <div class="justify-content-lg-center align-items-lg-start d-none d-md-block col-2 col-md-2">
-                                                            <div class="row">
-                                                                <!----------User Icon---------->
-                                                                <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <div class="text-center">
-                                                                        <a href="#">
-                                                                            {% if case.publisher.icon %}
-                                                                                <div class="img-circular" id="user-icon"   style="background-image: url({{case.publisher.icon.url}});"></div>
-                                                                            {% else %}
-                                                                                <div class="img-circular" id="user-icon"   style="background-image: url('/static/images/default_icon_1.png');"></div>
-
-                                                                            {% endif %}
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!----------User Rate---------->
-                                                                <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
-                                                                    <div id="user-rate-most-{{case.case_id}}" class=" d-flex justify-content-center align-items-center">
-                                                                        <script>
-                                                                            $('#user-rate-most-{{case.case_id}}').html(userRate({{case.publisher.rate}}));    // assuming f() is defined in script.js
-                                                                        </script>
-                                                                    </div>
-                                                                    <span id="user-ratenum" style="color: #865140;font-size: 14px">
-                                                                    ({{case.publisher.rate_num}})
-                                                                    </span>
-                                                                </div>
-
-                                                                <!----------User Nickname---------->
-                                                                <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
-                                                                    <span id="user-nickname-most" style="font-size: 14px;text-align: center;font-weight: bold;">
-                                                                    {% if case.publisher.nickname == "" %}
-                                                                        {{case.publisher.name}}
-                                                                    {% else %}
-                                                                        {{case.publisher.nickname}}
-                                                                    {%endif%}
-                                                                    </span>
-                                            
-                                                                </div>
-
-                                                                <!----------User Last Login Time---------->
-                                                                <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <span class="justify-content-center align-items-center text-center" id="user-lastlogintime-most-{{case.case_id}}" style="font-size: 8px;margin-top: 3px;color: #b8b3b3;">
-                                                                        <script>
-                                                                            $('#user-lastlogintime-most-{{case.case_id}}').html(userLastLogin('{{case.publisher.last_login}}')); 
-                                                                        </script>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-
-                                                </div>
-                                            </div>
-                                            <hr class="mt-1 mb-0" style="border: none;width: 98%; height: 1px;margin: auto;opacity: 0.5;border-color: #5e4949;color: #5e4949;">
-                                        </div>
-                                    {% endfor%}
-                                    
-                                </div><!----------End Case Card---------->
-
-                                
                             </div>
                         </div>
+                    
                     </div>
-                
-                </div>
 
+                </div>
             </div>
-        </div>
+
+        </form>
 
         <div>     
             <p> new_case_case_id : 應徵人數 </p>
