@@ -502,6 +502,26 @@
             </div>
         </div>
 
+        <div>     
+            <p> new_case_case_id : 應徵人數 </p>
+            {% for case in new_case%}
+                {% for key,value in new_apply.items %}
+                    {% if key == case.case_id %}
+                            <p>{{case.case_id}}:{{value}} </p>
+                    {% endif %}
+                    {% endfor%}
+            {% endfor%}
+
+            <p> most_case_case_id : 應徵人數 </p>
+                {% for case in most_case%}
+                {% for key,value in most_apply.items %}
+                    {% if key == case.case_id %}
+                        <p>{{case.case_id}}: {{value}} </p>
+                    {% endif %}
+                    {% endfor%}
+            {% endfor%}    
+        </div>
+
  
 </body>
 
