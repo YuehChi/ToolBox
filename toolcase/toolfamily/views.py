@@ -284,9 +284,9 @@ def index(request):
     
     # 最多瀏覽的case
     page_most = request.POST.get('page_most', 1)
-    most_case = Case.objects.filter(Q(case_status__status_id = 1) | Q(case_status__status_id = 2) & Q(shown_public=True)).order_by('-pageviews').all()
+    most_case = Case.objects.filter(Q(case_status__status_id = 1) | Q(case_status__status_id = 2) & Q(shown_public=True)).order_by('-pageviews')
     most_case , num_pages = calPage_index(most_case,page_most)
-    most_apply = calappley_num(new_case)
+    most_apply = calappley_num(most_case)
 
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
@@ -826,6 +826,13 @@ def case_search(request):
             if  status_id == 0:
                 check_list.append(0)
                 temp2.append(0)
+            elif status_id ==10:
+                temp_case = Case.objects.filter( Q(case_status__status_id = 1) | Q(case_status__status_id = 2 & Q(shown_public=True)))
+                temp = []
+                for i in temp_case:
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
             else:
                 temp_case = Case.objects.filter( Q(case_status__status_id = status_id)  & Q(shown_public=True))
                 temp = []
