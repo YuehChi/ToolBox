@@ -44,11 +44,11 @@
                 </label>
                 <div class="row justify-content-center" style="z-index: 1;background: #ffffff;border-radius: .25rem">
                     <div class="col-md" style="max-width: 70%;width: 250px;">
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center" style="margin:auto;position:relative;width:150px;height:150px;overflow:hidden;border-radius:50%;">
                         {% if current_user.icon %}  {# 有圖才顯示 #}
-                            <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;" src="{{ current_user.icon.url }}">
+                            <img style="margin: 15px;padding: 2px;width:100%;height:auto;" src="{{ current_user.icon.url }}">
                         {% else %}
-                            <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;" src="\static\images\default_icon_1.png">
+                            <img style="margin: 15px;padding: 2px;width:100%;height:auto;" src="\static\images\default_icon_1.png">
                         {% endif %}
                         </div>
                         <!----------User Rate---------->
@@ -128,17 +128,17 @@
                     <div class="col-md-6" style="max-width: 70%;width: 250px;margin-top: 20px;margin-right: 10px;">
                         <form action="{% url 'user-icon-update' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div>
+                            <div class="row justify-content-center" style="margin:auto;position:relative;width:200px;height:200px;overflow:hidden;border-radius:50%;">
                             {% if current_user.icon %}  {#有圖片才顯示#}
-                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" id="preview_img" src="{{ current_user.icon.url }}">
+                                <img style="margin: 10px;padding: 2px;width:100%;height:auto;" id="preview_img" src="{{ current_user.icon.url }}">
                             {% else %}
-                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" id="preview_img" src="\static\images\default_icon_1.png">
+                                <img style="margin: 10px;padding: 2px;width:100%;height:auto;" id="preview_img" src="\static\images\default_icon_1.png">
                             {% endif %}
                             </div>
                             <div style="text-align: center;">  {# 圖片上傳 #}
                                 <label for="id_icon" class="btn btn-primary border rounded" style="background: rgb(134,81,64);">選擇圖片</label>
                                 <input type="file" name="icon" accept="image/*" id="id_icon" style="display:none;">
-                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交">
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交圖片">
                             </div>
                             <div style="text-align: center;"> 
                                 <p style="margin-top: 10px; color: rgb(134, 81, 64)">檔案大小限2.5MB以下</p>
