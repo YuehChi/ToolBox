@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/static/fonts/material-icons.min.css">
     <link rel="stylesheet" href="/static/css/take-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="\static\js\report.js" type="text/javascript"></script>
 </head>
 <style>
     /* address style */
@@ -199,6 +200,33 @@
     
 </script>
 <body style="background: rgb(244,244,243);">
+    <!-- report modal -->
+    <div class="modal fade" id="reportModal" tabindex="10" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="reportModalLabel">??</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="report-type" class="col-form-label">檢舉類型:</label>
+                  <input type="text" class="form-control" id="report-type">
+                </div>
+                <div class="mb-3">
+                  <label for="report-message" class="col-form-label">檢舉內容:</label>
+                  <textarea class="form-control" id="report-message"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary">送出</button>
+            </div>
+          </div>
+        </div>
+    </div>
     <!-- --------Image Board-------- -->
     <div class="container" style="margin-top: 50PX;height: 100px;width: 100%;margin-right: 0px;margin-left: 0px;padding-right: 0px;padding-left: 0px;max-width: none;">
         <div class="row" style="height: 100px;width: 100%;margin: 0px;">
@@ -367,8 +395,7 @@
                                                                             </td>
                                                                             <!-- 追蹤、檢舉 -->
                                                                             <td style="width: 100px;line-height: 56px;">
-                                                                                <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
-                                                                                <!-- <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Person_add.png' %}"></button> -->
+                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="檢舉工具人" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;" onsubmit="return false"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
                                                                             </td>
                                                                             <td colspan="3" id="contact{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 58px;width: 550px;color: rgb(85,58,58);">
                                                                                 {% if contact != None %}
@@ -579,8 +606,8 @@
                                                                         </td>
                                                                         <!-- 追蹤、檢舉 -->
                                                                         <td style="width: 100px;line-height: 56px;">
-                                                                            <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
-                                                                            <!-- <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Person_add.png' %}"></button> -->
+                                                                            <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="檢舉工具人" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
+                                                                            
                                                                         </td>
                                                                         <td id ="contacth{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 58px;width:350px;color: rgb(85,58,58);">
                                                                             {% if contact != None %}
