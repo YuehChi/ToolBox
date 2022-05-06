@@ -4,6 +4,7 @@
 {% block content %}
 <link rel="stylesheet" href="\static\css\user.css">
 <script src="\static\js\user_rate.js" type="text/javascript"></script>
+<script src="\static\js\report.js" type="text/javascript"></script>
 <div class="row">
     <div class="tab col-md-10" style="margin:0px auto;margin-top: 60px;">
         <div style="margin-top: 20px;margin-right: 10px;">
@@ -57,6 +58,38 @@
                             <span style="color:  rgb(38, 29, 29);"><img src="/static/images/gender-female.png"
                                     id="user-gender" style="width:18px;height:18px;"></span>
                             {% endif %}
+                            <span style="color:  rgb(38, 29, 29);">
+                                <button class="btn justify-content-center align-items-center" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="檢舉工具人">
+                                    <i class="material-icons" style="font-size: 16px;">report_problem</i>
+                                    檢舉
+                                </button>
+                            </span>
+                            <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="reportModalLabel">??</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form>
+                                        <div class="mb-3">
+                                          <label for="report-type" class="col-form-label">檢舉類型:</label>
+                                          <input type="text" class="form-control" id="report-type">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="report-message" class="col-form-label">檢舉內容:</label>
+                                          <textarea class="form-control" id="report-message"></textarea>
+                                        </div>
+                                      </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                      <button type="button" class="btn btn-primary">送出</button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
                             {% if viewed_user.department %}
                             <p style="color:  rgb(38, 29, 29);">系所:{{viewed_user.department}}</p>
                             {% endif %}
