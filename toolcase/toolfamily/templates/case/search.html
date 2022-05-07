@@ -119,11 +119,11 @@
                     <span class="d-none" id="get-input-caselist">{{query_list}}</span>
 
                     {% for t in type %}
-                    <span class="d-inline get-input-type" id="get-input-type">{{t}}</span>
+                    <span class="d-none get-input-type" id="get-input-type-{{t}}">{{t}}</span>
                     {% endfor %}
 
                     {% for f in field %}
-                    <span class="d-inline get-input-field" id="get-input-field">{{f}}</span>
+                    <span class="d-none get-input-field" id="get-input-field-{{f}}">{{f}}</span>
                     {% endfor %}
                     <span class="d-none" id="get-input-num">{{num}}</span>
                     <span class="d-none" id="get-input-enddate">{{date_time}}</span>

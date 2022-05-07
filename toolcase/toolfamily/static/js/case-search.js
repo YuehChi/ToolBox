@@ -193,25 +193,25 @@ function getDefault(){
         $(group).prop("checked", false);
     }
 
-    if ($('#get-input-type').html() != ""){
-        var type_id = 'check-type-'+$('#get-input-type').html()
-        $('#'+type_id).prop("checked", true);
-    }
-
-    if ($('#get-input-field').html() != ""){
-        var field_id = 'check-field-'+$('#get-input-field').html()
-        $('#'+field_id).prop("checked", true);
-    }
-
-    // $('.get-input-type').each(function(){
-    //     var type_id = 'check-type-'+$(this).html()
+    // if ($('#get-input-type').html() != ""){
+    //     var type_id = 'check-type-'+$('#get-input-type').html()
     //     $('#'+type_id).prop("checked", true);
-    // })
+    // }
 
-    // $('.get-input-field').each(function(){
-    //     var field_id = 'check-field-'+$(this).html()
+    // if ($('#get-input-field').html() != ""){
+    //     var field_id = 'check-field-'+$('#get-input-field').html()
     //     $('#'+field_id).prop("checked", true);
-    // })
+    // }
+
+    $('.get-input-type').each(function(){
+        var type_id = 'check-type-'+$(this).html()
+        $('#'+type_id).prop("checked", true);
+    })
+
+    $('.get-input-field').each(function(){
+        var field_id = 'check-field-'+$(this).html()
+        $('#'+field_id).prop("checked", true);
+    })
 
     
 
