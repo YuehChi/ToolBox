@@ -1616,11 +1616,14 @@ def login(request):
     # check url timeout or not
     all_user = User.objects.all()
     for data in all_user:
-        if data.user_detail.isActive == False:
-            if (datetime.datetime.now().astimezone() -  data.date_joined).seconds > 3600:
-                user_detail = UserDetail.objects.get(Q(django_user=data))
-                user_detail.delete()
-                data.delete()
+        try:
+            if data.user_detail.isActive == False:
+                if (datetime.datetime.now().astimezone() -  data.date_joined).seconds > 3600:
+                    user_detail = UserDetail.objects.get(Q(django_user=data))
+                    user_detail.delete()
+                    data.delete()
+        except:
+            pass
 
     # show message for register
     if 'messages' in request.session:
@@ -1690,7 +1693,7 @@ def register(request):
         mailserver = imaplib.IMAP4_SSL('imap.gmail.com', 993)
         mailserver.login(django_settings.EMAIL_HOST_USER, django_settings.EMAIL_HOST_PASSWORD)
         status, count1 = mailserver.select('Inbox')
-        time.sleep(2)
+        time.sleep(3)
         status, count2 = mailserver.select('Inbox')
         status, data = mailserver.fetch(count2[0], '(UID BODY[TEXT])')
         ori_mail = data[0][1].decode('utf-8').split('<')[1].split('>')[0]
@@ -1701,7 +1704,7 @@ def register(request):
             ori_user = User.objects.get(Q(email=ori_mail))
             ori_user.delete()
 
-            request.session['messages'] = "對不起，您使用的註冊信箱無效。\n請確認信箱後重新註冊。"
+            request.session['messages'] = "對不起，您使用的註冊信箱不存在。\n請確認信箱後重新註冊。"
             del request.session['mail_validation']
             del request.session['first_refresh']
             return HttpResponseRedirect('/')
@@ -1717,7 +1720,7 @@ def register(request):
         password = request.POST.get('password')
 
         # send verification url to user email
-        token = token_confirm.generate_validate_token(username)
+        token = token_confirm.generate_validate_token(account)
         if request.META['HTTP_HOST'] == "127.0.0.1:8000":
             url = 'http://' + request.META['HTTP_HOST'] + '/toolfamily/activate/' + token
         else:
@@ -1729,9 +1732,9 @@ def register(request):
         receiver = [account]
 
         try:
-            send_mail(title, msg, email_from, receiver, fail_silently=False)
             request.session['mail_validation'] = account
             request.session['first_refresh'] = False
+            send_mail(title, msg, email_from, receiver, fail_silently=False)
         except:
             messages.warning(request,'信箱格式錯誤或已註冊')
             return redirect('register')
@@ -1754,11 +1757,11 @@ def active(request, token):
 
     # timeout
     try:
-        username = token_confirm.confirm_validate_token(token)
+        account = token_confirm.confirm_validate_token(token)
     except:
-        username = token_confirm.remove_validate_token(token)
+        account = token_confirm.remove_validate_token(token)
         try:
-            user = User.objects.get(Q(username=username))
+            user = User.objects.get(Q(email=account))
             userDetail = UserDetail.objects.get(Q(django_user=user))
             userDetail.delete()
             user.delete()
@@ -1769,7 +1772,7 @@ def active(request, token):
 
     # success
     try:
-        user = User.objects.get(Q(username=username))
+        user = User.objects.get(Q(email=account))
         user.is_active = True
         user.save()
 
