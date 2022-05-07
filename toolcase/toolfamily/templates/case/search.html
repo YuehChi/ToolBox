@@ -110,6 +110,7 @@
                     <input class="d-none" id="forminput-location" type="text" name ="location">
                     <input class="d-none" id="forminput-con" type="text" value="1" name="con">
                     <input class="d-none" id="forminput-page" type="number" name="page">
+                    <input class="d-none" id="forminput-status" type="number" name="status_id">
                     <input class="d-none" id="advanced-search-submit" type="submit">
 
                     
@@ -118,17 +119,18 @@
                     <span class="d-none" id="get-input-caselist">{{query_list}}</span>
 
                     {% for t in type %}
-                    <span class="d-none" id="get-input-type">{{t}}</span>
+                    <span class="d-inline get-input-type" id="get-input-type">{{t}}</span>
                     {% endfor %}
 
                     {% for f in field %}
-                    <span class="d-none" id="get-input-field">{{f}}</span>
+                    <span class="d-inline get-input-field" id="get-input-field">{{f}}</span>
                     {% endfor %}
                     <span class="d-none" id="get-input-num">{{num}}</span>
                     <span class="d-none" id="get-input-enddate">{{date_time}}</span>
                     <span class="d-none" id="get-input-work">{{work}}</span>
                     <span class="d-none" id="get-input-constraint">{{constraint}}</span>
                     <span class="d-none" id="get-input-location">{{location}}</span>
+                    <span class="d-none" id="get-input-status">{{status_id}}</span>
 
                     <span class="d-none" id="get-input-page">{{result_case.number}}</span>
                     <span class="d-none" id="get-input-total-page">{{num_pages}}</span>
@@ -215,6 +217,20 @@
                                             </label>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-12 search-col mt-3">
+                                    <span class="d-block" style="font-size: 14px;">
+                                    委託狀態
+                                    </span>
+                                    <select class="select form-select-lg" id="select-status" name="select_status" style="outline: none;">
+                                        <div class="options">
+                                            <option class="item option" value="0">不限</option>
+                                            <option class="item" value="10">可以應徵</option>
+                                            <option class="item" value="1">徵求中</option>
+                                            <option class="item" value="2">委託中</option>
+                                            <option class="item" value="3">已完成</option>
+                                        </div>
+                                    </select>
                                 </div>
                                 <div class="col-12 search-col mt-3">
                                     <span class="d-block" style="font-size: 14px;">

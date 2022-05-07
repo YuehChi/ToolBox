@@ -1,25 +1,26 @@
 $(document).ready(function(){
 
-    
-    // ---------- Pagination ----------
-    $('#select-pagination').on('change', function() {
-        console.log($(this).val())
-        //advancedSearchSubmit()
+    $('.new-page-link').click(function(){
+        $('#forminput-page-new').val($(this).data('value'))
+        // alert($(this).data('value'))
+        $('#index-form').submit()
 
-        console.log($('#select-pagination option:selected').val())
-        $('#forminput-page').val($('#select-pagination option:selected').val())
-        getDefault()
-        advancedSearchSubmit()
-        //$('#forminput-page').val($('#select-pagination option:selected').val())
-        console.log($('#select-pagination option:selected').val())
-
-        $('#advanced-search-form').submit()
     })
+
+    $('.most-page-link').click(function(){
+        $('#forminput-page-most').val($(this).data('value'))
+        // alert($(this).data('value'))
+        $('#index-form').submit()
+
+    })
+    
 
     // ---------- Enabled Enter To Submit ----------
     $('#index-form').on('keypress', function(e) {
         return e.which !== 13;
     });
+
+
 
 
 

@@ -91,12 +91,16 @@
     
         <div class="container mt-5 mb-5">
             <div class="row">
-                <div class="col-12 col-md-3">
-                    <span style="font-size: 60px;">通知欄位</span><br>
-                    {% comment %} 已經排序且篩選前 10 筆 {% endcomment %}
-                    {% for msg in notice %}
-                        <span>{{msg.message}}</span><br>
-                    {% endfor %}
+                <div class="col-12 col-md-3" style="padding: 0px;">
+                    <div id="div-notify">
+                        <span style="font-size: 20px;color:#865140">通知訊息</span>
+                        <hr class="mt-1" style="height: 2px;opacity: 90%;color:#865140;">
+                        {% comment %} 已經排序且篩選前 10 筆 {% endcomment %}
+                        {% for msg in notice %}
+                                <span style="font-size: 12px">{{msg.message}}</span>
+                                <hr class="mt-1 mb-1">
+                        {% endfor %}
+                    </div>
                 </div>
         
 
@@ -105,80 +109,54 @@
                 <div class="col-12 col-md-9">
                     <form class = "from"   action="/toolfamily/home/" enctype="multipart/form-data" method="POST" id="index-form">
                         {% csrf_token %}
-                        <input class="d-inline" name="page_new" type="number" id="forminput-page-new">
-                        <input class="d-inline" name="page_most" type="number" id="forminput-page-most">
+                        <input class="d-none" name="page_new" type="number" id="forminput-page-new">
+                        <input class="d-none" name="page_most" type="number" id="forminput-page-most">
                         <input class="d-none" type="submit" id="forminput-submit">
-                        <span class="d-inline">{{new_case.number}}</span>
-                        <span class="d-inline">{{most_case.number}}</span>
+                        <span class="d-none">{{new_case.number}}</span>
+                        <span class="d-none">{{most_case.number}}</span>
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="d-inline-block">
                                         <h1 class="d-inline-block" style="width: auto;"><span>最新案件</span></h1>
-                                        
-                                        {% if new_case.has_other_pages %}
-                                        <ul class="pagination">
-
-                                            {% if new_case.has_previous %}
-                                                <li><a href="?page_new={{ new_case.previous_page_number }}">&laquo;</a></li>
-                                            {% else %}
-                                                <li class="disabled"><span>&laquo;</span></li>
-                                            {% endif %}
-
-                                            {% for i in new_case.paginator.page_range %}
-                                                {% if new_case.number == i %}
-                                                    <li class="active">
-                                                        <span>{{i}} <span class="sr-only"></span></span>
-                                                    </li>
-                                                {% else %}
-                                                    <li>
-                                                        <a href="#" class="page-link page-new">{{i}}</a>
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
-
-                                            {% if new_case.has_next %}
-                                                <li><a href="?page_new={{ new_case.next_page_number }}">&raquo;</a></li>
-                                            {% else %}
-                                                <li class="disabled"><span>&raquo;</span></li>
-                                            {% endif %}
-                                        </ul>
-                                        {% endif %}
-
+                                    
 
                                         <!--Pagination-->
-                                        
-                                            <ul class="pagination justify-content-center">
+                                        <div class="d-inline-block" style="float: right;">
+                                            <ul class="pagination" style="width: auto;">
                                             {% if new_case.has_previous %}
                                                 <li class="page-item">
-                                                    <a class="page-link" href="?page={{ new_case.previous_page_number }}">＜</a>
+                                                    <a class="page-link new-page-link" href="#" data-value="{{new_case.previous_page_number}}">＜</a>
                                                 </li>
                                             {% else %}
                                                 <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="True">＜</a>
+                                                    <a class="page-link new-page-link" href="#" tabindex="-1" aria-disabled="True">＜</a>
                                                 </li>
                                             {% endif %}
                                             {% for i in new_case.paginator.page_range %}
                                                 {% if new_case.number == i %}
-                                                <li class="page-item" aria-current="page" aria-disabled="True">
-                                                    <span class="page-link">
-                                                    {{ i }}
-                                                    </span>
-                                                </li>
+                                                    <li class="page-item" aria-current="page" aria-disabled="True">
+                                                        <span class="page-link new-page-link" data-value="{{i}}" style="pointer-events: none;background-color:#e4e2e2">
+                                                        {{ i }}
+                                                        </span>
+                                                    </li>
                                                 {% else %}
-                                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link new-page-link" href="#" data-value="{{i}}">{{ i }}</a>
+                                                    </li>
                                                 {% endif %}
                                             {% endfor %}
-                                            {% if movies.has_next %}
+                                            {% if new_case.has_next %}
                                                 <li class="page-item">
-                                                <a class="page-link" href="?page={{ new_case.next_page_number }}">＞</a>
+                                                    <a class="page-link new-page-link" href="#" data-value="{{new_case.next_page_number}}">＞</a>
                                                 </li>
                                             {% else %}
                                                 <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1" aria-disabled="True">＞</a>
+                                                    <a class="page-link new-page-link" href="#" tabindex="-1" aria-disabled="True">＞</a>
                                                 </li>
                                             {% endif %}
                                             </ul>
+                                        </div>
                                        
                                         <!--end of Pagination-->
                                     </div>
@@ -360,31 +338,45 @@
                                 <div class="row">
 
                                     <div class="d-inline-block">
-                                    <h1>熱門案件</h1>
-                                    {% if most_case.has_other_pages %}
-                                    <ul class="pagination">
-
-                                        {% if most_case.has_previous %}
-                                            <li><a href="?page_most={{ most_case.previous_page_number }}">&laquo;</a></li>
-                                        {% else %}
-                                            <li class="disabled"><span>&laquo;</span></li>
-                                        {% endif %}
-
-                                        {% for i in most_case.paginator.page_range %}
-                                            {% if most_case.number == i %}
-                                                <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
+                                        <h1 class="d-inline-block" style="width: auto;"><span>熱門案件</span></h1>
+                                        <!--Pagination-->
+                                        <div class="d-inline-block" style="float: right;">
+                                            <ul class="pagination" style="width: auto;">
+                                            {% if most_case.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link most-page-link" href="#" data-value="{{most_case.previous_page_number}}">＜</a>
+                                                </li>
                                             {% else %}
-                                        <li><a href="?page_most={{ i }}">{{ i }}</a></li>
+                                                <li class="page-item disabled">
+                                                    <a class="page-link most-page-link" href="#" tabindex="-1" aria-disabled="True">＜</a>
+                                                </li>
                                             {% endif %}
-                                        {% endfor %}
-
-                                        {% if most_case.has_next %}
-                                            <li><a href="?page_most={{ most_case.next_page_number }}">&raquo;</a></li>
-                                        {% else %}
-                                            <li class="disabled"><span>&raquo;</span></li>
-                                        {% endif %}
-                                    </ul>
-                                    {% endif %}
+                                            {% for i in most_case.paginator.page_range %}
+                                                {% if most_case.number == i %}
+                                                    <li class="page-item" aria-current="page" aria-disabled="True">
+                                                        <span class="page-link most-page-link" data-value="{{i}}" style="pointer-events: none;background-color:#e4e2e2">
+                                                        {{ i }}
+                                                        </span>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="page-item">
+                                                        <a class="page-link most-page-link" href="#" data-value="{{i}}">{{ i }}</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if most_case.has_next %}
+                                                <li class="page-item">
+                                                    <a class="page-link most-page-link" href="#" data-value="{{most_case.next_page_number}}">＞</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link most-page-link" href="#" tabindex="-1" aria-disabled="True">＞</a>
+                                                </li>
+                                            {% endif %}
+                                            </ul>
+                                        </div>
+                                       
+                                        <!--end of Pagination-->
                                     </div>
                                     <!----------Case Card---------->
                                     <div id="case-cards">
@@ -560,27 +552,6 @@
                 </div>
             </div>
 
-        
-
-        <div>     
-            <p> new_case_case_id : 應徵人數 </p>
-            {% for case in new_case%}
-                {% for key,value in new_apply.items %}
-                    {% if key == case.case_id %}
-                            <p>{{case.case_id}}:{{value}} </p>
-                    {% endif %}
-                    {% endfor%}
-            {% endfor%}
-
-            <p> most_case_case_id : 應徵人數 </p>
-                {% for case in most_case%}
-                {% for key,value in most_apply.items %}
-                    {% if key == case.case_id %}
-                        <p>{{case.case_id}}: {{value}} </p>
-                    {% endif %}
-                    {% endfor%}
-            {% endfor%}    
-        </div>
 
  
 </body>
