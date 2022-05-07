@@ -37,13 +37,18 @@
                     <button class="btn" type="button" id="button-case-new" style="padding: 2px 12px;color: #ffffff;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;width: 85px;">我要發案</button>
                     </li>
                     <li class="nav-item">
-                        <div style="margin:auto;position:relative;width:45px;height:45px;overflow:hidden;border-radius:50%;">
+                        {% if current_user.icon %}  {# 有圖才顯示 #}
+                            <div class="img-circular" id="user-icon"   style="margin:auto;margin-left: 2px;margin-right: 4px;background-image: url({{current_user.icon.url}});width: 40px;height: 40px;"></div>
+                        {% else %}
+                            <div class="img-circular" id="user-icon"   style="margin:auto;margin-left: 2px;margin-right: 4px;background-image: url('/static/images/default_icon_1.png');width: 40px;height: 40px;"></div>
+                        {% endif %}
+                        <!-- <div style="margin:auto;position:relative;width:45px;height:45px;overflow:hidden;border-radius:50%;">
                         {% if current_user.icon %}  {# 有圖才顯示 #}
                             <img style="width:100%;height:auto;margin-top: 3px;padding: 2px;" src="{{ current_user.icon.url }}">
                         {% else %}
                             <img style="width:100%;height:auto;margin-top: 3px;padding: 2px;" src="\static\images\default_icon_1.png">
                         {% endif %}
-                        </div>
+                        </div> -->
                     </li>
                     <li class="nav-item">
                         <div class="dropdown">
