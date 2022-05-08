@@ -446,14 +446,25 @@
                                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                  <form>
+                                                  <form  action="{% url 'create-report' %}" method="POST">
+                                                    {% csrf_token %}
+                                                    {# 用隱藏的input發送檢舉目標 #}
+                                                    <input type="text" name="reported_case" value="{{ case.case_id }}" style="display:none">
                                                     <div class="mb-3">
                                                       <label for="report-type" class="col-form-label">檢舉類型:</label>
-                                                      <input type="text" class="form-control" id="report-type">
+                                                      {# <input type="text" class="form-control" id="report-type"> #}
+                                                      {# 用選單選擇檢舉類型 #}
+                                                      <select class="form-control" id="report-type" name="report_type">
+                                                      {% for type in reportTypes %}
+                                                        <option value="{{ type.report_type_id }}">
+                                                            {{ type.report_type_name }}
+                                                        </option>
+                                                      {% endfor %}
+                                                      </select>
                                                     </div>
                                                     <div class="mb-3">
                                                       <label for="report-message" class="col-form-label">檢舉內容:</label>
-                                                      <textarea class="form-control" id="report-message"></textarea>
+                                                      <textarea class="form-control" id="report-message" name="description"></textarea>
                                                     </div>
                                                   </form>
                                                 </div>

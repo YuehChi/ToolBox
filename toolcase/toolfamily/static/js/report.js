@@ -23,4 +23,30 @@ $(document).ready(function() {
     //     var modal = $(this)
     //     modal.find('.modal-title').text(recipient)
     //   })
+
+    //需要在 modal 顯示時就填入要檢舉的 case 與 user 資訊!!!
+
+    $('#reportModal .modal-footer button.btn-primary').on('click', function(e){
+        e.preventDefault(); //阻止頁面跳轉
+
+        var theForm = $(this).parents('.modal-footer')
+            .siblings('.modal-body').children('form');
+        var formData = theForm.serialize();
+        console.log('submit the form in modal:', formData);
+
+        $.ajax({
+            url: theForm.attr('action'),
+            type: "POST",
+            data: formData,
+            success: function(data) {
+                console.log('成功送出', data);
+                alert('已成功送出舉報！');
+                theForm.parents('.modal').modal('hide');
+            },
+            error: function(data) {
+                console.log('無法送出');
+                alert('無法傳送！');
+            }
+        })
+    });
 });

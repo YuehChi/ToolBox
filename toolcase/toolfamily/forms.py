@@ -34,3 +34,17 @@ class UserIconForm(forms.ModelForm):
         # 表單欄位
         model = UserDetail
         fields = ('icon',)  # 這邊只能改頭像圖檔
+
+
+
+# 新增舉報
+class ReportModelForm(forms.ModelForm):
+    class Meta:
+        # 表單欄位
+        model = Report
+        fields = (  # 可以改哪些欄位
+            'reported_case',
+            'reported_user',
+            'report_type',
+            'description'
+            )

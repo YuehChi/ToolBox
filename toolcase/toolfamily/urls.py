@@ -61,6 +61,14 @@ urlpatterns += [
 ]
 
 #####################################
+#           REPORT URLS             #
+#####################################
+urlpatterns += [
+    path('report/new/',views.create_report, name='create-report'),
+    path('report/<int:report_id>/',views.view_report, name='view-report'),
+]
+
+#####################################
 #           API URLS               #
 #####################################
 urlpatterns += [

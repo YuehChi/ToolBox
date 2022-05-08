@@ -426,6 +426,7 @@ def case_profile(request ,case_id):
     else:
         button_status = 3  # cannot press the button never
 
+    reportTypes = ReportType.objects.all()  # for modal of report
     return render(request,'case/profile.html',locals())
 
 
@@ -1021,6 +1022,7 @@ def viewOtherUser(request, user_id):
 
     # 取得使用者資料
     dataCol = [  # 要取得哪些欄位  # 注意：@property的欄位不能用.values()抓
+        'user_id',
         'name',
         'nickname',
         'gender',
@@ -1042,7 +1044,8 @@ def viewOtherUser(request, user_id):
     # 整理資訊並回傳
     content = {  # 要傳入模板的資訊
         'current_user': current_user,
-        'viewed_user': userData
+        'viewed_user': userData,
+        'reportTypes': ReportType.objects.all()  # for modal of report
         }
     return render(request, 'user/user_profile.html', content)
 
@@ -1252,6 +1255,7 @@ def user_publish_record(request):
                 except:
                     willing[case.case_id] += 1
 
+    reportTypes = ReportType.objects.all()  # for modal of report
     return render(request, 'user/publish.html', locals())
 
 
@@ -1346,6 +1350,7 @@ def user_take_record(request):
         elif status == 3 or status == 4:
             close.append(data)
 
+    reportTypes = ReportType.objects.all()  # for modal of report
     return render(request, 'user/take.html', locals())
 
 
@@ -1865,6 +1870,59 @@ def check_mail_used(request):
     except:
         return JsonResponse({"message": "帳號未被使用"})
 
+
+
+#########################################
+#           REPORT MODULE               #
+#########################################
+
+# -----------view report-------------
+@login_required
+def view_report(request, report_id):
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+
+    report = get_object_or_404(  # 找出這個 report; 找不到則 404 error
+        Report,
+        report_id = report_id
+    )
+
+    # 以下是回傳 json 的版本，若是要直接渲染 template 則不需使用 .values()
+    reportData = Report.objects.filter(report_id = report_id).values()[0]
+    return JsonResponse(data={'report': reportData}, status=200)
+
+
+@login_required
+def create_report(request):
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+    reportForm = ReportModelForm()  # 用來接收資料的表單
+    print('\n\ncreate report!')
+
+    # POST: 更改使用者資料
+    if request.method == 'POST':
+        print('\n\nrequest.POST:', request.POST)
+        formPost = ReportModelForm(request.POST)
+        if formPost.is_valid():
+            newReportData = formPost.save(commit=False)  # 先暫存，還不更改資料庫
+            newReportData.reporter = current_user  # 自動填入舉報人
+            newReportData.save()  # 實際更改資料庫
+            print('New report has been created.')
+            return JsonResponse(data={
+                'newReport': Report.objects.filter(
+                    report_id = newReportData.report_id
+                ).values()[0]
+            }, status=200)
+        else:
+            print('The form is not valid.')
+            reportForm = formPost  # 保留剛剛POST的分析結果，以顯示錯誤訊息
+            return JsonResponse(data={
+                'reportForm': reportForm
+            }, status=400)
 
 
 
