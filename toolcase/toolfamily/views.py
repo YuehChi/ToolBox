@@ -11,7 +11,9 @@ from .forms import *
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from django.db.models import Q, F
+from django.db.models import Q, F, When, Value, Count
+from django.db.models import Case as djCase
+from django.db.models.lookups import GreaterThan, LessThan
 from django.dispatch import receiver
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as django_settings
@@ -1226,8 +1228,30 @@ def user_publish_record(request):
                 deadline[data.case_id] = "不到一小時"
 
     # show all of the toolmen
+    myReports = Report.objects.filter(
+        reporter=current_user,
+        reported_case__isnull=False,
+        # reported_case__in=case_list,
+        reported_user__isnull=False
+    );
     record_list = CommissionRecord.objects.all().prefetch_related('case')
     willing_list = CaseWillingness.objects.all().prefetch_related('apply_case')
+
+    # can report a toolman or not
+    record_canReport = {}  # can sent new report or has exist a report
+    for record in record_list:  # for each commission record, at most 1 report
+        record_canReport[record.commissionrecord_id] = True  # default true
+        reports = record.getRelatedReport(reporter=current_user)
+        if len(reports) > 0:
+            record_canReport[record.commissionrecord_id] = False
+    print('record_canReport:', record_canReport)
+    willing_canReport = {}  # can sent new report or has exist a report
+    for willing in willing_list:  # for each case willingness, at most 1 report
+        willing_canReport[willing.casewillingness_id] = True  # default true
+        reports = willing.getRelatedReport(reporter=current_user)
+        if len(reports) > 0:
+            willing_canReport[willing.casewillingness_id] = False
+    print('willing_canReport:', willing_canReport)
 
     # numbers of toolmen for each case
     # average rate for each case
@@ -1361,6 +1385,22 @@ def user_take_record(request):
                     deadline[data.commissionrecord_id] = "不到一小時"
         elif status == 3 or status == 4:
             close.append(data)
+
+    # can report a toolman or not
+    conduct_canReport = {}  # can sent new report or has exist a report
+    for record in conduct:  # for each commission record, at most 1 report
+        conduct_canReport[record.commissionrecord_id] = True  # default true
+        reports = record.getRelatedReportOnPublisher(reporter=current_user)
+        if len(reports) > 0:
+            conduct_canReport[record.commissionrecord_id] = False
+    print('conduct_canReport:', conduct_canReport)
+    close_canReport = {}  # can sent new report or has exist a report
+    for record in close:  # for each commission record, at most 1 report
+        close_canReport[record.commissionrecord_id] = True  # default true
+        reports = record.getRelatedReportOnPublisher(reporter=current_user)
+        if len(reports) > 0:
+            close_canReport[record.commissionrecord_id] = False
+    print('close_canReport:', close_canReport)
 
     reportTypes = ReportType.objects.all()  # for modal of report
     return render(request, 'user/take.html', locals())

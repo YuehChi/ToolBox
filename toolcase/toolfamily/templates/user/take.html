@@ -220,9 +220,15 @@
             <div class="modal-body">
               <form action="{% url 'create-report' %}" method="POST">
                 {% csrf_token %}
-                {# 用隱藏的input發送檢舉目標 [!]需要用js在modal彈出時填入 #}
-                <input type="text" name="reported_case" value="" style="display:none">
-                <input type="text" name="reported_user" value="" style="display:none">
+                {# 用不可變的input發送檢舉目標 [!]需要用js在modal彈出時填入 #}
+                <div class="mb-3">
+                    <label for="report-case" class="col-form-label">被檢舉的案件</label>
+                    <input id="reported-case" type="text" name="reported_case" value="" disabled="true">
+                </div>
+                <div class="mb-3">
+                    <label for="report-user" class="col-form-label">被檢舉人</label>
+                    <input id="reported-user" type="text" name="reported_user" value="" disabled="true">
+                </div>
                 <div class="mb-3">
                   <label for="report-type" class="col-form-label">檢舉類型:</label>
                   {# <input type="text" class="form-control" id="report-type"> #}
