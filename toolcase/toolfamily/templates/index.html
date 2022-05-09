@@ -121,9 +121,11 @@
                         {% csrf_token %}
                         <input class="d-none" name="page_new" type="number" id="forminput-page-new">
                         <input class="d-none" name="page_most" type="number" id="forminput-page-most">
+                        <input class="d-none" name="page_scrolltop" type="number" id="forminput-page-scrolltop" value="0">
                         <input class="d-none" type="submit" id="forminput-submit">
-                        <span class="d-none">{{new_case.number}}</span>
-                        <span class="d-none">{{most_case.number}}</span>
+                        <span class="d-none" id="get-input-page-new" data-value="{{new_case.number}}">{{new_case.number}}</span>
+                        <span class="d-none" id="get-input-page-most" data-value="{{most_case.number}}">{{most_case.number}}</span>
+                        <span class="d-none" id="get-input-page-scrolltop" data-value="{{page_scrolltop}}">{{page_scrolltop}}</span>
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">

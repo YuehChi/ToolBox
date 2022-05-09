@@ -1,7 +1,15 @@
 $(document).ready(function(){
+    
+    var scrollTop_y = $('#get-input-page-scrolltop').data('value')
+    window.scrollTo(0, scrollTop_y)
+    $('#forminput-page-new').val($('#get-input-page-new').data('value'))
+    $('#forminput-page-most').val($('#get-input-page-most').data('value'))
 
     $('.new-page-link').click(function(){
         $('#forminput-page-new').val($(this).data('value'))
+        var scrollTop = document.documentElement.scrollTop;
+        $('forminput-page-scrolltop').val(scrollTop)
+        console.log(scrollTop)
         // alert($(this).data('value'))
         $('#index-form').submit()
 
@@ -9,6 +17,9 @@ $(document).ready(function(){
 
     $('.most-page-link').click(function(){
         $('#forminput-page-most').val($(this).data('value'))
+        var scrollTop = document.documentElement.scrollTop;
+        $('forminput-page-scrolltop').val(scrollTop)
+        console.log(scrollTop)
         // alert($(this).data('value'))
         $('#index-form').submit()
 
