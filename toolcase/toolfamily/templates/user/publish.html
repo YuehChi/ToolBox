@@ -205,15 +205,15 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="reportModalLabel">??</h5>
+              <h5 class="modal-title" id="reportModalLabel">檢舉工具人</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <form action="{% url 'create-report' %}" method="POST">
                 {% csrf_token %}
                 {# 用隱藏的input發送檢舉目標 [!]需要用js在modal彈出時填入 #}
-                <input type="text" name="reported_case" value="" style="display:none">
-                <input type="text" name="reported_user" value="" style="display:none">
+                <!-- <input type="text" idname="reported_case" value="" style="display:none"> -->
+                <input type="text" id="report_obj" name="reported_user" value="" style="display:none">
                 <div class="mb-3">
                   <label for="report-type" class="col-form-label">檢舉類型:</label>
                   {# <input type="text" class="form-control" id="report-type"> #}
@@ -407,7 +407,7 @@
                                                                             </td>
                                                                             <!-- 追蹤、檢舉 -->
                                                                             <td style="width: 100px;line-height: 56px;">
-                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="檢舉工具人" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;" onsubmit="return false"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;" data-userID="{{record.commissioned_user.user_id}}"></button>
+                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="{{ record.commissioned_user.user_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;" onsubmit="return false"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;" data-userID="{{record.commissioned_user.user_id}}"></button>
                                                                             </td>
                                                                             <td colspan="3" id="contact{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 58px;width: 550px;color: rgb(85,58,58);">
                                                                                 {% if contact != None %}
@@ -618,7 +618,7 @@
                                                                         </td>
                                                                         <!-- 追蹤、檢舉 -->
                                                                         <td style="width: 100px;line-height: 56px;">
-                                                                            <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="檢舉工具人" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;" data-userID="{{record.commissioned_user.user_id}}"></button>
+                                                                            <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="{{ record.commissioned_user.user_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;" data-userID="{{record.commissioned_user.user_id}}"></button>
                                                                             
                                                                         </td>
                                                                         <td id ="contacth{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 58px;width:350px;color: rgb(85,58,58);">

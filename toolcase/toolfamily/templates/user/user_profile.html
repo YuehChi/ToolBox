@@ -59,7 +59,7 @@
                                     id="user-gender" style="width:18px;height:18px;"></span>
                             {% endif %}
                             <span style="color:  rgb(38, 29, 29);">
-                                <button class="btn justify-content-center align-items-center" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="檢舉工具人">
+                                <button class="btn justify-content-center align-items-center" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="{{ viewed_user.user_id }}">
                                     <i class="material-icons" style="font-size: 16px;">report_problem</i>
                                     檢舉
                                 </button>
@@ -68,14 +68,14 @@
                                 <div class="modal-dialog">
                                   <div class="modal-content">
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="reportModalLabel">??</h5>
+                                      <h5 class="modal-title" id="reportModalLabel">檢舉工具人</h5>
                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                       <form action="{% url 'create-report' %}" method="POST">
                                         {% csrf_token %}
                                         {# 用隱藏的input發送檢舉目標 #}
-                                        <input type="text" name="reported_user" value="{{ viewed_user.user_id }}" style="display:none">
+                                        <input type="text" id="report_obj" name="reported_user" style="display:none">
                                         <div class="mb-3">
                                           <label for="report-type" class="col-form-label">檢舉類型:</label>
                                           {# <input type="text" class="form-control" id="report-type"> #}
@@ -132,7 +132,7 @@
                     自我介紹
                 </label>
                 <div class="row" style="z-index: 1;background: #ffffff;border-radius: .25rem;">
-                    <div style="">
+                    <div>
                         <pre
                             style="color:  rgb(38, 29, 29);margin-top: 15px;margin-left: 30px;margin-right: 30px;white-space: break-spaces;">{{viewed_user.information}}</pre>
                     </div>
