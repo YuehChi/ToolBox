@@ -288,6 +288,8 @@ def index(request):
     most_case , num_pages = calPage_index(most_case,page_most)
     most_apply = calappley_num(most_case)
 
+    page_scrolltop = request.POST.get('page_scrolltop')
+
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
     case_photo = CasePhoto.objects.all()
