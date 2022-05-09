@@ -8,8 +8,9 @@ $(document).ready(function(){
     $('.new-page-link').click(function(){
         $('#forminput-page-new').val($(this).data('value'))
         var scrollTop = document.documentElement.scrollTop;
-        $('forminput-page-scrolltop').val(scrollTop)
+        document.forms['index_form']['page_scrolltop'].value =scrollTop
         console.log(scrollTop)
+        console.log($('#forminput-page-scrolltop').val())
         // alert($(this).data('value'))
         $('#index-form').submit()
 
@@ -18,8 +19,9 @@ $(document).ready(function(){
     $('.most-page-link').click(function(){
         $('#forminput-page-most').val($(this).data('value'))
         var scrollTop = document.documentElement.scrollTop;
-        $('forminput-page-scrolltop').val(scrollTop)
+        document.forms['index_form']['page_scrolltop'].value =scrollTop
         console.log(scrollTop)
+        console.log($('#forminput-page-scrolltop').val())
         // alert($(this).data('value'))
         $('#index-form').submit()
 
