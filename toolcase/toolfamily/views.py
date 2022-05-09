@@ -427,6 +427,11 @@ def case_profile(request ,case_id):
         button_status = 3  # cannot press the button never
 
     reportTypes = ReportType.objects.all()  # for modal of report
+    myReports = Report.objects.filter(  # reports of the case from the user
+        reported_case = list_case[0],
+        reported_user = None,
+        reporter = current_user)
+    canReport = (len(myReports) == 0)  # the user can report the case or not
     return render(request,'case/profile.html',locals())
 
 
@@ -1042,9 +1047,16 @@ def viewOtherUser(request, user_id):
         userData['icon'] = None
 
     # 整理資訊並回傳
+    myReports = Report.objects.filter( # reports of viewed user from current user
+        reported_user = viewedUser,
+        reported_case = None,
+        reporter = current_user)
+    canReport = (len(myReports) == 0) # current user can report viewed user or not
     content = {  # 要傳入模板的資訊
         'current_user': current_user,
         'viewed_user': userData,
+        'myReports': myReports,
+        'canReport': canReport,
         'reportTypes': ReportType.objects.all()  # for modal of report
         }
     return render(request, 'user/user_profile.html', content)
@@ -1900,6 +1912,22 @@ def create_report(request):
         UserDetail,
         django_user=request.user,
         isActive=True)  # 若是被停權的 user，一樣 404
+
+    # 找有沒有舊的資料，有就不允許更改
+    reported_user = request.POST.get('reported_user', None)
+    reported_case = request.POST.get('reported_case', None)
+    print('\nreported_user:', reported_user, 'reported_case:', reported_case)
+    oldReport = Report.objects.filter(
+        reporter = current_user,
+        reported_user = (reported_user if reported_user else None),
+        reported_case = (reported_case if reported_case else None)
+    )
+    if oldReport:
+        print('the report already exist!')
+        return JsonResponse(
+            data={'error':'has reported already'},
+            status=403)
+
     reportForm = ReportModelForm()  # 用來接收資料的表單
     print('\n\ncreate report!')
 

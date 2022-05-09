@@ -59,10 +59,12 @@
                                     id="user-gender" style="width:18px;height:18px;"></span>
                             {% endif %}
                             <span style="color:  rgb(38, 29, 29);">
+                                {% if canReport %}
                                 <button class="btn justify-content-center align-items-center" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="檢舉工具人">
                                     <i class="material-icons" style="font-size: 16px;">report_problem</i>
                                     檢舉
                                 </button>
+                                {% endif %}
                             </span>
                             <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
