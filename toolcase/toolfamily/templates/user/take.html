@@ -15,6 +15,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <style>
+    /* image */
+    .img-circular{
+        width: 43px;
+        height: 43px;
+        background-image: url('/static/images/default_icon_1.png');
+        background-size: cover;
+        display: block;
+        border-radius: 100px;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+    }
     /* address style */
     a.link_title:link {
         color:rgba(134, 81, 64);
@@ -88,6 +99,14 @@
     .rating > input:checked ~ label:hover,
     .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
     .rating > input:checked ~ label:hover ~ label { color: #f3d16d;  } 
+    
+    @media screen and (min-width: 991px){
+        .screenM{
+            margin-right: 15px;
+            margin-left: 15px;
+        }
+    }
+    
     </style>
 {% load static %}
 <script src="\static\js\user.js" type="text/javascript"></script>
@@ -215,13 +234,14 @@
         </div>
     </div>
     <div class="container-fuild" >
-        <div class="row" style="margin-right: 20px;margin-left: 20px;">
+        <div class="screenM row">
+            <!-- style="margin-right: 15px;margin-left: 15px;" -->
             <div class="d-none d-lg-block col-sm-2">
-                <div class="justify-content-center " style="margin-top: 30px; margin-left: 0px;">
-                    <ul class="list-group borderless rounded" style="font-size: 18px; width: 200px;line-height: 30px; text-align: center;display:block; box-shadow: 2px 2px rgba(196, 190, 190, 0.81);">
+                <div class="justify-content-center " style="margin-top: 30px;">
+                    <ul class="list-group borderless rounded" style="font-size: 18px;line-height: 30px; text-align: center;display:block; box-shadow: 2px 2px rgba(196, 190, 190, 0.81);">
                         <li class="list-group-item member " m="1" style="height: 50px;"><a class="link_title" href="{%url 'my-user-profile'%}" >會員中心</a></li>
                         <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-publish-record'%}" >我的委託</a></li>
-                        <li class="list-group-item bold" style="height: 50px;"><a class="link_title" href="{%url 'user-take-record'%}">我的接案</a></li>
+                        <li class="list-group-item bold " style="height: 50px; "><span style="font-weight:bold; color:rgba(134, 81, 64);">➤ </span><a class="link_title" href="{%url 'user-take-record'%}">我的接案</a><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
                         <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'user-password-update' %}" >更改密碼</a></li>
                         <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'logout' %}">登出</a></li>
                     </ul>
@@ -229,43 +249,42 @@
             </div>
             <div class="col-md-10" style="margin-top: 30px; ">
                 {% load static %}
-                <div class="border rounded" style="background: #ffffff; margin-left: 60px;margin-right: 60px;box-shadow: 2px 3px rgba(196, 190, 190, 0.81);">
-                    <h1 class="fw-bold text-center" style="height: 80px; margin-top: 40px; padding-top: 20px;padding-left: 65px; background-repeat: no-repeat; background-position: center, center; background-image: url('{% static 'images/Ellipse%204.png' %}');  color: rgb(94, 73, 73);font-size: 30px;">我的接案</h1>
-                    
-                    <div class="position-relative underlineEffects" style="margin-top: -40px;">
-                        <ul style="margin-left: 40px;margin-bottom: 0px;">
+                <div class="border rounded" style="background: #ffffff; box-shadow: 2px 3px rgba(196, 190, 190, 0.81);">
+                    <h1 class="fw-bold text-center" style="height: 80px; margin-top: 40px; padding-top: 20px; background-repeat: no-repeat; background-position: 46%, center; background-image: url('{% static 'images/Ellipse%204.png' %}');  color: rgb(94, 73, 73);font-size: 30px;">我的接案</h1>
+                    <div class="position-relative underlineEffects" style="margin-top: -45px;">
+                        <ul style="margin-left: 40px;margin-bottom: 20px;">
                             <li><a id="takeA"href="javascript:void(0);" style="color: rgb(94, 73, 73);"onclick="changePage('taking');">我的接案</a></li>
                             <li><a id="registrationA" href="javascript:void(0);" onclick="changePage('take_sign');">報名案件</a></li>
                             <li><a id="historyA" href="javascript:void(0);" onclick="changePage('take_his');">歷史紀錄</a></li>
                         </ul>
-                        <div class="d-none d-xl-block position-absolute top-0 end-0" style="width: 300px; margin-top: 30px;">
+                        <!-- <div class="d-none d-xl-block position-absolute top-0 end-0" style="width: 300px; margin-top: 30px;">
                             <span style="margin-left: 28px;color: rgb(94, 73, 73);font-size: 14px;">篩選</span>
                             <div class="dropdown" style="width: 166px;margin-left: 72px;margin-top: -24px;"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" style="height: 24px;background: rgb(232,231,229);font-size: 16px;text-align: right;line-height: 8.5px;border-style: none;width: 160.125px;"></button>
                                 <div class="dropdown-menu" style="font-size: 12px;text-align: justify;"><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按發布時間</a><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按結束時間</a><a class="dropdown-item" href="#" style="color: rgb(94,73,73);">按狀態</a></div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     
 <!-- take -->
                     <div id="taking">
-                        <div class="d-none d-xl-block table-responsive" style="margin-left: 60px;margin-top: 5px;margin-right: 60px;">
+                        <div class="d-none d-xl-block table-responsive" style="margin-left: 40px;margin-right: 40px;margin-top: 5px;">
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
                                         <td style="width: 80px;"></td>
                                         <!-- <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(142,93,78);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;">↓</button> -->
-                                        <td style="width: 200px;">&nbsp;&nbsp;&nbsp; 結束時間</td>
-                                        <td style="width: 460px;">&nbsp;&nbsp;&nbsp; 案件名稱</td>
-                                        <td style="text-align: center;width: 200px;">報酬</td>
-                                        <td class="d-block" style="text-align: center; width: 185px;">訊息</td>
+                                        <td style="text-align: center;width: 150px;">結束時間</td>
+                                        <td style="width: 350px;">&nbsp; 案件名稱</td>
+                                        <td style="text-align: center;width: 150px;">報酬</td>
+                                        <td class="d-block" style="text-align: center;width: 185px;">訊息</td>
                                         {% load static %}
-                                        <td style="text-align: center;width: 180px;">狀態<button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Help.png' %}"></button></td>
+                                        <td style="text-align: center; width: 180px;">狀態</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         
-                        <div class="table-responsive"style="margin-top: -19px;margin-left: 60px;margin-right: 60px;margin-bottom: 50px; background: rgba(244, 244, 243, 1);border-radius: 27px;border: 1px solid rgb(125,105,105);">
+                        <div class="table-responsive"style="margin-top: -19px;margin-left: 40px;margin-right: 40px;margin-bottom: 50px; background: rgba(244, 244, 243, 1);border-radius: 27px;border: 1px solid rgb(125,105,105);">
                             <table style="margin-top: 7px;" class="table table-borderless">
                                 {% for commission in conduct %}
                                 <tbody>
@@ -289,7 +308,7 @@
                                                 {{commission.case.title}}
                                             </a>
                                         </td>
-                                        <td style="text-align: center; width: 200px;line-height: 50px;color: rgb(121, 110, 110); padding-bottom: 0px;">{{commission.case.reward}}</td>
+                                        <td style="text-align: center; width: 250px;line-height: 50px;color: rgb(121, 110, 110); padding-bottom: 0px;">{{commission.case.reward}}</td>
                                         {% if commission.user_status.status_id == 2 %}
                                             {% comment %} 確認alert都還沒做 {% endcomment %}
                                             {% for key, value in deadline.items %}
@@ -350,12 +369,12 @@
                                                                 <tr style="font-size: 12px;background: #ffffff;">
                                                                     <td style="line-height: 60px; width: 150px;text-align: center;">｜委託人資訊</td>
                                                                     
-                                                                    <td style="line-height: 30px; width: 250px;">
+                                                                    <td style="padding-top:20px; line-height: 30px; width: 250px;">
                                                                         {% if commission.case.publisher.icon %}
-                                                                            <img class="rounded-circle" src="{{commission.case.publisher.icon.url}}" style="width: 43px;margin-top: 10px;">
+                                                                            <div class="img-circular" style="background-image: url({{commission.case.publisher.icon.url}});"></div>
                                                                         {% else %}
                                                                             {% load static %}
-                                                                            <img  class="rounded-circle" src="{% static 'images/default_icon_1.png' %}" style="width: 43px;margin-top: 10px;">
+                                                                            <div class="img-circular"></div>
                                                                         {% endif %}
                                                                         
                                                                         <div style="margin-top: -50px; margin-left: 55px;">
@@ -423,19 +442,21 @@
 
 <!-- registration take_sign -->
                     <div id="take_sign" style="display: none;">
-                        <div class="table-responsive" style="margin-left: 60px;margin-right: 60px; margin-top: 20px;margin-bottom: 50px;background-color: rgb(226, 218, 212); border-radius: 27px;border: 1px solid rgb(125,105,105);">
+                        <div class="table-responsive" style="margin-left: 40px;margin-right: 40px; margin-top: 20px;margin-bottom: 50px;background-color: rgb(226, 218, 212); border-radius: 27px;border: 1px solid rgb(125,105,105);">
                             <table style="margin-top: 0px; margin-bottom: 23px;" class="table table-sm table-striped table-borderless ">
                                 <thead style="color: rgb(75, 49, 42);padding-top: 0px;">
                                     <tr>
-                                        <td class="d-block"style="width: 200px;text-align: center;">結束時間</td>
-                                        <td  colspan="2" style="width: 250px;text-align: center;">案件名稱</td>
-                                        <td class="d-block" style="width: 150px;text-align: center;">報酬</td>
-                                        <td colspan="2"style="width: 80px;text-align: center;">動作</td>
+                                        <td style="width: 50px;"></td>
+                                        <td style="width: 200px;text-align: center;">結束時間</td>
+                                        <td class="d-block" style="width: 200px;">案件名稱</td>
+                                        <td style="width: 200px;text-align: center;">報酬</td>
+                                        <td style="width: 120px;text-align: center;">動作</td>
                                     </tr>
                                 </thead>
                                 <tbody class="table-light">
                                     {% for willing in willingness %}
                                         <tr>
+                                            <td style="width: 50px;"></td>
                                             <td style="color: rgb(121, 110, 110);line-height: 50px; width: 200px;text-align: center;"id="enddate{{ willing.apply_case.case_id }}">
                                                 {{willing.apply_case.ended_datetime}}
                                                 <script> 
@@ -445,14 +466,14 @@
                                                 </script>
                                             </td>
                                             
-                                            <td colspan="2" style="width: 250px;text-align: left;">
+                                            <td style="width: 500px;">
                                                 <a class="case_title" href="{% url 'case-profile' willing.apply_case.case_id %}" style="line-height: 50px;padding-bottom: 0px;">
                                                     {{willing.apply_case.title}}
                                                 </a>
                                                 </td>
-                                            <td style="width: 110px;text-align: center;line-height: 50px;color: rgb(121, 110, 110);">{{willing.apply_case.reward}}</td>
-                                            <td colspan="2"style="width: 80px;text-align: center;line-height: 50px">
-                                                <button class="btn btn-primary" type="button" onclick="sendDele()" value="取消報名" style="width: 127.2812px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">取消報名</button>
+                                            <td class="d-block" style="width: 200px;text-align: center;line-height: 50px;color: rgb(121, 110, 110);">{{willing.apply_case.reward}}</td>
+                                            <td style="width: 120px;text-align: center;line-height: 50px">
+                                                <button class="btn btn-primary" type="button" onclick="sendDele()" value="取消報名" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">取消報名</button>
                                                 <script>
                                                     function sendDele(){
                                                         if(confirm('確定取消報名？') == true){
@@ -471,16 +492,16 @@
                     </div>
 <!-- History -->
                     <div id="take_his" style="display: none;">
-                        <div class="d-none d-xl-block table-responsive" style="margin-left: 60px;margin-top: 5px;margin-right: 60px;">
+                        <div class="d-none d-xl-block table-responsive" style="margin-left: 40px;margin-right: 40px;margin-top: 5px;">
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
                                         <td style="width: 80px;"></td>
                                         <!-- <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(142,93,78);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;">↓</button> -->
                                         <td style="width: 150px;">結束時間</td>
-                                        <td style="width: 350px;">案件名稱</td>
-                                        <td style="width: 150px;">報酬</td>
-                                        <td style="text-align: center; width: 125px;">狀態</td>
+                                        <td style="width: 400px;">案件名稱</td>
+                                        <td style="text-align: center;width: 150px;">報酬</td>
+                                        <td style="text-align: center; width: 120px;">狀態</td>
                                         {% load static %}
                                         <td style="width: 150px;">獲得的評價</td>
                                     </tr>
@@ -488,7 +509,7 @@
                             </table>
                         </div>
                         
-                        <div class="table-responsive"style="margin-top: -19px;margin-left: 60px;margin-right: 60px;margin-bottom: 50px; background: rgba(244, 244, 243, 1);border-radius: 27px;border: 1px solid rgb(125,105,105);">
+                        <div class="table-responsive"style="margin-top: -19px;margin-left: 40px;margin-right: 40px;margin-bottom: 50px; background: rgba(244, 244, 243, 1);border-radius: 27px;border: 1px solid rgb(125,105,105);">
                             <table style="margin-top: 7px;" class="table table-borderless">
                                 {% for commission in close %}
                                 <tbody>
@@ -536,15 +557,14 @@
                                                     <table class="table table-borderless">
                                                         <tbody>
                                                             <tr style="font-size: 12px;background: #ffffff;">
-                                                                <td style="line-height: 65px; width: 150px; text-align: center; "><span class="d-none d-xxl-block">｜委託人資訊</span></td>
-                                                                
-                                                                <td class="d-block"  style="line-height: 30px; width:250px;">
+                                                                <td style="line-height: 60px; width: 150px;text-align: center;">｜委託人資訊</td>
                                                                     
+                                                                <td style="padding-top:20px; line-height: 30px; width: 250px;">
+                                                                
                                                                     {% if commission.case.publisher.icon %}
-                                                                        <img class="rounded-circle" src="{{commission.case.publisher.icon.url}}" style="width: 43px;margin-top: 10px;">
+                                                                        <div class="img-circular" style="background-image: url({{commission.case.publisher.icon.url}});"></div>
                                                                     {% else %}
-                                                                        {% load static %}
-                                                                        <img  class="rounded-circle" src="{% static 'images/default_icon_1.png' %}" style="width: 43px;margin-top: 10px;">
+                                                                        <div class="img-circular"></div>
                                                                     {% endif %}
                                                                     
                                                                     <div style="margin-left: 55px; margin-top: -50px;">
@@ -598,7 +618,7 @@
                                                                     <!-- <button onclick="copy('contact_th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}')" class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button> -->
                                                                 </td>
                                                                 {% if commission.user_status.status_id == 3 %}
-                                                                    <td class="d-block" style="width: 200px;padding-left: 55px;line-height: 56px;color: rgb(85,58,58);">評價&nbsp;&nbsp;
+                                                                    <td class="d-block" style="width: 200px;padding-left: 55px;line-height: 56px;color: rgb(85,58,58);">
                                                                         {% if commission.rate_worker_to_publisher %}
                                                                             <span style="font-size: 16px;" id="starth{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}">
                                                                                  {{commission.rate_worker_to_publisher}}
@@ -606,9 +626,10 @@
                                                                                     var starId = "starth{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"
                                                                                     var value = "{{commission.rate_worker_to_publisher}}"
                                                                                     getStar(starId, value );</script>
-                                                                            </span>
+                                                                            </span>&nbsp; 評價
                                                                         {% else %}
                                                                             <form action="/toolfamily/user/rate/" method="post" style="margin-left: 36px; margin-top: -56px;"onSubmit="return confirm('確定送出評價？');">
+                                                                                <label>&nbsp; &nbsp;評價</label>
                                                                                 {% csrf_token %}
                                                                                 <fieldset class="rating">
                                                                                     <input type="submit" id="field{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}_star5" name="{{commission.commissionrecord_id}}" value="5" /><label class = "full" for="field{{commission.case.publisher.account_mail}}{{  commission.case.case_id  }}_star5"></label>
@@ -621,7 +642,7 @@
                                                                         {% endif %}
                                                                     </td>
                                                                 {% elif commission.user_status.status_id == 4 %}
-                                                                    <td  class="d-block" style="width: 200px; text-align: center; padding-top: -80px; line-height: 20px;color: rgb(38, 86, 56);;" id="deleh{{ commission.case.case_id }}">
+                                                                    <td  class="d-block" style="width: 200px; text-align: center; padding-top: -80px; line-height: 30px;color: rgb(38, 86, 56);;" id="deleh{{ commission.case.case_id }}">
                                                                         已於 {{commission.doublecheck_datetime}}解除案件
                                                                         <script>
                                                                             var oriTime = "{{commission.doublecheck_datetime}}"
