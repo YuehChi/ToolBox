@@ -33,7 +33,7 @@ $(document).ready(function() {
         var theForm = $(this).parents('.modal-footer')
             .siblings('.modal-body').children('form');
         var formData = theForm.serialize();
-        console.log('submit the form in modal:', formData);
+        console.log('submit the form in modal.');
 
         $.ajax({
             url: theForm.attr('action'),
@@ -44,9 +44,15 @@ $(document).ready(function() {
                 alert('已成功送出舉報！');
                 theForm.parents('.modal').modal('hide');
             },
-            error: function(data) {
-                console.log('無法送出');
-                alert('無法傳送！');
+            error: function(error) {
+                console.log(error);
+                if(error){
+                    console.log('無法送出:', error);
+                    alert('無法傳送！', error);
+                }else{
+                    console.log('無法送出');
+                    alert('無法傳送！');
+                }
             }
         })
     });

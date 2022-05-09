@@ -434,10 +434,12 @@
                                     <!----------Report Button---------->
                                     <div class="col-12 d-flex justify-content-center align-items-center"
                                         style="margin-top: 6px;">
+                                        {% if canReport %}
                                         <button class="btn btn-primary d-flex justify-content-center align-items-center button-case" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="{{ case.case_id }}">
                                             <i class="material-icons" style="font-size: 16px;">report_problem</i>
                                             檢舉
                                         </button>
+                                        {% endif %}
                                         <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                               <div class="modal-content">
