@@ -435,7 +435,7 @@
                                     <div class="col-12 d-flex justify-content-center align-items-center"
                                         style="margin-top: 6px;">
                                         {% if canReport %}
-                                        <button class="btn btn-primary d-flex justify-content-center align-items-center button-case" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="檢舉委託">
+                                        <button class="btn btn-primary d-flex justify-content-center align-items-center button-case" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="{{ case.case_id }}">
                                             <i class="material-icons" style="font-size: 16px;">report_problem</i>
                                             檢舉
                                         </button>
@@ -444,14 +444,14 @@
                                             <div class="modal-dialog">
                                               <div class="modal-content">
                                                 <div class="modal-header">
-                                                  <h5 class="modal-title" id="reportModalLabel">??</h5>
+                                                  <h5 class="modal-title" id="reportModalLabel">檢舉委託</h5>
                                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                   <form  action="{% url 'create-report' %}" method="POST">
                                                     {% csrf_token %}
                                                     {# 用隱藏的input發送檢舉目標 #}
-                                                    <input type="text" name="reported_case" value="{{ case.case_id }}" style="display:none">
+                                                    <input type="text" id="report_obj" name="reported_case" style="display:none">
                                                     <div class="mb-3">
                                                       <label for="report-type" class="col-form-label">檢舉類型:</label>
                                                       {# <input type="text" class="form-control" id="report-type"> #}
