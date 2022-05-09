@@ -348,9 +348,22 @@
                                                 <div class="row">
                                                     <!----------Applyication Num---------->
                                                     <div class="col-2" style="position: relative;">
-                                                        <div class="img-box" style="display: flex!important;align-items: center;position:absolute;">
-                                                            <span class="en_font" id="s-apply-num-v" style="font-size: 24px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">25</span>
+                                                        <div class="img-box d-none d-sm-block" style="align-items: center;position:absolute;">
+                                                            {% for key,value in search_apply.items %}
+                                                                {% if key == case.case_id %}
+                                                                        <span class="en_font" id="s-apply-num-v" style="font-size: 24px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">{{value}}</span>
+                                                                {% endif %}
+                                                            {% endfor%}
                                                             <span id="s-apply-num-t" style="font-size: 12px;color: #f4f4f3;position: absolute;left: 25%;bottom: 20%;">應徵中</span>
+                                                        </div>
+
+                                                        <div class="img-box d-block d-sm-none" style="width: 60px!important;height:55px!important;align-items: center;position:absolute;">
+                                                            {% for key,value in search_apply.items %}
+                                                                {% if key == case.case_id %}
+                                                                        <span class="en_font" id="s-apply-num-v" style="font-size: 18px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">{{value}}</span>
+                                                                {% endif %}
+                                                            {% endfor%}
+                                                            <span id="s-apply-num-t" style="font-size: 10px;color: #f4f4f3;position: absolute;left: 20%;bottom: 15%;">應徵中</span>
                                                         </div>
                                                     </div>
 

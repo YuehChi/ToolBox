@@ -1,0 +1,22 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;500&family=Noto+Serif+TC:wght@200&family=Simonetta&family=Stardos+Stencil&family=Trispace:wght@100&display=swap');
+
+.font-stardos-stencil {
+    font-family: 'Stardos Stencil', cursive;
+}
+
+.font-noto-sans-tc {
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+.font-noto-serif-tc {
+    font-family: 'Noto Serif TC', serif;
+}
+
+.font-simonetta {
+    font-family: 'Simonetta', cursive;
+}
+
+.font-trispace {
+    font-family: 'Trispace', sans-serif;
+}

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="\static\fonts\material-icons.min.css">
     <link rel="stylesheet" href="\static\css\index-styles.css">
     <link rel="stylesheet" href="\static\css\search-bar-styles.css">
+    <link rel="stylesheet" href="\static\css\font.css">
 
     
     <script src="\static\js\index.js"></script>
@@ -18,10 +19,19 @@
 <body class="cn_font en_font" style="background: #f4f4f3;">
 
         <!----------Image Board---------->
-        <div class="container" style="margin-top: 50PX;height: 100px;width: 100%;margin-right: 0px;margin-left: 0px;padding-right: 0px;padding-left: 0px;max-width: none;">
-            <div class="row" style="height: 100px;width: 100%;margin: 0px;">
-                <div class="col" style="height: 100px;width: 100%;padding: 0px;">
-                    <img src="\static\images\ntu_1.png" style="width: 100%;height: 100px;"></div>
+        <div class="container" style="margin-top: 50PX;height: 500px;width: 100%;margin-right: 0px;margin-left: 0px;padding-right: 0px;padding-left: 0px;max-width: none;">
+            <div class="row" style="width: 100%;margin: 0px;background-color: #261d1d;">
+                <div class="col" style="width: 100%;padding: 0px;position: relative;">
+                    <img src="\static\images\banner_1.jpg" style="width: 100%;height: 500px;object-fit:cover;opacity: 50%;">
+                    <div style="position: absolute;top:15%; left: 0;right: 0;margin-left: auto;margin-right: auto; width: 500px;;text-align: center;">
+                        <h4 class="mb-3 font-stardos-stencil" style="color:#f4f4f3;">NTU <br> TOOL BOX</h4>
+                        <hr style="opacity: 100%;color:#f4f4f3; width: 15%;margin:auto">
+                        <h1 class="mt-4" style="font-size:45px;color:#f4f4f3;">尋找<br>屬於你的委託</h1>
+                        <button class="btn mt-3" id="btn_banner_search" onclick="location.href='/toolfamily/case/search/'">開始接案</button>
+                    </div>
+
+
+                </div>
             </div>
         </div>
     
@@ -118,7 +128,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="d-inline-block">
-                                        <h1 class="d-inline-block" style="width: auto;"><span>最新案件</span></h1>
+                                        <img class="decorate-icon" src="/static/images/clipboard-image-1.png">
+                                        <h1 class="d-inline-block" style="margin-left: 70px;font-size: 40px;width: auto;"><span>最新案件</span></h1>
                                     
 
                                         <!--Pagination-->
@@ -160,6 +171,7 @@
                                        
                                         <!--end of Pagination-->
                                     </div>
+                                    <hr>
                                     <!----------Case Card---------->
                                     <div id="case-cards">
                                         {% for case in new_case%}
@@ -173,7 +185,7 @@
                                                         <div class="row">
                                                             <!----------Applyication Num---------->
                                                             <div class="col-2" style="position: relative;">
-                                                                <div class="img-box" style="display: flex!important;align-items: center;position:absolute;">
+                                                                <div class="img-box d-none d-sm-block" style="align-items: center;position:absolute;">
                                                                     {% for key,value in new_apply.items %}
                                                                         {% if key == case.case_id %}
                                                                                 <span class="en_font" id="s-apply-num-v" style="font-size: 24px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">{{value}}</span>
@@ -181,6 +193,18 @@
                                                                     {% endfor%}
                                                                     <span id="s-apply-num-t" style="font-size: 12px;color: #f4f4f3;position: absolute;left: 25%;bottom: 20%;">應徵中</span>
                                                                 </div>
+
+                                                                <div class="img-box d-block d-sm-none" style="width: 60px!important;height:55px!important;align-items: center;position:absolute;">
+                                                                    {% for key,value in new_apply.items %}
+                                                                        {% if key == case.case_id %}
+                                                                                <span class="en_font" id="s-apply-num-v" style="font-size: 18px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">{{value}}</span>
+                                                                        {% endif %}
+                                                                    {% endfor%}
+                                                                    <span id="s-apply-num-t" style="font-size: 10px;color: #f4f4f3;position: absolute;left: 20%;bottom: 15%;">應徵中</span>
+                                                                </div>
+
+                                                                
+                                                                
                                                             </div>
 
 
@@ -338,7 +362,8 @@
                                 <div class="row">
 
                                     <div class="d-inline-block">
-                                        <h1 class="d-inline-block" style="width: auto;"><span>熱門案件</span></h1>
+                                        <img class="decorate-icon" src="/static/images/clipboard-image-1.png">
+                                        <h1 class="d-inline-block" style="margin-left: 70px;width: auto;"><span>熱門案件</span></h1>
                                         <!--Pagination-->
                                         <div class="d-inline-block" style="float: right;">
                                             <ul class="pagination" style="width: auto;">
@@ -378,6 +403,7 @@
                                        
                                         <!--end of Pagination-->
                                     </div>
+                                    <hr>
                                     <!----------Case Card---------->
                                     <div id="case-cards">
                                         {% for case in most_case%}
@@ -391,13 +417,22 @@
                                                         <div class="row">
                                                             <!----------Applyication Num---------->
                                                             <div class="col-2" style="position: relative;">
-                                                                <div class="img-box" style="display: flex!important;align-items: center;position:absolute;">
+                                                                <div class="img-box d-none d-sm-block" style="align-items: center;position:absolute;">
                                                                     {% for key,value in most_apply.items %}
                                                                         {% if key == case.case_id %}
                                                                                 <span class="en_font" id="s-apply-num-v" style="font-size: 24px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">{{value}}</span>
                                                                         {% endif %}
                                                                     {% endfor%}
                                                                     <span id="s-apply-num-t" style="font-size: 12px;color: #f4f4f3;position: absolute;left: 25%;bottom: 20%;">應徵中</span>
+                                                                </div>
+
+                                                                <div class="img-box d-block d-sm-none" style="width: 60px!important;height:55px!important;align-items: center;position:absolute;">
+                                                                    {% for key,value in most_apply.items %}
+                                                                        {% if key == case.case_id %}
+                                                                                <span class="en_font" id="s-apply-num-v" style="font-size: 18px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">{{value}}</span>
+                                                                        {% endif %}
+                                                                    {% endfor%}
+                                                                    <span id="s-apply-num-t" style="font-size: 10px;color: #f4f4f3;position: absolute;left: 20%;bottom: 15%;">應徵中</span>
                                                                 </div>
                                                             </div>
 
