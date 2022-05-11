@@ -7,23 +7,30 @@ $(document).ready(function() {
     // Button that triggered the modal
     var button = event.relatedTarget;
     // Extract info from data-bs-* attributes
-    var object_info = button.getAttribute('data-bs-whatever');
+    // var object_info = button.getAttribute('data-bs-whatever');
+
+    if(button.getAttribute('data-user')){
+        alert(button.getAttribute('data-user'));
+        var user_info = button.getAttribute('data-user');
+        var userObj = reportModal.querySelector('#report_user');
+        userObj.value = user_info;
+        // var usertext = reportModal.querySelector('#text-user');
+        // usertext.value = user_info;
+    }
+    if(button.getAttribute('data-case')){
+        alert(button.getAttribute('data-case'));
+        var case_info = button.getAttribute('data-case');
+        var caseObj = reportModal.querySelector('#report_case');
+        caseObj.value = case_info;
+        // var casetext = reportModal.querySelector('#text-case');
+        // casetext.value = case_info;
+    }
+
+
     // Update the modal's content.
-    var modalObj = reportModal.querySelector('#report_obj');
-    modalObj.value = object_info;
+    // var modalObj = reportModal.querySelector('#report_obj');
+    // modalObj.value = object_info;
     })
-    // reportModal.addEventListener('show.bs.modal', function (event) {
-    //     // Button that triggered the modal
-    //     var button = event.relatedTarget;
-    //     // Extract info from data-bs-* attributes
-    //     var user_info = button.getAttribute('data-user');
-    //     var case_info = button.getAttribute('data-case');
-    //     // Update the modal's content.
-    //     var modaluser = reportModal.querySelector('.reported_user');
-    //     modaluser.value = user_info;
-    //     var modalcase = reportModal.querySelector('.reported_case');
-    //     modalcase.value = case_info;
-    //     })
 
     //需要在 modal 顯示時就填入要檢舉的 case 與 user 資訊!!!
 

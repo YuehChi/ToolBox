@@ -223,11 +223,11 @@
                 {# 用不可變的input發送檢舉目標 [!]需要用js在modal彈出時填入 #}
                 <div class="mb-3">
                     <label for="reported-case" class="col-form-label">被檢舉的案件</label>
-                    <input type="text" id="reported-case" name="reported_case" disabled="true">
+                    <input type="text" id="report_case" name="reported_case" disabled="true">
                 </div>
                 <div class="mb-3">
                     <label for="reported_obj" class="col-form-label">被檢舉人</label>
-                    <input type="text" id="reported_obj" name="reported_user" disabled="true">
+                    <input type="text" id="report_user" name="reported_user" disabled="true">
                 </div>
                 <div class="mb-3">
                   <label for="report-type" class="col-form-label">檢舉類型:</label>
@@ -441,7 +441,8 @@
                                                                     </td>
                                                                     <!-- 檢舉、追蹤 -->
                                                                     <td style="width: 100px;text-align: center ; line-height: 53px;">
-                                                                        <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="{{ commission.case.publisher.user_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
+
+                                                                        <button class="btn" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
                                                                     </td>
                                                                     <td class="d-block" id="contact_t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"style="text-align: left; line-height: 58px;width: 300px;color: rgb(85,58,58);">
                                                                         {% if contact != None %}
@@ -628,7 +629,7 @@
                                                                 </td>
                                                                 <!-- 追蹤、檢舉 -->
                                                                 <td style="width: 80px;text-align: center ; line-height: 53px;">
-                                                                    <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="{{ commission.case.publisher.user_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
+                                                                    <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
                                                                 </td>
                                                                 <td id="contact_th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}" style="text-align: left; line-height: 58px;width: 250px;color: rgb(85,58,58);">
                                                                     {% if contact != None %}
