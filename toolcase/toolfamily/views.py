@@ -1248,19 +1248,15 @@ def user_publish_record(request):
     willing_list = CaseWillingness.objects.all().prefetch_related('apply_case')
 
     # can report a toolman or not
-    record_canReport = {}  # can sent new report or has exist a report
+    record_canReport = []  # can sent new report or has exist a report
     for record in record_list:  # for each commission record, at most 1 report
-        record_canReport[record.commissionrecord_id] = True  # default true
         reports = record.getRelatedReport(reporter=current_user)
-        if len(reports) > 0:
-            record_canReport[record.commissionrecord_id] = False
+        record_canReport.append((len(reports) == 0))
     print('record_canReport:', record_canReport)
-    willing_canReport = {}  # can sent new report or has exist a report
+    willing_canReport = []  # can sent new report or has exist a report
     for willing in willing_list:  # for each case willingness, at most 1 report
-        willing_canReport[willing.casewillingness_id] = True  # default true
         reports = willing.getRelatedReport(reporter=current_user)
-        if len(reports) > 0:
-            willing_canReport[willing.casewillingness_id] = False
+        willing_canReport.append((len(reports) == 0))
     print('willing_canReport:', willing_canReport)
 
     # numbers of toolmen for each case
@@ -1302,6 +1298,8 @@ def user_publish_record(request):
                     willing[case.case_id] += 1
 
     reportTypes = ReportType.objects.all()  # for modal of report
+    record_list = zip(record_list, record_canReport)
+    willing_list = zip(willing_list, willing_canReport)
     return render(request, 'user/publish.html', locals())
 
 
@@ -1397,22 +1395,20 @@ def user_take_record(request):
             close.append(data)
 
     # can report a toolman or not
-    conduct_canReport = {}  # can sent new report or has exist a report
+    conduct_canReport = []  # can sent new report or has exist a report
     for record in conduct:  # for each commission record, at most 1 report
-        conduct_canReport[record.commissionrecord_id] = True  # default true
         reports = record.getRelatedReportOnPublisher(reporter=current_user)
-        if len(reports) > 0:
-            conduct_canReport[record.commissionrecord_id] = False
+        conduct_canReport.append((len(reports)==0))
     print('conduct_canReport:', conduct_canReport)
-    close_canReport = {}  # can sent new report or has exist a report
+    close_canReport = []  # can sent new report or has exist a report
     for record in close:  # for each commission record, at most 1 report
-        close_canReport[record.commissionrecord_id] = True  # default true
         reports = record.getRelatedReportOnPublisher(reporter=current_user)
-        if len(reports) > 0:
-            close_canReport[record.commissionrecord_id] = False
+        close_canReport.append((len(reports)==0))
     print('close_canReport:', close_canReport)
 
     reportTypes = ReportType.objects.all()  # for modal of report
+    conduct = zip(conduct, conduct_canReport)
+    close = zip(close, close_canReport)
     return render(request, 'user/take.html', locals())
 
 

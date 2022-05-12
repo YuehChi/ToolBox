@@ -392,7 +392,7 @@
                                                                     </tr>
                                                 {% endif %}
                                             {% endfor %}
-                                                                    {% for record in record_list %}
+                                                                    {% for record,canReport in record_list %}
                                                                         {% if record.case == case %}
                                                                         <tr style="font-size: 12px;background: #ffffff;">
                                                                             <td style="width: 50px; padding-top: 15px;padding-bottom: 10px;padding-left: 30px;">
@@ -450,10 +450,14 @@
                                                                             </td>
                                                                              <!-- 追蹤、檢舉 -->
                                                                              <td style="width: 30px;line-height: 48px;">
-                                                                                {% if conduct_canReport.commissionrecord_id %}
+                                                                                {% if canReport %}
                                                                                     <button class="btn "id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}"style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
                                                                                 {% else %}
-                                                                                    <button class="btn "id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}"style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
+                                                                                    <button class="btn justify-content-center align-items-center" disabled="disabled" id="button-user-report" type="button">
+                                                                                        <i class="material-icons" style="font-size: 16px;">report_problem</i>
+                                                                                        已檢舉
+                                                                                    </button>
+                                                                                    <!-- <button class="btn "id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}"style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button> -->
                                                                                 {% endif %}
                                                                             </td>
                                                                             {% if record.user_status.status_id == 2 %}
@@ -611,7 +615,7 @@
                                                                 <tr>
                                                                     <td colspan="9" style="background: #f4f4f3;color: rgb(134,81,64);">&nbsp; &nbsp; &nbsp;已選名單</td>
                                                                 </tr>
-                                                                {% for record in record_list %}
+                                                                {% for record,canReport in record_list %}
                                                                     {% if record.case == case %}
                                                                     
                                                                     <tr style="font-size: 12px;background: #ffffff;">
@@ -658,7 +662,7 @@
                                                                         </td>
                                                                         <!-- 追蹤、檢舉 -->
                                                                         <td style="width: 100px;line-height: 56px;">
-                                                                            {% if close_canReport.commissionrecord_id %}
+                                                                            {% if canReport %}
                                                                                 <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;" data-userID="{{record.commissioned_user.user_id}}"></button>
                                                                             {% else %}
                                                                                 <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;" data-userID="{{record.commissioned_user.user_id}}"></button>

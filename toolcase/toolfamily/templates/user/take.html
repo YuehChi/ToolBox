@@ -332,7 +332,7 @@
                         
                         <div class="table-responsive"style="margin-top: -19px;margin-left: 40px;margin-right: 40px;margin-bottom: 50px; background: rgba(244, 244, 243, 1);border-radius: 27px;border: 1px solid rgb(125,105,105);">
                             <table style="margin-top: 7px;" class="table table-borderless">
-                                {% for commission in conduct %}
+                                {% for commission,canReport in conduct %}
                                 <tbody>
                                     <tr>
                                         {% load static %}
@@ -460,8 +460,14 @@
                                                                     </td>
                                                                     <!-- 檢舉、追蹤 -->
                                                                     <td style="width: 100px;text-align: center ; line-height: 53px;">
-
+                                                                        {% if canReport %}
                                                                         <button class="btn" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
+                                                                        {% else %}
+                                                                        <button class="btn justify-content-center align-items-center" disabled="disabled" id="button-user-report" type="button">
+                                                                            <i class="material-icons" style="font-size: 16px;">report_problem</i>
+                                                                            已檢舉
+                                                                        </button>
+                                                                        {% endif %}
                                                                     </td>
                                                                     <td class="d-block" id="contact_t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"style="text-align: left; line-height: 58px;width: 300px;color: rgb(85,58,58);">
                                                                         {% if contact != None %}
@@ -557,7 +563,7 @@
                         
                         <div class="table-responsive"style="margin-top: -19px;margin-left: 40px;margin-right: 40px;margin-bottom: 50px; background: rgba(244, 244, 243, 1);border-radius: 27px;border: 1px solid rgb(125,105,105);">
                             <table style="margin-top: 7px;" class="table table-borderless">
-                                {% for commission in close %}
+                                {% for commission,canReport in close %}
                                 <tbody>
                                     <tr>
                                         {% load static %}
@@ -649,7 +655,14 @@
                                                                 </td>
                                                                 <!-- 追蹤、檢舉 -->
                                                                 <td style="width: 80px;text-align: center ; line-height: 53px;">
+                                                                    {% if canReport %}
                                                                     <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
+                                                                    {% else %}
+                                                                    <button class="btn justify-content-center align-items-center" disabled="disabled" id="button-user-report" type="button">
+                                                                        <i class="material-icons" style="font-size: 16px;">report_problem</i>
+                                                                        已檢舉
+                                                                    </button>
+                                                                    {% endif %}
                                                                 </td>
                                                                 <td id="contact_th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}" style="text-align: left; line-height: 58px;width: 250px;color: rgb(85,58,58);">
                                                                     {% if contact != None %}
