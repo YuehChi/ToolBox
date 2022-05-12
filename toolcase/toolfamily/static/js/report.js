@@ -7,23 +7,23 @@ $(document).ready(function() {
     // Button that triggered the modal
     var button = event.relatedTarget;
     // Extract info from data-bs-* attributes
-    // var object_info = button.getAttribute('data-bs-whatever');
 
     if(button.getAttribute('data-user')){
-        // alert(button.getAttribute('data-user'));
         var user_info = button.getAttribute('data-user');
+        var user_name = button.getAttribute('user-name');
         var userObj = reportModal.querySelector('#report_user');
         userObj.value = user_info;
-        // var usertext = reportModal.querySelector('#text-user');
-        // usertext.value = user_info;
+        var usertext = reportModal.querySelector('#text-user');
+        usertext.value = user_name;
     }
     if(button.getAttribute('data-case')){
         // alert(button.getAttribute('data-case'));
         var case_info = button.getAttribute('data-case');
+        var case_name = button.getAttribute('case-name');
         var caseObj = reportModal.querySelector('#report_case');
         caseObj.value = case_info;
-        // var casetext = reportModal.querySelector('#text-case');
-        // casetext.value = case_info;
+        var casetext = reportModal.querySelector('#text-case');
+        casetext.value = case_name;
     }
 
 
@@ -50,8 +50,7 @@ $(document).ready(function() {
                 console.log('成功送出', data);
                 alert('已成功送出舉報！');
                 theForm.parents('.modal').modal('hide');
-                document.getElementById('button-user-report').disabled=true;
-                document.querySelector('#button-user-report').innerHTML = "已檢舉"
+                window.location.reload();
             },
             error: function(error) {
                 console.log(error);
