@@ -50,6 +50,8 @@ $(document).ready(function() {
                 console.log('成功送出', data);
                 alert('已成功送出舉報！');
                 theForm.parents('.modal').modal('hide');
+                document.getElementById('button-user-report').disabled=true;
+                document.querySelector('#button-user-report').innerHTML = "已檢舉"
             },
             error: function(error) {
                 console.log(error);
