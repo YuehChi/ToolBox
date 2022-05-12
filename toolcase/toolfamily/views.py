@@ -11,7 +11,9 @@ from .forms import *
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from django.db.models import Q, F
+from django.db.models import Q, F, When, Value, Count
+from django.db.models import Case as djCase
+from django.db.models.lookups import GreaterThan, LessThan
 from django.dispatch import receiver
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as django_settings
@@ -428,6 +430,12 @@ def case_profile(request ,case_id):
     else:
         button_status = 3  # cannot press the button never
 
+    reportTypes = ReportType.objects.all()  # for modal of report
+    myReports = Report.objects.filter(  # reports of the case from the user
+        reported_case = list_case[0],
+        reported_user = None,
+        reporter = current_user)
+    canReport = (len(myReports) == 0)  # the user can report the case or not
     return render(request,'case/profile.html',locals())
 
 
@@ -1031,6 +1039,7 @@ def viewOtherUser(request, user_id):
 
     # 取得使用者資料
     dataCol = [  # 要取得哪些欄位  # 注意：@property的欄位不能用.values()抓
+        'user_id',
         'name',
         'nickname',
         'gender',
@@ -1050,9 +1059,17 @@ def viewOtherUser(request, user_id):
         userData['icon'] = None
 
     # 整理資訊並回傳
+    myReports = Report.objects.filter( # reports of viewed user from current user
+        reported_user = viewedUser,
+        reported_case = None,
+        reporter = current_user)
+    canReport = (len(myReports) == 0) # current user can report viewed user or not
     content = {  # 要傳入模板的資訊
         'current_user': current_user,
-        'viewed_user': userData
+        'viewed_user': userData,
+        'myReports': myReports,
+        'canReport': canReport,
+        'reportTypes': ReportType.objects.all()  # for modal of report
         }
     return render(request, 'user/user_profile.html', content)
 
@@ -1221,8 +1238,30 @@ def user_publish_record(request):
                 deadline[data.case_id] = "不到一小時"
 
     # show all of the toolmen
+    myReports = Report.objects.filter(
+        reporter=current_user,
+        reported_case__isnull=False,
+        # reported_case__in=case_list,
+        reported_user__isnull=False
+    );
     record_list = CommissionRecord.objects.all().prefetch_related('case')
     willing_list = CaseWillingness.objects.all().prefetch_related('apply_case')
+
+    # can report a toolman or not
+    record_canReport = {}  # can sent new report or has exist a report
+    for record in record_list:  # for each commission record, at most 1 report
+        record_canReport[record.commissionrecord_id] = True  # default true
+        reports = record.getRelatedReport(reporter=current_user)
+        if len(reports) > 0:
+            record_canReport[record.commissionrecord_id] = False
+    print('record_canReport:', record_canReport)
+    willing_canReport = {}  # can sent new report or has exist a report
+    for willing in willing_list:  # for each case willingness, at most 1 report
+        willing_canReport[willing.casewillingness_id] = True  # default true
+        reports = willing.getRelatedReport(reporter=current_user)
+        if len(reports) > 0:
+            willing_canReport[willing.casewillingness_id] = False
+    print('willing_canReport:', willing_canReport)
 
     # numbers of toolmen for each case
     # average rate for each case
@@ -1262,6 +1301,7 @@ def user_publish_record(request):
                 except:
                     willing[case.case_id] += 1
 
+    reportTypes = ReportType.objects.all()  # for modal of report
     return render(request, 'user/publish.html', locals())
 
 
@@ -1356,6 +1396,23 @@ def user_take_record(request):
         elif status == 3 or status == 4:
             close.append(data)
 
+    # can report a toolman or not
+    conduct_canReport = {}  # can sent new report or has exist a report
+    for record in conduct:  # for each commission record, at most 1 report
+        conduct_canReport[record.commissionrecord_id] = True  # default true
+        reports = record.getRelatedReportOnPublisher(reporter=current_user)
+        if len(reports) > 0:
+            conduct_canReport[record.commissionrecord_id] = False
+    print('conduct_canReport:', conduct_canReport)
+    close_canReport = {}  # can sent new report or has exist a report
+    for record in close:  # for each commission record, at most 1 report
+        close_canReport[record.commissionrecord_id] = True  # default true
+        reports = record.getRelatedReportOnPublisher(reporter=current_user)
+        if len(reports) > 0:
+            close_canReport[record.commissionrecord_id] = False
+    print('close_canReport:', close_canReport)
+
+    reportTypes = ReportType.objects.all()  # for modal of report
     return render(request, 'user/take.html', locals())
 
 
@@ -1878,6 +1935,75 @@ def check_mail_used(request):
     except:
         return JsonResponse({"message": "帳號未被使用"})
 
+
+
+#########################################
+#           REPORT MODULE               #
+#########################################
+
+# -----------view report-------------
+@login_required
+def view_report(request, report_id):
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+
+    report = get_object_or_404(  # 找出這個 report; 找不到則 404 error
+        Report,
+        report_id = report_id
+    )
+
+    # 以下是回傳 json 的版本，若是要直接渲染 template 則不需使用 .values()
+    reportData = Report.objects.filter(report_id = report_id).values()[0]
+    return JsonResponse(data={'report': reportData}, status=200)
+
+
+@login_required
+def create_report(request):
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+
+    # 找有沒有舊的資料，有就不允許更改
+    reported_user = request.POST.get('reported_user', None)
+    reported_case = request.POST.get('reported_case', None)
+    print('\nreported_user:', reported_user, 'reported_case:', reported_case)
+    oldReport = Report.objects.filter(
+        reporter = current_user,
+        reported_user = (reported_user if reported_user else None),
+        reported_case = (reported_case if reported_case else None)
+    )
+    if oldReport:
+        print('the report already exist!')
+        return JsonResponse(
+            data={'error':'has reported already'},
+            status=403)
+
+    reportForm = ReportModelForm()  # 用來接收資料的表單
+    print('\n\ncreate report!')
+
+    # POST: 更改使用者資料
+    if request.method == 'POST':
+        print('\n\nrequest.POST:', request.POST)
+        formPost = ReportModelForm(request.POST)
+        if formPost.is_valid():
+            newReportData = formPost.save(commit=False)  # 先暫存，還不更改資料庫
+            newReportData.reporter = current_user  # 自動填入舉報人
+            newReportData.save()  # 實際更改資料庫
+            print('New report has been created.')
+            return JsonResponse(data={
+                'newReport': Report.objects.filter(
+                    report_id = newReportData.report_id
+                ).values()[0]
+            }, status=200)
+        else:
+            print('The form is not valid.')
+            reportForm = formPost  # 保留剛剛POST的分析結果，以顯示錯誤訊息
+            return JsonResponse(data={
+                'reportForm': reportForm
+            }, status=400)
 
 
 

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-<script src="/static/bootstrap/js/bootstrap.min.js"></script> 
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/static/fonts/material-icons.min.css">
     <link rel="stylesheet" href="/static/css/take-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="\static\js\report.js" type="text/javascript"></script>
 </head>
 <style>
     /* image */
@@ -28,7 +29,7 @@
         -webkit-border-radius: 100px;
         -moz-border-radius: 100px;
     }
-    
+
     /* address style */
     a.link_title:link {
         color:rgba(134, 81, 64);
@@ -36,7 +37,7 @@
     }
     a.link_title:visited{
         color:rgba(134, 81, 64);
-        
+
     }
     a.link_title:hover{
         color:rgb(204,195,190);
@@ -219,6 +220,51 @@
     
 </script>
 <body style="background: rgb(244,244,243);">
+    <!-- report modal -->
+    <div class="modal fade" id="reportModal" tabindex="10" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="reportModalLabel">檢舉工具人</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'create-report' %}" method="POST">
+                {% csrf_token %}
+                {# 用不可變的input發送檢舉目標 [!]需要用js在modal彈出時填入 #}
+                <div class="mb-3">
+                    <label for="reported-case" class="col-form-label">被檢舉的案件</label>
+                    <input type="text" id="report_case" name="reported_case" class="form-control" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="reported_obj" class="col-form-label">被檢舉人</label>
+                    <input type="text" id="report_user" name="reported_user" class="form-control" readonly>
+                </div>
+                <div class="mb-3">
+                  <label for="report-type" class="col-form-label">檢舉類型:</label>
+                  {# <input type="text" class="form-control" id="report-type"> #}
+                  {# 用選單選擇檢舉類型 #}
+                  <select class="form-control" id="report-type" name="report_type">
+                  {% for type in reportTypes %}
+                    <option value="{{ type.report_type_id }}">
+                        {{ type.report_type_name }}
+                    </option>
+                  {% endfor %}
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="report-message" class="col-form-label">檢舉內容:</label>
+                  <textarea class="form-control" id="report-message" name="description"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary">送出</button>
+            </div>
+          </div>
+        </div>
+    </div>
     <!-- --------Image Board-------- -->
     <div class="container" style="margin-top: 50PX;height: 100px;width: 100%;margin-right: 0px;margin-left: 0px;padding-right: 0px;padding-left: 0px;max-width: none;">
         <div class="row" style="height: 100px;width: 100%;margin: 0px;">
@@ -239,7 +285,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="col-md-10" style="margin-top: 30px; ">
                 {% load static %}
                 <div class="border rounded" style="background: #ffffff; box-shadow: 2px 3px rgba(196, 190, 190, 0.81);">
@@ -270,7 +316,7 @@
                                         <td style="width: 370px;">結束時間</td>
                                         {% load static %}
                                         <td class="d-block" style="width: 130px;">狀態<button type="button" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Hooray!"style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Help.png' %}"></button></td>
-                                        
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -339,7 +385,7 @@
                                                                     <tr>
                                                                         <td colspan="7" style="background: #f4f4f3;color: rgb(134,81,64);">&nbsp; &nbsp; &nbsp;已選名單</td>
                                                                         {% load static %}
-                                                                        <td style="width: 140px; text-align: center; color: rgb(134,81,64);background: #f4f4f3;">|<img src="{% static 'images/People.png' %}" style="width: 18px;margin-left: 4px;"> 
+                                                                        <td style="width: 140px; text-align: center; color: rgb(134,81,64);background: #f4f4f3;">|<img src="{% static 'images/People.png' %}" style="width: 18px;margin-left: 4px;">
                                                                             <a class="link_title" href="{% url 'user-publish-applicant' case.case_id %}" style="font-size: 15px;">應徵名單({% for key1, value1 in willing.items %}
                                                                             {% if key1 == case.case_id %}{{value1}}{% endif %}
                                                                         {% endfor %})</a></td>
@@ -391,7 +437,6 @@
                                                                                     </span>
                                                                                 </div>
                                                                             </td>
-                                                                           
                                                                             <td colspan="3" id="contact{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 55px;width: 350px;color: rgb(85,58,58);">
                                                                                 {% if contact != None %}
                                                                                     {{record.commissioned_user.contact}}
@@ -406,7 +451,7 @@
                                                                              <!-- 追蹤、檢舉 -->
                                                                              <td style="width: 30px;line-height: 48px;">
                                                                                 <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
-                                                                               
+
                                                                             </td>
                                                                             {% if record.user_status.status_id == 2 %}
                                                                                 <td class="d-block"style="width: 150px;text-align: center;"></td>
@@ -438,7 +483,7 @@
                                                                                                 <input type="submit" id="field{{record.commissioned_user.account_mail}}{{ case.case_id }}_star1" name="{{record.commissionrecord_id}}" value="1" /><label class = "full" for="field{{record.commissioned_user.account_mail}}{{ case.case_id }}_star1"></label>
                                                                                             </fieldset>
                                                                                         </form>
-                                                                                    {% endif %} 
+                                                                                    {% endif %}
                                                                                 </td>
                                                                                 <td style="line-height: 50px;text-align: center;">
                                                                                     <button class="btn btn-primary" type="button" disabled="disabled" style="width: 120px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">已完成委託</button>
@@ -610,8 +655,8 @@
                                                                         </td>
                                                                         <!-- 追蹤、檢舉 -->
                                                                         <td style="width: 100px;line-height: 56px;">
-                                                                            <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
-                                                                            <!-- <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Person_add.png' %}"></button> -->
+                                                                            <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;" data-userID="{{record.commissioned_user.user_id}}"></button>
+
                                                                         </td>
                                                                         <td id ="contacth{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 58px;width:350px;color: rgb(85,58,58);">
                                                                             {% if contact != None %}

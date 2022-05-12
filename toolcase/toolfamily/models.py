@@ -180,7 +180,7 @@ class UserDetail(models.Model):
 
 
 
-# 被舉報紀錄
+# 被停權紀錄
 class UserReportedRecord(models.Model):
     # ID與關連到的使用者
     record_id = models.AutoField(primary_key=True, editable=False)
@@ -528,6 +528,30 @@ class CaseWillingness(models.Model):
     def __str__(self):  # 拿去 print() 時要怎麼顯示
         return f'{self.willing_user} apply for {self.apply_case}'
 
+    def getRelatedReport(self, reporter:UserDetail=None):
+        if reporter:
+            reports = Report.objects.filter(
+                reporter=reporter,
+                reported_case=self.apply_case,
+                reported_user=self.willing_user)
+        else:
+            reports = Report.objects.filter(
+                reported_case=self.apply_case,
+                reported_user=self.willing_user)
+        return reports
+
+    def getRelatedReportOnPublisher(self, reporter:UserDetail=None):
+        if reporter:
+            reports = Report.objects.filter(
+                reporter=reporter,
+                reported_case=self.apply_case,
+                reported_user=self.apply_case.publisher)
+        else:
+            reports = Report.objects.filter(
+                reported_case=self.apply_case,
+                reported_user=self.apply_case.publisher)
+        return reports
+
 
 
 # 承接關係
@@ -586,6 +610,30 @@ class CommissionRecord(models.Model):
 
     def __str__(self):  # 拿去 print() 時要怎麼顯示
         return f'[{self.user_status}] {self.case}'
+
+    def getRelatedReport(self, reporter:UserDetail=None):
+        if reporter:
+            reports = Report.objects.filter(
+                reporter=reporter,
+                reported_case=self.case,
+                reported_user=self.commissioned_user)
+        else:
+            reports = Report.objects.filter(
+                reported_case=self.case,
+                reported_user=self.commissioned_user)
+        return reports
+
+    def getRelatedReportOnPublisher(self, reporter:UserDetail=None):
+        if reporter:
+            reports = Report.objects.filter(
+                reporter=reporter,
+                reported_case=self.case,
+                reported_user=self.case.publisher)
+        else:
+            reports = Report.objects.filter(
+                reported_case=self.case,
+                reported_user=self.case.publisher)
+        return reports
 
 
 

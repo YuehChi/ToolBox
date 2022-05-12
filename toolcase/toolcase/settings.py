@@ -27,7 +27,12 @@ DEBUG = True
 
 #ALLOWED_HOSTS = []
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['https://ntutoolbox.herokuapp.com/']
+# ALLOWED_HOSTS = ['https://ntutoolbox.herokuapp.com/']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'https://ntutoolbox.herokuapp.com/'
+]
 
 
 # Application definition
@@ -152,7 +157,7 @@ else:
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # STATIC_URL = '/static/'
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # #設定上傳檔案存放的目錄
 # MEDIA_URL = '/media/'

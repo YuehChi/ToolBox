@@ -10,3 +10,14 @@
     color: #f5c548;
     font-size: 16px;
 }
+/* image */
+.img-circular{
+    background-image: url('/static/images/default_icon_1.png');
+    background-size: cover;
+    display: block;
+    border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    width: 200px;
+    height: 200px;
+}

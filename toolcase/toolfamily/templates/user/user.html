@@ -44,13 +44,11 @@
                 </label>
                 <div class="row justify-content-center" style="z-index: 1;background: #ffffff;border-radius: .25rem">
                     <div class="col-md" style="max-width: 70%;width: 250px;">
-                        <div class="row justify-content-center">
                         {% if current_user.icon %}  {# 有圖才顯示 #}
-                            <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;" src="{{ current_user.icon.url }}">
+                            <div class="img-circular" style="width: 130px;height: 130px;background-image: url({{current_user.icon.url}});margin: auto;margin-top: 15px;"></div>
                         {% else %}
-                            <img style="border-radius: 50%;margin: 15px;padding: 2px;width: 150px;height: 150px;" src="\static\images\default_icon_1.png">
+                            <div class="img-circular" style="width: 130px;height: 130px;background-image: url('/static/images/default_icon_1.png');margin: auto;margin-top: 15px;"></div>
                         {% endif %}
-                        </div>
                         <!----------User Rate---------->
                         <div class="col-12 d-flex justify-content-center align-items-center" style="margin-bottom: 10px;">
                             <div id="user-rate" class="d-flex justify-content-center align-items-center"></div>
@@ -128,17 +126,15 @@
                     <div class="col-md-6" style="max-width: 70%;width: 250px;margin-top: 20px;margin-right: 10px;">
                         <form action="{% url 'user-icon-update' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div>
-                            {% if current_user.icon %}  {#有圖片才顯示#}
-                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" id="preview_img" src="{{ current_user.icon.url }}">
+                            {% if current_user.icon %}  {# 有圖才顯示 #}
+                                <div id="preview_img" class="img-circular" style="width: 200px;height: 200px;background-image: url({{current_user.icon.url}});margin: auto;margin-top: 15px;margin-bottom: 10px"></div>
                             {% else %}
-                                <img style="border-radius: 50%;margin: 10px;padding: 2px;width: 200px;height: 200px;" id="preview_img" src="\static\images\default_icon_1.png">
+                                <div id="preview_img" class="img-circular" style="width: 200px;height: 200px;background-image: url('/static/images/default_icon_1.png');margin: auto;margin-top: 15px;margin-bottom: 10px"></div>
                             {% endif %}
-                            </div>
                             <div style="text-align: center;">  {# 圖片上傳 #}
                                 <label for="id_icon" class="btn btn-primary border rounded" style="background: rgb(134,81,64);">選擇圖片</label>
                                 <input type="file" name="icon" accept="image/*" id="id_icon" style="display:none;">
-                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交">
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交圖片">
                             </div>
                             <div style="text-align: center;"> 
                                 <p style="margin-top: 10px; color: rgb(134, 81, 64)">檔案大小限2.5MB以下</p>
@@ -168,9 +164,6 @@
                                     <input  type="radio" name="gender" value="2" checked="checked"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;">女
                                     <input  type="radio" name="gender" value="0"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;">不願透漏
                                 {% endif %}                        
-                                    <!-- <input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2">男</label>
-                                    <input class="form-check-input" type="radio" id="formCheck-1">女
-                                    <input class="form-check-input" type="radio" id="formCheck-3"><label class="form-check-label" for="formCheck-3">不透漏</label> -->
                                 </div>
                                 <p style="color:  rgb(38, 29, 29);font-weight: bold;margin-top: 5px;">系所：
                                     <input class="border rounded form-control" type="text" name="department" value="{{ current_user.department }}">
