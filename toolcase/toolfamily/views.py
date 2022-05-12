@@ -284,9 +284,11 @@ def index(request):
     
     # 最多瀏覽的case
     page_most = request.POST.get('page_most', 1)
-    most_case = Case.objects.filter(Q(case_status__status_id = 1) | Q(case_status__status_id = 2) & Q(shown_public=True)).order_by('-pageviews').all()
+    most_case = Case.objects.filter(Q(case_status__status_id = 1) | Q(case_status__status_id = 2) & Q(shown_public=True)).order_by('-pageviews')
     most_case , num_pages = calPage_index(most_case,page_most)
-    most_apply = calappley_num(new_case)
+    most_apply = calappley_num(most_case)
+
+    page_scrolltop = request.POST.get('page_scrolltop')
 
     case_fields = Case_Field.objects.all()
     case_types = Case_Type.objects.all()
@@ -645,7 +647,7 @@ def case_search(request):
         print("check:" , check)
         print("check2:" , check2)
         print("Querry: " , query_o[0] ,query_o[1],query_o[2])
-        print("Q: " , type ,field,num,date_time,work,constraint,location,con)
+        print("Q: " , type ,field,num,date_time,work,constraint,location,con,status_id)
         print("========================================================")
 
         # == 單一查詢判斷 ==
@@ -826,6 +828,14 @@ def case_search(request):
             if  status_id == 0:
                 check_list.append(0)
                 temp2.append(0)
+            elif status_id =="10":
+                temp_case = Case.objects.filter( Q(case_status__status_id = 1) | Q(case_status__status_id = 2) & Q(shown_public=True))
+                temp = []
+                for i in temp_case:
+                    # print("我試case_id:",i.case_id)
+                    temp.append(i.case_id)
+                temp2.append(temp)
+                check_list.append(1)
             else:
                 temp_case = Case.objects.filter( Q(case_status__status_id = status_id)  & Q(shown_public=True))
                 temp = []
@@ -858,9 +868,9 @@ def case_search(request):
 
             # === 複合查詢id結果 - 交集類型/類型
             if con == "1":
-
+          
                 # 若其他6個選項空值，應該直接輸出type 和 field的結果
-                if check2 == 5:
+                if check2 == 6:
 
                     # 關鍵字結果與type 和 field的交集結果
                     if query_list[0] != ''  :

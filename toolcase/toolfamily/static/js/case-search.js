@@ -45,17 +45,17 @@ $(document).ready(function(){
     }
 
     // ---------- Single Choice Checkbox ----------
-    $('input:checkbox').on('click', function() {
-        var $box = $(this);
-        if ($box.is(':checked')) {
+    // $('input:checkbox').on('click', function() {
+    //     var $box = $(this);
+    //     if ($box.is(':checked')) {
 
-          var group = "input:checkbox[name='" + $box.attr("name") + "']";
-          $(group).prop("checked", false);
-          $box.prop("checked", true);
-        } else {
-          $box.prop("checked", false);
-        }
-    });
+    //       var group = "input:checkbox[name='" + $box.attr("name") + "']";
+    //       $(group).prop("checked", false);
+    //       $box.prop("checked", true);
+    //     } else {
+    //       $box.prop("checked", false);
+    //     }
+    // });
 
       // ---------- Single Choice Radio ----------
     $('input:radio').on('click', function() {
@@ -80,6 +80,8 @@ $(document).ready(function(){
 
         advancedSearchSubmit()
         $('#forminput-page').val('1')
+
+        console.log($('#forminput-status').val())
         $('#advanced-search-form').submit()
 
     });
@@ -191,16 +193,47 @@ function getDefault(){
         $(group).prop("checked", false);
     }
 
-    if ($('#get-input-type').html() != ""){
-        var type_id = 'check-type-'+$('#get-input-type').html()
+    // if ($('#get-input-type').html() != ""){
+    //     var type_id = 'check-type-'+$('#get-input-type').html()
+    //     $('#'+type_id).prop("checked", true);
+    // }
+
+    // if ($('#get-input-field').html() != ""){
+    //     var field_id = 'check-field-'+$('#get-input-field').html()
+    //     $('#'+field_id).prop("checked", true);
+    // }
+
+    $('.get-input-type').each(function(){
+        var type_id = 'check-type-'+$(this).html()
         $('#'+type_id).prop("checked", true);
-    }
+    })
+
+    $('.get-input-field').each(function(){
+        var field_id = 'check-field-'+$(this).html()
+        $('#'+field_id).prop("checked", true);
+    })
 
     
-    if ($('#get-input-field').html() != ""){
-        var field_id = 'check-field-'+$('#get-input-field').html()
-        $('#'+field_id).prop("checked", true);
+
+
+    // ---------- Status ----------
+    var status = $('#get-input-status').html()
+    if (status == "1"){
+        $('#select-status option').filter('[value=1]').attr('selected', true)
     }
+    else if(status == "2"){
+        $('#select-status option').filter('[value=2]').attr('selected', true)
+    }
+    else if(status == "3"){
+        $('#select-status option').filter('[value=3]').attr('selected', true)
+    }
+    else if(status == "10"){
+        $('#select-status option').filter('[value=10]').attr('selected', true)
+    }
+    else{
+        $('#select-status option').filter('[value=0]').attr('selected', true)
+    }
+
 
     // ---------- Num ----------
     var num = $('#get-input-num').html()
@@ -306,6 +339,23 @@ function advancedSearchSubmit(){
     //     $('#forminput-field').prop("checked", true)
     // }
     
+    // ---------- Status ----------
+    var status = $('#select-status').val()
+    if (status == 0){
+        $('#forminput-status').val('')
+    }
+    else if (status == 1){
+        $('#forminput-status').val('1')
+    }
+    else if (status == 2){
+        $('#forminput-status').val('2')
+    }
+    else if (status == 3){
+        $('#forminput-status').val('3')
+    }
+    else  if (status == 10){
+        $('#forminput-status').val('10')
+    }
 
 
     // ---------- Num ----------

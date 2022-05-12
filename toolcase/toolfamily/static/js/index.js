@@ -1,20 +1,40 @@
 $(document).ready(function(){
-
     
-    // ---------- Pagination ----------
-    $('#select-pagination').on('change', function() {
-        console.log($(this).val())
-        //advancedSearchSubmit()
+    var scrollTop_y = $('#get-input-page-scrolltop').data('value')
+    window.scrollTo(0, scrollTop_y)
+    $('#forminput-page-new').val($('#get-input-page-new').data('value'))
+    $('#forminput-page-most').val($('#get-input-page-most').data('value'))
 
-        console.log($('#select-pagination option:selected').val())
-        $('#forminput-page').val($('#select-pagination option:selected').val())
-        getDefault()
-        advancedSearchSubmit()
-        //$('#forminput-page').val($('#select-pagination option:selected').val())
-        console.log($('#select-pagination option:selected').val())
+    $('.new-page-link').click(function(){
+        $('#forminput-page-new').val($(this).data('value'))
+        var scrollTop = document.documentElement.scrollTop;
+        document.forms['index_form']['page_scrolltop'].value =scrollTop
+        console.log(scrollTop)
+        console.log($('#forminput-page-scrolltop').val())
+        // alert($(this).data('value'))
+        $('#index-form').submit()
 
-        $('#advanced-search-form').submit()
     })
+
+    $('.most-page-link').click(function(){
+        $('#forminput-page-most').val($(this).data('value'))
+        var scrollTop = document.documentElement.scrollTop;
+        document.forms['index_form']['page_scrolltop'].value =scrollTop
+        console.log(scrollTop)
+        console.log($('#forminput-page-scrolltop').val())
+        // alert($(this).data('value'))
+        $('#index-form').submit()
+
+    })
+    
+
+    // ---------- Enabled Enter To Submit ----------
+    $('#index-form').on('keypress', function(e) {
+        return e.which !== 13;
+    });
+
+
+
 
 
 
