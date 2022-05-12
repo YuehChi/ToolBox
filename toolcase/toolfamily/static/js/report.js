@@ -10,7 +10,7 @@ $(document).ready(function() {
     // var object_info = button.getAttribute('data-bs-whatever');
 
     if(button.getAttribute('data-user')){
-        alert(button.getAttribute('data-user'));
+        // alert(button.getAttribute('data-user'));
         var user_info = button.getAttribute('data-user');
         var userObj = reportModal.querySelector('#report_user');
         userObj.value = user_info;
@@ -18,7 +18,7 @@ $(document).ready(function() {
         // usertext.value = user_info;
     }
     if(button.getAttribute('data-case')){
-        alert(button.getAttribute('data-case'));
+        // alert(button.getAttribute('data-case'));
         var case_info = button.getAttribute('data-case');
         var caseObj = reportModal.querySelector('#report_case');
         caseObj.value = case_info;
@@ -40,7 +40,7 @@ $(document).ready(function() {
         var theForm = $(this).parents('.modal-footer')
             .siblings('.modal-body').children('form');
         var formData = theForm.serialize();
-        console.log('submit the form in modal.');
+        console.log('submit the form in modal:', formData);
 
         $.ajax({
             url: theForm.attr('action'),
@@ -53,12 +53,12 @@ $(document).ready(function() {
             },
             error: function(error) {
                 console.log(error);
-                if(error){
-                    console.log('無法送出:', error);
-                    alert('無法傳送！', error);
+                if(error.responseJSON.error){
+                    console.log('檢舉失敗:', error.responseJSON.error);
+                    alert('檢舉失敗 (' + error.responseJSON.error + ')');
                 }else{
-                    console.log('無法送出');
-                    alert('無法傳送！');
+                    console.log('檢舉失敗');
+                    alert('檢舉失敗（不明原因）');
                 }
             }
         })
