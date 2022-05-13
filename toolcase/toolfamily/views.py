@@ -53,7 +53,7 @@ def calPage (data_list , page):
 
 def calPage_index (data_list , page):
 
-    paginator = Paginator(data_list,5)
+    paginator = Paginator(data_list,3)
     count_page = paginator.num_pages
     try:
         totalpage_length = paginator.page(page)
