@@ -478,7 +478,7 @@
                                                             <!----------User Nickname---------->
                                                             <div class="col-12 d-flex justify-content-center align-items-center" style="margin-top: 3px;">
                                                                 <span id="user-nickname" style="font-size: 14px;text-align: center;font-weight: bold;">
-                                                                {% if user.nickname == "" %}
+                                                                {% if case.publisher.nickname == ""%}
                                                                     {{case.publisher.name}}
                                                                 {% else %}
                                                                     {{case.publisher.nickname}}
