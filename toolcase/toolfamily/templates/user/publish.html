@@ -449,7 +449,7 @@
                                                                                 </div>
                                                                             </td>
                                                                             <td id="contact{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 55px;width: 200px;color: rgb(85,58,58);">
-                                                                                {% if contact != None %}
+                                                                                {% if record.commissioned_user.contact != "" %}
                                                                                     {{record.commissioned_user.contact}}
                                                                                 {% else %}
                                                                                     {{record.commissioned_user.account_mail}}
@@ -680,7 +680,7 @@
                                                                             </div>
                                                                         </td>
                                                                         <td id ="contacth{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 58px;width:250px;color: rgb(85,58,58);">
-                                                                            {% if contact != None %}
+                                                                            {% if record.commissioned_user.contact != "" %}
                                                                                 {{record.commissioned_user.contact}}
                                                                             {% else %}
                                                                                 {{record.commissioned_user.account_mail}}

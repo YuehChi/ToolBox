@@ -466,7 +466,7 @@
                                                                     
                                                                     <td id="contact_t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"style="text-align: left; line-height: 58px;width: 200px;color: rgb(85,58,58);">
                                                                     
-                                                                        {% if contact != None %}
+                                                                        {% if commission.case.publisher.contact != "" %}
                                                                             {{commission.case.publisher.contact}}
                                                                         {% else %}
                                                                             {{commission.case.publisher.account_mail}}
@@ -651,6 +651,7 @@
                                                                                 {% load static %}
                                                                                 <img style="width: 18px;"src="{% static 'images/gender-male-female.png' %}" style="margin-left: 10px;">
                                                                             {% endif %}
+                                                                            
                                                                         </a>
                                                                     
                                                                         <div class="w-100">
@@ -667,7 +668,7 @@
                                                                 </td>
                                                                 
                                                                 <td id="contact_th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}" style="text-align: left; line-height: 58px;width: 280px;color: rgb(85,58,58);">
-                                                                    {% if contact != None %}
+                                                                    {% if commission.case.publisher.contact != "" %}
                                                                         {{commission.case.publisher.contact}}
                                                                     {% else %}
                                                                         {{commission.case.publisher.account_mail}}
