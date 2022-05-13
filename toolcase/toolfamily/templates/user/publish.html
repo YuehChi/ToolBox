@@ -457,10 +457,10 @@
                                                                                 {% load static %}
                                                                                 <!-- copy -->
                                                                                 <!-- <button onclick="copy('contact{{record.commissioned_user.account_mail}}{{ case.case_id }}')" class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button> -->
-                                                                                <button onclick="copy('contact{{record.commissioned_user.account_mail}}{{ case.case_id }}')" class="btn btn-primary d-none d-lg-block" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;margin-top: -46px;margin-left: 110px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
+                                                                                <button onclick="copy('contact{{record.commissioned_user.account_mail}}{{ case.case_id }}')" class="btn btn-primary d-none d-lg-block" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;margin-top: -46px;margin-left: 130px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
                                                                             </td>
-                                                                             <!-- 追蹤、檢舉 -->
-                                                                             <td style="white-space: nowrap;width: 250px; overflow: hidden; text-overflow: ellipsis; line-height: 53px;">
+                                                                            <!-- 追蹤、檢舉 -->
+                                                                            <td style="white-space: nowrap;width: 250px; overflow: hidden; text-overflow: ellipsis; line-height: 53px;">
                                                                                 {% if canReport %}
                                                                                     {% if record.commissioned_user.nickname != "" %}
                                                                                         <button class="btn "id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{record.commissioned_user.nickname}}" case-name="{{case.title}}" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}"style="background: transparent;color: transparent;border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"><span class="text-truncate" style="font-size:14px;color: rgb(75, 49, 42);"> 檢舉</span></button>
@@ -632,13 +632,13 @@
                                                         <table class="table table-borderless">
                                                             <tbody>
                                                                 <tr>
-                                                                    <td colspan="9" style="background: #f4f4f3;color: rgb(134,81,64);">&nbsp; &nbsp; &nbsp;已選名單</td>
+                                                                    <td colspan="6" style="background: #f4f4f3;color: rgb(134,81,64);">&nbsp; &nbsp; &nbsp;已選名單</td>
                                                                 </tr>
                                                                 {% for record,canReport in record_list %}
                                                                     {% if record.case == case %}
                                                                     
                                                                     <tr style="font-size: 12px;background: #ffffff;">
-                                                                        <td style="width: 80px; padding-top: 20px; padding-left: 30px;">
+                                                                        <td style="width: 60px; padding-top: 20px; padding-left: 30px;">
                                                                             {% if record.commissioned_user.icon %}
                                                                                     <div class="img-circular" style="background-image: url({{record.commissioned_user.icon.url}});"></div>
                                                                                     <!-- <img class="img-circular" src="{{record.commissioned_user.icon.url}}" style="width: 43px; background-color: #ca6c38;"> -->
@@ -648,7 +648,7 @@
                                                                                     <!-- <img  class="img-circular" src="{% static 'images/default_icon_1.png' %}" style="width: 43px;background-color: #ca6c38;"> -->
                                                                                 {% endif %}
                                                                         </td>
-                                                                        <td class="d-block" style="line-height: 18px;width: 180px;">
+                                                                        <td style="padding-top: 5px;width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                                                             {% comment %} {% url 'others-user-profile' record.commissioned_user.user_id %} {% endcomment %}
                                                                             <a class="link_title" href="{% url 'others-user-profile' record.commissioned_user.user_id %}" style="line-height: 41px;">
                                                                                 {% if record.commissioned_user.nickname != "" %}
@@ -679,20 +679,7 @@
                                                                                 </span>
                                                                             </div>
                                                                         </td>
-                                                                        <!-- 追蹤、檢舉 -->
-                                                                        <td style="width: 100px;line-height: 56px;">
-                                                                            {% if canReport %}
-                                                                                <!-- <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;" data-userID="{{record.commissioned_user.user_id}}"></button> -->
-                                                                                {% if record.commissioned_user.nickname != "" %}
-                                                                                    <button class="btn "id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{record.commissioned_user.nickname}}" case-name="{{case.title}}" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}"style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
-                                                                                {% else %}
-                                                                                    <button class="btn "id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{record.commissioned_user.name}}" case-name="{{case.title}}" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}"style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button> 
-                                                                                {% endif %}
-                                                                            {% else %}
-                                                                                <button class="btn" disabled="disabled" id="button-user-report" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;">已檢舉</button>
-                                                                            {% endif %}
-                                                                        </td>
-                                                                        <td id ="contacth{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 58px;width:350px;color: rgb(85,58,58);">
+                                                                        <td id ="contacth{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="line-height: 58px;width:250px;color: rgb(85,58,58);">
                                                                             {% if contact != None %}
                                                                                 {{record.commissioned_user.contact}}
                                                                             {% else %}
@@ -702,8 +689,26 @@
                                                                             <button onclick="copy('contacth{{record.commissioned_user.account_mail}}{{ case.case_id }}')" class="btn btn-primary d-none d-lg-block" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;margin-top: -50px;margin-left: 130px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
                                                                             <!-- <button onclick="copy('contacth{{record.commissioned_user.account_mail}}{{ case.case_id }}')" class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button> -->
                                                                         </td>
+                                                                        <!-- 追蹤、檢舉 -->
+                                                                        <td style="white-space: nowrap;width: 300px; overflow: hidden; text-overflow: ellipsis; line-height: 53px;">
+                                                                            {% if canReport %}
+                                                                                <!-- <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;" data-userID="{{record.commissioned_user.user_id}}"></button> -->
+                                                                                {% if record.commissioned_user.nickname != "" %}
+                                                                                    <button class="btn "id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{record.commissioned_user.nickname}}" case-name="{{case.title}}" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}"style="background: transparent;color: transparent;border-style: none;width: 30px;line-height: 1px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}"></button>
+                                                                                    <span class="text-truncate" style="font-size:14px;color: rgb(75, 49, 42);">檢舉</span>
+                                                                                {% else %}
+                                                                                    <button class="btn "id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{record.commissioned_user.name}}" case-name="{{case.title}}" data-user="{{ record.commissioned_user.user_id }}" data-case="{{ case.case_id }}"style="background: transparent;color: transparent;border-style: none;line-height: 1px; width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style=""></button>
+                                                                                    <span class="text-truncate" style="padding-top: 20px; font-size:14px;color: rgb(75, 49, 42);">檢舉</span>
+                                                                                {% endif %}
+                                                                            {% else %}
+                                                                            <button class="btn " disabled="disabled" id="button-user-report" type="button" style="font-size: 14px;background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;">
+                                                                                <i class="material-icons" style="font-size: 14px;">report_problem</i>
+                                                                            </button>
+                                                                            <span class="text-truncate" style="font-size:14px;color: rgb(98, 88, 85);">已檢舉</span>
+                                                                            {% endif %}
+                                                                        </td>
                                                                         {% if record.user_status.status_id == 3 %}
-                                                                            <td class="d-block" style="line-height: 56px;padding-left: 40px; width: 180px;color: rgb(85,58,58);">
+                                                                            <td class="d-block" style="line-height: 56px;padding-left: 40px; width: 200px;color: rgb(85,58,58);">
                                                                                 {% if record.rate_publisher_to_worker %}
                                                                                     <span id="starh{{record.commissioned_user.account_mail}}{{ case.case_id }}">
                                                                                         <script>
@@ -725,11 +730,11 @@
                                                                                 </form>
                                                                                 {% endif %}
                                                                             </td>
-                                                                            <td style="width: 190px; text-align: center;line-height: 56px;">
+                                                                            <td style="width: 180px; text-align: center;line-height: 56px;">
                                                                                 <button class="btn btn-primary" type="button" disabled="disabled" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">已完成委託</button>
                                                                             </td>
                                                                         {% elif record.user_status.status_id == 4 %}
-                                                                            <td class="d-block" id="deleh{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="text-align: center;width: 180px;color: rgb(85,58,58);" >
+                                                                            <td class="d-block" id="deleh{{record.commissioned_user.account_mail}}{{ case.case_id }}" style="margin-top:10px;text-align: center;width: 200px;color: rgb(85,58,58);" >
                                                                                 於 {{record.doublecheck_datetime}}<br>解除委託
                                                                                 <script>
                                                                                     var oriTime = "{{record.doublecheck_datetime}}"
@@ -737,12 +742,12 @@
                                                                                     changeTime(oriTime, ouputId, "dele");
                                                                                 </script> 
                                                                             </td>
-                                                                            <td style="width: 190px; text-align: center;line-height: 56px;">
+                                                                            <td style="width: 180px; text-align: center;line-height: 56px;">
                                                                                 <button class="btn btn-primary" type="button" disabled="disabled" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">已解除委託</button>
                                                                             </td>
                                                                         {% else %}
-                                                                            <td class="d-block" style="width: 180px;text-align: center; color: rgb(93, 170, 38);">時間結束<br>自動完成委託</td>
-                                                                            <td style="width: 190px; text-align: center;line-height: 56px;">
+                                                                            <td class="d-block" style="width: 200px;text-align: center; color: rgb(93, 170, 38);">時間結束<br>自動完成委託</td>
+                                                                            <td style="width: 180px; text-align: center;line-height: 56px;">
                                                                                 <button class="btn btn-primary" type="button" disabled="disabled" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">自動完成委託</button>
                                                                             </td>
                                                                         {% endif %}
