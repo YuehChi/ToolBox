@@ -143,13 +143,13 @@
         if (status == "s"){
             document.getElementById(ouputId).innerHTML=today;
         }else if (status =="e"){
-            document.getElementById(ouputId).innerHTML=today + "<span style='margin-left: 5px;color: rgb(60,46,47); font-size: 14px;'> 還剩 </span> <span style='font-size:18px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span>";
+            document.getElementById(ouputId).innerHTML=today + "<span class='d-inline-block text-truncate' style='max-width: 100px;'><span style='margin-left: 5px;color: rgb(60,46,47); font-size: 14px;'> 還剩 </span> <span style='font-size:18px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span></span>";
         }else if (status =="user"){
             document.getElementById(ouputId).innerHTML="上次登入: "+ msToTime(remainday)+"前";
         }else if (status =="r"){
-            document.getElementById(ouputId).innerHTML="<span style='color: rgb(60,46,47); font-size: 14px;'> 還剩 </span> <span style='font-size:18px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span>";
+            document.getElementById(ouputId).innerHTML="<span class='d-inline-block text-truncate' style='max-width: 100px;'><span style='color: rgb(60,46,47); font-size: 14px;'> 還剩 </span> <span style='font-size:18px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span></span>";
         }else{
-            document.getElementById(ouputId).innerHTML="於 "+ today+ " <br>解除委託";
+            document.getElementById(ouputId).innerHTML="於 "+ today+ " <br>解除案件";
         }
     }
     function msToTime(ms) {
@@ -290,7 +290,7 @@
                     <ul class="list-group borderless rounded" style="font-size: 18px;line-height: 30px; text-align: center;display:block; box-shadow: 2px 2px rgba(196, 190, 190, 0.81);">
                         <li class="list-group-item member " m="1" style="height: 50px;"><a class="link_title" href="{%url 'my-user-profile'%}" >會員中心</a></li>
                         <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-publish-record'%}" >我的委託</a></li>
-                        <li class="list-group-item bold " style="height: 50px; "><span style="font-weight:bold; color:rgba(134, 81, 64);">➤ </span><a class="link_title" href="{%url 'user-take-record'%}">我的接案</a><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                        <li class="list-group-item bold " style="height: 50px; "><a class="link_title" href="{%url 'user-take-record'%}">我的接案</a></li>
                         <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'user-password-update' %}" >更改密碼</a></li>
                         <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'logout' %}">登出</a></li>
                     </ul>
@@ -322,10 +322,10 @@
                                     <tr>
                                         <td style="width: 80px;"></td>
                                         <!-- <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(142,93,78);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;">↓</button> -->
-                                        <td style="text-align: center;width: 150px;">結束時間</td>
-                                        <td style="width: 350px;">&nbsp; 案件名稱</td>
+                                        <td style="width: 150px;">結束時間</td>
+                                        <td style="width: 350px;">案件名稱</td>
                                         <td style="text-align: center;width: 150px;">報酬</td>
-                                        <td class="d-block" style="text-align: center;width: 185px;">訊息</td>
+                                        <td style="text-align: center;width: 185px;">訊息</td>
                                         {% load static %}
                                         <td style="text-align: center; width: 180px;">狀態</td>
                                     </tr>
@@ -337,7 +337,7 @@
                             <table style="margin-top: 7px;" class="table table-borderless">
                                 {% for commission,canReport in conduct %}
                                 <tbody>
-                                    <tr>
+                                    <trs>
                                         {% load static %}
                                         <td style="width: 80px;padding-right: 0px;padding-left: 20px;padding-bottom: 0px;">
                                             <button class="btn btn-primary" onclick="changeImage({{ commission.case.case_id }})" type="button" data-bs-toggle="collapse" data-bs-target="#M{{ commission.case.case_id }}" aria-expanded="false" aria-controls="M{{ commission.case.case_id }}"  style="line-height: 45px; background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;">
@@ -352,17 +352,19 @@
                                                 changeTime(oriTime, ouputId ,"s");
                                             </script>
                                         </td>
-                                        <td style="width: 550px;">
+                                        <td style="width: 350px;">
                                             <a class="case_title" href="{% url 'case-profile' commission.case.case_id %}" style="line-height: 50px;padding-bottom: 0px;">
-                                                {{commission.case.title}}
+                                                <span class="d-inline-block text-truncate" style="max-width: 250px;">{{commission.case.title}}</span>
                                             </a>
+                                        
                                         </td>
-                                        <td style="text-align: center; width: 250px;line-height: 50px;color: rgb(121, 110, 110); padding-bottom: 0px;">{{commission.case.reward}}</td>
+                                        <td style="text-align: center; width: 150px;line-height: 50px;color: rgb(121, 110, 110); padding-bottom: 0px;">
+                                            <span class="d-inline-block text-truncate" style="max-width: 100px;">{{commission.case.reward}}</span>
+                                        </td>
                                         {% if commission.user_status.status_id == 2 %}
-                                            {% comment %} 確認alert都還沒做 {% endcomment %}
                                             {% for key, value in deadline.items %}
                                                 {% if commission.commissionrecord_id == key %}
-                                                <td  class="d-block" id="rT{{ commission.case.case_id }}" style="width: 200px;text-align: center;line-height: 50px;">還剩 {{commission.case.ended_datetime}}
+                                                <td id="rT{{ commission.case.case_id }}" style="width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;text-align: center;line-height: 50px;">還剩 {{commission.case.ended_datetime}}
                                                 <script>
                                                     var oriTime = "{{commission.case.ended_datetime}}"
                                                     var ouputId = "rT{{ commission.case.case_id }}"
@@ -371,7 +373,7 @@
                                                 {% endif %}
                                             {% endfor %}
                                             </td>
-                                            <td style="width: 150px; text-align: center;">
+                                            <td style="width: 180px; text-align: center;">
                                                 <button class="btn btn-primary" type="button" onclick="sendCompuser()" value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成</button><br>
                                                 <button class="btn btn-primary" type="button" onclick="sendDeleuser()"  value="解除" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">解除</button>
                                                 <script>
@@ -389,21 +391,21 @@
                                                 
                                             </td>
                                         {% elif commission.user_status.status_id == 5 %}
-                                            <td class="d-block" style="text-align: center;width: 200px;line-height: 50px;font-size: 15px;">對方發出取消請求</td>
-                                            <td style="width: 150px; text-align: center;">
+                                            <td style="text-align: center;width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 50px;font-size: 15px;">對方發出取消請求</td>
+                                            <td style="width: 180px; text-align: center;">
                                                 <button class="btn btn-primary" type="button" disabled value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成</button><br>
                                                 <button class="btn btn-primary" type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'"  value="確認取消" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">確認取消</button>
                                                 
                                             </td>
                                         {% elif commission.user_status.status_id == 6 %}
-                                            <td class="d-block" style="text-align: center;width: 200px;line-height: 50px;font-size: 15px;">等待對方確認取消</td>
-                                            <td style="width: 150px; text-align: center;">
+                                            <td style="text-align: center;width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 50px;font-size: 15px;">等待對方確認取消</td>
+                                            <td style="width: 180px; text-align: center;">
                                                 <button class="btn btn-primary" type="button" disabled value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成</button><br>
                                                 <button class="btn btn-primary" type="button" disabled  value="解除" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">解除中...</button>
                                             </td>
                                         {% elif commission.user_status.status_id == 7 %}
-                                            <td class="d-block" style="text-align: center;width: 200px;line-height: 50px;font-size: 15px;">等待對方確認完成</td>
-                                            <td style="width: 150px; text-align: center;">
+                                            <td style="text-align: center;width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 50px;font-size: 15px;">等待對方確認完成</td>
+                                            <td style="width: 180px; text-align: center;">
                                                 <button class="btn btn-primary" type="button" disabled value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成中...</button><br>
                                                 <button class="btn btn-primary" type="button" disabled  value="解除" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">解除</button>
                                             </td>
@@ -416,9 +418,9 @@
                                                         <table class="table tableContain table-borderless">
                                                             <tbody>
                                                                 <tr style="font-size: 12px;background: #ffffff;">
-                                                                    <td style="line-height: 60px; width: 150px;text-align: center;">｜委託人資訊</td>
+                                                                    <td style="line-height: 60px; width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;text-align: center;">｜委託人資訊</td>
                                                                     
-                                                                    <td style="padding-top:20px; line-height: 30px; width: 250px;">
+                                                                    <td style="padding-top:20px; line-height: 30px; width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                                                         {% if commission.case.publisher.icon %}
                                                                             <div class="img-circular" style="background-image: url({{commission.case.publisher.icon.url}});"></div>
                                                                         {% else %}
@@ -461,31 +463,34 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <!-- 檢舉、追蹤 -->
-                                                                    <td style="width: 100px;text-align: center ; line-height: 53px;">
-                                                                        {% if canReport %}
-                                                                            {% if commission.case.publisher.nickname != "" %}
-                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.nickname}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
-                                                                            {% else %}
-                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.name}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
-                                                                            {% endif %}
-                                                                        {% else %}
-                                                                        <button class="btn " disabled="disabled" id="button-user-report" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;">
-                                                                            <i class="material-icons" style="font-size: 16px;">report_problem</i>
-                                                                            已檢舉
-                                                                        </button>
-                                                                        {% endif %}
-                                                                    </td>
-                                                                    <td class="d-block" id="contact_t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"style="text-align: left; line-height: 58px;width: 300px;color: rgb(85,58,58);">
+                                                                    
+                                                                    <td id="contact_t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"style="text-align: left; line-height: 58px;width: 200px;color: rgb(85,58,58);">
+                                                                    
                                                                         {% if contact != None %}
                                                                             {{commission.case.publisher.contact}}
                                                                         {% else %}
                                                                             {{commission.case.publisher.account_mail}}
                                                                         {% endif %}
+                                                                    
                                                                         {% load static %}
                                                                         <!-- copy -->
-                                                                        <button onclick="copy('contact_t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}')" class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
+                                                                        <button onclick="copy('contact_t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}')" class="btn btn-primary d-none d-lg-block" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;margin-top: -50px;margin-left: 130px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
                                                                     </td>
+                                                                    <!-- 檢舉、追蹤 -->
+                                                                    <td style="white-space: nowrap;width: 250px; overflow: hidden; text-overflow: ellipsis; line-height: 53px;">
+                                                                        {% if canReport %}
+                                                                            {% if commission.case.publisher.nickname != "" %}
+                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.nickname}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: transparent;color: transparent;border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"><span class="text-truncate" style="font-size:14px;color: rgb(75, 49, 42);"> 檢舉</span></button>
+                                                                            {% else %}
+                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.name}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: transparent;color: transparent;border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"><span class="text-truncate" style="font-size:14px;color: rgb(75, 49, 42);"> 檢舉</span></button>
+                                                                            {% endif %}
+                                                                        {% else %}
+                                                                        <button class="btn " disabled="disabled" id="button-user-report" type="button" style="font-size: 14px;background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;">
+                                                                            <i class="material-icons" style="font-size: 14px;">report_problem</i> 已檢舉
+                                                                        </button>
+                                                                        {% endif %}
+                                                                    </td>
+                                                                    <td  style="width: 200px;"> </td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -501,13 +506,13 @@
 
 <!-- registration take_sign -->
                     <div id="take_sign" style="display: none;">
-                        <div class="table-responsive" style="margin-left: 40px;margin-right: 40px; margin-top: 20px;margin-bottom: 50px;background-color: rgb(226, 218, 212); border-radius: 27px;border: 1px solid rgb(125,105,105);">
+                        <div class="table-responsive" style="margin-left: 40px;margin-right: 40px; margin-top: -10px;margin-bottom: 50px;background-color: rgb(226, 218, 212); border-radius: 27px;border: 1px solid rgb(125,105,105);">
                             <table style="margin-top: 0px; margin-bottom: 23px;" class="table table-sm table-striped table-borderless ">
                                 <thead style="color: rgb(75, 49, 42);padding-top: 0px;">
                                     <tr>
                                         <td style="width: 50px;"></td>
-                                        <td style="width: 200px;text-align: center;">結束時間</td>
-                                        <td class="d-block" style="width: 200px;">案件名稱</td>
+                                        <td style="width: 120px;">結束時間</td>
+                                        <td style="width: 200px;">案件名稱</td>
                                         <td style="width: 200px;text-align: center;">報酬</td>
                                         <td style="width: 120px;text-align: center;">動作</td>
                                     </tr>
@@ -516,7 +521,7 @@
                                     {% for willing in willingness %}
                                         <tr>
                                             <td style="width: 50px;"></td>
-                                            <td style="color: rgb(121, 110, 110);line-height: 50px; width: 200px;text-align: center;"id="enddate{{ willing.apply_case.case_id }}">
+                                            <td style="color: rgb(121, 110, 110);line-height: 50px; width: 120px;"id="enddate{{ willing.apply_case.case_id }}">
                                                 {{willing.apply_case.ended_datetime}}
                                                 <script> 
                                                     var oriTime = "{{willing.apply_case.ended_datetime}}"
@@ -525,12 +530,12 @@
                                                 </script>
                                             </td>
                                             
-                                            <td style="width: 500px;">
+                                            <td style="width: 200px;">
                                                 <a class="case_title" href="{% url 'case-profile' willing.apply_case.case_id %}" style="line-height: 50px;padding-bottom: 0px;">
-                                                    {{willing.apply_case.title}}
+                                                    <span class="d-inline-block text-truncate" style="max-width: 200px;">{{willing.apply_case.title}}</span>
                                                 </a>
-                                                </td>
-                                            <td class="d-block" style="width: 200px;text-align: center;line-height: 50px;color: rgb(121, 110, 110);">{{willing.apply_case.reward}}</td>
+                                            </td>
+                                            <td style="width: 200px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;text-align: center;line-height: 50px;color: rgb(121, 110, 110);">{{willing.apply_case.reward}}</td>
                                             <td style="width: 120px;text-align: center;line-height: 50px">
                                                 <button class="btn btn-primary" type="button" onclick="sendDele()" value="取消報名" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">取消報名</button>
                                                 <script>
@@ -558,11 +563,11 @@
                                         <td style="width: 80px;"></td>
                                         <!-- <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(142,93,78);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;">↓</button> -->
                                         <td style="width: 150px;">結束時間</td>
-                                        <td style="width: 400px;">案件名稱</td>
-                                        <td style="text-align: center;width: 150px;">報酬</td>
-                                        <td style="text-align: center; width: 120px;">狀態</td>
+                                        <td style="width:350px;">案件名稱</td>
+                                        <td style="width: 150px;">報酬</td>
+                                        <td style="text-align: center; width: 180px;">狀態</td>
                                         {% load static %}
-                                        <td style="width: 150px;">獲得的評價</td>
+                                        <td style="text-align: center;width: 185px;">獲得的評價</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -587,19 +592,19 @@
                                                 changeTime(oriTime, ouputId ,"s");
                                             </script>
                                         </td>
-                                        <td class="d-block" style="width: 350px;">
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 350px;">
                                             {% comment %} {% url 'case-profile' commission.case.case_id %}{% endcomment %}
                                             <a class="case_title" href="{% url 'case-profile' commission.case.case_id %}" style="line-height: 50px;padding-bottom: 0px;">
-                                                {{commission.case.title}}
+                                                <span class="d-inline-block text-truncate" style="max-width: 200px;">{{commission.case.title}}</span>
                                             </a>
                                         </td>
                                         <td style="width: 150px;line-height: 50px;color: rgb(121, 110, 110); padding-bottom: 0px;">{{commission.case.reward}}</td>
                                         {% if commission.user_status.status_id == 3 %}
-                                            <td style="padding-top: 20px; width: 100px;text-align: center;">完成</td>
+                                            <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;padding-top: 20px; width: 180px;text-align: center;">完成</td>
                                         {% elif commission.user_status.status_id == 4 %}
-                                            <td style="width: 100px;padding-top: 20px;text-align: center;">解除</td>
+                                            <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 180px;padding-top: 20px;text-align: center;">解除</td>
                                         {% endif %}
-                                        <td class="d-block" style="text-align: center;; width: 150px;line-height: 50px;">
+                                        <td style="white-space: nowrap;width: 185px;overflow: hidden;text-overflow: ellipsis;text-align: center;line-height: 50px;">
                                             <span id="starth{{ commission.case.case_id }}">
                                                 {{commission.rate_publisher_to_worker}}
                                                 <script>
@@ -616,9 +621,9 @@
                                                     <table class="table table-borderless">
                                                         <tbody>
                                                             <tr style="font-size: 12px;background: #ffffff;">
-                                                                <td style="line-height: 60px; width: 150px;text-align: center;">｜委託人資訊</td>
+                                                                <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 60px; width: 250px;text-align: center;">｜委託人資訊</td>
                                                                     
-                                                                <td style="padding-top:20px; line-height: 30px; width: 250px;">
+                                                                <td style="padding-top:20px; line-height: 30px; width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                                                 
                                                                     {% if commission.case.publisher.icon %}
                                                                         <div class="img-circular" style="background-image: url({{commission.case.publisher.icon.url}});"></div>
@@ -628,7 +633,7 @@
                                                                     
                                                                     <div style="margin-left: 55px; margin-top: -50px;">
                                                                         {% comment %} {% url 'others-user-profile' commission.case.publisher.user_id %} {% endcomment %}
-                                                                        <a class="link_title" href="{% url 'others-user-profile' commission.case.publisher.user_id %}" style="">
+                                                                        <a class="link_title" href="{% url 'others-user-profile' commission.case.publisher.user_id %}" >
                                                                             {% if commission.case.publisher.nickname != "" %}
                                                                                 {{commission.case.publisher.nickname}}
                                                                             {% else %}
@@ -660,22 +665,8 @@
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                <!-- 追蹤、檢舉 -->
-                                                                <td style="width: 80px;text-align: center ; line-height: 53px;">
-                                                                    {% if canReport %}
-                                                                        {% if commission.case.publisher.nickname != "" %}
-                                                                            <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.nickname}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
-                                                                        {% else %}
-                                                                            <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.name}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"></button>
-                                                                        {% endif %}
-                                                                    {% else %}
-                                                                    <button class="btn justify-content-center align-items-center" disabled="disabled" id="button-user-report" type="button">
-                                                                        <i class="material-icons" style="font-size: 16px;">report_problem</i>
-                                                                        已檢舉
-                                                                    </button>
-                                                                    {% endif %}
-                                                                </td>
-                                                                <td id="contact_th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}" style="text-align: left; line-height: 58px;width: 250px;color: rgb(85,58,58);">
+                                                                
+                                                                <td id="contact_th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}" style="text-align: left; line-height: 58px;width: 280px;color: rgb(85,58,58);">
                                                                     {% if contact != None %}
                                                                         {{commission.case.publisher.contact}}
                                                                     {% else %}
@@ -685,6 +676,21 @@
                                                                     <!-- copy -->
                                                                     <button onclick="copy('contact_th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}')" class="btn btn-primary d-none d-lg-block" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;margin-top: -50px;margin-left: 130px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
                                                                     <!-- <button onclick="copy('contact_th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}')" class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;padding: 0px 0px;margin-top: -4px;"><img src="{% static 'images/Content%20copy.png' %}"></button> -->
+                                                                </td>
+                                                                <!-- 追蹤、檢舉 -->
+                                                                <td style="white-space: nowrap;width: 250px; overflow: hidden; text-overflow: ellipsis; line-height: 53px;">
+                                                                    {% if canReport %}
+                                                                        {% if commission.case.publisher.nickname != "" %}
+                                                                            <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.nickname}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: transparent;color: transparent;border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}"></button>
+                                                                            <span class="text-truncate" style="font-size:14px;color: rgb(75, 49, 42);"> 檢舉</span>
+                                                                        {% else %}
+                                                                            <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.name}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: transparent;color:transparent;border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}"></button>
+                                                                            <span class="text-truncate" style="font-size:14px;color: rgb(75, 49, 42);"> 檢舉</span>
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                    <button class="btn justify-content-center align-items-center" disabled="disabled" id="button-user-report" type="button" style="font-size: 14px;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><i class="material-icons" style="font-size: 14px;">report_problem</i></button>
+                                                                    <span class="text-truncate" style="font-size:14px;color: rgb(98, 88, 85);"> 已檢舉</span>
+                                                                    {% endif %}
                                                                 </td>
                                                                 {% if commission.user_status.status_id == 3 %}
                                                                     <td class="d-block" style="width: 200px;padding-left: 55px;line-height: 56px;color: rgb(85,58,58);">
@@ -697,7 +703,7 @@
                                                                                     getStar(starId, value );</script>
                                                                             </span>&nbsp; 評價
                                                                         {% else %}
-                                                                            <form action="/toolfamily/user/rate/" method="post" style="margin-left: 36px; margin-top: -56px;"onSubmit="return confirm('確定送出評價？');">
+                                                                            <form action="/toolfamily/user/rate/" method="post" onSubmit="return confirm('確定送出評價？');">
                                                                                 <label>&nbsp; &nbsp;評價</label>
                                                                                 {% csrf_token %}
                                                                                 <fieldset class="rating">
