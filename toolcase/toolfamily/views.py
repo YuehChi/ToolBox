@@ -1300,6 +1300,10 @@ def user_publish_record(request):
     reportTypes = ReportType.objects.all()  # for modal of report
     record_list = zip(record_list, record_canReport)
     willing_list = zip(willing_list, willing_canReport)
+
+    record_list = list(record_list)
+    willing_list = list(willing_list)
+
     return render(request, 'user/publish.html', locals())
 
 
@@ -1409,6 +1413,10 @@ def user_take_record(request):
     reportTypes = ReportType.objects.all()  # for modal of report
     conduct = zip(conduct, conduct_canReport)
     close = zip(close, close_canReport)
+
+    conduct = list(conduct)
+    close = list(close)
+
     return render(request, 'user/take.html', locals())
 
 
