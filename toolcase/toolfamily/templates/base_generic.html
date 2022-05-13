@@ -38,9 +38,9 @@
 <body style="background: #f4f4f3;">
   {% block header-navbar %}
       <!----------NavBar FixtedTop---------->
-      <nav class="d-none d-md-block navbar navbar-light navbar-expand-md fixed-top" style="background: rgb(244,244,243);height: 60px;">
+      <nav class="d-none d-lg-block navbar navbar-light navbar-expand-lg fixed-top" style="background: rgb(244,244,243);height: 60px;">
         <div class="container-fluid" style="height: 50px;background: rgb(244,244,243);"><a class="navbar-brand" href="{% url 'index'%}">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse d-md-flex d-lg-flex justify-content-md-end align-items-md-center justify-content-lg-end align-items-lg-center" style="background: rgb(244,244,243);" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
+            <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end align-items-lg-center" style="background: rgb(244,244,243);" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
                 <ul class="navbar-nav align-items-md-center">
                     <li class="nav-item"><a class="nav-link" href="#" style="font-size: 12px;margin-left: -2px;margin-right: 8px;">English</a></li>
                     <li class="nav-item">
@@ -86,9 +86,9 @@
             </div>
         </div>
     </nav>
-    <nav id="mobile" class="d-md-none navbar navbar-light navbar-expand-md fixed-top" style="background: rgb(244,244,243);height: 50px;border-bottom-width: 0px;">
+    <nav id="mobile" class="d-lg-none navbar navbar-light navbar-expand-lg fixed-top" style="background: rgb(244,244,243);height: 50px;border-bottom-width: 0px;">
         <div class="container-fluid"><a class="navbar-brand" href="{% url 'index'%}">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse d-md-flex d-lg-flex justify-content-md-end align-items-md-center justify-content-lg-end align-items-lg-center" style="background: rgb(244,244,243);" id="navcol-1">
+            <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end align-items-lg-center" style="background: rgb(244,244,243);" id="navcol-1">
                 <ul class="navbar-nav">
                     <li class="nav-item navbar-text"><i class="material-icons" style="float: left;margin-top: 10px;font-size: 15px;">language</i><a class="nav-link" href="#" style="float: left;font-size: 12px;margin-left: 2px;margin-right: 8px;">繁體中文</a></li>
                     <li class="nav-item "><button class="btn" type="button" id="button-case-new" style="padding: 2px 12px;color: #ffffff;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;width: 85px;">我要發案</button></li>
