@@ -492,7 +492,7 @@
                                                                                         </span>&nbsp; 評價
                                                                                     {% else %}
                                                                                     <br>
-                                                                                        <form action="/toolfamily/user/rate/" method="post" style="margin-left: 10px;"onSubmit="return confirm('確定送出評價？');" >
+                                                                                        <form action="/toolfamily/user/rate/" method="post" style="margin-left: 0px;"onSubmit="return confirm('確定送出評價？');" >
                                                                                             <label>評價</label>
                                                                                             {% csrf_token %}
                                                                                             <fieldset class="rating">
@@ -717,7 +717,7 @@
                                                                                             getStar(starId, value );</script>
                                                                                     </span>&nbsp; 評價
                                                                                 {% else %}
-                                                                                <form action="/toolfamily/user/rate/" method="post" style="margin-left: 10px;"onSubmit="return confirm('確定送出評價？');">
+                                                                                <form action="/toolfamily/user/rate/" method="post" style="margin-left: 0px;"onSubmit="return confirm('確定送出評價？');">
                                                                                     <label>&nbsp; 評價</label>
                                                                                     {% csrf_token %}
                                                                                     <fieldset class="rating">
