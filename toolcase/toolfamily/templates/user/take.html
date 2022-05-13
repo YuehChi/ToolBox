@@ -439,7 +439,7 @@
                                                                                 
                                                                                 
                                                                                 {% load static %} 
-                                                                                {% if commission.case.publisher.gender == 0 %}
+                                                                                {% if commission.case.publisher.gender == 2 %}
                                                                                     {% load static %}
                                                                                     <img  style="width: 18px;"src="{% static 'images/gender-female.png' %}" style="margin-left: 10px;">
                                                                                 {% elif commission.case.publisher.gender == 1 %}
@@ -641,7 +641,7 @@
                                                                             {% endif %}
                                                                             
                                                                             {% load static %} 
-                                                                            {% if commission.case.publisher.gender == 0 %}
+                                                                            {% if commission.case.publisher.gender == 2 %}
                                                                                 {% load static %}
                                                                                 <img  style="width: 18px;"src="{% static 'images/gender-female.png' %}" style="margin-left: 10px;">
                                                                             {% elif commission.case.publisher.gender == 1 %}

@@ -427,7 +427,7 @@
                                                                                         {{record.commissioned_user.name}}
                                                                                     {% endif %}
                                                                                     {% load static %} 
-                                                                                    {% if record.commissioned_user.gender == 0 %}
+                                                                                    {% if record.commissioned_user.gender == 2 %}
                                                                                         {% load static %}
                                                                                         <img  style="width: 18px;"src="{% static 'images/gender-female.png' %}" style="margin-left: 10px;">
                                                                                     {% elif record.commissioned_user.gender == 1 %}
@@ -658,7 +658,7 @@
                                                                                 {% endif %}
 
                                                                                 {% load static %} 
-                                                                                {% if record.commissioned_user.gender == 0 %}
+                                                                                {% if record.commissioned_user.gender == 2 %}
                                                                                     {% load static %}
                                                                                     <img  style="width: 18px;"src="{% static 'images/gender-female.png' %}" style="margin-left: 10px;">
                                                                                 {% elif record.commissioned_user.gender == 1 %}
