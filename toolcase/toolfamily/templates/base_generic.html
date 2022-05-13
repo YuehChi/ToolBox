@@ -23,6 +23,16 @@
 
 </head>
 
+<style>
+    .nav-img-circular {
+        background-size: cover;
+        display: block;
+        border-radius: 100px;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+    }
+</style>
+
 
 
 <body style="background: #f4f4f3;">
@@ -38,10 +48,11 @@
                     </li>
                     <li class="nav-item">
                         {% if current_user.icon %}  {# 有圖才顯示 #}
-                            <div class="img-circular" id="user-icon"   style="margin:auto;margin-left: 2px;margin-right: 4px;background-image: url({{current_user.icon.url}});width: 40px;height: 40px;"></div>
+                            <div class="nav-img-circular" id="user-icon"   style="margin:auto;margin-left: 2px;margin-right: 4px;background-image: url({{current_user.icon.url}});width: 40px;height: 40px;border-radius: 100px;"></div>
                         {% else %}
-                            <div class="img-circular" id="user-icon"   style="margin:auto;margin-left: 2px;margin-right: 4px;background-image: url('/static/images/default_icon_1.png');width: 40px;height: 40px;"></div>
+                            <div class="nav-img-circular" id="user-icon"   style="margin:auto;margin-left: 2px;margin-right: 4px;background-image: url('/static/images/default_icon_1.png');width: 40px;height: 40px;border-radius: 100px;"></div>
                         {% endif %}
+
                         <!-- <div style="margin:auto;position:relative;width:45px;height:45px;overflow:hidden;border-radius:50%;">
                         {% if current_user.icon %}  {# 有圖才顯示 #}
                             <img style="width:100%;height:auto;margin-top: 3px;padding: 2px;" src="{{ current_user.icon.url }}">

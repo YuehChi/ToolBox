@@ -166,7 +166,7 @@ $(document).ready(function() {
     $('#user-nickname').html($('#get-user-nickname').html())
     $('#user-department').html($('#get-user-department').html())
     //$('#user-icon').attr('src', $('#get-user-icon').html())
-    $('#user-icon').css('background-image', 'url('+$('#get-user-icon').html()+')')
+    $('.img-circular').css('background-image', 'url('+$('#get-user-icon').html()+')')
     // $('#user-icon').attr('style', "background-image:" + $('#get-user-icon').html())
     console.log($('#get-user-lastlogintime').html())
     // --------------- User Gender ---------------
