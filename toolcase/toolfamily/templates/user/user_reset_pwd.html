@@ -1,4 +1,7 @@
 {% extends "base_generic.html" %}
+{% load i18n %}
+<!-- user_reset_pwd -->
+
 {% load static %}
 {% block content %}
 <script src="\static\js\user.js" type="text/javascript"></script>
@@ -8,13 +11,13 @@
     function validate() {
         var pwd1 = document.getElementById("new_pwd").value;
         var pwd2 = document.getElementById("confirm").value;
-        
+
         if(pwd1 == pwd2) {
-            document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:green;'>兩次密碼相同</span>";
+            document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:green;'>{% trans "兩次密碼相同" %}</span>";
             isPwdCheck = true;
-            
+
         }else if (pwd1 != pwd2){
-            document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:Tomato;'>兩次密碼不同</span>";
+            document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:Tomato;'>{% trans "兩次密碼不同" %}</span>";
             isPwdCheck = false;
         }
     }
@@ -30,7 +33,7 @@
         var comp = "";
 
         if (len == 0) {
-            comp = "<span style='font-size: 12px;'>密碼強度</span>";
+            comp = "<span style='font-size: 12px;'>{% trans "密碼強度" %}</span>";
         }else {
             // <span style='font-size: 12px;'>&nbsp> strong</span>
             scr = parseInt(getPwdScore(pwd));
@@ -45,11 +48,11 @@
         document.getElementById('complexity').innerHTML = comp;
         return false;
     }
-    
+
     function getPwdScore(strPassword) {
         // Reset combination count
         var nScore = 0;
-    
+
         // Password length
         if (strPassword.length < 5) {// -- Less than 4 characters
             nScore += 5;
@@ -58,7 +61,7 @@
         }else if (strPassword.length > 7) {// -- 8 or more
             nScore += 25;
         }
-    
+
         // Letters
         var nUpperCount = countContain(strPassword, m_strUpperCase);
         var nLowerCount = countContain(strPassword, m_strLowerCase);
@@ -69,14 +72,14 @@
         }else if (nUpperCount != 0 && nLowerCount != 0) { // -- Letters are upper case and lower case
             nScore += 20;
         }
-    
+
         // Numbers
         var nNumberCount = countContain(strPassword, m_strNumber);
         if (nNumberCount == 1) // -- 1 number
             nScore += 10;
         if (nNumberCount >= 3)// -- 3 or more numbers
             nScore += 20;
-    
+
         // Characters
         var nCharacterCount = countContain(strPassword, m_strCharacters);
         if (nCharacterCount == 1) // -- 1 character
@@ -93,7 +96,7 @@
             nScore += 5;
         return nScore;
     }
-    
+
     // Checks a string for a list of characters
     function countContain(strPassword, strCheck) {
         // Declare variables
@@ -135,18 +138,18 @@
     <div class="d-none d-lg-block col-sm-2">
         <div class="justify-content-center " style="margin-top: 30px;">
             <ul class="list-group borderless rounded" style="font-size: 18px;line-height: 30px; text-align: center;display:block; box-shadow: 2px 2px rgba(196, 190, 190, 0.81);">
-                <li class="list-group-item member" m="1" style="height: 50px;"><a class="link_title" href="{%url 'my-user-profile'%}" >會員中心</a></li>
-                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-publish-record'%}" >我的委託</a></li>
-                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-take-record'%}">我的接案</a></li>
-                <li class="list-group-item bold" style="height: 50px; "><a class="link_title" href="{% url 'user-password-update' %}" >更改密碼</a></li>
-                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'logout' %}">登出</a></li>
+                <li class="list-group-item member" m="1" style="height: 50px;"><a class="link_title" href="{%url 'my-user-profile'%}" >{% trans "會員中心" %}</a></li>
+                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-publish-record'%}" >{% trans "我的委託" %}</a></li>
+                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-take-record'%}">{% trans "我的接案" %}</a></li>
+                <li class="list-group-item bold" style="height: 50px; "><a class="link_title" href="{% url 'user-password-update' %}" >{% trans "更改密碼" %}</a></li>
+                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'logout' %}">{% trans "登出" %}</a></li>
             </ul>
         </div>
     </div>
 <!-- change pwd -->
     <div class="col-sm-10 tab" style="margin-top: 30px;">
         <div c="6"  class="tab-inner border rounded" style="background: #ffffff;box-shadow: 2px 3px rgba(196, 190, 190, 0.81);">
-            <h1 class="fw-bold text-center" style="height: 80px; margin-top: 40px; padding-top: 20px; background-repeat: no-repeat; background-position: 46%, center; background-image: url('{% static 'images/Ellipse%204.png' %}');  color: rgb(94, 73, 73);font-size: 30px;">更改密碼</h1>
+            <h1 class="fw-bold text-center" style="height: 80px; margin-top: 40px; padding-top: 20px; background-repeat: no-repeat; background-position: 46%, center; background-image: url('{% static 'images/Ellipse%204.png' %}');  color: rgb(94, 73, 73);font-size: 30px;">{% trans "更改密碼" %}</h1>
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-6" style="max-width: 70%;width: 250px;margin-top: 20px;">
@@ -155,7 +158,7 @@
                             <div class="row form-row" style="margin-top: 10px;">
                                 <div class="col-12 form-group">
                                     <label class="form-label" style="font-weight: bold;">
-                                        請輸入您的舊密碼：
+                                        {% trans "請輸入您的舊密碼" %}：
                                     <span class="text-danger">*</span></label>
                                     <input class="form-control" type="password" id="input-title" name="oldPassword" style="width: 100%;" required>
                                 </div>
@@ -163,7 +166,7 @@
                             <div class="row form-row" style="margin-top: 10px;">
                                 <div class="col-12 form-group">
                                     <label class="form-label" style="font-weight: bold;">
-                                        請輸入新密碼：
+                                        {% trans "請輸入新密碼" %}：
                                     <span class="text-danger">*</span></label>
                                     <input class="form-control" type="password" onkeyup="return checkPwdStrength();" onblur="validate()" id="new_pwd" name="newPassword" style="width: 100%;" required>
                                     <div id="complexity"></div>
@@ -172,7 +175,7 @@
                             <div class="row form-row" style="margin-top: 10px;">
                                 <div class="col-12 form-group">
                                     <label class="form-label" style="font-weight: bold;">
-                                        請再次輸入新密碼：
+                                        {% trans "請再次輸入新密碼" %}：
                                     <span class="text-danger">*</span></label>
                                     <input class="form-control" type="password" id="confirm" name="confirmNewPassword" style="width: 100%;" required>
                                     <span id="notice"></span>

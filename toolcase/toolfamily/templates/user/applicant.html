@@ -1,4 +1,6 @@
 {% extends "base_generic.html" %}
+{% load i18n %}
+<!-- applicant -->
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
@@ -8,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>台大工具箱</title>
+    <title>{% trans "台大工具箱" %}</title>
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/fonts/material-icons.min.css">
     <link rel="stylesheet" href="/static/css/take-styles.css">
@@ -51,7 +53,7 @@
     color: #f6b902;
     }
     fieldset, label { margin: 0; padding: 0; }
-    
+
     h1 { font-size: 1.5em; margin: 10px; }
     @media screen and (min-width: 991px){
         .screenM{
@@ -75,7 +77,7 @@
     function getStar(starId,value){
         if (value =="None"){
             value = 0;
-        } 
+        }
         var stringA = "<span class='fa fa-star checked'></span>"
         var stringB = "<span class='fa fa-star-o unchecked'></span>"
         var stringC = "<span class='fa fa-star-half-o helfchecked'></span>"
@@ -107,39 +109,39 @@
         <div class="screenM row">
             <div class="d-none d-md-block col-sm-2 justify-content-center " style="margin-top: 30px;">
                 <ul class="list-group borderless rounded" style="font-size: 16px;line-height: 30px; text-align: center;display:block; box-shadow: 2px 2px rgba(196, 190, 190, 0.81);">
-                    <li class="list-group-item member " m="1" style="height: 50px;"><a class="link_title" href="{%url 'my-user-profile'%}" >會員中心</a></li>
-                    <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-publish-record'%}" >我的委託</a></li>
-                    <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-take-record'%}">我的接案</a></li>
-                    <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'user-password-update' %}" >更改密碼</a></li>
-                    <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'logout' %}">登出</a></li>
+                    <li class="list-group-item member " m="1" style="height: 50px;"><a class="link_title" href="{%url 'my-user-profile'%}" >{% trans "會員中心" %}</a></li>
+                    <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-publish-record'%}" >{% trans "我的委託" %}</a></li>
+                    <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-take-record'%}">{% trans "我的接案" %}</a></li>
+                    <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'user-password-update' %}" >{% trans "更改密碼" %}</a></li>
+                    <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'logout' %}">{% trans "登出" %}</a></li>
                 </ul>
             </div>
             <div class="col-md-10" style="margin-top: 30px;">
                 {% load static %}
                 <div class="border rounded" style="background: #ffffff;box-shadow: 2px 3px rgba(196, 190, 190, 0.81);">
-                    <h1 class="fw-bold text-center" style="height: 80px; margin-top: 40px; padding-top: 20px; background-repeat: no-repeat; background-position: 46%, center; background-image: url('{% static 'images/Ellipse%204.png' %}');  color: rgb(94, 73, 73);font-size: 30px;">應徵名單</h1>
-                    
+                    <h1 class="fw-bold text-center" style="height: 80px; margin-top: 40px; padding-top: 20px; background-repeat: no-repeat; background-position: 46%, center; background-image: url('{% static 'images/Ellipse%204.png' %}');  color: rgb(94, 73, 73);font-size: 30px;">{% trans "應徵名單" %}</h1>
+
                     {% load static %}
                     <div style= "margin-top: -80px; margin-left: -3px;width: 300px;">
                         <img class="d-none d-xl-block" src="{% static 'images/back.png' %}">
                         <ul style="color: rgba(134, 81, 64, 1); margin-top: -50px;margin-bottom: 0px;">
-                            <li style="font-size: 14px;">委託編號 #{{case.case_id}}</li>
-                            <li style="font-size: 14px;"><span class="d-inline-block text-truncate" style="max-width: 200px;">委託標題 {{case.title}}</span></li>
+                            <li style="font-size: 14px;">{% trans "委託編號" %} #{{case.case_id}}</li>
+                            <li style="font-size: 14px;"><span class="d-inline-block text-truncate" style="max-width: 200px;">{% trans "委託標題" %} {{case.title}}</span></li>
                         </ul>
                     </div>
 
                     <div class="position-relative underlineEffects" style="margin-top: 0px;">
                         <ul style="margin-left: 40px;margin-bottom: 0px;">
-                            <li><a href="{% url 'user-publish-record' %}">回我的委託</a></li>
+                            <li><a href="{% url 'user-publish-record' %}">{% trans "回我的委託" %}</a></li>
                         </ul>
                         <div class="underlineEffects position-absolute top-0 end-0" style="width: 400px; margin-top: 50px;">
                             <ul class="d-none d-md-block" style="color: rgb(94, 73, 73); margin-bottom: 0px;">
-                                <li style="font-size: 14px;">已有 {{cnt}} 個工具人，最多再選取 {{last}} 人 &nbsp;&nbsp;</li>
+                                <li style="font-size: 14px;">{% trans "已有 {{cnt}} 個工具人，最多再選取 {{last}} 人" %} &nbsp;&nbsp;</li>
                                 <li style="font-size: 14px;">
                                     <form action="/toolfamily/user/build/" method="post" >
                                         {% csrf_token %}
-                                        <button class="btn btn-primary" type="submit" onClick="return confirm('確定送出委託?');" id="send" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">送出</button>
-                                        <button class="btn btn-primary" type="reset" id="reset" style="height: 24px;font-size: 14px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">重置</button>
+                                        <button class="btn btn-primary" type="submit" onClick="return confirm('確定送出委託?');" id="send" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">{% trans "送出" %}</button>
+                                        <button class="btn btn-primary" type="reset" id="reset" style="height: 24px;font-size: 14px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">{% trans "重置" %}</button>
                                     </form>
                                 </li>
                             </ul>
@@ -147,29 +149,29 @@
                                 <li class="d-none d-sm-block d-md-none" style="font-size: 14px;">
                                     <form action="/toolfamily/user/build/" method="post" >
                                         {% csrf_token %}
-                                        <button class="btn btn-primary" type="submit" onClick="return confirm('確定送出委託?');" id="send2" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">送出</button>
-                                        <button class="btn btn-primary" type="reset" id="reset2" style="height: 24px;font-size: 14px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">重置</button>
+                                        <button class="btn btn-primary" type="submit" onClick="return confirm('確定送出委託?');" id="send2" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">{% trans "送出" %}</button>
+                                        <button class="btn btn-primary" type="reset" id="reset2" style="height: 24px;font-size: 14px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">{% trans "重置" %}</button>
                                     </form>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                
-                    
+
+
                     <!-- {% comment %} 剩餘人數0的時候還沒擋 {% endcomment %}-->
-                
+
                     <div class="table-responsive" style="margin-left: 60px;margin-right: 60px;margin-bottom: 50px; margin-top: 20px; background-color: rgba(226, 218, 212, 1); border-radius: 27px;border: 1px solid rgb(125,105,105);">
                         <table style="margin-top: 0px; margin-bottom: 23px;" class="table table-borderless">
                             <thead style="color: rgb(75, 49, 42);">
                                 <tr>
                                     <td style="width: 50px;"></td>
-                                    <td class="d-block" style="width: 130px;">工具人資訊</td>
-                                    <td style="width: 100px;">評價</td>
-                                    <td class="d-block" style="width: 80px;">狀態</td>
-                                    <td style="text-align: center; width: 130px;">動作</td>
+                                    <td class="d-block" style="width: 130px;">{% trans "工具人資訊" %}</td>
+                                    <td style="width: 100px;">{% trans "評價" %}</td>
+                                    <td class="d-block" style="width: 80px;">{% trans "狀態" %}</td>
+                                    <td style="text-align: center; width: 130px;">{% trans "動作" %}</td>
                                 </tr>
                             </thead>
-                                
+
                             <!-- content -->
                             <tbody>
                                 {% for data in willingness %}
@@ -189,8 +191,8 @@
                                                 {% else %}
                                                     {{data.willing_user.name}}
                                                 {% endif %}
-                                                
-                                                {% load static %} 
+
+                                                {% load static %}
                                                 {% if data.willing_user.gender == 2 %}
                                                     {% load static %}
                                                     <img  style="width: 18px;"src="{% static 'images/gender-female.png' %}" style="margin-left: 10px;">
@@ -203,22 +205,22 @@
                                                 {% endif %}
                                             </a>
                                             <div class="w-100">
-                                                <span style="color: rgb(142,145,147);font-size: 12px;line-height: 0px;" id="a{{data.willing_user.account_mail}}{{ case.case_id }}">上次登入: {{data.willing_user.django_user.last_login}}
-                                                    <script> 
+                                                <span style="color: rgb(142,145,147);font-size: 12px;line-height: 0px;" id="a{{data.willing_user.account_mail}}{{ case.case_id }}">{% trans "上次登入" %}: {{data.willing_user.django_user.last_login}}
+                                                    <script>
                                                         var oriTime = "{{data.willing_user.django_user.last_login}}"
                                                         var yyyy = oriTime.split('年')[0]
                                                         var mm = oriTime.split('年')[1].split('月')[0]
                                                         var dd = oriTime.split('年')[1].split('月')[1].split('日')[0]
                                                         var tt = oriTime.split('年')[1].split('月')[1].split('日 ')[1]
-                                                        
-        
+
+
                                                         var enddate = new Date(mm + '/' + dd + '/' + yyyy + ' '+ tt)
                                                         var currentdate = new Date();
                                                         var remainday = Math.abs((enddate.getTime() - currentdate.getTime()))
-                                                        
-                                                        document.getElementById("a{{data.willing_user.account_mail}}{{ case.case_id }}").innerHTML="上次登入: "+ msToTime(remainday)+"前";
-                                                        
-                                                        
+
+                                                        document.getElementById("a{{data.willing_user.account_mail}}{{ case.case_id }}").innerHTML="{% trans "上次登入" %}: "+ msToTime(remainday)+"{% trans "前" %}";
+
+
                                                     </script>
                                                 </span>
                                             </div>
@@ -232,11 +234,11 @@
                                                 </script>
                                             </span>
                                         </td>
-                                        <td style="width: 100px;line-height: 46px;color: rgb(121, 110, 110);" class="select" id="text_{{data.casewillingness_id}}">未選</td>
-                                        
+                                        <td style="width: 100px;line-height: 46px;color: rgb(121, 110, 110);" class="select" id="text_{{data.casewillingness_id}}">{% trans "未選" %}</td>
+
                                         <td style="text-align: center; width: 120px;line-height: 40px;padding-bottom: 0px;">
                                             <input disabled type="button"  class=" btn_select btn btn-primary " value="選擇" id="{{data.casewillingness_id}}" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">
-                                            <p hidden="hidden" id="notic{{data.casewillingness_id}}" style="line-height: 16px; font-size: 12px;color:#ca6c38 ; ">你的工具人<br>已經徵滿了喔！</p>
+                                            <p hidden="hidden" id="notic{{data.casewillingness_id}}" style="line-height: 16px; font-size: 12px;color:#ca6c38 ; ">{% trans "你的工具人" %}<br>{% trans "已經徵滿了喔！" %}</p>
                                             <script>
                                                 if ('{{last}}'==0){
                                                     $("input").attr('hidden',true);
@@ -244,16 +246,16 @@
                                                     $("#send2").attr('disabled',true);
                                                     $("#notic{{data.casewillingness_id}}").attr('hidden',false);
                                                 }
-                                            </script>   
+                                            </script>
                                         </tr>
-                                        
+
                                 {% endfor%}
                             </tbody>
                         </table>
 
                         <script>
                             function check(count,id){
-                                if (count<'{{last}}'){ 
+                                if (count<'{{last}}'){
                                     $("input").attr('disabled',false);
                                 }else{
                                     $(".btn_select").attr('disabled',true);
@@ -285,7 +287,7 @@
                                         name: "toolman",
                                         value: num,
                                     }).appendTo("form");
-                                    
+
                                 }
                                 else {
                                     count--;
@@ -295,9 +297,9 @@
                                     $("#content" + num).remove();
                                 }
                                 check(count,num);
-                                
 
-                                
+
+
                             });
 
                             $("#reset").click(function() {

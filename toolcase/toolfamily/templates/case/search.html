@@ -1,4 +1,7 @@
 {% extends "base_generic.html" %}
+{% load i18n %}
+<!-- search -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 {% block content %}
 
@@ -15,13 +18,13 @@
     <link rel="stylesheet" href="\static\css\case-search-styles.css">
     <link rel="stylesheet" href="\static\css\search-bar-styles.css">
 
-    
+
     <script src="\static\js\case-search.js"></script>
     <script src="\static\js\search-bar.js"></script>
 </head>
 
 <body class="cn_font en_font" style="background: #f4f4f3;">
-        
+
     <!----------Image Board---------->
     <div class="container" style="margin-top: 50PX;height: 100px;width: 100%;margin-right: 0px;margin-left: 0px;padding-right: 0px;padding-left: 0px;max-width: none;">
         <div class="row" style="height: 100px;width: 100%;margin: 0px;">
@@ -43,21 +46,21 @@
             <div class="row">
                 <div class="col" style="align-items: flex-end; line-height: 40px;">
                     <div id="div-search-allcase">
-                        <a class="main-color" href="#" id="link-search-allcase" style="text-decoration: none !important;">全部案件</a>
+                        <a class="main-color" href="#" id="link-search-allcase" style="text-decoration: none !important;">{% trans "全部案件" %}</a>
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="dropdown search-dropdown show" id="dropdown-field">
                         <a class="btn dropdown-toggle main-color"  role="button" id="dropdownlink-field" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        找領域
+                        {% trans "找領域" %}
                         </a>
                         <div class="dropdown-menu search-dropdown-menu" aria-labelledby="dropdownlink-field">
-                        <a class="dropdown-item a-search a-search-field" href="#" data-value="1">電資</a>
-                        <a class="dropdown-item a-search a-search-field" href="#" data-value="2">數理</a>
-                        <a class="dropdown-item a-search a-search-field" href="#" data-value="3">人文科學</a>
-                        <a class="dropdown-item a-search a-search-field" href="#" data-value="4">藝術設計</a>
-                        <a class="dropdown-item a-search a-search-field" href="#" data-value="5">其他</a>
+                        <a class="dropdown-item a-search a-search-field" href="#" data-value="1">{% trans "電資" %}</a>
+                        <a class="dropdown-item a-search a-search-field" href="#" data-value="2">{% trans "數理" %}</a>
+                        <a class="dropdown-item a-search a-search-field" href="#" data-value="3">{% trans "人文科學" %}</a>
+                        <a class="dropdown-item a-search a-search-field" href="#" data-value="4">{% trans "藝術設計" %}</a>
+                        <a class="dropdown-item a-search a-search-field" href="#" data-value="5">{% trans "其他" %}</a>
 
                         </div>
                     </div>
@@ -66,21 +69,21 @@
                 <div class="col">
                     <div class="dropdown search-dropdown show" id="dropdown-type">
                         <a class="btn dropdown-toggle a-search"  role="button" id="dropdownlink-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        找類型
+                        {% trans "找類型" %}
                         </a>
                         <div class="dropdown-menu search-dropdown-menu" aria-labelledby="dropdownlink-type">
-                        <a class="dropdown-item a-search a-search-type" href="#" data-value="1">諮詢</a>
-                        <a class="dropdown-item a-search a-search-type" href="#" data-value="2">家教</a>
-                        <a class="dropdown-item a-search a-search-type" href="#" data-value="3">勞力</a>
-                        <a class="dropdown-item a-search a-search-type" href="#" data-value="4">實驗</a>
-                        <a class="dropdown-item a-search a-search-type" href="#" data-value="5">其他</a>
+                        <a class="dropdown-item a-search a-search-type" href="#" data-value="1">{% trans "諮詢" %}</a>
+                        <a class="dropdown-item a-search a-search-type" href="#" data-value="2">{% trans "家教" %}</a>
+                        <a class="dropdown-item a-search a-search-type" href="#" data-value="3">{% trans "勞力" %}</a>
+                        <a class="dropdown-item a-search a-search-type" href="#" data-value="4">{% trans "實驗" %}</a>
+                        <a class="dropdown-item a-search a-search-type" href="#" data-value="5">{% trans "其他" %}</a>
 
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="keyword_wrap search-div">
-                        <input id="search-keyword" type="text" class="keyword_input" placeholder="輸入委託關鍵字" value="">
+                        <input id="search-keyword" type="text" class="keyword_input" placeholder="{% trans "輸入委託關鍵字" %}" value="">
                         <div class="clear_search_icon" style="display: none;">
                             <i class="material-icons">search</i>
                         </div>
@@ -95,7 +98,7 @@
     <hr class="d-lg-flex" style="width: 95%;margin: auto;margin-right: 20px;margin-left: 20px;margin-top: 0px;opacity: 1;border-color: #5e4949;color: #5e4949;">
 
 
-    
+
     <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-12 col-md-3">
@@ -113,7 +116,7 @@
                     <input class="d-none" id="forminput-status" type="number" name="status_id">
                     <input class="d-none" id="advanced-search-submit" type="submit">
 
-                    
+
                     <span class="d-none" id="get-input-casetype">{{type_value}}</span>
                     <span class="d-none" id="get-input-casefield">{{field_value}}</span>
                     <span class="d-none" id="get-input-caselist">{{query_list}}</span>
@@ -141,165 +144,165 @@
                             <div class="row">
                                 <div class="col-12">
                                     <span style="font-weight: bold;color: #865140;padding-left: 10px;">
-                                    進階搜尋
+                                    {% trans "進階搜尋" %}
                                     </span>
                                 </div>
                                 <div class="col-12 search-col mt-3">
                                     <span class="d-block" style="font-size: 14px;">
-                                    領域
+                                    {% trans "領域" %}
                                     </span>
                                     <div style="height: auto;display: inline;font-size: 12px!important;">
                                         <div class="form-check form-check-inline" style="height: auto;margin-bottom: 0px;">
                                             <input class="form-check-input" type="checkbox" id="check-field-1" value="1" name="field" style="border-color: #865140;">
                                             <label class="form-check-label" for="check-field-1">
-                                            電資
+                                            {% trans "電資" %}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline" style="height: 13px;">
                                             <input class="form-check-input" type="checkbox" id="check-field-2" value="2" name="field" style="border-color: #865140;">
                                             <label class="form-check-label" for="check-field-2">
-                                            數理
+                                            {% trans "數理" %}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline" style="height: auto;">
                                             <input class="form-check-input" type="checkbox" id="check-field-3" value="3" name="field" style="border-color: #865140;">
                                             <label class="form-check-label" for="check-field-3">
-                                            人文科學
+                                            {% trans "人文科學" %}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline" style="height: 20px !important;margin-bottom: 0px;min-height: 18px;">
                                             <input class="form-check-input" type="checkbox" id="check-field-4" value="4" name="field" style="color: #865140;border-color: #865140;">
                                             <label class="form-check-label" for="check-field-4">
-                                            藝術設計
+                                            {% trans "藝術設計" %}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline" style="border-color: rgb(134, 81, 64);">
                                             <input class="form-check-input" type="checkbox" id="check-field-5" value="5" name="field" style="border-color: #865140;">
                                             <label class="form-check-label" for="check-field-5">
-                                            其他
+                                            {% trans "其他" %}
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12 search-col mt-3">
                                     <span class="d-block" style="font-size: 14px;">
-                                    類型
+                                    {% trans "類型" %}
                                     </span>
                                     <div style="height: auto;/*inline-height: 10px;*/display: inline;font-size: 12px!important;">
                                         <div class="form-check form-check-inline" style="height: auto;margin-bottom: 0px;">
                                             <input class="form-check-input" type="checkbox" id="check-type-1" value="1" name="type" style="border-color: #865140;">
                                             <label class="form-check-label" for="check-type-1">
-                                            諮詢
+                                            {% trans "諮詢" %}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline" style="height: 13px;">
                                             <input class="form-check-input" type="checkbox" id="check-type-2" value="2" name="type" style="border-color: #865140;">
                                             <label class="form-check-label" for="check-type-2">
-                                            家教
+                                            {% trans "家教" %}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline" style="height: auto;">
                                             <input class="form-check-input" type="checkbox" id="check-type-3" value="3" name="type" style="border-color: #865140;">
                                             <label class="form-check-label" for="check-type-3">
-                                            勞力
+                                            {% trans "勞力" %}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline" style="height: 20px !important;margin-bottom: 0px;min-height: 18px;">
                                             <input class="form-check-input" type="checkbox" id="check-type-4" value="4" name="type" style="color: #865140;border-color: #865140;">
                                             <label class="form-check-label" for="check-type-4">
-                                            實驗
+                                            {% trans "實驗" %}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline" style="border-color: rgb(134, 81, 64);">
                                             <input class="form-check-input" type="checkbox" id="check-type-5" value="5" name="type" style="border-color: #865140;">
                                             <label class="form-check-label" for="check-type-5">
-                                            其他
+                                            {% trans "其他" %}
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12 search-col mt-3">
                                     <span class="d-block" style="font-size: 14px;">
-                                    委託狀態
+                                    {% trans "委託狀態" %}
                                     </span>
                                     <select class="select form-select-lg" id="select-status" name="select_status" style="outline: none;">
                                         <div class="options">
-                                            <option class="item option" value="0">不限</option>
-                                            <option class="item" value="10">可以應徵</option>
-                                            <option class="item" value="1">徵求中</option>
-                                            <option class="item" value="2">委託中</option>
-                                            <option class="item" value="3">已完成</option>
+                                            <option class="item option" value="0">{% trans "不限" %}</option>
+                                            <option class="item" value="10">{% trans "可以應徵" %}</option>
+                                            <option class="item" value="1">{% trans "徵求中" %}</option>
+                                            <option class="item" value="2">{% trans "委託中" %}</option>
+                                            <option class="item" value="3">{% trans "已完成" %}</option>
                                         </div>
                                     </select>
                                 </div>
                                 <div class="col-12 search-col mt-3">
                                     <span class="d-block" style="font-size: 14px;">
-                                    徵求人數
+                                    {% trans "徵求人數" %}
                                     </span>
                                     <select class="select form-select-lg" id="select-num" name="select_num" style="outline: none;">
                                         <div class="options">
-                                            <option class="item option" value="0">不限</option>
-                                            <option class="item" value="1">1 人</option>
-                                            <option class="item" value="2">1~5 人</option>
-                                            <option class="item" value="3">5~10 人</option>
-                                            <option class="item" value="4">10 人以上</option>
+                                            <option class="item option" value="0">{% trans "不限" %}</option>
+                                            <option class="item" value="1">1 {% trans "人" %}</option>
+                                            <option class="item" value="2">1~5 {% trans "人" %}</option>
+                                            <option class="item" value="3">5~10 {% trans "人" %}</option>
+                                            <option class="item" value="4">{% trans "10 人以上" %}</option>
                                         </div>
                                     </select>
                                 </div>
                                 <div class="col-12 search-col mt-3">
                                     <span class="d-block" style="font-size: 14px;">
-                                    結束時間
+                                    {% trans "結束時間" %}
                                     </span>
                                     <select class="select form-select-lg" id="select-enddate" name="select_enddate" style="outline: none;">
                                         <div class="options">
-                                            <option class="item option" value="0">不限</option>
-                                            <option class="item" value="1">小於三天</option>
-                                            <option class="item" value="2">小於一週</option>
-                                            <option class="item" value="3">小於一個月</option>
+                                            <option class="item option" value="0">{% trans "不限" %}</option>
+                                            <option class="item" value="1">{% trans "小於三天" %}</option>
+                                            <option class="item" value="2">{% trans "小於一週" %}</option>
+                                            <option class="item" value="3">{% trans "小於一個月" %}</option>
                                         </div>
                                     </select>
                                 </div>
                                 <div class="col-12 search-col mt-3">
                                     <span style="font-size: 14px;">
-                                    工作方式
+                                    {% trans "工作方式" %}
                                     </span>
                                     <div style="height: auto;font-size: 12px;">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="radio-workmode-0" name="workmode" value="0" style="border-color: #865140;">
                                             <label class="form-check-label" for="radio-workmode-0">
-                                            不限
+                                            {% trans "不限" %}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="radio-workmode-1" name="workmode" value="1" style="border-color: #865140;">
                                             <label class="form-check-label" for="radio-workmode-1">
-                                            需在現場
+                                            {% trans "需在現場" %}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="radio-workmode-2" name="workmode" value="2" style="border-color: #865140;">
                                             <label class="form-check-label" for="radio-workmode-2">
-                                            線上
+                                            {% trans "線上" %}
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12 search-col mt-3">
                                     <span class="d-block" style="font-size: 14px;">
-                                    偏好條件
+                                    {% trans "偏好條件" %}
                                     </span>
-                                    <input class="form-control" type="text" id="input-preference" name="input_preference" style="width: 90%;height: 30px;border-color: #7B6363;font-size: 14px;outline: none;" placeholder="不限">
+                                    <input class="form-control" type="text" id="input-preference" name="input_preference" style="width: 90%;height: 30px;border-color: #7B6363;font-size: 14px;outline: none;" placeholder="{% trans "不限" %}">
                                 </div>
                                 <div class="col-12 search-col mt-3">
                                     <span class="d-block" style="font-size: 14px;">
-                                    地點
+                                    {% trans "地點" %}
                                     </span>
-                                    <input class="form-control" type="text" id="input-location" name="input_location" style="width: 90%;height: 30px;border-color: #7B6363;font-size: 14px;outline: none;" placeholder="不限">
+                                    <input class="form-control" type="text" id="input-location" name="input_location" style="width: 90%;height: 30px;border-color: #7B6363;font-size: 14px;outline: none;" placeholder="{% trans "不限" %}">
                                 </div>
-                                
+
                                 <div class="col-12 search-col mt-3 justify-content-end align-items-end text-end">
                                     <button class="btn mt-1 mb-2" type="button" id="button-advanced-search" style="font-size: 14px;background: #865140;color: rgb(255,255,255);width: 80px;margin-right: 10%;">
-                                        篩選
+                                        {% trans "篩選" %}
                                     </button>
                                 </div>
 
@@ -319,17 +322,17 @@
                                     <img class="decorate-icon" src="/static/images/clipboard-image-1.png">
                                     <div class="d-inline-block" style="height: auto;flex: 1">
                                         <span class="d-lg-flex d-inline-block justify-content-start" style="padding-left: 60px;">
-                                        所有案件 ─ 共&nbsp;<span id="case-length" style="color: #865140;">{{ num_case }}</span>&nbsp;件<br>
+                                        {% trans "所有案件" %} ─ {% trans "共" %}&nbsp;<span id="case-length" style="color: #865140;">{{ num_case }}</span>&nbsp;{% trans "件" %}<br>
                                         </span>
                                     </div>
                                     <div class="text-end d-inline-block" style="height: auto;width: auto;vertical-align: baseline;">
                                         <select id="select-pagination" class="select-filter" style="outline: none;">
                                         </select>
                                         <!-----<select class="select-filter" style="margin-left: 10px;outline: none;">
-                                            <option value="1" selected="">時間 新→舊</option>
-                                            <option value="2">時間 舊→新</option>
-                                            <option value="2">追蹤人數</option>
-                                            <option value="4">應徵人數</option>
+                                            <option value="1" selected="">{% trans "時間" %} {% trans "新" %}→{% trans "舊" %}</option>
+                                            <option value="2">{% trans "時間" %} {% trans "舊" %}→{% trans "新" %}</option>
+                                            <option value="2">{% trans "追蹤人數" %}</option>
+                                            <option value="4">{% trans "應徵人數" %}</option>
                                         </select>----->
                                     </div>
                                 </div>
@@ -354,7 +357,7 @@
                                                                         <span class="en_font" id="s-apply-num-v" style="font-size: 24px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">{{value}}</span>
                                                                 {% endif %}
                                                             {% endfor%}
-                                                            <span id="s-apply-num-t" style="font-size: 12px;color: #f4f4f3;position: absolute;left: 25%;bottom: 20%;">應徵中</span>
+                                                            <span id="s-apply-num-t" style="font-size: 12px;color: #f4f4f3;position: absolute;left: 25%;bottom: 20%;">{% trans "應徵中" %}</span>
                                                         </div>
 
                                                         <div class="img-box d-block d-sm-none" style="width: 60px!important;height:55px!important;align-items: center;position:absolute;">
@@ -363,57 +366,57 @@
                                                                         <span class="en_font" id="s-apply-num-v" style="font-size: 18px;color: #f4f4f3;position: absolute;left: 33%;top: 15%;">{{value}}</span>
                                                                 {% endif %}
                                                             {% endfor%}
-                                                            <span id="s-apply-num-t" style="font-size: 10px;color: #f4f4f3;position: absolute;left: 20%;bottom: 15%;">應徵中</span>
+                                                            <span id="s-apply-num-t" style="font-size: 10px;color: #f4f4f3;position: absolute;left: 20%;bottom: 15%;">{% trans "應徵中" %}</span>
                                                         </div>
                                                     </div>
 
 
                                                     <!----------Case Main Info---------->
-                                                    <div class="col-10 col-md-8">                                                  
-                                                    
+                                                    <div class="col-10 col-md-8">
+
                                                         <h4 class="d-inline-block" style="color: rgb(38,29,29);font-weight: bold;font-size: 18px;margin-bottom: 0px;">
                                                             <a class="d-none d-xl-block a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:25}}</a>
                                                             <a class="d-none d-md-block d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:18}}</a>
                                                             <a class="d-md-none d-lg-none d-xl-none a-title" href="{% url 'case-profile' case.case_id %}" style="color: rgb(38,29,29);">{{case.title|truncatechars_html:15}}</a>
-                                                            
+
                                                         </h4>
                                                         {% if case.case_status.status_name == "徵求" %}
-                                                                <span id="case-status" class="justify-content-center align-items-center" style=" background: #f5c548 !important">徵求中</span>
+                                                                <span id="case-status" class="justify-content-center align-items-center" style=" background: #f5c548 !important">{% trans "徵求中" %}</span>
                                                         {% elif case.case_status.status_name == "進行" %}
-                                                               <span id="case-status" class="justify-content-center align-items-center" style="background: #d43747;color: white">委託中</span>
-                                                        {% elif case.case_status.status_name == "完成" %}  
-                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d6d6d6">已完成</span>
+                                                               <span id="case-status" class="justify-content-center align-items-center" style="background: #d43747;color: white">{% trans "委託中" %}</span>
+                                                        {% elif case.case_status.status_name == "完成" %}
+                                                                <span id="case-status" class="justify-content-center align-items-center" style="background: #d6d6d6">{% trans "已完成" %}</span>
                                                         {% endif %}
-                                                        
+
                                                         <!----------Second Info---------->
                                                         <div class="mt-1 d-xl-flex d-inline-block align-items-center justify-content-start" style="height: auto;width: 100%;font-size: 10px;">
                                                             <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 16px;">confirmation_number</i>
                                                             <span style="color: #865140;margin-right: 5px;font-size: 16px;">
                                                             {{case.reward}}
                                                             </span>
-                                                            
+
                                                             <span style="color: #865140;margin-right: 5px;margin-left: 5px;">|</span>
-                                                            
+
                                                             <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">people</i>
                                                             <span class="case-mum" id="case-num-{{case.case_id}}" style="margin-right: 5px;color: #865140;">
                                                                 {{case.num}}人
                                                             </span>
-                                                            
+
                                                             <span style="margin-left: 5px;margin-right: 5px;color: #865140;">|</span>
-                                                            
+
                                                             <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">location_on</i>
                                                             <span style="margin-right: 5px;color: #865140;">
                                                                 {{ case.location|truncatechars_html:10 }}
                                                             </span>
-                                                            
+
                                                             <span style="margin-right: 5px;margin-right: 5px;color: #865140;">|</span>
-                                                            
+
                                                             <i class="material-icons" style="margin-right: 5px;color: #865140;font-size: 10px;">build</i>
                                                             <span style="margin-right: 5px;color: #865140;">
                                                                 {% if case.work == 1 %}
-                                                                需到現場
+                                                                {% trans "需到現場" %}
                                                                 {% else %}
-                                                                線上
+                                                                {% trans "線上" %}
                                                                 {%endif%}
                                                             </span>
                                                         </div>
@@ -421,7 +424,7 @@
                                                         <!----------Description---------->
                                                         <p class="mt-3 mb-3" id="case-description" style="color: #261d1d;font-size: 14px;height: auto;line-height: 18px;width: 90%;margin-bottom: 10px;">
                                                             {% if case.description == "" %}
-                                                                <font color="#746a6a">無案件詳細描述。</font>
+                                                                <font color="#746a6a">{% trans "無案件詳細描述。" %}</font>
                                                             {% else %}
                                                                 {{ case.description|truncatechars_html:35 }}
                                                             {% endif %}
@@ -484,14 +487,14 @@
                                                                     {{case.publisher.nickname}}
                                                                 {%endif%}
                                                                 </span>
-                                        
+
                                                             </div>
 
                                                             <!----------User Last Login Time---------->
                                                             <div class="col-12 d-flex justify-content-center align-items-center">
                                                                 <span class="justify-content-center align-items-center text-center" id="user-lastlogintime-{{case.case_id}}" style="font-size: 8px;margin-top: 3px;color: #b8b3b3;">
                                                                     <script>
-                                                                        $('#user-lastlogintime-{{case.case_id}}').html(userLastLogin('{{case.publisher.last_login}}')); 
+                                                                        $('#user-lastlogintime-{{case.case_id}}').html(userLastLogin('{{case.publisher.last_login}}'));
                                                                     </script>
                                                                 </span>
                                                             </div>
@@ -506,11 +509,11 @@
                                         <hr class="mt-1 mb-0" style="border: none;width: 98%; height: 1px;margin: auto;opacity: 0.5;border-color: #5e4949;color: #5e4949;">
                                     </div>
                                 {% endfor%}
-                                
+
                             </div><!----------End Case Card---------->
 
-                            
-                            
+
+
                         </div>
                     </div>
                 </div>

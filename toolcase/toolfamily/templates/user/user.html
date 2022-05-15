@@ -1,4 +1,6 @@
 {% extends "base_generic.html" %}
+{% load i18n %}
+<!-- user -->
 {% load static %}
 {% block content %}
 <script src="\static\js\user.js" type="text/javascript"></script>
@@ -33,11 +35,11 @@
     <div class="d-none d-lg-block col-sm-2">
         <div class="justify-content-center " style="margin-top: 30px;">
             <ul class="list-group borderless rounded" style="font-size: 18px;line-height: 30px; text-align: center;display:block; box-shadow: 2px 2px rgba(196, 190, 190, 0.81);">
-                <li class="list-group-item member bold" m="1" style="height: 50px;"><a class="link_title" href="{%url 'my-user-profile'%}" >會員中心</a></li>
-                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-publish-record'%}" >我的委託</a></li>
-                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-take-record'%}">我的接案</a></li>
-                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'user-password-update' %}" >更改密碼</a></li>
-                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'logout' %}">登出</a></li>
+                <li class="list-group-item member bold" m="1" style="height: 50px;"><a class="link_title" href="{%url 'my-user-profile'%}" >{% trans "會員中心" %}</a></li>
+                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-publish-record'%}" >{% trans "我的委託" %}</a></li>
+                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-take-record'%}">{% trans "我的接案" %}</a></li>
+                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'user-password-update' %}" >{% trans "更改密碼" %}</a></li>
+                <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'logout' %}">{% trans "登出" %}</a></li>
             </ul>
         </div>
     </div>
@@ -46,7 +48,7 @@
         <div c="1" class="" style="margin-top: 20px;margin-right: 15px;margin-left:15px;">
             <div class="container-fuild">
                 <label style="z-index: 3;background-color: rgb(134, 81, 64);width: 100px;height: 30px;line-height:30px;margin-bottom: -15px;margin-left: 15px;text-align: center;color: #ffffff;position:relative;font-weight: bold">
-                    個人資料
+                    {% trans "個人資料" %}
                 </label>
                 <div class="row justify-content-center" style="z-index: 1;background: #ffffff;border-radius: .25rem">
                     <div class="col-md" style="max-width: 70%;width: 250px;">
@@ -83,21 +85,21 @@
                                 <span><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;"></span>
                             {% endif %}
                             {% if current_user.department %}
-                            <p style="color:  rgb(38, 29, 29);">系所:{{current_user.department}}</p>
+                            <p style="color:  rgb(38, 29, 29);">{% trans "系所" %}:{{current_user.department}}</p>
                             {% endif %}
-                            <button class="btn member" m="2" type="button" style="padding: 2px 12px;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;color: #ffffff;">編輯個人資訊</button>
+                            <button class="btn member" m="2" type="button" style="padding: 2px 12px;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;color: #ffffff;">{% trans "編輯個人資訊" %}</button>
                         </div>
                     </div>
                     <div class="col-md">
                         <div class="" style="margin-top: 10px;background: #ffffff;">
-                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">接案數量</p>
+                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">{% trans "接案數量" %}</p>
                             <p style="margin: 0 auto;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">{{ current_user.work_num }}</p>
                             <!-- <p style="text-align: right;padding-right: 20px;">件</p> -->
                         </div>
                     </div>
                     <div class="col-md">
                         <div class="" style="margin-top: 10px;background: #ffffff;">
-                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">發案數量</p>
+                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">{% trans "發案數量" %}</p>
                             <p style="margin: 0 auto;margin-bottom: 15px;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">{{ current_user.publish_num }}</p>
                             <!-- <p style="text-align: right;padding-right: 20px;">件</p> -->
                         </div>
@@ -106,7 +108,7 @@
             </div>
             <div class="container-fuild">
                 <label style="z-index: 3;background-color: rgb(134, 81, 64);width: 100px;height: 30px;line-height:30px;margin-top: 10px;margin-bottom: -50px;margin-left: 15px;text-align: center;color: #ffffff;font-weight: bold">
-                    自我介紹
+                    {% trans "自我介紹" %}
                 </label>
                 <div class="row" style="z-index: 1;background: #ffffff;border-radius: .25rem;">
                     <div style="">
@@ -116,7 +118,7 @@
             </div>
             <div class="container-fuild">
                 <label style="z-index: 3;background-color: rgb(134, 81, 64);width: 100px;height: 30px;line-height:30px;margin-top: 10px;margin-bottom: -50px;margin-left: 15px;text-align: center;color: #ffffff;font-weight: bold">
-                    聯絡資訊
+                    {% trans "聯絡資訊" %}
                 </label>
                 <div class="row" style="z-index: 1;background: #ffffff;border-radius: .25rem;">
                     <div style="">
@@ -138,12 +140,12 @@
                                 <div id="preview_img" class="img-circular" style="width: 200px;height: 200px;background-image: url('/static/images/default_icon_1.png');margin: auto;margin-top: 15px;margin-bottom: 10px"></div>
                             {% endif %}
                             <div style="text-align: center;">  {# 圖片上傳 #}
-                                <label for="id_icon" class="btn btn-primary border rounded" style="background: rgb(134,81,64);">選擇圖片</label>
+                                <label for="id_icon" class="btn btn-primary border rounded" style="background: rgb(134,81,64);">{% trans "選擇圖片" %}</label>
                                 <input type="file" name="icon" accept="image/*" id="id_icon" style="display:none;">
                                 <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交圖片">
                             </div>
-                            <div style="text-align: center;"> 
-                                <p style="margin-top: 10px; color: rgb(134, 81, 64)">檔案大小限2.5MB以下</p>
+                            <div style="text-align: center;">
+                                <p style="margin-top: 10px; color: rgb(134, 81, 64)">{% trans "檔案大小限2.5MB以下" %}</p>
                             </div>
                         </form>
                     </div>
@@ -153,36 +155,36 @@
                             <div>
 
                                 <p style="color:  rgb(38, 29, 29);font-weight: bold;">email：{{current_user.account_mail}}</p>
-                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">姓名：<input class="border rounded form-control" type="text" name="name" value="{{ current_user.name }}"></p>
-                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">暱稱：（如不填寫暱稱，系統將顯示本名）<input class="border rounded form-control" type="text" name="nickname" value="{{ current_user.nickname }}"></p>
-                                <p style="color:  rgb(38, 29, 29);font-weight: bold;margin-bottom: -5px;">性別：</p>
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">{% trans "姓名" %}：<input class="border rounded form-control" type="text" name="name" value="{{ current_user.name }}"></p>
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;">{% trans "暱稱" %}：（{% trans "如不填寫暱稱，系統將顯示本名" %}）<input class="border rounded form-control" type="text" name="nickname" value="{{ current_user.nickname }}"></p>
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;margin-bottom: -5px;">{% trans "性別" %}：</p>
                                 <div class="form-check">
                                 {% if current_user.gender == 0 %}
-                                    <input  type="radio" name="gender" value="1"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;">男
-                                    <input  type="radio" name="gender" value="2"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;">女
-                                    <input  type="radio" name="gender" value="0" checked="checked"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;">不願透漏
+                                    <input  type="radio" name="gender" value="1"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;">{% trans "男" %}
+                                    <input  type="radio" name="gender" value="2"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;">{% trans "女" %}
+                                    <input  type="radio" name="gender" value="0" checked="checked"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;">{% trans "不願透漏" %}
                                 {% elif current_user.gender == 1 %}
-                                    <input  type="radio" name="gender" value="1" checked="checked"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;">男
-                                    <input  type="radio" name="gender" value="2"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;">女
-                                    <input  type="radio" name="gender" value="0"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;">不願透漏
+                                    <input  type="radio" name="gender" value="1" checked="checked"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;">{% trans "男" %}
+                                    <input  type="radio" name="gender" value="2"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;">{% trans "女" %}
+                                    <input  type="radio" name="gender" value="0"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;">{% trans "不願透漏" %}
                                 {% elif current_user.gender == 2 %}
-                                    <input  type="radio" name="gender" value="1"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;">男
-                                    <input  type="radio" name="gender" value="2" checked="checked"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;">女
-                                    <input  type="radio" name="gender" value="0"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;">不願透漏
-                                {% endif %}                        
+                                    <input  type="radio" name="gender" value="1"><img src="/static/images/gender-male.png"  id="user-gender" style="width:18px;height:18px;">{% trans "男" %}
+                                    <input  type="radio" name="gender" value="2" checked="checked"><img src="/static/images/gender-female.png"  id="user-gender" style="width:18px;height:18px;">{% trans "女" %}
+                                    <input  type="radio" name="gender" value="0"><img src="/static/images/gender-male-female.png"  id="user-gender" style="width:18px;height:18px;">{% trans "不願透漏" %}
+                                {% endif %}
                                 </div>
-                                <p style="color:  rgb(38, 29, 29);font-weight: bold;margin-top: 5px;">系所：
+                                <p style="color:  rgb(38, 29, 29);font-weight: bold;margin-top: 5px;">{% trans "系所" %}：
                                     <input class="border rounded form-control" type="text" name="department" value="{{ current_user.department }}">
                                 </p>
-                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);font-weight: bold;">自我介紹：</p>
+                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);font-weight: bold;">{% trans "自我介紹" %}：</p>
                                 <textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;margin-top: -15px;" name="information">{{ current_user.information }}</textarea>
-                                
-                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);font-weight: bold;margin-top: 15px;">聯絡資訊：</p>
+
+                                <p class="d-lg-flex justify-content-lg-start" style="color:  rgb(38, 29, 29);font-weight: bold;margin-top: 15px;">{% trans "聯絡資訊" %}：</p>
                                 <textarea class="form-control form-control-lg" style="font-size:15px; color:  rgb(38, 29, 29);height: 200px;margin-top: -15px;" name="contact">{{ current_user.contact }}</textarea>
-                                
+
                             </div>
                             <div style="text-align: center;margin-top:20px;margin-bottom: 20px;">
-                                <button class="btn btn-primary border rounded member" m="1" type="button" style="background: rgb(255,255,255);color: rgb(134,81,64);border: 2px solid rgb(134,81,64) ;">取消</button>
+                                <button class="btn btn-primary border rounded member" m="1" type="button" style="background: rgb(255,255,255);color: rgb(134,81,64);border: 2px solid rgb(134,81,64) ;">{% trans "取消" %}</button>
                                 <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-left: 20px;"  value="提交">
                                 <div>{{ userDataForm.errors }}</div>  <!-- 顯示錯誤訊息 ex.資料格式錯誤 -->
                                 <div>{{ userDataForm.non_field_errors }}</div>  <!-- 顯示錯誤訊息 ex.必填項目未填 -->

@@ -1,4 +1,6 @@
 {% extends "base_generic.html" %}
+{% load i18n %}
+<!-- base_generic -->
 {% block content %}
 
 <!DOCTYPE html>
@@ -50,7 +52,7 @@
             <div class="col" style="align-items: flex-end; line-height: 40px;">
                 <div id="div-search-allcase">
                     <a class="main-color" href="#" id="link-search-allcase"
-                        style="text-decoration: none !important;">全部案件</a>
+                        style="text-decoration: none !important;">{% trans "全部案件" %}</a>
                 </div>
             </div>
 
@@ -58,14 +60,14 @@
                 <div class="dropdown search-dropdown show" id="dropdown-field">
                     <a class="btn dropdown-toggle main-color" role="button" id="dropdownlink-field"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        找領域
+                        {% trans "找領域" %}
                     </a>
                     <div class="dropdown-menu search-dropdown-menu" aria-labelledby="dropdownlink-field">
-                        <a class="dropdown-item a-search a-search-field" href="#" data-value="1">電資</a>
-                        <a class="dropdown-item a-search a-search-field" href="#" data-value="2">數理</a>
-                        <a class="dropdown-item a-search a-search-field" href="#" data-value="3">人文科學</a>
-                        <a class="dropdown-item a-search a-search-field" href="#" data-value="4">藝術設計</a>
-                        <a class="dropdown-item a-search a-search-field" href="#" data-value="5">其他</a>
+                        <a class="dropdown-item a-search a-search-field" href="#" data-value="1">{% trans "電資" %}</a>
+                        <a class="dropdown-item a-search a-search-field" href="#" data-value="2">{% trans "數理" %}</a>
+                        <a class="dropdown-item a-search a-search-field" href="#" data-value="3">{% trans "人文科學" %}</a>
+                        <a class="dropdown-item a-search a-search-field" href="#" data-value="4">{% trans "藝術設計" %}</a>
+                        <a class="dropdown-item a-search a-search-field" href="#" data-value="5">{% trans "其他" %}</a>
 
                     </div>
                 </div>
@@ -75,21 +77,21 @@
                 <div class="dropdown search-dropdown show" id="dropdown-type">
                     <a class="btn dropdown-toggle a-search" role="button" id="dropdownlink-type" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        找類型
+                        {% trans "找類型" %}
                     </a>
                     <div class="dropdown-menu search-dropdown-menu" aria-labelledby="dropdownlink-type">
-                        <a class="dropdown-item a-search a-search-type" href="#" data-value="1">諮詢</a>
-                        <a class="dropdown-item a-search a-search-type" href="#" data-value="2">家教</a>
-                        <a class="dropdown-item a-search a-search-type" href="#" data-value="3">勞力</a>
-                        <a class="dropdown-item a-search a-search-type" href="#" data-value="4">實驗</a>
-                        <a class="dropdown-item a-search a-search-type" href="#" data-value="5">其他</a>
+                        <a class="dropdown-item a-search a-search-type" href="#" data-value="1">{% trans "諮詢" %}</a>
+                        <a class="dropdown-item a-search a-search-type" href="#" data-value="2">{% trans "家教" %}</a>
+                        <a class="dropdown-item a-search a-search-type" href="#" data-value="3">{% trans "勞力" %}</a>
+                        <a class="dropdown-item a-search a-search-type" href="#" data-value="4">{% trans "實驗" %}</a>
+                        <a class="dropdown-item a-search a-search-type" href="#" data-value="5">{% trans "其他" %}</a>
 
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="keyword_wrap search-div">
-                    <input id="search-keyword" type="text" class="keyword_input" placeholder="輸入委託關鍵字" value="">
+                    <input id="search-keyword" type="text" class="keyword_input" placeholder="{% trans "輸入委託關鍵字" %}" value="">
                     <div class="clear_search_icon" style="display: none;">
                         <i class="material-icons">search</i>
                     </div>
@@ -122,28 +124,28 @@
                             style="position: absolute;right: 8%;top: -25px;text-align: center;color: #f4f4f3;">
                             <font size="6">{{apply_num}}</font>
                             <br>
-                            <font size="2">應徵中</font>
+                            <font size="2">{% trans "應徵中" %}</font>
                         </span>
 
                         <span class="d-none d-sm-block d-md-none"
                             style="position: absolute;right: 8%;top: -25px;text-align: center;color: #f4f4f3;">
                             <font size="6">{{apply_num}}</font>
                             <br>
-                            <font size="2">應徵中</font>
+                            <font size="2">{% trans "應徵中" %}</font>
                         </span>
 
                         <span class="d-none d-md-block d-lg-none"
                             style="position: absolute;right: 7%;top: -25px;text-align: center;color: #f4f4f3;">
                             <font size="6">{{apply_num}}</font>
                             <br>
-                            <font size="2">應徵中</font>
+                            <font size="2">{% trans "應徵中" %}</font>
                         </span>
 
                         <span class="d-none d-lg-block"
                             style="position: absolute;right: 9%;top: -25px;text-align: center;color: #f4f4f3;">
                             <font size="6">{{apply_num}}</font>
                             <br>
-                            <font size="3">應徵中</font>
+                            <font size="3">{% trans "應徵中" %}</font>
                         </span>
 
 
@@ -157,14 +159,14 @@
                                 <div class="row">
                                     <div class="col" style="padding-left: 0px;">
                                         <span style="display: inline;width: auto;color: rgb(165,141,141);">
-                                            #案件編號</span>
+                                            #{% trans "案件編號" %}</span>
                                         <span id="case-id" style="margin-left: 10px;color: #a58d8d;">
                                             {{case.case_id}}
                                         </span>
                                         <span id="case-title" style="display: block;font-weight: bold;font-size: 24px;">
                                             {{case.title}}
                                             <a href="./edit/" class="d-none" style="font-size: small;color: #b94700"
-                                                id="link-edit">編輯案件</a>
+                                                id="link-edit">{% trans "編輯案件" %}</a>
                                         </span>
 
                                     </div>
@@ -175,13 +177,13 @@
                                         style="background: rgba(245,197,72,0);width: auto;padding-left: 0px;">
                                         {% if case.case_status.status_name == "徵求" %}
                                         <span id="case-status" class="justify-content-center align-items-center"
-                                            style=" background: #f5c548 !important">徵求中</span>
+                                            style=" background: #f5c548 !important">{% trans "徵求中" %}</span>
                                         {% elif case.case_status.status_name == "進行" %}
                                         <span id="case-status" class="justify-content-center align-items-center"
-                                            style="background: #dc3545">委託中</span>
+                                            style="background: #dc3545">{% trans "委託中" %}</span>
                                         {% elif case.case_status.status_name == "完成" %}
                                         <span id="case-status" class="justify-content-center align-items-center"
-                                            style="background: #c4c4c4">已完成</span>
+                                            style="background: #c4c4c4">{% trans "已完成" %}</span>
                                         {% endif %}
 
                                         <i class="material-icons"
@@ -204,7 +206,7 @@
                                         <i class="material-icons"
                                             style="display: inline;font-size: 20px;">attach_money</i>
                                         <span style="display: inline;font-size: 18px;">
-                                            報酬
+                                            {% trans "報酬" %}
                                         </span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color"
@@ -224,7 +226,7 @@
                                         style="margin-top: 5px;margin-bottom: 5px;">
                                         <i class="material-icons" style="display: inline;font-size: 16px;">people</i>
                                         <span style="display: inline;font-size: 14px;margin-left: 5px;">
-                                            人數</span>
+                                            {% trans "人數" %}</span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color"
                                         style="margin-top: 5px;margin-bottom: 5px;">
@@ -232,7 +234,7 @@
                                             {{case.num}}
                                         </span>
                                         <span style="display: inline;margin-left: 3px;">
-                                            人
+                                            {% trans "人" %}
                                         </span>
                                     </div>
 
@@ -247,7 +249,7 @@
                                         <i class="material-icons"
                                             style="display: inline;font-size: 16px;">location_on</i>
                                         <span style="display: inline;font-size: 14px;margin-left: 5px;">
-                                            地點
+                                            {% trans "地點" %}
                                         </span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color"
@@ -267,13 +269,13 @@
                                         style="margin-top: 5px;margin-bottom: 5px;">
                                         <i class="material-icons" style="display: inline;font-size: 16px;">build</i>
                                         <span style="display: inline;font-size: 14px;margin-left: 5px;">
-                                            工作方式
+                                            {% trans "工作方式" %}
                                         </span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color"
                                         style="margin-top: 5px;margin-bottom: 5px;font-size: 15px;">
                                         <span id="case-work">
-                                            需到現場
+                                            {% trans "需到現場" %}
                                         </span>
                                     </div>
 
@@ -287,7 +289,7 @@
                                         style="margin-top: 5px;margin-bottom: 5px;">
                                         <i class="material-icons" style="display: inline;font-size: 16px;">loyalty</i>
                                         <span style="display: inline;font-size: 14px;margin-left: 5px;">
-                                            領域/類型
+                                            {% trans "領域" %}/{% trans "類型" %}
                                         </span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center justify-content-start"
@@ -316,7 +318,7 @@
                                         style="margin-top: 5px;margin-bottom: 5px;">
                                         <i class="material-icons" style="display: inline;font-size: 16px;">favorite</i>
                                         <span style="display: inline;font-size: 14px;margin-left: 5px;">
-                                            偏好條件
+                                            {% trans "偏好條件" %}
                                         </span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-md-8 d-flex align-items-center caseinfo-content-color"
@@ -337,7 +339,7 @@
                                         <i class="material-icons"
                                             style="display: inline;font-size: 16px;">library_books</i>
                                         <span style="display: inline;font-size: 14px;margin-left: 5px;">
-                                            委託內容
+                                            {% trans "委託內容" %}
                                         </span>
                                     </div>
                                     <div class="col-11 col-md-9 offset-1" style="padding-left: 25px;margin-top: 20px;">
@@ -428,19 +430,19 @@
                                         {% if canReport %}
                                         <button class="btn d-flex justify-content-center align-items-center button-case" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-case="{{ case.case_id }}">
                                             <i class="material-icons" style="font-size: 16px;">report_problem</i>
-                                            檢舉
+                                            {% trans "檢舉" %}
                                         </button>
                                         {% else %}
                                         <button class="btn d-flex justify-content-center align-items-center button-case" disabled="disabled" id="button-user-report" type="button">
                                             <i class="material-icons" style="font-size: 16px;">report_problem</i>
-                                            已檢舉
+                                            {% trans "已檢舉" %}
                                         </button>
                                         {% endif %}
                                         <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                               <div class="modal-content">
                                                 <div class="modal-header">
-                                                  <h5 class="modal-title" id="reportModalLabel">檢舉委託</h5>
+                                                  <h5 class="modal-title" id="reportModalLabel">{% trans "檢舉委託" %}</h5>
                                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
@@ -449,7 +451,7 @@
                                                     {# 用隱藏的input發送檢舉目標 #}
                                                     <input type="text" id="report_case" name="reported_case" style="display:none">
                                                     <div class="mb-3">
-                                                      <label for="report-type" class="col-form-label">檢舉類型:</label>
+                                                      <label for="report-type" class="col-form-label">{% trans "檢舉類型" %}:</label>
                                                       {# <input type="text" class="form-control" id="report-type"> #}
                                                       {# 用選單選擇檢舉類型 #}
                                                       <select class="form-control" id="report-type" name="report_type">
@@ -461,14 +463,14 @@
                                                       </select>
                                                     </div>
                                                     <div class="mb-3">
-                                                      <label for="report-message" class="col-form-label">檢舉內容:</label>
+                                                      <label for="report-message" class="col-form-label">{% trans "檢舉內容" %}:</label>
                                                       <textarea class="form-control" id="report-message" name="description"></textarea>
                                                     </div>
                                                   </form>
                                                 </div>
                                                 <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                                  <button type="button" class="btn btn-primary">送出</button>
+                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "取消" %}</button>
+                                                  <button type="button" class="btn btn-primary">{% trans "送出" %}</button>
                                                 </div>
                                               </div>
                                             </div>
@@ -481,7 +483,7 @@
                                         <button
                                             class="btn-take-case btn btn-primary d-flex justify-content-center align-items-center"
                                             id="button-case-commission" type="button">
-                                            我有意願
+                                            {% trans "我有意願" %}
                                         </button>
                                     </div>
                                 </div>
@@ -524,7 +526,7 @@
                         <div class="d-flex justify-content-center align-content-center align-items-center"
                             style="height: 50px;width: 85%;border-top-left-radius: .25rem;border-top-right-radius: .25rem;background: #865140;">
                             <span style="color: #f4f4f3;font-size: 20px;font-weight: bold;">
-                                案主資訊
+                                {% trans "案主資訊" %}
                             </span>
                         </div>
                     </div>
@@ -582,7 +584,7 @@
                                     <div class="col-12 d-flex justify-content-center align-items-center">
                                         <span id="user-lastlogintime"
                                             style="font-size: 12px;margin-top: 10px;color: #b8b3b3;">
-                                            上次登入:
+                                            {% trans "上次登入" %}:
                                         </span>
                                     </div>
 
@@ -593,13 +595,13 @@
                                         <!-- <button class="btn btn-primary d-flex justify-content-center align-items-center"
                                             id="button-userprofile" type="button"
                                             style="display: block;background: #865140;border-color: #865140;height: 85%;width: 90%;max-width: 300px;">
-                                            查看個人空間
+                                            {% trans "查看個人空間" %}
                                         </button> -->
                                         <a type="button"
                                             class="btn btn-primary d-flex justify-content-center align-items-center"
                                             href="{% url 'others-user-profile' case.publisher.user_id %}"
                                             id="button-userprofile" role="button"
-                                            style="display: block;background: #865140;border-color: #865140;height: 85%;width: 90%;max-width: 300px;">查看個人空間</a>
+                                            style="display: block;background: #865140;border-color: #865140;height: 85%;width: 90%;max-width: 300px;">{% trans "查看個人空間" %}</a>
                                     </div>
 
                                 </div>

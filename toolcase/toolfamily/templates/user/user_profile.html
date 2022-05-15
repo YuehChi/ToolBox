@@ -1,4 +1,7 @@
 {% extends "base_generic.html" %}
+{% load i18n %}
+<!-- user_profile -->
+
 {% load static %}
 
 {% block content %}
@@ -11,7 +14,7 @@
             <div class="container-fuild">
                 <label
                     style="z-index: 3;background-color: rgb(134, 81, 64);width: 100px;height: 30px;line-height:30px;margin-bottom: -15px;margin-left: 15px;text-align: center;color: #ffffff;position:relative;font-weight: bold">
-                    個人資料
+                    {% trans "個人資料" %}
                 </label>
                 <div class="row justify-content-center" style="z-index: 1;background: #ffffff;border-radius: .25rem">
                     <div class="col-md" style="max-width: 70%;width: 250px;">
@@ -62,12 +65,12 @@
                                 {% if canReport %}
                                 <button class="btn justify-content-center align-items-center" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" data-user="{{ viewed_user.user_id }}">
                                     <i class="material-icons" style="font-size: 16px;">report_problem</i>
-                                    檢舉
+                                    {% trans "檢舉" %}
                                 </button>
                                 {% else %}
                                 <button class="btn justify-content-center align-items-center" disabled="disabled" id="button-user-report" type="button">
                                     <i class="material-icons" style="font-size: 16px;">report_problem</i>
-                                    已檢舉
+                                    {% trans "已檢舉" %}
                                 </button>
                                 {% endif %}
                             </span>
@@ -75,7 +78,7 @@
                                 <div class="modal-dialog">
                                   <div class="modal-content">
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="reportModalLabel">檢舉工具人</h5>
+                                      <h5 class="modal-title" id="reportModalLabel">{% trans "檢舉工具人" %}</h5>
                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -84,7 +87,7 @@
                                         {# 用隱藏的input發送檢舉目標 #}
                                         <input type="text" id="report_user" name="reported_user" style="display:none">
                                         <div class="mb-3">
-                                          <label for="report-type" class="col-form-label">檢舉類型:</label>
+                                          <label for="report-type" class="col-form-label">{% trans "檢舉類型" %}:</label>
                                           {# <input type="text" class="form-control" id="report-type"> #}
                                           {# 用選單選擇檢舉類型 #}
                                           <select class="form-control" id="report-type" name="report_type">
@@ -96,26 +99,26 @@
                                           </select>
                                         </div>
                                         <div class="mb-3">
-                                          <label for="report-message" class="col-form-label">檢舉內容:</label>
+                                          <label for="report-message" class="col-form-label">{% trans "檢舉內容" %}:</label>
                                           <textarea class="form-control" id="report-message" name="description"></textarea>
                                         </div>
                                       </form>
                                     </div>
                                     <div class="modal-footer">
-                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                      <button type="button" class="btn btn-primary">送出</button>
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "取消" %}</button>
+                                      <button type="button" class="btn btn-primary">{% trans "送出" %}</button>
                                     </div>
                                   </div>
                                 </div>
                             </div>
                             {% if viewed_user.department %}
-                            <p style="color:  rgb(38, 29, 29);">系所:{{viewed_user.department}}</p>
+                            <p style="color:  rgb(38, 29, 29);">{% trans "系所" %}:{{viewed_user.department}}</p>
                             {% endif %}
                         </div>
                     </div>
                     <div class="col-md">
                         <div class="" style="margin-top: 10px;background: #ffffff;">
-                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">接案數量</p>
+                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">{% trans "接案數量" %}</p>
                             <p
                                 style="margin: 0 auto;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">
                                 {{ viewed_user.work_num }}</p>
@@ -124,7 +127,7 @@
                     </div>
                     <div class="col-md">
                         <div class="" style="margin-top: 10px;background: #ffffff;">
-                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">發案數量</p>
+                            <p style="color:  rgb(38, 29, 29);font-weight: bold;text-align: center;">{% trans "發案數量" %}</p>
                             <p
                                 style="margin: 0 auto;margin-bottom: 15px;width: 100px;height:100px;text-align: center;font-size: 70px;color: #ffffff;background-size: 100px;background: url('/static/images/clipboard-image.png');background-repeat: no-repeat;background-size: 100px 100px;">
                                 {{ viewed_user.publish_num }}</p>
@@ -136,7 +139,7 @@
             <div class="container-fuild">
                 <label
                     style="z-index: 3;background-color: rgb(134, 81, 64);width: 100px;height: 30px;line-height:30px;margin-top: 10px;margin-bottom: -50px;margin-left: 15px;text-align: center;color: #ffffff;font-weight: bold">
-                    自我介紹
+                    {% trans "自我介紹" %}
                 </label>
                 <div class="row" style="z-index: 1;background: #ffffff;border-radius: .25rem;">
                     <div>

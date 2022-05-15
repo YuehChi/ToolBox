@@ -1,10 +1,12 @@
+{% load i18n %}
+<!-- reset_pwd -->
 <!DOCTYPE html>
 <html style="--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 245,197,72;--bs-body-bg: rgb(244, 244, 243);--bs-success: rgb(134, 81, 64) ;--bs-success-rgb: 134,81,64;">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>台大工具箱 NTU ToolBox</title>
+    <title>{% trans "台大工具箱" %}</title>
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
@@ -18,10 +20,10 @@
             var pwd1 = document.getElementById("pwd").value;
             var pwd2 = document.getElementById("confirm").value;
            if(pwd1 == pwd2) {
-               document.getElementById("notice").innerHTML="<font color='green'>兩次密碼相同</font>";
+               document.getElementById("notice").innerHTML="<font color='green'>{% trans "台大工具箱" %}{% trans "兩次密碼相同" %}</font>";
                document.getElementById("mySubmit").disabled = false;
             }else {
-                document.getElementById("notice").innerHTML="<font color='Tomato'>兩次密碼不同</font>";
+                document.getElementById("notice").innerHTML="<font color='Tomato'>{% trans "台大工具箱" %}{% trans "兩次密碼不同" %}</font>";
                 document.getElementById("mySubmit").disabled = true;
             }
         }
@@ -38,7 +40,7 @@
             var comp = "";
 
             if (len == 0) {
-                comp = "<span style='font-size: 12px;'>密碼強度</span>";
+                comp = "<span style='font-size: 12px;'>{% trans "密碼強度" %}</span>";
             }else {
                 // <span style='font-size: 12px;'>&nbsp> strong</span>
                 scr = parseInt(getPwdScore(pwd));
@@ -53,11 +55,11 @@
             document.getElementById('complexity').innerHTML = comp;
             return false;
         }
-        
+
         function getPwdScore(strPassword) {
             // Reset combination count
             var nScore = 0;
-        
+
             // Password length
             if (strPassword.length < 5) {// -- Less than 4 characters
                 nScore += 5;
@@ -66,7 +68,7 @@
             }else if (strPassword.length > 7) {// -- 8 or more
                 nScore += 25;
             }
-        
+
             // Letters
             var nUpperCount = countContain(strPassword, m_strUpperCase);
             var nLowerCount = countContain(strPassword, m_strLowerCase);
@@ -77,21 +79,21 @@
             }else if (nUpperCount != 0 && nLowerCount != 0) { // -- Letters are upper case and lower case
                 nScore += 20;
             }
-        
+
             // Numbers
             var nNumberCount = countContain(strPassword, m_strNumber);
             if (nNumberCount == 1) // -- 1 number
                 nScore += 10;
             if (nNumberCount >= 3)// -- 3 or more numbers
                 nScore += 20;
-        
+
             // Characters
             var nCharacterCount = countContain(strPassword, m_strCharacters);
             if (nCharacterCount == 1) // -- 1 character
                 nScore += 10;
             if (nCharacterCount > 1) // -- More than 1 character
                 nScore += 25;
-    
+
             // Bonus
             if (nNumberCount != 0 && nLowerUpperCount != 0)// -- Letters and numbers
                 nScore += 2;
@@ -101,7 +103,7 @@
                 nScore += 5;
             return nScore;
         }
-        
+
         // Checks a string for a list of characters
         function countContain(strPassword, strCheck) {
             // Declare variables
@@ -118,19 +120,32 @@
         <div class="container-fluid"><a class="navbar-brand" href="/toolfamily/">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse d-md-flex d-lg-flex justify-content-md-end align-items-md-center justify-content-lg-end align-items-lg-center" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="#" style="font-size: 12px;margin-left: -2px;margin-right: 8px;">English</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/toolfamily/" style="font-size: 12px;margin-left: -2px;margin-right: 8px;">登入</a></li>
+                  <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                      <input name="next" type="hidden" value="{{ redirect_to }}">
+                      <select name="language" onchange="this.form.submit()">
+                          {% get_current_language as LANGUAGE_CODE %}
+                          {% get_available_languages as LANGUAGES %}
+                          {% get_language_info_list for LANGUAGES as languages %}
+                          {% for language in languages %}
+                              <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                                  {{ language.name_local }}
+                              </option>
+                          {% endfor %}
+                      </select>
+                      <!-- <input type="submit" value="Go"> -->
+                  </form>
+                    <li class="nav-item"><a class="nav-link" href="/toolfamily/" style="font-size: 12px;margin-left: -2px;margin-right: 8px;">{% trans "登入" %}</a></li>
                 </ul>
             </div>
         </div>
     </nav>
     <div></div>
     <section class="d-flex justify-content-center align-items-center align-content-center align-self-center me-auto portfolio" id="portfolio" style="--bs-primary: #18BC9C;--bs-primary-rgb: 24,188,156;margin-top: 54px;">
-        
+
 
         <div class="row justify-content-center align-items-center" style="height: 600px;">
             <div class="col-md-8 col-lg-6" style="width: 600px;padding-right: 0px;padding-left: 0px;">
-                <h1 style="font-family: Montserrat, sans-serif;text-align: center;color: rgb(123, 99, 99);font-size: 75px;margin-right: -150px;width: 564px;font-weight: bold;">重設密碼</h1>
+                <h1 style="font-family: Montserrat, sans-serif;text-align: center;color: rgb(123, 99, 99);font-size: 75px;margin-right: -150px;width: 564px;font-weight: bold;">{% trans "重設密碼" %}</h1>
                 {% load static %}
                 <div class="container" style="width: 500px;margin-right: 0px;margin-left: 39px;margin-top: 111px;padding-right: 24px;"><img src="{% static 'images/default_icon_3.png' %}" style="margin-top: -59px;margin-left: 10px;width: 426px;"></div>
             </div>
@@ -142,36 +157,36 @@
                         <div class="mb-0 form-floating controls pb-2" style="border-bottom-width: 0px;height: 180px;width: 412px;padding-top: 128px;">
                             <div class="row" style="height: 60px;margin-top: 0px;width: 400px;margin-left: 0px;margin-right: 0px;">
                                 <div class="col">
-                                    <h1 style="font-size: 16px;color: rgb(244, 244, 243);background: rgb(204,195,190);text-align: center;width: 103px;height: 37px;line-height: 37px;border-radius: 9px;">新密碼</h1>
+                                    <h1 style="font-size: 16px;color: rgb(244, 244, 243);background: rgb(204,195,190);text-align: center;width: 103px;height: 37px;line-height: 37px;border-radius: 9px;">{% trans "新密碼" %}</h1>
                                 </div>
                                 <div class="col" style="width: 16px;">
                                     <h1 style="color: var(--bs-red);font-size: 25px;text-align: center;width: 16px;margin-bottom: 0px;margin-left: -16px;">*</h1>
                                 </div>
                                 <div class="col" style="height: 36px;">
-                                    <input onkeyup="return checkPwdStrength();" onblur="validate()" class="form-control" type="password" name="password" id="pwd" required=true style="font-size: 16px;width: 216px;" placeholder="請輸入新密碼"><small class="form-text text-danger help-block"></small>
+                                    <input onkeyup="return checkPwdStrength();" onblur="validate()" class="form-control" type="password" name="password" id="pwd" required=true style="font-size: 16px;width: 216px;" placeholder="{% trans "請輸入新密碼" %}"><small class="form-text text-danger help-block"></small>
                                     <div id="complexity"></div>
                                 </div>
                             </div>
                             <div class="row" style="height: 60px;margin-top: 0px;width: 400px;margin-left: 0px;margin-right: 0px;">
                                 <div class="col">
-                                    <h1 style="font-size: 12px;color: rgb(244, 244, 243);background: rgb(204,195,190);text-align: center;width: 103px;height: 37px;line-height: 37px;border-radius: 9px;">再次輸入新密碼</h1>
+                                    <h1 style="font-size: 12px;color: rgb(244, 244, 243);background: rgb(204,195,190);text-align: center;width: 103px;height: 37px;line-height: 37px;border-radius: 9px;">{% trans "再次輸入新密碼" %}</h1>
                                 </div>
                                 <div class="col" style="width: 16px;">
                                     <h1 style="color: var(--bs-red);font-size: 25px;text-align: center;width: 16px;margin-bottom: 0px;margin-left: -16px;">*</h1>
                                 </div>
                                 <div class="col" style="height: 36px;">
-                                    <input onkeyup="validate()" class="form-control" type="password" id="confirm" name="confirm" required=true style="font-size: 16px;width: 216px;" placeholder="請再次輸入新密碼"><small class="form-text text-danger help-block"></small>
+                                    <input onkeyup="validate()" class="form-control" type="password" id="confirm" name="confirm" required=true style="font-size: 16px;width: 216px;" placeholder="{% trans "請再次輸入新密碼" %}"><small class="form-text text-danger help-block"></small>
                                     <span id="notice"></span>
                                 </div>
                             </div>
                             <div class="row" style="margin-left: 0px;height: 60px;">
                                 <div class="col text-center" style="padding-right: 27px;padding-left: 0px;width: 240px;height: 53px;">
-                                    <button class="btn btn-primary" type="submit" id="mySubmit" style="background: rgb(245, 197, 72);border-top-color: rgb(245, 197, 72);border-right-color: rgb(245, 197, 72);border-bottom-color: rgb(245, 197, 72);border-left-color: rgb(245, 197, 72);width: 189.9844px;border-radius: 8px;margin-left: 0px;margin-top: 0px;height: 32px;text-align: center;font-size: 19px;line-height: 17.5px;--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 245,197,72;">確定變更</button>
+                                    <button class="btn btn-primary" type="submit" id="mySubmit" style="background: rgb(245, 197, 72);border-top-color: rgb(245, 197, 72);border-right-color: rgb(245, 197, 72);border-bottom-color: rgb(245, 197, 72);border-left-color: rgb(245, 197, 72);width: 189.9844px;border-radius: 8px;margin-left: 0px;margin-top: 0px;height: 32px;text-align: center;font-size: 19px;line-height: 17.5px;--bs-primary: rgb(245, 197, 72);--bs-primary-rgb: 245,197,72;">{% trans "確定變更" %}</button>
                                 </div>
                             </div>
                             <div class="row" style="margin-left: 0px;margin-top: 7px;">
                                 <div class="col">
-                                    <span>請使用新密碼，再次登入！</span>
+                                    <span>{% trans "請使用新密碼，再次登入！" %}</span>
                                 </div>
                             </div>
                         </div>

@@ -1,0 +1,1351 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-15 17:31+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: toolcase/settings.py:138
+msgid "English"
+msgstr ""
+
+#: toolcase/settings.py:139
+msgid "繁體中文"
+msgstr ""
+
+#: toolfamily/templates/auth/forget_pwd.html:9
+#: toolfamily/templates/auth/login.html:9
+#: toolfamily/templates/auth/register.html:9
+#: toolfamily/templates/auth/reset_pwd.html:9
+#: toolfamily/templates/auth/reset_pwd.html:23
+#: toolfamily/templates/auth/reset_pwd.html:26
+#: toolfamily/templates/base_generic.html:7
+#: toolfamily/templates/user/applicant.html:13
+#: toolfamily/templates/user/publish.html:16
+#: toolfamily/templates/user/take.html:15
+msgid "台大工具箱"
+msgstr ""
+
+#: toolfamily/templates/auth/forget_pwd.html:35
+#: toolfamily/templates/auth/login.html:85
+#: toolfamily/templates/auth/register.html:192
+#: toolfamily/templates/auth/reset_pwd.html:137
+msgid "登入"
+msgstr ""
+
+#: toolfamily/templates/auth/forget_pwd.html:44
+msgid "忘記密碼"
+msgstr ""
+
+#: toolfamily/templates/auth/forget_pwd.html:56
+#: toolfamily/templates/auth/register.html:232
+msgid "帳號"
+msgstr ""
+
+#: toolfamily/templates/auth/forget_pwd.html:61
+#: toolfamily/templates/auth/register.html:238
+msgid "請輸入台大信箱"
+msgstr ""
+
+#: toolfamily/templates/auth/forget_pwd.html:64
+msgid "發送驗證"
+msgstr ""
+
+#: toolfamily/templates/auth/login.html:58
+msgid "專屬台大人的委託平台"
+msgstr ""
+
+#: toolfamily/templates/auth/login.html:64
+msgid "會員登入"
+msgstr ""
+
+#: toolfamily/templates/auth/login.html:78
+msgid "電子信箱"
+msgstr ""
+
+#: toolfamily/templates/auth/login.html:82
+msgid "輸入密碼"
+msgstr ""
+
+#: toolfamily/templates/auth/login.html:84
+msgid "忘記密碼？"
+msgstr ""
+
+#: toolfamily/templates/auth/login.html:86
+msgid "還不是會員？"
+msgstr ""
+
+#: toolfamily/templates/auth/login.html:86
+#: toolfamily/templates/auth/register.html:315
+msgid "註冊"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:223
+#: toolfamily/templates/user/user.html:158
+msgid "姓名"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:242
+msgid "密碼"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:254
+msgid "再次輸入密碼"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:266
+msgid "網站聲明"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:272
+msgid "一、認知與接受條款"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:273
+msgid ""
+"1. 台大工具箱委託平台(以下簡稱「台大工具箱」)係依據本服務條款提供台大工具箱"
+"（https://ntutoolbox.herokuapp.com/）服務 (以下簡稱「本服務」)。當會員完成台"
+"大工具箱之會員註冊手續、或開始使用本服務時，即表示已閱讀、瞭解並同意接受本服"
+"務條款之所有內容，並完全接受本服務現有與未來衍生的服務項目及內容。台大工具箱"
+"公司有權於任何時間修改或變更本服務條款之內容，修改後的服務條款內容將公佈網站"
+"上，台大工具箱將不會個別通知會員，建議會員隨時注意該等修改或變更。會員於任何"
+"修改或變更後繼續使用本服務時，視為會員已閱讀、瞭解並同意接受該等修改或變更。"
+"若不同意上述的服務條款修訂或更新方式，或不接受本服務條款的其他任一約定，會員"
+"應立即停止使用本服務。"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:274
+msgid ""
+"2. 若會員為未滿二十歲之未成年人，應於會員的家長（或監護人）閱讀、瞭解並同意本"
+"約定書之所有內容及其後修改變更後，方得註冊為會員、使用或繼續使用本服務。當會"
+"員使用或繼續使用台大工具箱時，即推定會員的家長（或監護人）已閱讀、瞭解並同意"
+"接受本約定書之所有內容及其後修改變更。"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:275
+msgid ""
+"3. 會員及台大工具箱雙方同意使用本服務之所有內容包括意思表示等，以電子文件作為"
+"表示方式。"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:276
+msgid "二、會員的註冊義務"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:277
+msgid "為了能使用本服務，會員同意以下事項："
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:278
+msgid ""
+"依本服務註冊表之提示提供會員本人正確、最新的資料，且不得以第三人之名義註冊為"
+"會員。每位會員僅能註冊登錄一個帳號，不可重覆註冊登錄。"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:279
+msgid "即時維持並更新會員個人資料，確保其正確性，以獲取最佳之服務。"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:280
+msgid ""
+"若會員提供任何錯誤或不實的資料、或未按指示提供資料、或欠缺必要之資料、或有重"
+"覆註冊帳號等情事時，台大工具箱有權不經事先通知，逕行暫停或終止會員的帳號，並"
+"拒絕會員使用本服務之全部或一部。"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:281
+msgid "三、使用者的守法義務及承諾"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:282
+msgid ""
+"會員承諾絕不為任何非法目的或以任何非法方式使用本服務，並承諾遵守中華民國相關"
+"法規及一切使用網際網路之國際慣例。會員若係中華民國以外之使用者，並同意遵守所"
+"屬國家或地域之法令。會員同意並保證不得利用本服務從事侵害他人權益或違法之行"
+"為，包括但不限於："
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:283
+msgid ""
+"1. 公布或傳送任何誹謗、侮辱、具威脅性、攻擊性、不雅、猥褻、不實、違反公共秩序"
+"或善良風俗或其他不法之文字、圖片或任何形式的檔案"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:284
+msgid ""
+"2. 侵害或毀損台大工具箱或他人名譽、隱私權、營業秘密、商標權、著作權、專利權、"
+"其他智慧財產權及其他權利"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:285
+msgid "3. 違反依法律或契約所應負之保密義務"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:286
+msgid "4. 冒用他人名義使用本服務"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:287
+msgid "5. 傳輸或散佈電腦病毒"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:288
+msgid "6. 從事未經本網站事前授權的商業行為"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:289
+msgid ""
+"7. 刊載、傳輸、發送垃圾郵件、連鎖信、違法或未經台大工具箱許可之多層次傳銷訊息"
+"及廣告等；或儲存任何侵害他人智慧財產權或違反法令之資料"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:290
+msgid ""
+"8. 對本服務其他用戶或第三人產生困擾、不悅或違反一般網路禮節致生反感之行為"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:291
+msgid ""
+"9. 其他不符本服務所提供的使用目的之行為或台大工具箱有正當理由認為不適當之行為"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:292
+msgid "四、服務之停止、中斷"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:293
+msgid ""
+"台大工具箱將依一般合理之技術及方式，維持系統及服務之正常運作。但於以下各項情"
+"況時，台大工具箱有權可以停止、中斷提供本服務："
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:294
+msgid "1. 台大工具箱網站電子通信設備進行必要之保養及施工時"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:295
+msgid "2. 發生突發性之電子通信設備故障時"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:296
+msgid "3. 台大工具箱網站申請之電子通信服務被停止，無法提供服務時"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:297
+msgid ""
+"4. 由於天災等不可抗力之因素或其他不可歸責於台大工具致使台大工具網站無法提供服"
+"務時"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:298
+msgid "五、交易行為"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:299
+msgid ""
+"1. 雙方會員於確認委託關係時，其線下交易行為非本服務保障範圍，台大工具箱不負責"
+"任何交易責任。"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:300
+msgid ""
+"2. 台大工具箱只提供會員媒合平台，若有出現非法之行為，本系統不負擔任何責任。會"
+"員需自行判斷是否為安全委任工作。"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:301
+msgid "六、責任之限制與排除"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:302
+msgid ""
+"1. 本服務所提供之各項功能，均依該功能當時之現況提供使用，台大工具箱對於其效"
+"能、速度、完整性、可靠性、安全性、正確性等，皆不負擔任何明示或默示之擔保責"
+"任。"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:303
+msgid ""
+"2. 台大工具箱並不保證本服務之網頁、伺服器、網域等所傳送的電子郵件或其內容不會"
+"含有電腦病毒等有害物；亦不保證郵件、檔案或資料之傳輸儲存均正確無誤不會斷線和"
+"出錯等，因各該郵件、檔案或資料傳送或儲存失敗、遺失或錯誤等所致之損害，本網站"
+"不負賠償責任。"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:309
+msgid "我同意，註冊表示接受本平台上述之聲明"
+msgstr ""
+
+#: toolfamily/templates/auth/reset_pwd.html:23
+#: toolfamily/templates/user/user_reset_pwd.html:16
+msgid "兩次密碼相同"
+msgstr ""
+
+#: toolfamily/templates/auth/reset_pwd.html:26
+#: toolfamily/templates/user/user_reset_pwd.html:20
+msgid "兩次密碼不同"
+msgstr ""
+
+#: toolfamily/templates/auth/reset_pwd.html:43
+#: toolfamily/templates/user/user_reset_pwd.html:36
+msgid "密碼強度"
+msgstr ""
+
+#: toolfamily/templates/auth/reset_pwd.html:148
+msgid "重設密碼"
+msgstr ""
+
+#: toolfamily/templates/auth/reset_pwd.html:160
+msgid "新密碼"
+msgstr ""
+
+#: toolfamily/templates/auth/reset_pwd.html:166
+#: toolfamily/templates/user/user_reset_pwd.html:169
+msgid "請輸入新密碼"
+msgstr ""
+
+#: toolfamily/templates/auth/reset_pwd.html:172
+msgid "再次輸入新密碼"
+msgstr ""
+
+#: toolfamily/templates/auth/reset_pwd.html:178
+#: toolfamily/templates/user/user_reset_pwd.html:178
+msgid "請再次輸入新密碼"
+msgstr ""
+
+#: toolfamily/templates/auth/reset_pwd.html:184
+msgid "確定變更"
+msgstr ""
+
+#: toolfamily/templates/auth/reset_pwd.html:189
+msgid "請使用新密碼，再次登入！"
+msgstr ""
+
+#: toolfamily/templates/base_generic.html:62
+#: toolfamily/templates/base_generic.html:122
+msgid "我要發案"
+msgstr ""
+
+#: toolfamily/templates/base_generic.html:91
+#: toolfamily/templates/base_generic.html:123
+#: toolfamily/templates/user/applicant.html:112
+#: toolfamily/templates/user/publish.html:287
+#: toolfamily/templates/user/take.html:294
+#: toolfamily/templates/user/user.html:38
+#: toolfamily/templates/user/user_reset_pwd.html:141
+msgid "會員中心"
+msgstr ""
+
+#: toolfamily/templates/base_generic.html:92
+#: toolfamily/templates/base_generic.html:124
+#: toolfamily/templates/user/applicant.html:113
+#: toolfamily/templates/user/publish.html:288
+#: toolfamily/templates/user/publish.html:299
+#: toolfamily/templates/user/publish.html:304
+#: toolfamily/templates/user/take.html:295
+#: toolfamily/templates/user/user.html:39
+#: toolfamily/templates/user/user_reset_pwd.html:142
+msgid "我的委託"
+msgstr ""
+
+#: toolfamily/templates/base_generic.html:93
+#: toolfamily/templates/base_generic.html:125
+#: toolfamily/templates/user/applicant.html:114
+#: toolfamily/templates/user/publish.html:289
+#: toolfamily/templates/user/take.html:296
+#: toolfamily/templates/user/take.html:305
+#: toolfamily/templates/user/take.html:308
+#: toolfamily/templates/user/user.html:40
+#: toolfamily/templates/user/user_reset_pwd.html:143
+msgid "我的接案"
+msgstr ""
+
+#: toolfamily/templates/base_generic.html:94
+#: toolfamily/templates/base_generic.html:126
+#: toolfamily/templates/user/applicant.html:115
+#: toolfamily/templates/user/publish.html:290
+#: toolfamily/templates/user/take.html:297
+#: toolfamily/templates/user/user.html:41
+#: toolfamily/templates/user/user_reset_pwd.html:144
+#: toolfamily/templates/user/user_reset_pwd.html:152
+msgid "更改密碼"
+msgstr ""
+
+#: toolfamily/templates/base_generic.html:95
+#: toolfamily/templates/base_generic.html:127
+#: toolfamily/templates/user/applicant.html:116
+#: toolfamily/templates/user/publish.html:291
+#: toolfamily/templates/user/take.html:298
+#: toolfamily/templates/user/user.html:42
+#: toolfamily/templates/user/user_reset_pwd.html:145
+msgid "登出"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:65
+#: toolfamily/templates/case/profile_edit.html:65
+msgid "請勿張貼違反法律之委託貼文，如經發現，將立即將帳號停權並通報相關單位！"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:71
+#: toolfamily/templates/case/profile_edit.html:71
+msgid ""
+"委託契約成立即受契約法保護，取消或完成委託需經雙方確認，請確實履行契約內容，"
+"如遇問題請通知管理員。"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:83
+#: toolfamily/templates/case/profile_edit.html:83
+#: toolfamily/templates/user/applicant.html:129
+msgid "委託標題"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:85 toolfamily/templates/case/new.html:95
+#: toolfamily/templates/case/profile_edit.html:85
+#: toolfamily/templates/case/profile_edit.html:95
+msgid "限30字"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:93
+#: toolfamily/templates/case/profile.html:209
+#: toolfamily/templates/case/profile_edit.html:93
+#: toolfamily/templates/user/take.html:330
+msgid "報酬"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:104
+#: toolfamily/templates/case/profile.html:292
+#: toolfamily/templates/case/profile_edit.html:104
+#: toolfamily/templates/case/profile_edit_1.html:55
+#: toolfamily/templates/case/search.html:152
+#: toolfamily/templates/case/search_temp.html:20
+#: toolfamily/templates/case/search_temp.html:77 toolfamily/templates/index
+#: copy.html:26 copy.html:117
+msgid "領域"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:110
+#: toolfamily/templates/case/new.html:134
+#: toolfamily/templates/case/profile_edit.html:110
+#: toolfamily/templates/case/profile_edit.html:134
+msgid "請選擇"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:111
+#: toolfamily/templates/case/profile.html:66
+#: toolfamily/templates/case/profile_edit.html:111
+#: toolfamily/templates/case/profile_edit_1.html:65
+#: toolfamily/templates/case/search.html:59
+#: toolfamily/templates/case/search.html:158
+#: toolfamily/templates/case/search_temp.html:21
+#: toolfamily/templates/index.html:63
+msgid "電資"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:112
+#: toolfamily/templates/case/profile.html:67
+#: toolfamily/templates/case/profile_edit.html:112
+#: toolfamily/templates/case/profile_edit_1.html:66
+#: toolfamily/templates/case/search.html:60
+#: toolfamily/templates/case/search.html:164
+#: toolfamily/templates/case/search_temp.html:22
+#: toolfamily/templates/index.html:64
+msgid "數理"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:113
+#: toolfamily/templates/case/profile.html:68
+#: toolfamily/templates/case/profile_edit.html:113
+#: toolfamily/templates/case/profile_edit_1.html:67
+#: toolfamily/templates/case/search.html:61
+#: toolfamily/templates/case/search.html:170
+#: toolfamily/templates/case/search_temp.html:23
+#: toolfamily/templates/index.html:65
+msgid "人文科學"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:114
+#: toolfamily/templates/case/profile.html:69
+#: toolfamily/templates/case/profile_edit.html:114
+#: toolfamily/templates/case/profile_edit_1.html:68
+#: toolfamily/templates/case/search.html:62
+#: toolfamily/templates/case/search.html:176
+#: toolfamily/templates/case/search_temp.html:24
+#: toolfamily/templates/index.html:66
+msgid "藝術設計"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:115
+#: toolfamily/templates/case/new.html:139
+#: toolfamily/templates/case/profile.html:70
+#: toolfamily/templates/case/profile.html:87
+#: toolfamily/templates/case/profile_edit.html:115
+#: toolfamily/templates/case/profile_edit.html:139
+#: toolfamily/templates/case/profile_edit_1.html:53
+#: toolfamily/templates/case/profile_edit_1.html:69
+#: toolfamily/templates/case/search.html:63
+#: toolfamily/templates/case/search.html:79
+#: toolfamily/templates/case/search.html:182
+#: toolfamily/templates/case/search.html:219
+#: toolfamily/templates/case/search_temp.html:19
+#: toolfamily/templates/case/search_temp.html:25
+#: toolfamily/templates/index.html:67 toolfamily/templates/index.html:83
+msgid "其他"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:128
+#: toolfamily/templates/case/profile.html:292
+#: toolfamily/templates/case/profile_edit.html:128
+#: toolfamily/templates/case/profile_edit_1.html:39
+#: toolfamily/templates/case/search.html:189
+#: toolfamily/templates/case/search_temp.html:14
+#: toolfamily/templates/case/search_temp.html:78 toolfamily/templates/index
+#: copy.html:27 copy.html:118
+msgid "類型"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:135
+#: toolfamily/templates/case/profile.html:83
+#: toolfamily/templates/case/profile_edit.html:135
+#: toolfamily/templates/case/profile_edit_1.html:49
+#: toolfamily/templates/case/search.html:75
+#: toolfamily/templates/case/search.html:195
+#: toolfamily/templates/case/search_temp.html:15
+#: toolfamily/templates/index.html:79
+msgid "諮詢"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:136
+#: toolfamily/templates/case/profile.html:84
+#: toolfamily/templates/case/profile_edit.html:136
+#: toolfamily/templates/case/profile_edit_1.html:50
+#: toolfamily/templates/case/search.html:76
+#: toolfamily/templates/case/search.html:201
+#: toolfamily/templates/case/search_temp.html:16
+#: toolfamily/templates/index.html:80
+msgid "家教"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:137
+#: toolfamily/templates/case/profile.html:85
+#: toolfamily/templates/case/profile_edit.html:137
+#: toolfamily/templates/case/profile_edit_1.html:51
+#: toolfamily/templates/case/search.html:77
+#: toolfamily/templates/case/search.html:207
+#: toolfamily/templates/case/search_temp.html:17
+#: toolfamily/templates/index.html:81
+msgid "勞力"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:138
+#: toolfamily/templates/case/profile.html:86
+#: toolfamily/templates/case/profile_edit.html:138
+#: toolfamily/templates/case/profile_edit_1.html:52
+#: toolfamily/templates/case/search.html:78
+#: toolfamily/templates/case/search.html:213
+#: toolfamily/templates/case/search_temp.html:18
+#: toolfamily/templates/index.html:82
+msgid "實驗"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:153
+#: toolfamily/templates/case/profile_edit.html:153
+msgid "委託結束時間"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:155
+#: toolfamily/templates/case/profile_edit.html:155
+msgid "月/日/年"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:163
+#: toolfamily/templates/case/profile.html:229
+#: toolfamily/templates/case/profile_edit.html:163
+msgid "人數"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:176
+#: toolfamily/templates/case/profile.html:272
+#: toolfamily/templates/case/profile_edit.html:176
+#: toolfamily/templates/case/search.html:267
+msgid "工作方式"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:184
+#: toolfamily/templates/case/profile.html:278
+#: toolfamily/templates/case/profile_edit.html:184
+#: toolfamily/templates/case/search.html:417
+#: toolfamily/templates/index.html:258 toolfamily/templates/index.html:487
+msgid "需到現場"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:188
+#: toolfamily/templates/case/profile_edit.html:188
+#: toolfamily/templates/case/search.html:285
+#: toolfamily/templates/case/search.html:419
+#: toolfamily/templates/index.html:260 toolfamily/templates/index.html:489
+msgid "線上"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:200
+#: toolfamily/templates/case/profile.html:252
+#: toolfamily/templates/case/profile_edit.html:200
+#: toolfamily/templates/case/search.html:298
+#: toolfamily/templates/case/search_temp.html:44
+#: toolfamily/templates/case/search_temp.html:71 toolfamily/templates/index
+#: copy.html:20 copy.html:111
+msgid "地點"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:202
+#: toolfamily/templates/case/new.html:219
+#: toolfamily/templates/case/profile_edit.html:202
+#: toolfamily/templates/case/profile_edit.html:219
+msgid "限20字"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:206
+#: toolfamily/templates/case/profile_edit.html:206
+#: toolfamily/templates/case/search.html:230
+#: toolfamily/templates/case/search.html:244
+#: toolfamily/templates/case/search.html:258
+#: toolfamily/templates/case/search.html:273
+#: toolfamily/templates/case/search.html:294
+#: toolfamily/templates/case/search.html:300
+msgid "不限"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:218
+#: toolfamily/templates/case/profile.html:321
+#: toolfamily/templates/case/profile_edit.html:218
+#: toolfamily/templates/case/search.html:292
+#: toolfamily/templates/case/search_temp.html:73 toolfamily/templates/index
+#: copy.html:22 copy.html:113
+msgid "偏好條件"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:229
+#: toolfamily/templates/case/profile_edit.html:229
+msgid "委託描述"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:231
+#: toolfamily/templates/case/profile_edit.html:231
+msgid "限1000字"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:238
+#: toolfamily/templates/case/profile_edit.html:238
+msgid "委託圖片"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:241
+#: toolfamily/templates/case/profile_edit.html:241
+msgid "檔案格式 jpg / jpeg / png，大小限制 3MB 內，最多 10 張。"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:245
+#: toolfamily/templates/case/profile_edit.html:245
+msgid "檔案大小需小於2MB"
+msgstr ""
+
+#: toolfamily/templates/case/new.html:255
+msgid "發佈"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:55
+#: toolfamily/templates/case/search.html:49 toolfamily/templates/index.html:53
+msgid "全部案件"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:63
+#: toolfamily/templates/case/search.html:56 toolfamily/templates/index.html:60
+msgid "找領域"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:80
+#: toolfamily/templates/case/search.html:72 toolfamily/templates/index.html:76
+msgid "找類型"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:94
+#: toolfamily/templates/case/search.html:86 toolfamily/templates/index.html:90
+msgid "輸入委託關鍵字"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:127
+#: toolfamily/templates/case/profile.html:134
+#: toolfamily/templates/case/profile.html:141
+#: toolfamily/templates/case/profile.html:148
+#: toolfamily/templates/case/search.html:360
+#: toolfamily/templates/case/search.html:369
+#: toolfamily/templates/index.html:199 toolfamily/templates/index.html:208
+#: toolfamily/templates/index.html:431 toolfamily/templates/index.html:440
+msgid "應徵中"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:162
+msgid "案件編號"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:169
+msgid "編輯案件"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:180
+#: toolfamily/templates/case/search.html:232
+#: toolfamily/templates/case/search.html:384
+#: toolfamily/templates/index.html:226 toolfamily/templates/index.html:455
+#: toolfamily/templates/user/publish.html:385
+msgid "徵求中"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:183
+#: toolfamily/templates/case/search.html:233
+#: toolfamily/templates/case/search.html:386
+#: toolfamily/templates/index.html:228 toolfamily/templates/index.html:457
+#: toolfamily/templates/user/publish.html:387
+msgid "委託中"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:186
+#: toolfamily/templates/case/search.html:234
+#: toolfamily/templates/case/search.html:388
+#: toolfamily/templates/index.html:230 toolfamily/templates/index.html:459
+msgid "已完成"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:237
+#: toolfamily/templates/case/search.html:245
+#: toolfamily/templates/case/search.html:246
+#: toolfamily/templates/case/search.html:247
+#: toolfamily/templates/index.html:472
+msgid "人"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:342
+msgid "委託內容"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:433
+#: toolfamily/templates/user/publish.html:469
+#: toolfamily/templates/user/publish.html:471
+#: toolfamily/templates/user/publish.html:702
+#: toolfamily/templates/user/publish.html:705
+#: toolfamily/templates/user/take.html:487
+#: toolfamily/templates/user/take.html:489
+#: toolfamily/templates/user/user_profile.html:68
+msgid "檢舉"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:438
+#: toolfamily/templates/user/publish.html:475
+#: toolfamily/templates/user/publish.html:711
+#: toolfamily/templates/user/take.html:493
+#: toolfamily/templates/user/user_profile.html:73
+msgid "已檢舉"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:445
+msgid "檢舉委託"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:454
+#: toolfamily/templates/user/publish.html:251
+#: toolfamily/templates/user/take.html:258
+#: toolfamily/templates/user/user_profile.html:90
+msgid "檢舉類型"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:466
+#: toolfamily/templates/user/publish.html:263
+#: toolfamily/templates/user/take.html:270
+#: toolfamily/templates/user/user_profile.html:102
+msgid "檢舉內容"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:472
+#: toolfamily/templates/user/publish.html:269
+#: toolfamily/templates/user/take.html:276
+#: toolfamily/templates/user/user.html:187
+#: toolfamily/templates/user/user_profile.html:108
+msgid "取消"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:473
+#: toolfamily/templates/case/profile_edit_1.html:71
+#: toolfamily/templates/case/search_temp.html:28
+#: toolfamily/templates/case/search_temp.html:52
+#: toolfamily/templates/user/applicant.html:143
+#: toolfamily/templates/user/applicant.html:152
+#: toolfamily/templates/user/publish.html:270
+#: toolfamily/templates/user/take.html:277
+#: toolfamily/templates/user/user_profile.html:109
+msgid "送出"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:486
+msgid "我有意願"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:529
+msgid "案主資訊"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:587
+#: toolfamily/templates/user/applicant.html:209
+#: toolfamily/templates/user/applicant.html:222
+#: toolfamily/templates/user/publish.html:161
+#: toolfamily/templates/user/publish.html:445
+#: toolfamily/templates/user/publish.html:677
+#: toolfamily/templates/user/take.html:151
+#: toolfamily/templates/user/take.html:460
+msgid "上次登入"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:598
+#: toolfamily/templates/case/profile.html:604
+msgid "查看個人空間"
+msgstr ""
+
+#: toolfamily/templates/case/profile_edit.html:257
+#: toolfamily/templates/user/publish.html:482
+#: toolfamily/templates/user/publish.html:522
+#: toolfamily/templates/user/publish.html:528
+#: toolfamily/templates/user/publish.html:534
+#: toolfamily/templates/user/take.html:380
+#: toolfamily/templates/user/take.html:399
+#: toolfamily/templates/user/take.html:406
+msgid "完成"
+msgstr ""
+
+#: toolfamily/templates/case/profile_edit_1.html:30
+msgid "委託照片"
+msgstr ""
+
+#: toolfamily/templates/case/profile_edit_1.html:34
+#: toolfamily/templates/case/search_temp.html:79 toolfamily/templates/index
+#: copy.html:28 copy.html:119
+msgid "照片"
+msgstr ""
+
+#: toolfamily/templates/case/profile_edit_1.html:74
+msgid "返回"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:147
+msgid "進階搜尋"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:226
+msgid "委託狀態"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:231
+msgid "可以應徵"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:240
+#: toolfamily/templates/case/search_temp.html:40
+#: toolfamily/templates/case/search_temp.html:80 toolfamily/templates/index
+#: copy.html:29 copy.html:120
+msgid "徵求人數"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:248
+msgid "10 人以上"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:254
+#: toolfamily/templates/case/search_temp.html:75 toolfamily/templates/index
+#: copy.html:24 copy.html:115 toolfamily/templates/user/publish.html:324
+#: toolfamily/templates/user/publish.html:567
+#: toolfamily/templates/user/take.html:328
+msgid "結束時間"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:259
+msgid "小於三天"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:260
+msgid "小於一週"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:261
+msgid "小於一個月"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:279
+msgid "需在現場"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:305
+msgid "篩選"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:325
+msgid "所有案件"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:325
+msgid "共"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:325
+msgid "件"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:332
+#: toolfamily/templates/case/search.html:333
+msgid "時間"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:332
+#: toolfamily/templates/case/search.html:333
+msgid "新"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:332
+#: toolfamily/templates/case/search.html:333
+msgid "舊"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:334
+msgid "追蹤人數"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:335
+msgid "應徵人數"
+msgstr ""
+
+#: toolfamily/templates/case/search.html:427
+#: toolfamily/templates/index.html:268 toolfamily/templates/index.html:497
+msgid "無案件詳細描述。"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:13
+msgid "簡單搜尋"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:26
+msgid "文字搜尋"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:31
+msgid "複合搜尋"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:36
+#: toolfamily/templates/case/search_temp.html:72 toolfamily/templates/index
+#: copy.html:21 copy.html:112
+msgid "內容說明"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:38
+#: toolfamily/templates/case/search_temp.html:70 toolfamily/templates/index
+#: copy.html:19 copy.html:110
+msgid "報酬方式"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:42
+#: toolfamily/templates/case/search_temp.html:46
+#: toolfamily/templates/case/search_temp.html:81 toolfamily/templates/index
+#: copy.html:30 copy.html:121
+msgid "工作偏好"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:48
+msgid "起始日期"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:50
+msgid "結束日期"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:69 toolfamily/templates/index
+#: copy.html:18 copy.html:109
+msgid "委託人"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:74 toolfamily/templates/index
+#: copy.html:23 copy.html:114
+msgid "開始時間"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:76 toolfamily/templates/index
+#: copy.html:25 copy.html:116 toolfamily/templates/user/applicant.html:171
+#: toolfamily/templates/user/publish.html:326
+#: toolfamily/templates/user/publish.html:569
+#: toolfamily/templates/user/take.html:333
+msgid "狀態"
+msgstr ""
+
+#: toolfamily/templates/case/search_temp.html:82 toolfamily/templates/index
+#: copy.html:31 copy.html:122
+msgid "瀏覽人數"
+msgstr ""
+
+#: toolfamily/templates/index.html:31
+msgid "尋找"
+msgstr ""
+
+#: toolfamily/templates/index.html:31
+msgid "屬於你的委託"
+msgstr ""
+
+#: toolfamily/templates/index.html:32
+msgid "開始接案"
+msgstr ""
+
+#: toolfamily/templates/index.html:108
+msgid "通知訊息"
+msgstr ""
+
+#: toolfamily/templates/index.html:137
+msgid "最新案件"
+msgstr ""
+
+#: toolfamily/templates/index.html:371
+msgid "熱門案件"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:122
+#: toolfamily/templates/user/publish.html:401
+msgid "應徵名單"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:128
+msgid "委託編號"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:135
+msgid "回我的委託"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:139
+msgid "已有 {{cnt}} 個工具人，最多再選取 {{last}} 人"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:144
+#: toolfamily/templates/user/applicant.html:153
+msgid "重置"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:169
+msgid "工具人資訊"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:170
+#: toolfamily/templates/user/publish.html:495
+#: toolfamily/templates/user/publish.html:499
+#: toolfamily/templates/user/publish.html:722
+#: toolfamily/templates/user/publish.html:725
+msgid "評價"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:172
+msgid "動作"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:222
+#: toolfamily/templates/user/publish.html:161
+#: toolfamily/templates/user/take.html:151
+msgid "前"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:238
+msgid "未選"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:242
+msgid "你的工具人"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:242
+msgid "已經徵滿了喔！"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:159
+msgid "剩"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:163
+#: toolfamily/templates/user/take.html:155
+msgid "於"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:163
+#: toolfamily/templates/user/publish.html:742
+msgid "解除委託"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:171
+#: toolfamily/templates/user/take.html:163
+msgid "秒"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:172
+msgid "分"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:173
+#: toolfamily/templates/user/take.html:165
+msgid "小時"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:174
+#: toolfamily/templates/user/take.html:166
+msgid "天"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:233
+#: toolfamily/templates/user/take.html:240
+#: toolfamily/templates/user/user_profile.html:81
+msgid "檢舉工具人"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:241
+#: toolfamily/templates/user/take.html:248
+msgid "被檢舉的案件"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:246
+#: toolfamily/templates/user/take.html:253
+msgid "被檢舉人"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:305
+#: toolfamily/templates/user/take.html:310
+msgid "歷史紀錄"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:321
+#: toolfamily/templates/user/publish.html:565
+msgid "發布時間"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:323
+#: toolfamily/templates/user/publish.html:566
+msgid "標題"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:398
+#: toolfamily/templates/user/publish.html:638
+msgid "已選名單"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:483
+#: toolfamily/templates/user/publish.html:535
+#: toolfamily/templates/user/take.html:381
+#: toolfamily/templates/user/take.html:413
+msgid "解除"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:498
+msgid "確定送出評價？"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:512
+#: toolfamily/templates/user/publish.html:738
+msgid "已完成委託"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:517
+msgid "已解除"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:520
+msgid "已發起解除請求"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:520
+msgid "等待對方回覆！"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:523
+#: toolfamily/templates/user/take.html:407
+msgid "解除中"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:526
+msgid "對方已發出取消請求"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:526
+#: toolfamily/templates/user/publish.html:532
+msgid "請即時確認！"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:529
+msgid "確認解除"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:532
+msgid "對方已發起完成請求"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:568
+msgid "獲得的評價"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:750
+msgid "已解除委託"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:753
+msgid "時間結束"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:753
+#: toolfamily/templates/user/publish.html:755
+msgid "自動完成委託"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:149
+#: toolfamily/templates/user/take.html:153
+#: toolfamily/templates/user/take.html:370
+msgid "還剩"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:155
+msgid "解除案件"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:164
+msgid "分鐘"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:309
+msgid "報名案件"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:329
+msgid "案件名稱"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:331
+msgid "訊息"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:384
+msgid "確定解除工作？"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:389
+msgid "確定完成工作？"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:397
+msgid "對方發出取消請求"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:400
+msgid "確認取消"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:404
+msgid "等待對方確認取消"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:410
+msgid "等待對方確認完成"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:412
+msgid "完成中"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:424
+msgid "委託人資訊"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:51
+#: toolfamily/templates/user/user_profile.html:17
+msgid "個人資料"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:88
+#: toolfamily/templates/user/user.html:176
+#: toolfamily/templates/user/user_profile.html:115
+msgid "系所"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:90
+msgid "編輯個人資訊"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:95
+#: toolfamily/templates/user/user_profile.html:121
+msgid "接案數量"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:102
+#: toolfamily/templates/user/user_profile.html:130
+msgid "發案數量"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:111
+#: toolfamily/templates/user/user.html:179
+#: toolfamily/templates/user/user_profile.html:142
+msgid "自我介紹"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:121
+#: toolfamily/templates/user/user.html:182
+msgid "聯絡資訊"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:143
+msgid "選擇圖片"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:148
+msgid "檔案大小限2.5MB以下"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:159
+msgid "暱稱"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:159
+msgid "如不填寫暱稱，系統將顯示本名"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:160
+msgid "性別"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:163
+#: toolfamily/templates/user/user.html:167
+#: toolfamily/templates/user/user.html:171
+msgid "男"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:164
+#: toolfamily/templates/user/user.html:168
+#: toolfamily/templates/user/user.html:172
+msgid "女"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:165
+#: toolfamily/templates/user/user.html:169
+#: toolfamily/templates/user/user.html:173
+msgid "不願透漏"
+msgstr ""
+
+#: toolfamily/templates/user/user_reset_pwd.html:161
+msgid "請輸入您的舊密碼"
+msgstr ""

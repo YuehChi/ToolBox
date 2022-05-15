@@ -1,4 +1,6 @@
 {% extends "base_generic.html" %}
+{% load i18n %}
+<!-- profile_edit_1 -->
 
 {% block content %}
 <!DOCTYPE html>
@@ -18,7 +20,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Simonetta">
 
-    
+
     <script src="\static\bootstrap\js\bootstrap.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
@@ -26,12 +28,12 @@
     <script src="\static\js\case-edit.js" type="text/javascript"></script>
     <script src="\static\js\messages_zh_TW.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js" type="text/javascript"></script>
-    
+
 </head>
 
 <body style="background: #f4f4f3;">
 
-    
+
     <!----------Image Board---------->
     <div class="container" style="margin-top: 50PX;height: 100px;width: 100%;margin-right: 0px;margin-left: 0px;padding-right: 0px;padding-left: 0px;max-width: none;">
         <div class="row" style="height: 100px;width: 100%;margin: 0px;">
@@ -49,38 +51,38 @@
     </div>
 
     <!----------Form---------->
-    
+
     <form class="form" id="case-new-form" action="/toolfamily/case/profile/{{case_id}}/edit/" enctype="multipart/form-data" method="POST">
         {% csrf_token %}
         <div class="row"><div class="col-12">
         <div class="card cn_font en_font" id="case_new_form">
         <div class="card-body">
-        
+
             <!----------Notification---------->
             <p class="small notify mt-4">
                 <i class="material-icons d-inline icon-notify">info_outline</i>
                 <span class="text-notify d-inline">
-                請勿張貼違反法律之委託貼文，如經發現，將立即將帳號停權並通報相關單位！
+                {% trans "請勿張貼違反法律之委託貼文，如經發現，將立即將帳號停權並通報相關單位！" %}
                 </span>
             </p>
             <p class="small notify" style="margin-top: -10px;">
                 <i class="material-icons d-inline icon-notify">info_outline</i>
                 <span class="text-notify d-inline">
-                委託契約成立即受契約法保護，取消或完成委託需經雙方確認，請確實履行契約內容，如遇問題請通知管理員。
+                {% trans "委託契約成立即受契約法保護，取消或完成委託需經雙方確認，請確實履行契約內容，如遇問題請通知管理員。" %}
                 </span>
             </p>
 
 
             <hr style="width: 90%;opacity: 0.72;color: #a58d8d;margin: auto;">
 
-        {% for case in list_case%}   
+        {% for case in list_case%}
             <!----------Title---------->
             <div class="row form-row" style="margin-top: 10px;margin-left: 28px;">
                 <div class="col-12 form-group">
                     <label class="form-label" style="font-weight: bold;">
-                    委託標題
+                    {% trans "委託標題" %}
                     <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" id="input-title" name="input_title" style="width: 100%;" placeholder="限30字">
+                    <input class="form-control" type="text" id="input-title" name="input_title" style="width: 100%;" placeholder="{% trans "限30字" %}">
                 </div>
             </div>
 
@@ -88,9 +90,9 @@
             <div class="row form-row" style="margin-top: 10px;margin-left: 28px">
                 <div class="col-12 form-group">
                     <label class="form-label" style="font-weight: bold;">
-                    報酬
+                    {% trans "報酬" %}
                     <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" id="input-reward" name="input_reward" style="width: 100%;border-color: #7B6363;" placeholder="限30字">
+                    <input class="form-control" type="text" id="input-reward" name="input_reward" style="width: 100%;border-color: #7B6363;" placeholder="{% trans "限30字" %}">
                 </div>
             </div>
 
@@ -99,42 +101,42 @@
                 <!----------Field---------->
                 <div class="form-group input-group-lg col-md-6 col-sm-12 col-12">
                     <label class="form-label" for="select_field" style="font-weight: bold;">
-                        領域
+                        {% trans "領域" %}
                     <span class="text-danger">*</span></label></label>
                     <div class="multi-selector">
                         <div class="row">
                             <div class="col">
                                 <select class="select form-select-lg" id="select-casefield" name="select_casefield">
-                                    <option value="0" disabled selected>請選擇</option>
-                                        <option value="1">電資</option>
-                                        <option value="2">數理</option>
-                                        <option value="3">人文科學</option>
-                                        <option value="4">藝術設計</option>
-                                        <option value="5">其他</option>
+                                    <option value="0" disabled selected>{% trans "請選擇" %}</option>
+                                        <option value="1">{% trans "電資" %}</option>
+                                        <option value="2">{% trans "數理" %}</option>
+                                        <option value="3">{% trans "人文科學" %}</option>
+                                        <option value="4">{% trans "藝術設計" %}</option>
+                                        <option value="5">{% trans "其他" %}</option>
                                     </optgroup>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    
+
                 </div>
 
                 <!----------Type---------->
                 <div class="form-group input-group-lg col-md-6 col-sm-12 col-12">
                     <label class="form-label" style="font-weight: bold;">
-                        類型
+                        {% trans "類型" %}
                     <span class="text-danger">*</span></label>
                     <div class="row">
                         <div class="col">
                             <select class="select form-select-lg" id="select-casetype" name="select_casetype">
                                 <div class="options">
-                                    <option class="item" value="0" disabled selected>請選擇</option>
-                                    <option class="item option" value="1">諮詢</option>
-                                    <option class="item" value="2">家教</option>
-                                    <option class="item" value="3">勞力</option>
-                                    <option class="item" value="4">實驗</option>
-                                    <option class="item" value="5">其他</option>
+                                    <option class="item" value="0" disabled selected>{% trans "請選擇" %}</option>
+                                    <option class="item option" value="1">{% trans "諮詢" %}</option>
+                                    <option class="item" value="2">{% trans "家教" %}</option>
+                                    <option class="item" value="3">{% trans "勞力" %}</option>
+                                    <option class="item" value="4">{% trans "實驗" %}</option>
+                                    <option class="item" value="5">{% trans "其他" %}</option>
                                 </div>
                             </select>
                         </div>
@@ -142,15 +144,15 @@
                 </div>
                 <!---------------End of row 2--------------->
 
-                
+
                 <!----------End Date---------->
                 <div class="form-group input-group-lg col-md-6 col-sm-12 col-12">
                     <div class="row">
                         <div class="col">
                             <label class="col-form-label" style="font-weight: bold;">
-                            委託結束時間
+                            {% trans "委託結束時間" %}
                             <span class="text-danger">*</span></label>
-                            <input type="text" id="input-enddate" name="input_enddate" class="form-control datepicker" placeholder="月/日/年" style="width: 95%;height: 39px;padding-left: 0.6rem"></div>
+                            <input type="text" id="input-enddate" name="input_enddate" class="form-control datepicker" placeholder="{% trans "月/日/年" %}" style="width: 95%;height: 39px;padding-left: 0.6rem"></div>
                     </div>
                 </div>
 
@@ -158,7 +160,7 @@
                 <div class="form-group col-md-2 col-sm-12 col-12">
                     <div class="row">
                         <div class="col"><label class="col-form-label" style="font-weight: bold;">
-                            人數<span class="text-danger">*</span></label>
+                            {% trans "人數" %}<span class="text-danger">*</span></label>
                         </div>
                     </div>
                     <div class="row">
@@ -171,7 +173,7 @@
                 <div class="form-group col-md-4 col-sm-12 col-12">
                     <div class="row">
                         <div class="col"><label class="col-form-label" style="font-weight: bold;">
-                            工作方式
+                            {% trans "工作方式" %}
                             <span class="text-danger">*</span></label>
                             <input type="hidden" id="input-work" value="1">
                         </div>
@@ -179,29 +181,29 @@
                     <div class="row" >
                         <div class="col" style="margin-left: 10px;margin-right: -30px;">
                             <img src="/static/images/check-circle.png" class="radio-check radio-workmode" id="radio-check-onsite">
-                            <span class="text-notify d-inline">需到現場</span>
+                            <span class="text-notify d-inline">{% trans "需到現場" %}</span>
                         </div>
                         <div class="col">
                             <img src="/static/images/check-circle-outline.png" class="radio-check radio-workmode" id="radio-check-online">
-                            <span class="text-notify d-inline">線上</span>
+                            <span class="text-notify d-inline">{% trans "線上" %}</span>
                         </div>
                     </div>
                 </div>
                 <!---------------End of row 3--------------->
-            
-            
+
+
                 <!----------Location---------->
                 <div class="form-group input-group-lg col-md-6 col-sm-12 col-12">
                     <div class="row">
                         <div class="col d-block">
                             <label class="col-form-label" style="font-weight: bold;">
-                            地點
+                            {% trans "地點" %}
                             <span class="text-danger">*</span></label>
-                            <input class="d-block form-control" type="text" id="input-location" name="input_location" placeholder="限20字">
+                            <input class="d-block form-control" type="text" id="input-location" name="input_location" placeholder="{% trans "限20字" %}">
                             <div class="" style="padding-top: 5px;">
                                 <img src="/static/images/check-circle-outline.png" class="radio-check" id="radio-check-location">
                                 <span class="text-notify d-inline">
-                                不限
+                                {% trans "不限" %}
                                 </span>
                             </div>
                         </div>
@@ -213,8 +215,8 @@
                 <div class="form-group input-group-lg col-md-6 col-sm-12 col-12">
                     <div class="row">
                         <div class="col">
-                            <label class="col-form-label" style="font-weight: bold;">偏好條件</label>
-                            <input class="d-block form-control" type="text" id="input-preference" placeholder="限20字">
+                            <label class="col-form-label" style="font-weight: bold;">{% trans "偏好條件" %}</label>
+                            <input class="d-block form-control" type="text" id="input-preference" placeholder="{% trans "限20字" %}">
                         </div>
                     </div>
                 </div>
@@ -224,23 +226,23 @@
             <div class="row" style="margin-top: 20px;margin-right: 40px;margin-left: 25px; height: 200px;">
                 <div class="col">
                     <label class="form-label" for="textarea-description" style="font-weight: bold;">
-                    委託描述
+                    {% trans "委託描述" %}
                     </label>
-                    <textarea  id="textarea-description" name="textarea_description" class="editordata" style="height: 95%;width: 100%;" placeholder="限1000字"></textarea>
+                    <textarea  id="textarea-description" name="textarea_description" class="editordata" style="height: 95%;width: 100%;" placeholder="{% trans "限1000字" %}"></textarea>
                 </div>
             </div>
             <!----------Image---------->
-            <div class="row" style="margin-top: 50px;margin-right: 40px;margin-left: 25px;">     
+            <div class="row" style="margin-top: 50px;margin-right: 40px;margin-left: 25px;">
                 <div class="col">
                     <label class="d-block form-label" style="font-weight: bold;">
-                    委託圖片
+                    {% trans "委託圖片" %}
                     </label>
                     <p class="d-block" style="font-size: 12px;color: rgb(94,73,73);margin-bottom: 0px;margin-top: 1px;">
-                    檔案格式 jpg / jpeg / png，大小限制 3MB 內，最多 10 張。<br>
+                    {% trans "檔案格式 jpg / jpeg / png，大小限制 3MB 內，最多 10 張。" %}<br>
                     </p>
                     <div class="mt-2" id="upload_image">
                         <input class="mb-2 d-block" id="input-img" name="input_img" type="file" accept="image/png, image/jpg, image/jpeg" style="color: #5e4949;margin-top: 10px;margin-left: 8px;">
-                        <span class="d-none error" id="span-input-file-validation">檔案大小需小於2MB</span>
+                        <span class="d-none error" id="span-input-file-validation">{% trans "檔案大小需小於2MB" %}</span>
                     </div>
                 </div>
             </div>
@@ -252,7 +254,7 @@
             <div class="row" style="margin-top: 20px;margin-right: 40px;margin-left: 40px;">
                 <div class="d-flex justify-content-md-end justify-content-center">
                 <div><button class="btn" type="button" id="button-post" style="background: #865140;color: rgb(255,255,255);width: 80px;">
-                完成
+                {% trans "完成" %}
                 </button></div>
             </div></div>
 
@@ -298,16 +300,16 @@
             </span>
 
             <div class="d-none" id="get-case-image">
-            {% for case in list_case%} 
+            {% for case in list_case%}
                 {% for photo in case_photo %}
                     {% if photo.case_id == case.case_id and photo.image.url != None%}
                         <img class="case-image" src="{{photo.image.url}}" alt="照片" style="width: 100px; height: 100px">
                     {%endif%}
-                {% endfor %}      
+                {% endfor %}
             {% endfor %}
             </div>
-            
-            
+
+
         </div>
         </div>
     </form>
@@ -316,6 +318,6 @@
 
 </html>
 
-  
+
 
 {% endblock %}

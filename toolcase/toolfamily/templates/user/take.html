@@ -1,4 +1,7 @@
 {% extends "base_generic.html" %}
+{% load i18n %}
+<!-- take -->
+
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
@@ -9,7 +12,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>台大工具箱</title>
+    <title>{% trans "台大工具箱" %}</title>
     <script src="\static\js\report.js" type="text/javascript"></script>
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/fonts/material-icons.min.css">
@@ -63,53 +66,53 @@
     color: #f3d16d;
     }
     fieldset, label { margin: 0; padding: 0; }
-    
+
     h1 { font-size: 1.5em; margin: 10px; }
-    
+
     /****** Style Star Rating Widget *****/
-    
-    .rating { 
+
+    .rating {
       border: none;
       float: left;
     }
-    
-    .rating > input { display: none; } 
-    .rating > label:before { 
+
+    .rating > input { display: none; }
+    .rating > label:before {
       margin: 0px;
       font-size: 1.25em;
       font-family: FontAwesome;
       display: inline-block;
       content: "\f005";
     }
-    
-    .rating > .half:before { 
+
+    .rating > .half:before {
       content: "\f089";
       position: absolute;
     }
-    
-    .rating > label { 
-      color: #ddd; 
-     float: right; 
+
+    .rating > label {
+      color: #ddd;
+     float: right;
     }
-    
+
     /***** CSS Magic to Highlight Stars on Hover *****/
-    
+
     .rating > input:checked ~ label, /* show gold star when clicked */
     .rating:not(:checked) > label:hover, /* hover current star */
     .rating:not(:checked) > label:hover ~ label { color: #f3d16d;  } /* hover previous stars in list */
-    
+
     .rating > input:checked + label:hover, /* hover current star when changing rating */
     .rating > input:checked ~ label:hover,
     .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-    .rating > input:checked ~ label:hover ~ label { color: #f3d16d;  } 
-    
+    .rating > input:checked ~ label:hover ~ label { color: #f3d16d;  }
+
     @media screen and (min-width: 991px){
         .screenM{
             margin-right: 15px;
             margin-left: 15px;
         }
     }
-    
+
     </style>
 {% load static %}
 <script src="\static\js\user.js" type="text/javascript"></script>
@@ -143,13 +146,13 @@
         if (status == "s"){
             document.getElementById(ouputId).innerHTML=today;
         }else if (status =="e"){
-            document.getElementById(ouputId).innerHTML=today + "<span class='d-inline-block text-truncate' style='max-width: 100px;'><span style='margin-left: 5px;color: rgb(60,46,47); font-size: 14px;'> 還剩 </span> <span style='font-size:18px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span></span>";
+            document.getElementById(ouputId).innerHTML=today + "<span class='d-inline-block text-truncate' style='max-width: 100px;'><span style='margin-left: 5px;color: rgb(60,46,47); font-size: 14px;'> {% trans "還剩" %} </span> <span style='font-size:18px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span></span>";
         }else if (status =="user"){
-            document.getElementById(ouputId).innerHTML="上次登入: "+ msToTime(remainday)+"前";
+            document.getElementById(ouputId).innerHTML="{% trans "上次登入" %}: "+ msToTime(remainday)+"{% trans "前" %}";
         }else if (status =="r"){
-            document.getElementById(ouputId).innerHTML="<span class='d-inline-block text-truncate' style='max-width: 100px;'><span style='color: rgb(60,46,47); font-size: 14px;'> 還剩 </span> <span style='font-size:18px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span></span>";
+            document.getElementById(ouputId).innerHTML="<span class='d-inline-block text-truncate' style='max-width: 100px;'><span style='color: rgb(60,46,47); font-size: 14px;'> {% trans "還剩" %} </span> <span style='font-size:18px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span></span>";
         }else{
-            document.getElementById(ouputId).innerHTML="於 "+ today+ " <br>解除案件";
+            document.getElementById(ouputId).innerHTML="{% trans "於" %} "+ today+ " <br>{% trans "解除案件" %}";
         }
     }
     function msToTime(ms) {
@@ -157,10 +160,10 @@
         let minutes = (ms / (1000 * 60)).toFixed(0);
         let hours = (ms / (1000 * 60 * 60)).toFixed(0);
         let days = (ms / (1000 * 60 * 60 * 24)).toFixed(0);
-        if (seconds < 60) return seconds + " 秒";
-        else if (minutes < 60) return minutes + " 分鐘";
-        else if (hours < 24) return hours + " 小時";
-        else return days + " 天"
+        if (seconds < 60) return seconds + " {% trans "秒" %}";
+        else if (minutes < 60) return minutes + " {% trans "分鐘" %}";
+        else if (hours < 24) return hours + " {% trans "小時" %}";
+        else return days + " {% trans "天" %}"
     }
     function changePage(Page){
         if (Page == "take_his"){
@@ -171,7 +174,7 @@
             document.getElementById("historyA").style.color="rgb(94, 73, 73)";
             document.getElementById("registrationA").style.color="rgb(204,195,190)";
             document.getElementById("takeA").style.color="rgb(204,195,190)";
-           
+
         }else if(Page == "take_sign"){
             document.getElementById("take_his").style.display="none";
             document.getElementById("take_sign").style.display="";
@@ -180,7 +183,7 @@
             document.getElementById("historyA").style.color="rgb(204,195,190)";
             document.getElementById("registrationA").style.color="rgb(94, 73, 73)";
             document.getElementById("takeA").style.color="rgb(204,195,190)";
-            
+
         }else if(Page == "taking"){
             document.getElementById("take_his").style.display="none";
             document.getElementById("take_sign").style.display="none";
@@ -190,13 +193,13 @@
             document.getElementById("registrationA").style.color="rgb(204,195,190)";
             document.getElementById("takeA").style.color="rgb(94, 73, 73)";
         }
-        
+
     }
 
     function getStar(starId,value){
         if (value =="None"){
             value = 0;
-        } 
+        }
         var stringA = "<span class='fa fa-star checked'></span>"
         var stringB = "<span class='fa fa-star-o unchecked'></span>"
         var stringC = "<span class='fa fa-star-half-o helfchecked'></span>"
@@ -225,8 +228,8 @@
         document.execCommand('copy');
         window.getSelection().removeAllRanges();
     }
-    
-    
+
+
 </script>
 <body style="background: rgb(244,244,243);">
     <!-- report modal -->
@@ -234,7 +237,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="reportModalLabel">檢舉工具人</h5>
+              <h5 class="modal-title" id="reportModalLabel">{% trans "檢舉工具人" %}</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -242,17 +245,17 @@
                 {% csrf_token %}
                 {# 用不可變的input發送檢舉目標 [!]需要用js在modal彈出時填入 #}
                 <div class="mb-3">
-                    <label for="reported-case" class="col-form-label">被檢舉的案件</label>
+                    <label for="reported-case" class="col-form-label">{% trans "被檢舉的案件" %}</label>
                     <input type="text" id="text-case" class="form-control" readonly>
                     <input type="text" id="report_case" name="reported_case" style="display:none">
                 </div>
                 <div class="mb-3">
-                    <label for="reported_obj" class="col-form-label">被檢舉人</label>
+                    <label for="reported_obj" class="col-form-label">{% trans "被檢舉人" %}</label>
                     <input type="text" id="text-user" class="form-control" readonly>
                     <input type="text" id="report_user" name="reported_user" style="display:none">
                 </div>
                 <div class="mb-3">
-                  <label for="report-type" class="col-form-label">檢舉類型:</label>
+                  <label for="report-type" class="col-form-label">{% trans "檢舉類型" %}:</label>
                   {# <input type="text" class="form-control" id="report-type"> #}
                   {# 用選單選擇檢舉類型 #}
                   <select class="form-control" id="report-type" name="report_type">
@@ -264,14 +267,14 @@
                   </select>
                 </div>
                 <div class="mb-3">
-                  <label for="report-message" class="col-form-label">檢舉內容:</label>
+                  <label for="report-message" class="col-form-label">{% trans "檢舉內容" %}:</label>
                   <textarea class="form-control" id="report-message" name="description"></textarea>
                 </div>
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-              <button type="button" class="btn btn-primary">送出</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "取消" %}</button>
+              <button type="button" class="btn btn-primary">{% trans "送出" %}</button>
             </div>
           </div>
         </div>
@@ -288,23 +291,23 @@
             <div class="d-none d-lg-block col-sm-2">
                 <div class="justify-content-center " style="margin-top: 30px;">
                     <ul class="list-group borderless rounded" style="font-size: 18px;line-height: 30px; text-align: center;display:block; box-shadow: 2px 2px rgba(196, 190, 190, 0.81);">
-                        <li class="list-group-item member " m="1" style="height: 50px;"><a class="link_title" href="{%url 'my-user-profile'%}" >會員中心</a></li>
-                        <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-publish-record'%}" >我的委託</a></li>
-                        <li class="list-group-item bold " style="height: 50px; "><a class="link_title" href="{%url 'user-take-record'%}">我的接案</a></li>
-                        <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'user-password-update' %}" >更改密碼</a></li>
-                        <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'logout' %}">登出</a></li>
+                        <li class="list-group-item member " m="1" style="height: 50px;"><a class="link_title" href="{%url 'my-user-profile'%}" >{% trans "會員中心" %}</a></li>
+                        <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{%url 'user-publish-record'%}" >{% trans "我的委託" %}</a></li>
+                        <li class="list-group-item bold " style="height: 50px; "><a class="link_title" href="{%url 'user-take-record'%}">{% trans "我的接案" %}</a></li>
+                        <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'user-password-update' %}" >{% trans "更改密碼" %}</a></li>
+                        <li class="list-group-item" style="height: 50px;"><a class="link_title" href="{% url 'logout' %}">{% trans "登出" %}</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-md-10" style="margin-top: 30px; ">
                 {% load static %}
                 <div class="border rounded" style="background: #ffffff; box-shadow: 2px 3px rgba(196, 190, 190, 0.81);">
-                    <h1 class="fw-bold text-center" style="height: 80px; margin-top: 40px; padding-top: 20px; background-repeat: no-repeat; background-position: 46%, center; background-image: url('{% static 'images/Ellipse%204.png' %}');  color: rgb(94, 73, 73);font-size: 30px;">我的接案</h1>
+                    <h1 class="fw-bold text-center" style="height: 80px; margin-top: 40px; padding-top: 20px; background-repeat: no-repeat; background-position: 46%, center; background-image: url('{% static 'images/Ellipse%204.png' %}');  color: rgb(94, 73, 73);font-size: 30px;">{% trans "我的接案" %}</h1>
                     <div class="position-relative underlineEffects" style="margin-top: -45px;">
                         <ul style="margin-left: 40px;margin-bottom: 20px;">
-                            <li><a id="takeA"href="javascript:void(0);" style="color: rgb(94, 73, 73);"onclick="changePage('taking');">我的接案</a></li>
-                            <li><a id="registrationA" href="javascript:void(0);" onclick="changePage('take_sign');">報名案件</a></li>
-                            <li><a id="historyA" href="javascript:void(0);" onclick="changePage('take_his');">歷史紀錄</a></li>
+                            <li><a id="takeA"href="javascript:void(0);" style="color: rgb(94, 73, 73);"onclick="changePage('taking');">{% trans "我的接案" %}</a></li>
+                            <li><a id="registrationA" href="javascript:void(0);" onclick="changePage('take_sign');">{% trans "報名案件" %}</a></li>
+                            <li><a id="historyA" href="javascript:void(0);" onclick="changePage('take_his');">{% trans "歷史紀錄" %}</a></li>
                         </ul>
                         <!-- <div class="d-none d-xl-block position-absolute top-0 end-0" style="width: 300px; margin-top: 30px;">
                             <span style="margin-left: 28px;color: rgb(94, 73, 73);font-size: 14px;">篩選</span>
@@ -313,7 +316,7 @@
                             </div>
                         </div> -->
                     </div>
-                    
+
 <!-- take -->
                     <div id="taking">
                         <div class="d-none d-xl-block table-responsive" style="margin-left: 40px;margin-right: 40px;margin-top: 5px;">
@@ -322,17 +325,17 @@
                                     <tr>
                                         <td style="width: 80px;"></td>
                                         <!-- <button class="btn btn-primary" type="button" style="background: rgba(13,110,253,0);color: rgb(142,93,78);border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;">↓</button> -->
-                                        <td style="width: 150px;">結束時間</td>
-                                        <td style="width: 350px;">案件名稱</td>
-                                        <td style="text-align: center;width: 150px;">報酬</td>
-                                        <td style="text-align: center;width: 185px;">訊息</td>
+                                        <td style="width: 150px;">{% trans "結束時間" %}</td>
+                                        <td style="width: 350px;">{% trans "案件名稱" %}</td>
+                                        <td style="text-align: center;width: 150px;">{% trans "報酬" %}</td>
+                                        <td style="text-align: center;width: 185px;">{% trans "訊息" %}</td>
                                         {% load static %}
-                                        <td style="text-align: center; width: 180px;">狀態</td>
+                                        <td style="text-align: center; width: 180px;">{% trans "狀態" %}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <div class="table-responsive"style="margin-top: -19px;margin-left: 40px;margin-right: 40px;margin-bottom: 50px; background: rgba(244, 244, 243, 1);border-radius: 27px;border: 1px solid rgb(125,105,105);">
                             <table style="margin-top: 7px;" class="table table-borderless">
                                 {% for commission,canReport in conduct %}
@@ -346,7 +349,7 @@
                                         </td>
                                         <td style="line-height: 50px;color: rgb(121, 110, 110);width: 150px;padding-bottom: 0px;" id="enddate{{ commission.case.case_id }}">
                                             {{commission.case.ended_datetime}}
-                                            <script> 
+                                            <script>
                                                 var oriTime = "{{commission.case.ended_datetime}}"
                                                 var ouputId = "enddate{{ commission.case.case_id }}"
                                                 changeTime(oriTime, ouputId ,"s");
@@ -356,7 +359,7 @@
                                             <a class="case_title" href="{% url 'case-profile' commission.case.case_id %}" style="line-height: 50px;padding-bottom: 0px;">
                                                 <span class="d-inline-block text-truncate" style="max-width: 250px;">{{commission.case.title}}</span>
                                             </a>
-                                        
+
                                         </td>
                                         <td style="text-align: center; width: 150px;line-height: 50px;color: rgb(121, 110, 110); padding-bottom: 0px;">
                                             <span class="d-inline-block text-truncate" style="max-width: 100px;">{{commission.case.reward}}</span>
@@ -364,7 +367,7 @@
                                         {% if commission.user_status.status_id == 2 %}
                                             {% for key, value in deadline.items %}
                                                 {% if commission.commissionrecord_id == key %}
-                                                <td id="rT{{ commission.case.case_id }}" style="width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;text-align: center;line-height: 50px;">還剩 {{commission.case.ended_datetime}}
+                                                <td id="rT{{ commission.case.case_id }}" style="width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;text-align: center;line-height: 50px;">{% trans "還剩" %} {{commission.case.ended_datetime}}
                                                 <script>
                                                     var oriTime = "{{commission.case.ended_datetime}}"
                                                     var ouputId = "rT{{ commission.case.case_id }}"
@@ -374,40 +377,40 @@
                                             {% endfor %}
                                             </td>
                                             <td style="width: 180px; text-align: center;">
-                                                <button class="btn btn-primary" type="button" onclick="sendCompuser()" value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成</button><br>
-                                                <button class="btn btn-primary" type="button" onclick="sendDeleuser()"  value="解除" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">解除</button>
+                                                <button class="btn btn-primary" type="button" onclick="sendCompuser()" value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">{% trans "完成" %}</button><br>
+                                                <button class="btn btn-primary" type="button" onclick="sendDeleuser()"  value="解除" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">{% trans "解除" %}</button>
                                                 <script>
                                                     function sendDeleuser(){
-                                                        if(confirm('確定解除工作？') == true){
+                                                        if(confirm('{% trans "確定解除工作？" %}') == true){
                                                             window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'
                                                         }
                                                     }
                                                     function sendCompuser(){
-                                                        if(confirm('確定完成工作？') == true){
+                                                        if(confirm('{% trans "確定完成工作？" %}') == true){
                                                             window.location='/toolfamily/user/finish/{{commission.commissionrecord_id}}'
                                                         }
-                                                    }   
+                                                    }
                                                 </script>
-                                                
+
                                             </td>
                                         {% elif commission.user_status.status_id == 5 %}
-                                            <td style="text-align: center;width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 50px;font-size: 15px;">對方發出取消請求</td>
+                                            <td style="text-align: center;width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 50px;font-size: 15px;">{% trans "對方發出取消請求" %}</td>
                                             <td style="width: 180px; text-align: center;">
-                                                <button class="btn btn-primary" type="button" disabled value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成</button><br>
-                                                <button class="btn btn-primary" type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'"  value="確認取消" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">確認取消</button>
-                                                
+                                                <button class="btn btn-primary" type="button" disabled value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">{% trans "完成" %}</button><br>
+                                                <button class="btn btn-primary" type="button" onclick="window.location='/toolfamily/user/delete/{{commission.commissionrecord_id}}'"  value="確認取消" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">{% trans "確認取消" %}</button>
+
                                             </td>
                                         {% elif commission.user_status.status_id == 6 %}
-                                            <td style="text-align: center;width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 50px;font-size: 15px;">等待對方確認取消</td>
+                                            <td style="text-align: center;width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 50px;font-size: 15px;">{% trans "等待對方確認取消" %}</td>
                                             <td style="width: 180px; text-align: center;">
-                                                <button class="btn btn-primary" type="button" disabled value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成</button><br>
-                                                <button class="btn btn-primary" type="button" disabled  value="解除" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">解除中...</button>
+                                                <button class="btn btn-primary" type="button" disabled value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">{% trans "完成" %}</button><br>
+                                                <button class="btn btn-primary" type="button" disabled  value="解除" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">{% trans "解除中" %}...</button>
                                             </td>
                                         {% elif commission.user_status.status_id == 7 %}
-                                            <td style="text-align: center;width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 50px;font-size: 15px;">等待對方確認完成</td>
+                                            <td style="text-align: center;width: 185px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 50px;font-size: 15px;">{% trans "等待對方確認完成" %}</td>
                                             <td style="width: 180px; text-align: center;">
-                                                <button class="btn btn-primary" type="button" disabled value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">完成中...</button><br>
-                                                <button class="btn btn-primary" type="button" disabled  value="解除" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">解除</button>
+                                                <button class="btn btn-primary" type="button" disabled value="完成" style="width: 110px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">{% trans "完成中" %}...</button><br>
+                                                <button class="btn btn-primary" type="button" disabled  value="解除" style="width: 110px;height: 24px;margin-top: 6px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">{% trans "解除" %}</button>
                                             </td>
                                         {% endif %}
                                     </tr>
@@ -418,8 +421,8 @@
                                                         <table class="table tableContain table-borderless">
                                                             <tbody>
                                                                 <tr style="font-size: 12px;background: #ffffff;">
-                                                                    <td style="line-height: 60px; width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;text-align: center;">｜委託人資訊</td>
-                                                                    
+                                                                    <td style="line-height: 60px; width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;text-align: center;">｜{% trans "委託人資訊" %}</td>
+
                                                                     <td style="padding-top:20px; line-height: 30px; width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                                                         {% if commission.case.publisher.icon %}
                                                                             <div class="img-circular" style="background-image: url({{commission.case.publisher.icon.url}});"></div>
@@ -427,7 +430,7 @@
                                                                             {% load static %}
                                                                             <div class="img-circular"></div>
                                                                         {% endif %}
-                                                                        
+
                                                                         <div style="margin-top: -50px; margin-left: 55px;">
                                                                             {% comment %} {% url 'others-user-profile' commission.case.publisher.user_id %} {% endcomment %}
                                                                             <a class="link_title" href="{% url 'others-user-profile' commission.case.publisher.user_id %}" style="">
@@ -436,9 +439,9 @@
                                                                                 {% else %}
                                                                                     {{commission.case.publisher.name}}
                                                                                 {% endif %}
-                                                                                
-                                                                                
-                                                                                {% load static %} 
+
+
+                                                                                {% load static %}
                                                                                 {% if commission.case.publisher.gender == 2 %}
                                                                                     {% load static %}
                                                                                     <img  style="width: 18px;"src="{% static 'images/gender-female.png' %}" style="margin-left: 10px;">
@@ -450,11 +453,11 @@
                                                                                     <img style="width: 18px;"src="{% static 'images/gender-male-female.png' %}" style="margin-left: 10px;">
                                                                                 {% endif %}
                                                                             </a>
-                                                                        
+
                                                                             <div class="w-100">
                                                                                 <span style="color: rgb(142,145,147);font-size: 12px;line-height: 0px;" id="t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}">
-                                                                                    上次登入: {{commission.case.publisher.django_user.last_login}}
-                                                                                    <script> 
+                                                                                    {% trans "上次登入" %}: {{commission.case.publisher.django_user.last_login}}
+                                                                                    <script>
                                                                                         var oriTime = "{{commission.case.publisher.django_user.last_login}}"
                                                                                         var ouputId = "t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"
                                                                                         changeTime(oriTime, ouputId ,"user");
@@ -463,15 +466,15 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    
+
                                                                     <td id="contact_t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"style="text-align: left; line-height: 58px;width: 200px;color: rgb(85,58,58);">
-                                                                    
+
                                                                         {% if commission.case.publisher.contact != "" %}
                                                                             {{commission.case.publisher.contact}}
                                                                         {% else %}
                                                                             {{commission.case.publisher.account_mail}}
                                                                         {% endif %}
-                                                                    
+
                                                                         {% load static %}
                                                                         <!-- copy -->
                                                                         <button onclick="copy('contact_t{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}')" class="btn btn-primary d-none d-lg-block" type="button" style="background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;height: 30px;margin-top: -50px;margin-left: 130px;"><img src="{% static 'images/Content%20copy.png' %}"></button>
@@ -480,13 +483,13 @@
                                                                     <td style="white-space: nowrap;width: 250px; overflow: hidden; text-overflow: ellipsis; line-height: 53px;">
                                                                         {% if canReport %}
                                                                             {% if commission.case.publisher.nickname != "" %}
-                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.nickname}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: transparent;color: transparent;border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"><span class="text-truncate" style="font-size:14px;color: rgb(75, 49, 42);"> 檢舉</span></button>
+                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.nickname}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: transparent;color: transparent;border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"><span class="text-truncate" style="font-size:14px;color: rgb(75, 49, 42);"> {% trans "檢舉" %}</span></button>
                                                                             {% else %}
-                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.name}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: transparent;color: transparent;border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"><span class="text-truncate" style="font-size:14px;color: rgb(75, 49, 42);"> 檢舉</span></button>
+                                                                                <button class="btn btn-primary" id="button-user-report" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" user-name="{{commission.case.publisher.name}}" case-name="{{commission.case.title}}" data-user="{{ commission.case.publisher.user_id }}" data-case="{{ commission.case.case_id }}" style="background: transparent;color: transparent;border-style: none;width: 30px;padding: 0px 0px;padding-right: 0px;padding-left: 0px;height: 30px;"><img src="{% static 'images/Report%20problem.png' %}" style="padding-top: 0px;"><span class="text-truncate" style="font-size:14px;color: rgb(75, 49, 42);"> {% trans "檢舉" %}</span></button>
                                                                             {% endif %}
                                                                         {% else %}
                                                                         <button class="btn " disabled="disabled" id="button-user-report" type="button" style="font-size: 14px;background: rgba(13,110,253,0);color: rgb(38, 29, 29);border-style: none;width: 30px;padding: 0px 12px;padding-right: 0px;padding-left: 0px;height: 30px;">
-                                                                            <i class="material-icons" style="font-size: 14px;">report_problem</i> 已檢舉
+                                                                            <i class="material-icons" style="font-size: 14px;">report_problem</i> {% trans "已檢舉" %}
                                                                         </button>
                                                                         {% endif %}
                                                                     </td>
@@ -497,7 +500,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                        </tr> 
+                                        </tr>
                                     </tbody>
                                 {% endfor %}
                             </table>
@@ -523,13 +526,13 @@
                                             <td style="width: 50px;"></td>
                                             <td style="color: rgb(121, 110, 110);line-height: 50px; width: 120px;"id="enddate{{ willing.apply_case.case_id }}">
                                                 {{willing.apply_case.ended_datetime}}
-                                                <script> 
+                                                <script>
                                                     var oriTime = "{{willing.apply_case.ended_datetime}}"
                                                     var ouputId = "enddate{{ willing.apply_case.case_id }}"
                                                     changeTime(oriTime, ouputId ,"s");
                                                 </script>
                                             </td>
-                                            
+
                                             <td style="width: 200px;">
                                                 <a class="case_title" href="{% url 'case-profile' willing.apply_case.case_id %}" style="line-height: 50px;padding-bottom: 0px;">
                                                     <span class="d-inline-block text-truncate" style="max-width: 200px;">{{willing.apply_case.title}}</span>
@@ -544,10 +547,10 @@
                                                             window.location='/toolfamily/user/cancel/{{willing.apply_case.case_id}}'
                                                             // user
                                                         }
-                                                    }   
+                                                    }
                                                 </script>
                                             </td>
-                                            
+
                                         </tr>
                                     {% endfor%}
                                 </tbody>
@@ -572,7 +575,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <div class="table-responsive"style="margin-top: -19px;margin-left: 40px;margin-right: 40px;margin-bottom: 50px; background: rgba(244, 244, 243, 1);border-radius: 27px;border: 1px solid rgb(125,105,105);">
                             <table style="margin-top: 7px;" class="table table-borderless">
                                 {% for commission,canReport in close %}
@@ -586,7 +589,7 @@
                                         </td>
                                         <td style="line-height: 50px;color: rgb(121, 110, 110);width: 150px;padding-bottom: 0px;" id="enddate{{ commission.case.case_id }}">
                                             {{commission.case.ended_datetime}}
-                                            <script> 
+                                            <script>
                                                 var oriTime = "{{commission.case.ended_datetime}}"
                                                 var ouputId = "enddate{{ commission.case.case_id }}"
                                                 changeTime(oriTime, ouputId ,"s");
@@ -622,15 +625,15 @@
                                                         <tbody>
                                                             <tr style="font-size: 12px;background: #ffffff;">
                                                                 <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 60px; width: 250px;text-align: center;">｜委託人資訊</td>
-                                                                    
+
                                                                 <td style="padding-top:20px; line-height: 30px; width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                                                
+
                                                                     {% if commission.case.publisher.icon %}
                                                                         <div class="img-circular" style="background-image: url({{commission.case.publisher.icon.url}});"></div>
                                                                     {% else %}
                                                                         <div class="img-circular"></div>
                                                                     {% endif %}
-                                                                    
+
                                                                     <div style="margin-left: 55px; margin-top: -50px;">
                                                                         {% comment %} {% url 'others-user-profile' commission.case.publisher.user_id %} {% endcomment %}
                                                                         <a class="link_title" href="{% url 'others-user-profile' commission.case.publisher.user_id %}" >
@@ -639,8 +642,8 @@
                                                                             {% else %}
                                                                                 {{commission.case.publisher.name}}
                                                                             {% endif %}
-                                                                            
-                                                                            {% load static %} 
+
+                                                                            {% load static %}
                                                                             {% if commission.case.publisher.gender == 2 %}
                                                                                 {% load static %}
                                                                                 <img  style="width: 18px;"src="{% static 'images/gender-female.png' %}" style="margin-left: 10px;">
@@ -651,13 +654,13 @@
                                                                                 {% load static %}
                                                                                 <img style="width: 18px;"src="{% static 'images/gender-male-female.png' %}" style="margin-left: 10px;">
                                                                             {% endif %}
-                                                                            
+
                                                                         </a>
-                                                                    
+
                                                                         <div class="w-100">
                                                                             <span style="color: rgb(142,145,147);font-size: 12px;line-height: 0px;" id="th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}">
                                                                                 上次登入: {{commission.case.publisher.django_user.last_login}}
-                                                                                <script> 
+                                                                                <script>
                                                                                     var oriTime = "{{commission.case.publisher.django_user.last_login}}"
                                                                                     var ouputId = "th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}"
                                                                                     changeTime(oriTime, ouputId ,"user");
@@ -666,7 +669,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                
+
                                                                 <td id="contact_th{{commission.case.publisher.account_mail}}{{ commission.case.case_id }}" style="text-align: left; line-height: 58px;width: 280px;color: rgb(85,58,58);">
                                                                     {% if commission.case.publisher.contact != "" %}
                                                                         {{commission.case.publisher.contact}}
@@ -724,7 +727,7 @@
                                                                             var oriTime = "{{commission.doublecheck_datetime}}"
                                                                             var ouputId = "deleh{{ commission.case.case_id }}"
                                                                             changeTime(oriTime, ouputId, "dele");
-                                                                        </script> 
+                                                                        </script>
                                                                     </td>
                                                                 {% endif %}
                                                             </tr>
@@ -732,7 +735,7 @@
                                                     </table>
                                                 </div>
                                             </td>
-                                        </tr> 
+                                        </tr>
                                     </tbody>
                                 {% endfor %}
                             </table>
@@ -749,7 +752,7 @@
            <script>
             if( '{{ message }}' != ''){
                 $("#B{{ message }}").attr('aria-expanded','true');
-                changeImage('{{ message }}'); 
+                changeImage('{{ message }}');
                 $("#M{{ message }}").removeClass('collapse').addClass('collapse show');
             }
             </script>
