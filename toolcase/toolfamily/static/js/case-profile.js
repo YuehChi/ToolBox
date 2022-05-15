@@ -45,6 +45,16 @@ $(document).ready(function() {
         $('#case-buttons').addClass('d-none')
     }
 
+    $('#link-edit').click(function(){
+        if($('#case-status').text() != "徵求中"){
+            alert('非徵求狀態的委託不可編輯！')
+        }
+        else{
+            window.location.href ='./edit/'
+        }
+
+    })
+
     // // --------------- Case Status ---------------
     // var case_status = $('#get-case-status').html()
     // console.log('case_status:' + case_status)
