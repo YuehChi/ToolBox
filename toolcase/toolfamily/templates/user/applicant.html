@@ -69,10 +69,10 @@
         let minutes = (ms / (1000 * 60)).toFixed(0);
         let hours = (ms / (1000 * 60 * 60)).toFixed(0);
         let days = (ms / (1000 * 60 * 60 * 24)).toFixed(0);
-        if (seconds < 60) return seconds + " 秒";
-        else if (minutes < 60) return minutes + " 分鐘";
-        else if (hours < 24) return hours + " 小時";
-        else return days + " 天"
+        if (seconds < 60) return seconds + " {% trans '秒' %}";
+        else if (minutes < 60) return minutes + " {% trans '分鐘' %}";
+        else if (hours < 24) return hours + " {% trans '小時' %}";
+        else return days + " {% trans '天' %}"
     }
     function getStar(starId,value){
         if (value =="None"){
@@ -134,7 +134,7 @@
                         <ul style="margin-left: 40px;margin-bottom: 0px;">
                             <li><a href="{% url 'user-publish-record' %}">{% trans "回我的委託" %}</a></li>
                         </ul>
-                        <div class="underlineEffects position-absolute top-0 end-0" style="width: 400px; margin-top: 50px;">
+                        <div class="underlineEffects position-absolute top-0 end-0" style="width: 600px; margin-top: 50px;">
                             <ul class="d-none d-md-block" style="color: rgb(94, 73, 73); margin-bottom: 0px;">
                                 <li style="font-size: 14px;">{% trans "已有" %} {{cnt}} {% trans "個工具人，最多再選取" %} {{last}} {% trans "位" %} &nbsp;&nbsp;</li>
                                 <li style="font-size: 14px;">
@@ -165,7 +165,7 @@
                             <thead style="color: rgb(75, 49, 42);">
                                 <tr>
                                     <td style="width: 50px;"></td>
-                                    <td class="d-block" style="width: 130px;">{% trans "工具人資訊" %}</td>
+                                    <td class="d-block" style="width: 200px;">{% trans "工具人資訊" %}</td>
                                     <td style="width: 100px;">{% trans "評價" %}</td>
                                     <td class="d-block" style="width: 80px;">{% trans "狀態" %}</td>
                                     <td style="text-align: center; width: 130px;">{% trans "動作" %}</td>
@@ -218,7 +218,7 @@
                                                         var currentdate = new Date();
                                                         var remainday = Math.abs((enddate.getTime() - currentdate.getTime()))
 
-                                                        document.getElementById("a{{data.willing_user.account_mail}}{{ case.case_id }}").innerHTML="{% trans "上次登入" %}: "+ msToTime(remainday)+"{% trans "前" %}";
+                                                        document.getElementById("a{{data.willing_user.account_mail}}{{ case.case_id }}").innerHTML="{% trans '上次登入' %}: "+ msToTime(remainday)+" {% trans '前' %}";
 
 
                                                     </script>
@@ -275,11 +275,11 @@
                             check(count,"");
                             $(".btn_select").click(function() {
                                 num = $(this).attr("id");
-                                if ($(this).attr("value") == "選擇") {
+                                if ($(this).attr("value") == "{% trans '選擇' %}") {
                                     count++;
-                                    $(this).val("取消");
+                                    $(this).val("{% trans '取消' %}");
                                     $(this).css("background", "#7b3b20")
-                                    $("#text_" + num).html("已選");
+                                    $("#text_" + num).html("{% trans '已選' %}");
                                     $("<input>").attr({
                                         type: "hidden",
                                         id: "content" + num,
@@ -291,9 +291,9 @@
                                 }
                                 else {
                                     count--;
-                                    $(this).val("選擇");
+                                    $(this).val("{% trans '選擇' %}");
                                     $(this).css("background", "#ca6c38")
-                                    $("#text_" + num).html("未選");
+                                    $("#text_" + num).html("{% trans '未選' %}");
                                     $("#content" + num).remove();
                                 }
                                 check(count,num);
@@ -304,16 +304,16 @@
 
                             $("#reset").click(function() {
                                 $(".toolman").remove();
-                                $(".select").html("未選");
-                                $(".btn_select").val("選擇")
+                                $(".select").html("{% trans '未選' %}");
+                                $(".btn_select").val("{% trans '選擇' %}")
                                 $(".btn_select").css("background", "#ca6c38")
                                 count = 0;
                                 check(count,num);
                             });
                             $("#reset2").click(function() {
                                 $(".toolman").remove();
-                                $(".select").html("未選");
-                                $(".btn_select").val("選擇")
+                                $(".select").html("{% trans '未選' %}");
+                                $(".btn_select").val("{% trans '選擇' %}")
                                 $(".btn_select").css("background", "#ca6c38")
                                 count = 0;
                                 check(count,num);

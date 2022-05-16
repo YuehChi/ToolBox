@@ -156,11 +156,11 @@
         if (status == "s"){
             document.getElementById(ouputId).innerHTML=today;
         }else if (status =="e"){
-            document.getElementById(ouputId).innerHTML=today + "<span style='margin-left: 5px;color: rgb(60,46,47); font-size: 14px;'> {% trans "剩" %}</span> <span style='font-size:16px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span>";
+            document.getElementById(ouputId).innerHTML=today + "<span style='margin-left: 5px;color: rgb(60,46,47); font-size: 14px;'> {% trans '剩' %}</span> <span style='font-size:16px;color: rgb(193, 106, 110)'>"+ msToTime(remainday)+" </span>";
         }else if (status =="user"){
-            document.getElementById(ouputId).innerHTML="{% trans "上次登入" %}: "+ msToTime(remainday)+"{% trans "前" %}";
+            document.getElementById(ouputId).innerHTML="{% trans '上次登入' %}: "+ msToTime(remainday)+" {% trans '前' %}";
         }else{
-            document.getElementById(ouputId).innerHTML="{% trans "於" %} "+ today+ "<br>{% trans "解除委託" %}";
+            document.getElementById(ouputId).innerHTML="{% trans '於' %} "+ today+ "<br>{% trans '解除委託' %}";
         }
     }
     function msToTime(ms) {
@@ -168,10 +168,10 @@
         let minutes = (ms / (1000 * 60)).toFixed(0);
         let hours = (ms / (1000 * 60 * 60)).toFixed(0);
         let days = (ms / (1000 * 60 * 60 * 24)).toFixed(0);
-        if (seconds < 60) return seconds + "{% trans "秒" %}";
-        else if (minutes < 60) return minutes + "{% trans "分" %}";
-        else if (hours < 24) return hours + "<span style='font-size:14px'>{% trans "小時" %}</span>";
-        else return days + "{% trans "天" %}"
+        if (seconds < 60) return seconds + " {% trans '秒' %}";
+        else if (minutes < 60) return minutes + " {% trans '分' %}";
+        else if (hours < 24) return hours + "<span style='font-size:14px'> {% trans '小時' %}</span>";
+        else return days + " {% trans '天' %}"
     }
     function changePage(Page){
         if (Page == "publish_his"){
@@ -382,7 +382,7 @@
 
                                                 <td style="white-space: nowrap;text-align: center;width: 180px; overflow: hidden; text-overflow: ellipsis;line-height: 34px;color: rgb(61,46,47);padding-bottom: 0px;">
                                                     {% if value == 0 %}
-                                                        {% trans "徵求中" %} (🙎{{case.num}})
+                                                        {% trans "徵求中" %} (0/{{case.num}})
                                                     {% else %}
                                                         {% trans "委託中" %} ({{value}}/{{case.num}})
                                                     {% endif %}
@@ -621,7 +621,13 @@
                                         </td>
 
                                         <td style="width: 180px; text-align: center;padding-top: 10px;">
-                                            <button class="btn btn-primary" type="button" disabled="disabled" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">{{case.case_status.status_name}}</button>
+                                            <button class="btn btn-primary" type="button" disabled="disabled" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">
+                                                {% if case.case_status.status_name == "完成" %}
+                                                    {% trans "完成" %}
+                                                {% else %}
+                                                    {% trans "關閉" %}
+                                                {% endif %}  
+                                            </button>
                                         </td>
 
                                         <!-- <td  style="width: 200px;line-height: 35px;color: rgb(61,46,47);padding-bottom: 0px;"></td> -->
