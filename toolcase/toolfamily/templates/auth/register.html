@@ -46,10 +46,10 @@
                 var callbackData = JSON.parse(xhr.responseText); //因為輸入資料目前是字串，要轉成物件才能使用
                 var str = callbackData.message;
                 if (str == "帳號未被使用") {
-                    document.getElementById("notice2").innerHTML="<span style='font-size: 12px; color:green;'>帳號可以使用</span>";
+                    document.getElementById("notice2").innerHTML="<span style='font-size: 12px; color:green;'>{% trans '帳號可以使用' %}</span>";
                     isEmailCheck = true;
                 } else {
-                    document.getElementById("notice2").innerHTML="<span style='font-size: 12px; color:Tomato;'>帳號已被使用</span>";
+                    document.getElementById("notice2").innerHTML="<span style='font-size: 12px; color:Tomato;'>{% trans '帳號已被使用' %}</span>";
                     isEmailCheck = false;
                 }
             }
@@ -62,11 +62,11 @@
             var pwd2 = document.getElementById("confirm").value;
 
            if(pwd1 == pwd2) {
-               document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:green;'>兩次密碼相同</span>";
+               document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:green;'>{% trans '兩次密碼相同' %}</span>";
                isPwdCheck = true;
 
             }else if (pwd1 != pwd2){
-                document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:Tomato;'>兩次密碼不同</span>";
+                document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:Tomato;'>{% trans '兩次密碼不同' %}</span>";
                 isPwdCheck = false;
             }
             allCheck()
@@ -92,7 +92,7 @@
             var comp = "";
 
             if (len == 0) {
-                comp = "<span style='font-size: 12px;'>密碼強度</span>";
+                comp = "<span style='font-size: 12px;'>{% trans '密碼強度' %}</span>";
             }else {
                 // <span style='font-size: 12px;'>&nbsp> strong</span>
                 scr = parseInt(getPwdScore(pwd));
@@ -200,7 +200,7 @@
 
         <div class="row justify-content-center align-items-center" style="height: 600px;">
             <div class="col-md-8 col-lg-6" style="width: 600px;padding-right: 0px;padding-left: 0px;">
-                <h1 style="font-family: Montserrat, sans-serif;text-align: right;color: rgb(123, 99, 99);font-size: 75px;margin-right: -150px;width: 564px;font-weight: bold;">加入我們！</h1>
+                <h1 style="font-family: Montserrat, sans-serif;text-align: right;color: rgb(123, 99, 99);font-size: 75px;margin-right: -150px;width: 564px;font-weight: bold;">{% trans "加入我們！" %}</h1>
                 <h1 style="font-family: Lato, sans-serif;text-align: center;color:  rgb(204,195,190) ;font-size: 75px;margin-right: 0px;width: 300px;margin-left: 40px;margin-top: -29px;">Join us!</h1>
                 {% load static %}
                 <div class="container" style="width: 500px;margin-right: 0px;margin-left: 39px;margin-top: 111px;padding-right: 24px;"><img src="{% static 'images/default_icon_2.png' %}" style="margin-top: 0px;margin-left: 40px;width: 183px;"><img src="{% static 'images/default_icon_1.png' %}" style="margin-top: -180px;margin-left: -2px;width: 195px;"></div>

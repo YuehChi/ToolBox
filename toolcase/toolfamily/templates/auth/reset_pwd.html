@@ -20,10 +20,10 @@
             var pwd1 = document.getElementById("pwd").value;
             var pwd2 = document.getElementById("confirm").value;
            if(pwd1 == pwd2) {
-               document.getElementById("notice").innerHTML="<font color='green'>{% trans "台大工具箱" %}{% trans "兩次密碼相同" %}</font>";
+               document.getElementById("notice").innerHTML="<font color='green'>{% trans '台大工具箱' %}{% trans '兩次密碼相同' %}</font>";
                document.getElementById("mySubmit").disabled = false;
             }else {
-                document.getElementById("notice").innerHTML="<font color='Tomato'>{% trans "台大工具箱" %}{% trans "兩次密碼不同" %}</font>";
+                document.getElementById("notice").innerHTML="<font color='Tomato'>{% trans '台大工具箱' %}{% trans '兩次密碼不同' %}</font>";
                 document.getElementById("mySubmit").disabled = true;
             }
         }
@@ -40,7 +40,7 @@
             var comp = "";
 
             if (len == 0) {
-                comp = "<span style='font-size: 12px;'>{% trans "密碼強度" %}</span>";
+                comp = "<span style='font-size: 12px;'>{% trans '密碼強度' %}</span>";
             }else {
                 // <span style='font-size: 12px;'>&nbsp> strong</span>
                 scr = parseInt(getPwdScore(pwd));
