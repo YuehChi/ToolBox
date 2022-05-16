@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-    
     // --------------- Take Button Status ---------------
     var tbtn_status = $('#get_take_btn_status').html()
     console.log(tbtn_status)
@@ -89,7 +88,15 @@ $(document).ready(function() {
 
 
 
-    $('#case-time').html(startdate + ' ~ ' + enddate + ' 還剩' + remainday)
+    
+    console.log($('#language option').filter(':selected').val())
+    if($('#language option').filter(':selected').val() == 'en'){
+        $('#case-time').html(startdate + ' ~ ' + enddate + remainday + 'left')
+    }
+    else{
+        $('#case-time').html(startdate + ' ~ ' + enddate + ' 還剩' + remainday)
+    }
+    
     
 
 
@@ -257,36 +264,73 @@ $(document).ready(function() {
 function convertMS(millisecondes){
     let seconds = millisecondes / 1000
     if(seconds < 60){
-        return '不到1分鐘'
+        if($('#language option').filter(':selected').val() == 'en'){
+            return 'less than 1 minute'
+        }
+        else{
+            return '不到1分鐘'
+        }
+        
     }
     else{
         let minutes = seconds / 60
         if (minutes < 60){
             console.log('minutes:' + Math.floor(minutes))
-            return Math.floor(minutes).toString() + ' 分鐘'
+            if($('#language option').filter(':selected').val() == 'en'){
+                return Math.floor(minutes).toString() + ' minutes'
+            }
+            else{
+                return Math.floor(minutes).toString() + ' 分鐘'
+            }
+            
         }
         else{
             let hours = minutes/60
             if (hours < 24){
                 console.log('hours:' + hours)
-                return Math.floor(hours).toString() + ' 小時'
+                if($('#language option').filter(':selected').val() == 'en'){
+                    return Math.floor(hours).toString() + ' hours'
+                }
+                else{
+                    return Math.floor(hours).toString() + ' 小時'
+                }
+                
             }
             else{
                 let days = hours/24
                 if(days < 31){
                     console.log('days:' + days)
-                    return Math.floor(days).toString() + ' 天'
+                    if($('#language option').filter(':selected').val() == 'en'){
+                        return Math.floor(days).toString() + ' days'
+                    }
+                    else{
+                        return Math.floor(days).toString() + ' 天'
+                    }
+                    
                 }
                 else{
                     let months = days/30
                     if(months < 12){
                         console.log('months:' + months)
-                        return Math.floor(months).toString() + ' 個月'
+                        if($('#language option').filter(':selected').val() == 'en'){
+                            return Math.floor(months).toString() + ' months'
+                        }
+                        else{
+                            return Math.floor(months).toString() + ' 個月'
+                        }
+                        
                     }
                     else{
                         let years = months/12
                         console.log('years:' + years)
-                        return Math.floor(years).toString() + ' 年'
+
+                        if($('#language option').filter(':selected').val() == 'en'){
+                            return Math.floor(years).toString() + ' years'
+                        }
+                        else{
+                            return Math.floor(years).toString() + ' 年'
+                        }
+                        
                     }
                 }
             }
