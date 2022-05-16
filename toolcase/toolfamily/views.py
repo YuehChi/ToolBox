@@ -1811,7 +1811,11 @@ def register(request):
             return redirect('register')
 
         # insert user detail into User
-        user = User.objects.create_user(username=username, password=password, email=account, is_active=False)
+        now = datetime.datetime.now()
+        temp = now.strftime('%Y%m%d%H%M%S')
+        rand_name = temp + username
+
+        user = User.objects.create_user(username=rand_name, password=password, email=account, is_active=False)
         user.save()
 
         # insert user detail into UserDetail
@@ -1867,11 +1871,9 @@ def forget(request):
         print(account)
         try:
             user = UserDetail.objects.get(Q(account_mail=account))
-            print(user)
-            username = user.name
 
             # send reset-pwd url to user email
-            token = token_confirm.generate_validate_token(username)
+            token = token_confirm.generate_validate_token(account)
             if request.META['HTTP_HOST'] == "127.0.0.1:8000":
                 url = 'http://' + request.META['HTTP_HOST'] + '/toolfamily/reset/' + token
             else:
@@ -1898,10 +1900,10 @@ def reset(request, token):
 
     # timeout
     try:
-        username = token_confirm.confirm_validate_token(token)
+        account = token_confirm.confirm_validate_token(token)
     except:
-        username = token_confirm.remove_validate_token(token)
-        user = User.objects.get(Q(username=username))
+        account = token_confirm.remove_validate_token(token)
+        user = User.objects.get(Q(email=account))
         user.delete()
         request.session['messages'] = "對不起，重新設定密碼連結已過期。"
         return HttpResponseRedirect('/')
@@ -1912,7 +1914,7 @@ def reset(request, token):
         confirm = request.POST.get('confirm')
 
         # update datebase
-        user = User.objects.get(Q(username=username))
+        user = User.objects.get(Q(email=account))
         user.password = make_password(password)
         user.save()
 
