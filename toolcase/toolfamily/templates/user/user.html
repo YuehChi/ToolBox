@@ -142,7 +142,7 @@
                             <div style="text-align: center;">  {# 圖片上傳 #}
                                 <label for="id_icon" class="btn btn-primary border rounded" style="background: rgb(134,81,64);">{% trans "選擇圖片" %}</label>
                                 <input type="file" name="icon" accept="image/*" id="id_icon" style="display:none;">
-                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value="提交圖片">
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value='{% trans "提交圖片" %}'>
                             </div>
                             <div style="text-align: center;">
                                 <p style="margin-top: 10px; color: rgb(134, 81, 64)">{% trans "檔案大小限2.5MB以下" %}</p>
@@ -185,7 +185,7 @@
                             </div>
                             <div style="text-align: center;margin-top:20px;margin-bottom: 20px;">
                                 <button class="btn btn-primary border rounded member" m="1" type="button" style="background: rgb(255,255,255);color: rgb(134,81,64);border: 2px solid rgb(134,81,64) ;">{% trans "取消" %}</button>
-                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-left: 20px;"  value="提交">
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-left: 20px;"  value='{% trans "送出" %}'>
                                 <div>{{ userDataForm.errors }}</div>  <!-- 顯示錯誤訊息 ex.資料格式錯誤 -->
                                 <div>{{ userDataForm.non_field_errors }}</div>  <!-- 顯示錯誤訊息 ex.必填項目未填 -->
                             </div>

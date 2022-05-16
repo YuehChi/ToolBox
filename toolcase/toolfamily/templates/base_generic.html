@@ -1,10 +1,8 @@
-{% load i18n %}
-<!-- base_generic -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
-  {% block title %}<title>{% trans "台大工具箱" %}</title>{% endblock %}
+  {% block title %}<title>台大工具箱 NTU ToolBox</title>{% endblock %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
@@ -16,9 +14,9 @@
   <link rel="stylesheet" href="\static\bootstrap\css\bootstrap.min.css" type="text/css" >
   <link rel="stylesheet" href="\static\fonts\material-icons.min.css" type="text/css">
   <link rel="stylesheet" href="\static\css\materialdesignicons.min.css" type="text/css">
-
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" language="JavaScript" type="text/javascript"></script>
   <script src="\static\js\base_generic.js" type="text/javascript"></script>
   <script src="\static\js\user.js" type="text/javascript"></script>
@@ -33,14 +31,6 @@
         -webkit-border-radius: 100px;
         -moz-border-radius: 100px;
     }
-
-    #language {
-        background-color: transparent;
-        border-color: transparent;
-        outline: none;
-        font-size: 14px;
-    }
-
 </style>
 
 
@@ -51,23 +41,10 @@
       <nav class="d-none d-lg-block navbar navbar-light navbar-expand-lg fixed-top" style="background: rgb(244,244,243);height: 60px;">
         <div class="container-fluid" style="height: 50px;background: rgb(244,244,243);"><a class="navbar-brand" href="{% url 'index'%}">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end align-items-lg-center" style="background: rgb(244,244,243);" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
-                <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
-                    <input name="next" type="hidden" value="{{ redirect_to }}">
-                    <select id="language" name="language" onchange="this.form.submit()">
-                        {% get_current_language as LANGUAGE_CODE %}
-                        {% get_available_languages as LANGUAGES %}
-                        {% get_language_info_list for LANGUAGES as languages %}
-                        {% for language in languages %}
-                            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                                {{ language.name_local }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <!-- <input type="submit" value="Go"> -->
-                </form>
                 <ul class="navbar-nav align-items-md-center">
+                    <li class="nav-item"><a class="nav-link" href="#" style="font-size: 12px;margin-left: -2px;margin-right: 8px;">English</a></li>
                     <li class="nav-item">
-                    <button class="btn" type="button" id="button-case-new" style="padding: 2px 12px;color: #ffffff;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;width: 85px;">{% trans "我要發案" %}</button>
+                    <button class="btn" type="button" id="button-case-new" style="padding: 2px 12px;color: #ffffff;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;width: 85px;">我要發案</button>
                     </li>
                     <li class="nav-item">
                         {% if current_user.icon %}  {# 有圖才顯示 #}
@@ -96,11 +73,11 @@
                                 </div>
                             </a>
                             <div class="dropdown-menu" style="margin: 0;padding: 7px 0px;margin-left:-45px;font-size: 12px;min-width: 100px;margin-top: 11px;border-width: 0px;background: rgb(244,244,243);text-align: center;color: #5e4949;">
-                                <a class="dropdown-item member" m="1" href="{% url 'my-user-profile'%}" style="color: #5e4949;">{% trans "會員中心" %}</a>
-                                <a class="dropdown-item" href="{%url 'user-publish-record'%}" style="color: #5e4949;">{% trans "我的委託" %}</a>
-                                <a class="dropdown-item" href="{%url 'user-take-record'%}" style="color: #5e4949;">{% trans "我的接案" %}</a>
-                                <a class="dropdown-item" href="{% url 'user-password-update' %}" style="color: #5e4949;">{% trans "更改密碼" %}</a>
-                                <a class="dropdown-item" href="{% url 'logout' %}" style="color: #5e4949;">{% trans "登出" %}</a>
+                                <a class="dropdown-item member" m="1" href="{% url 'my-user-profile'%}" style="color: #5e4949;">會員中心</a>
+                                <a class="dropdown-item" href="{%url 'user-publish-record'%}" style="color: #5e4949;">我的委託</a>
+                                <a class="dropdown-item" href="{%url 'user-take-record'%}" style="color: #5e4949;">我的接案</a>
+                                <a class="dropdown-item" href="{% url 'user-password-update' %}" style="color: #5e4949;">更改密碼</a>
+                                <a class="dropdown-item" href="{% url 'logout' %}" style="color: #5e4949;">登出</a>
                             </div>
                         </div>
                     </li>
@@ -112,27 +89,14 @@
     <nav id="mobile" class="d-lg-none navbar navbar-light navbar-expand-lg fixed-top" style="background: rgb(244,244,243);height: 50px;border-bottom-width: 0px;">
         <div class="container-fluid"><a class="navbar-brand" href="{% url 'index'%}">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end align-items-lg-center" style="background: rgb(244,244,243);" id="navcol-1">
-                <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
-                    <input name="next" type="hidden" value="{{ redirect_to }}">
-                    <select name="language" onchange="this.form.submit()">
-                        {% get_current_language as LANGUAGE_CODE %}
-                        {% get_available_languages as LANGUAGES %}
-                        {% get_language_info_list for LANGUAGES as languages %}
-                        {% for language in languages %}
-                            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                                {{ language.name_local }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <!-- <input type="submit" value="Go"> -->
-                </form>
                 <ul class="navbar-nav">
-                    <li class="nav-item "><button class="btn" type="button" id="button-case-new" style="padding: 2px 12px;color: #ffffff;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;width: 85px;">{% trans "我要發案" %}</button></li>
-                    <li class="nav-item"><a class="dropdown-item member" m="1" href="{% url 'my-user-profile'%}" style="color: #5e4949;">{% trans "會員中心" %}</a></li>
-                    <li class="nav-item"><a class="dropdown-item" href="{%url 'user-publish-record'%}" style="color: #5e4949;">{% trans "我的委託" %}</a></li>
-                    <li class="nav-item"><a class="dropdown-item" href="{%url 'user-take-record'%}" style="color: #5e4949;">{% trans "我的接案" %}</a></li>
-                    <li class="nav-item"><a class="dropdown-item" href="{% url 'user-password-update' %}" style="color: #5e4949;">{% trans "更改密碼" %}</a></li>
-                    <li class="nav-item"><a class="dropdown-item" href="{% url 'logout' %}" style="color: #5e4949;">{% trans "登出" %}</a></li>
+                    <li class="nav-item navbar-text"><i class="material-icons" style="float: left;margin-top: 10px;font-size: 15px;">language</i><a class="nav-link" href="#" style="float: left;font-size: 12px;margin-left: 2px;margin-right: 8px;">繁體中文</a></li>
+                    <li class="nav-item "><button class="btn" type="button" id="button-case-new" style="padding: 2px 12px;color: #ffffff;background: rgb(134,81,64);font-size: 12px;margin-right: 4px;width: 85px;">我要發案</button></li>
+                    <li class="nav-item"><a class="dropdown-item member" m="1" href="{% url 'my-user-profile'%}" style="color: #5e4949;">會員中心</a></li>
+                    <li class="nav-item"><a class="dropdown-item" href="{%url 'user-publish-record'%}" style="color: #5e4949;">我的委託</a></li>
+                    <li class="nav-item"><a class="dropdown-item" href="{%url 'user-take-record'%}" style="color: #5e4949;">我的接案</a></li>
+                    <li class="nav-item"><a class="dropdown-item" href="{% url 'user-password-update' %}" style="color: #5e4949;">更改密碼</a></li>
+                    <li class="nav-item"><a class="dropdown-item" href="{% url 'logout' %}" style="color: #5e4949;">登出</a></li>
                 </ul>
             </div>
         </div>
