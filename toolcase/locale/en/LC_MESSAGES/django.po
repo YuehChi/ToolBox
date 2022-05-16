@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-15 17:31+0800\n"
+"POT-Creation-Date: 2022-05-16 21:04+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: toolcase/settings.py:138
+#: toolcase/settings.py:140
 msgid "English"
 msgstr "English"
 
-#: toolcase/settings.py:139
+#: toolcase/settings.py:141
 msgid "繁體中文"
 msgstr ""
 
@@ -126,7 +126,23 @@ msgid ""
 "若不同意上述的服務條款修訂或更新方式，或不接受本服務條款的其他任一約定，會員"
 "應立即停止使用本服務。"
 msgstr ""
-"1. The NTU Toolbox Entrustment Platform (hereinafter referred to as \"NTU Toolbox\") provides the NTU Toolbox (https://ntutoolbox.herokuapp.com/) service (hereinafter referred to as \"the Service\") in accordance with these Terms of Service . When a member completes the membership registration procedure of NTU Toolbox, or starts to use the service, it means that he has read, understood and agreed to accept all the contents of the terms of service, and fully accepts the existing and future derivative services and contents of the service. NTU Toolbox has the right to revise or change the content of these Terms of Service at any time. The revised terms of service will be posted on the website. NTU Toolbox will not notify members individually. Members are advised to pay attention to such revisions or changes at any time. When a member continues to use the service after any modification or change, it is deemed that the member has read, understood and agreed to accept such modification or change. If you do not agree to the revision or update of the above terms of service, or do not accept any other agreement in the terms of service, members should immediately stop using the service."
+"1. The NTU Toolbox Entrustment Platform (hereinafter referred to as \"NTU "
+"Toolbox\") provides the NTU Toolbox (https://ntutoolbox.herokuapp.com/) "
+"service (hereinafter referred to as \"the Service\") in accordance with "
+"these Terms of Service . When a member completes the membership registration "
+"procedure of NTU Toolbox, or starts to use the service, it means that he has "
+"read, understood and agreed to accept all the contents of the terms of "
+"service, and fully accepts the existing and future derivative services and "
+"contents of the service. NTU Toolbox has the right to revise or change the "
+"content of these Terms of Service at any time. The revised terms of service "
+"will be posted on the website. NTU Toolbox will not notify members "
+"individually. Members are advised to pay attention to such revisions or "
+"changes at any time. When a member continues to use the service after any "
+"modification or change, it is deemed that the member has read, understood "
+"and agreed to accept such modification or change. If you do not agree to the "
+"revision or update of the above terms of service, or do not accept any other "
+"agreement in the terms of service, members should immediately stop using the "
+"service."
 
 #: toolfamily/templates/auth/register.html:274
 msgid ""
@@ -436,7 +452,7 @@ msgstr "Member Center"
 #: toolfamily/templates/user/user.html:39
 #: toolfamily/templates/user/user_reset_pwd.html:142
 msgid "我的委託"
-msgstr "My Mandate"
+msgstr "My Commission"
 
 #: toolfamily/templates/base_generic.html:93
 #: toolfamily/templates/base_generic.html:125
@@ -1119,9 +1135,16 @@ msgid "回我的委託"
 msgstr "Back to My Commission"
 
 #: toolfamily/templates/user/applicant.html:139
-msgid "已有 {{cnt}} 個工具人，最多再選取 {{last}} 人"
-msgstr ""
-"There are already {{cnt}} toolmen, at most {{last}} more can be selected"
+msgid "已有"
+msgstr "There are already"
+
+#: toolfamily/templates/user/applicant.html:139
+msgid "個工具人，最多再選取"
+msgstr "toolmen, at most"
+
+#: toolfamily/templates/user/applicant.html:139
+msgid "位"
+msgstr "more can be selected"
 
 #: toolfamily/templates/user/applicant.html:144
 #: toolfamily/templates/user/applicant.html:153

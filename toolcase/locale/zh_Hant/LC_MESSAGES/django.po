@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-15 17:31+0800\n"
+"POT-Creation-Date: 2022-05-16 21:04+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: toolcase/settings.py:138
+#: toolcase/settings.py:140
 msgid "English"
 msgstr ""
 
-#: toolcase/settings.py:139
+#: toolcase/settings.py:141
 msgid "繁體中文"
 msgstr ""
 
@@ -1036,7 +1036,15 @@ msgid "回我的委託"
 msgstr ""
 
 #: toolfamily/templates/user/applicant.html:139
-msgid "已有 {{cnt}} 個工具人，最多再選取 {{last}} 人"
+msgid "已有"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:139
+msgid "個工具人，最多再選取"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:139
+msgid "位"
 msgstr ""
 
 #: toolfamily/templates/user/applicant.html:144

@@ -114,6 +114,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 AUTHENTICATION_BACKENDS = ['toolfamily.views.CustomizeUserBackend']
 # AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
 
 # change user class
 # AUTH_USER_MODEL = 'toolfamily.UserDetail'  # 為了修改使用者的欄位
@@ -183,5 +185,7 @@ EMAIL_HOST_PASSWORD = 'ixbdessacfgleknl'
 # USE_L10N = True  # 允許依地區採用不同時間日期格式(會覆蓋其他設定)
 DATETIME_FORMAT = 'Y/m/d H:i:s'  # 指定時間日期格式
 SHORT_DATETIME_FORMAT = 'm/d H:i'  # 指定縮寫的時間日期格式
+import django_on_heroku
+django_on_heroku.settings(locals())
 import django_on_heroku
 django_on_heroku.settings(locals())

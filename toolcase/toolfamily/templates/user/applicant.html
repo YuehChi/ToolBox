@@ -136,7 +136,7 @@
                         </ul>
                         <div class="underlineEffects position-absolute top-0 end-0" style="width: 400px; margin-top: 50px;">
                             <ul class="d-none d-md-block" style="color: rgb(94, 73, 73); margin-bottom: 0px;">
-                                <li style="font-size: 14px;">{% trans "已有 {{cnt}} 個工具人，最多再選取 {{last}} 人" %} &nbsp;&nbsp;</li>
+                                <li style="font-size: 14px;">{% trans "已有" %} {{cnt}} {% trans "個工具人，最多再選取" %} {{last}} {% trans "位" %} &nbsp;&nbsp;</li>
                                 <li style="font-size: 14px;">
                                     <form action="/toolfamily/user/build/" method="post" >
                                         {% csrf_token %}
