@@ -21,3 +21,8 @@
     width: 200px;
     height: 200px;
 }
+.dropdown-item {
+    white-space: pre-line;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
