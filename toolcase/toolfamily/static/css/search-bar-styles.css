@@ -1,5 +1,9 @@
 
-
+.dropdown-item {
+    white-space: pre-line;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
 .main-color {
     color:#865140;
 }

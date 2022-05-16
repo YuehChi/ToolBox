@@ -33,6 +33,14 @@
         -webkit-border-radius: 100px;
         -moz-border-radius: 100px;
     }
+
+    #language {
+        background-color: transparent;
+        border-color: transparent;
+        outline: none;
+        font-size: 14px;
+    }
+
 </style>
 
 
@@ -45,7 +53,7 @@
             <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end align-items-lg-center" style="background: rgb(244,244,243);" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
                 <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
                     <input name="next" type="hidden" value="{{ redirect_to }}">
-                    <select name="language" onchange="this.form.submit()">
+                    <select id="language" name="language" onchange="this.form.submit()">
                         {% get_current_language as LANGUAGE_CODE %}
                         {% get_available_languages as LANGUAGES %}
                         {% get_language_info_list for LANGUAGES as languages %}
