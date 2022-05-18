@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-16 21:04+0800\n"
+"POT-Creation-Date: 2022-05-18 23:27+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,8 +30,8 @@ msgstr ""
 #: toolfamily/templates/auth/login.html:9
 #: toolfamily/templates/auth/register.html:9
 #: toolfamily/templates/auth/reset_pwd.html:9
-#: toolfamily/templates/auth/reset_pwd.html:23
-#: toolfamily/templates/auth/reset_pwd.html:26
+#: toolfamily/templates/auth/reset_pwd.html:31
+#: toolfamily/templates/auth/reset_pwd.html:34
 #: toolfamily/templates/base_generic.html:7
 #: toolfamily/templates/user/applicant.html:13
 #: toolfamily/templates/user/publish.html:16
@@ -39,82 +39,116 @@ msgstr ""
 msgid "台大工具箱"
 msgstr ""
 
-#: toolfamily/templates/auth/forget_pwd.html:35
-#: toolfamily/templates/auth/login.html:85
-#: toolfamily/templates/auth/register.html:192
-#: toolfamily/templates/auth/reset_pwd.html:137
+#: toolfamily/templates/auth/forget_pwd.html:42
+#: toolfamily/templates/auth/login.html:92
+#: toolfamily/templates/auth/register.html:200
+#: toolfamily/templates/auth/reset_pwd.html:145
 msgid "登入"
 msgstr ""
 
-#: toolfamily/templates/auth/forget_pwd.html:44
+#: toolfamily/templates/auth/forget_pwd.html:51
 msgid "忘記密碼"
 msgstr ""
 
-#: toolfamily/templates/auth/forget_pwd.html:56
-#: toolfamily/templates/auth/register.html:232
+#: toolfamily/templates/auth/forget_pwd.html:63
+#: toolfamily/templates/auth/register.html:243
 msgid "帳號"
 msgstr ""
 
-#: toolfamily/templates/auth/forget_pwd.html:61
-#: toolfamily/templates/auth/register.html:238
+#: toolfamily/templates/auth/forget_pwd.html:68
+#: toolfamily/templates/auth/register.html:249
 msgid "請輸入台大信箱"
 msgstr ""
 
-#: toolfamily/templates/auth/forget_pwd.html:64
+#: toolfamily/templates/auth/forget_pwd.html:71
 msgid "發送驗證"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:58
+#: toolfamily/templates/auth/login.html:65
 msgid "專屬台大人的委託平台"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:64
+#: toolfamily/templates/auth/login.html:71
 msgid "會員登入"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:78
+#: toolfamily/templates/auth/login.html:85
 msgid "電子信箱"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:82
+#: toolfamily/templates/auth/login.html:89
 msgid "輸入密碼"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:84
+#: toolfamily/templates/auth/login.html:91
 msgid "忘記密碼？"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:86
+#: toolfamily/templates/auth/login.html:93
 msgid "還不是會員？"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:86
-#: toolfamily/templates/auth/register.html:315
+#: toolfamily/templates/auth/login.html:93
+#: toolfamily/templates/auth/register.html:326
 msgid "註冊"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:223
+#: toolfamily/templates/auth/register.html:57
+msgid "帳號可以使用"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:60
+msgid "帳號已被使用"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:73
+#: toolfamily/templates/auth/reset_pwd.html:31
+#: toolfamily/templates/user/user_reset_pwd.html:16
+msgid "兩次密碼相同"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:77
+#: toolfamily/templates/auth/reset_pwd.html:34
+#: toolfamily/templates/user/user_reset_pwd.html:20
+msgid "兩次密碼不同"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:103
+#: toolfamily/templates/auth/reset_pwd.html:51
+#: toolfamily/templates/user/user_reset_pwd.html:36
+msgid "密碼強度"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:211
+msgid "加入我們！"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:231
 #: toolfamily/templates/user/user.html:158
 msgid "姓名"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:242
+#: toolfamily/templates/auth/register.html:238
+msgid "最多輸入10個字元"
+msgstr ""
+
+#: toolfamily/templates/auth/register.html:253
 msgid "密碼"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:254
+#: toolfamily/templates/auth/register.html:265
 msgid "再次輸入密碼"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:266
+#: toolfamily/templates/auth/register.html:277
 msgid "網站聲明"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:272
+#: toolfamily/templates/auth/register.html:283
 msgid "一、認知與接受條款"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:273
+#: toolfamily/templates/auth/register.html:284
 msgid ""
 "1. 台大工具箱委託平台(以下簡稱「台大工具箱」)係依據本服務條款提供台大工具箱"
 "（https://ntutoolbox.herokuapp.com/）服務 (以下簡稱「本服務」)。當會員完成台"
@@ -127,7 +161,7 @@ msgid ""
 "應立即停止使用本服務。"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:274
+#: toolfamily/templates/auth/register.html:285
 msgid ""
 "2. 若會員為未滿二十歲之未成年人，應於會員的家長（或監護人）閱讀、瞭解並同意本"
 "約定書之所有內容及其後修改變更後，方得註冊為會員、使用或繼續使用本服務。當會"
@@ -135,42 +169,42 @@ msgid ""
 "接受本約定書之所有內容及其後修改變更。"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:275
+#: toolfamily/templates/auth/register.html:286
 msgid ""
 "3. 會員及台大工具箱雙方同意使用本服務之所有內容包括意思表示等，以電子文件作為"
 "表示方式。"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:276
+#: toolfamily/templates/auth/register.html:287
 msgid "二、會員的註冊義務"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:277
+#: toolfamily/templates/auth/register.html:288
 msgid "為了能使用本服務，會員同意以下事項："
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:278
+#: toolfamily/templates/auth/register.html:289
 msgid ""
 "依本服務註冊表之提示提供會員本人正確、最新的資料，且不得以第三人之名義註冊為"
 "會員。每位會員僅能註冊登錄一個帳號，不可重覆註冊登錄。"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:279
+#: toolfamily/templates/auth/register.html:290
 msgid "即時維持並更新會員個人資料，確保其正確性，以獲取最佳之服務。"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:280
+#: toolfamily/templates/auth/register.html:291
 msgid ""
 "若會員提供任何錯誤或不實的資料、或未按指示提供資料、或欠缺必要之資料、或有重"
 "覆註冊帳號等情事時，台大工具箱有權不經事先通知，逕行暫停或終止會員的帳號，並"
 "拒絕會員使用本服務之全部或一部。"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:281
+#: toolfamily/templates/auth/register.html:292
 msgid "三、使用者的守法義務及承諾"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:282
+#: toolfamily/templates/auth/register.html:293
 msgid ""
 "會員承諾絕不為任何非法目的或以任何非法方式使用本服務，並承諾遵守中華民國相關"
 "法規及一切使用網際網路之國際慣例。會員若係中華民國以外之使用者，並同意遵守所"
@@ -178,106 +212,106 @@ msgid ""
 "為，包括但不限於："
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:283
+#: toolfamily/templates/auth/register.html:294
 msgid ""
 "1. 公布或傳送任何誹謗、侮辱、具威脅性、攻擊性、不雅、猥褻、不實、違反公共秩序"
 "或善良風俗或其他不法之文字、圖片或任何形式的檔案"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:284
+#: toolfamily/templates/auth/register.html:295
 msgid ""
 "2. 侵害或毀損台大工具箱或他人名譽、隱私權、營業秘密、商標權、著作權、專利權、"
 "其他智慧財產權及其他權利"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:285
+#: toolfamily/templates/auth/register.html:296
 msgid "3. 違反依法律或契約所應負之保密義務"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:286
+#: toolfamily/templates/auth/register.html:297
 msgid "4. 冒用他人名義使用本服務"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:287
+#: toolfamily/templates/auth/register.html:298
 msgid "5. 傳輸或散佈電腦病毒"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:288
+#: toolfamily/templates/auth/register.html:299
 msgid "6. 從事未經本網站事前授權的商業行為"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:289
+#: toolfamily/templates/auth/register.html:300
 msgid ""
 "7. 刊載、傳輸、發送垃圾郵件、連鎖信、違法或未經台大工具箱許可之多層次傳銷訊息"
 "及廣告等；或儲存任何侵害他人智慧財產權或違反法令之資料"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:290
+#: toolfamily/templates/auth/register.html:301
 msgid ""
 "8. 對本服務其他用戶或第三人產生困擾、不悅或違反一般網路禮節致生反感之行為"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:291
+#: toolfamily/templates/auth/register.html:302
 msgid ""
 "9. 其他不符本服務所提供的使用目的之行為或台大工具箱有正當理由認為不適當之行為"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:292
+#: toolfamily/templates/auth/register.html:303
 msgid "四、服務之停止、中斷"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:293
+#: toolfamily/templates/auth/register.html:304
 msgid ""
 "台大工具箱將依一般合理之技術及方式，維持系統及服務之正常運作。但於以下各項情"
 "況時，台大工具箱有權可以停止、中斷提供本服務："
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:294
+#: toolfamily/templates/auth/register.html:305
 msgid "1. 台大工具箱網站電子通信設備進行必要之保養及施工時"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:295
+#: toolfamily/templates/auth/register.html:306
 msgid "2. 發生突發性之電子通信設備故障時"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:296
+#: toolfamily/templates/auth/register.html:307
 msgid "3. 台大工具箱網站申請之電子通信服務被停止，無法提供服務時"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:297
+#: toolfamily/templates/auth/register.html:308
 msgid ""
 "4. 由於天災等不可抗力之因素或其他不可歸責於台大工具致使台大工具網站無法提供服"
 "務時"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:298
+#: toolfamily/templates/auth/register.html:309
 msgid "五、交易行為"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:299
+#: toolfamily/templates/auth/register.html:310
 msgid ""
 "1. 雙方會員於確認委託關係時，其線下交易行為非本服務保障範圍，台大工具箱不負責"
 "任何交易責任。"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:300
+#: toolfamily/templates/auth/register.html:311
 msgid ""
 "2. 台大工具箱只提供會員媒合平台，若有出現非法之行為，本系統不負擔任何責任。會"
 "員需自行判斷是否為安全委任工作。"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:301
+#: toolfamily/templates/auth/register.html:312
 msgid "六、責任之限制與排除"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:302
+#: toolfamily/templates/auth/register.html:313
 msgid ""
 "1. 本服務所提供之各項功能，均依該功能當時之現況提供使用，台大工具箱對於其效"
 "能、速度、完整性、可靠性、安全性、正確性等，皆不負擔任何明示或默示之擔保責"
 "任。"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:303
+#: toolfamily/templates/auth/register.html:314
 msgid ""
 "2. 台大工具箱並不保證本服務之網頁、伺服器、網域等所傳送的電子郵件或其內容不會"
 "含有電腦病毒等有害物；亦不保證郵件、檔案或資料之傳輸儲存均正確無誤不會斷線和"
@@ -285,62 +319,47 @@ msgid ""
 "不負賠償責任。"
 msgstr ""
 
-#: toolfamily/templates/auth/register.html:309
+#: toolfamily/templates/auth/register.html:320
 msgid "我同意，註冊表示接受本平台上述之聲明"
 msgstr ""
 
-#: toolfamily/templates/auth/reset_pwd.html:23
-#: toolfamily/templates/user/user_reset_pwd.html:16
-msgid "兩次密碼相同"
-msgstr ""
-
-#: toolfamily/templates/auth/reset_pwd.html:26
-#: toolfamily/templates/user/user_reset_pwd.html:20
-msgid "兩次密碼不同"
-msgstr ""
-
-#: toolfamily/templates/auth/reset_pwd.html:43
-#: toolfamily/templates/user/user_reset_pwd.html:36
-msgid "密碼強度"
-msgstr ""
-
-#: toolfamily/templates/auth/reset_pwd.html:148
+#: toolfamily/templates/auth/reset_pwd.html:156
 msgid "重設密碼"
 msgstr ""
 
-#: toolfamily/templates/auth/reset_pwd.html:160
+#: toolfamily/templates/auth/reset_pwd.html:168
 msgid "新密碼"
 msgstr ""
 
-#: toolfamily/templates/auth/reset_pwd.html:166
+#: toolfamily/templates/auth/reset_pwd.html:174
 #: toolfamily/templates/user/user_reset_pwd.html:169
 msgid "請輸入新密碼"
 msgstr ""
 
-#: toolfamily/templates/auth/reset_pwd.html:172
+#: toolfamily/templates/auth/reset_pwd.html:180
 msgid "再次輸入新密碼"
 msgstr ""
 
-#: toolfamily/templates/auth/reset_pwd.html:178
+#: toolfamily/templates/auth/reset_pwd.html:186
 #: toolfamily/templates/user/user_reset_pwd.html:178
 msgid "請再次輸入新密碼"
 msgstr ""
 
-#: toolfamily/templates/auth/reset_pwd.html:184
+#: toolfamily/templates/auth/reset_pwd.html:192
 msgid "確定變更"
 msgstr ""
 
-#: toolfamily/templates/auth/reset_pwd.html:189
+#: toolfamily/templates/auth/reset_pwd.html:197
 msgid "請使用新密碼，再次登入！"
 msgstr ""
 
-#: toolfamily/templates/base_generic.html:62
-#: toolfamily/templates/base_generic.html:122
+#: toolfamily/templates/base_generic.html:70
+#: toolfamily/templates/base_generic.html:130
 msgid "我要發案"
 msgstr ""
 
-#: toolfamily/templates/base_generic.html:91
-#: toolfamily/templates/base_generic.html:123
+#: toolfamily/templates/base_generic.html:99
+#: toolfamily/templates/base_generic.html:131
 #: toolfamily/templates/user/applicant.html:112
 #: toolfamily/templates/user/publish.html:287
 #: toolfamily/templates/user/take.html:294
@@ -349,8 +368,8 @@ msgstr ""
 msgid "會員中心"
 msgstr ""
 
-#: toolfamily/templates/base_generic.html:92
-#: toolfamily/templates/base_generic.html:124
+#: toolfamily/templates/base_generic.html:100
+#: toolfamily/templates/base_generic.html:132
 #: toolfamily/templates/user/applicant.html:113
 #: toolfamily/templates/user/publish.html:288
 #: toolfamily/templates/user/publish.html:299
@@ -361,8 +380,8 @@ msgstr ""
 msgid "我的委託"
 msgstr ""
 
-#: toolfamily/templates/base_generic.html:93
-#: toolfamily/templates/base_generic.html:125
+#: toolfamily/templates/base_generic.html:101
+#: toolfamily/templates/base_generic.html:133
 #: toolfamily/templates/user/applicant.html:114
 #: toolfamily/templates/user/publish.html:289
 #: toolfamily/templates/user/take.html:296
@@ -373,8 +392,8 @@ msgstr ""
 msgid "我的接案"
 msgstr ""
 
-#: toolfamily/templates/base_generic.html:94
-#: toolfamily/templates/base_generic.html:126
+#: toolfamily/templates/base_generic.html:102
+#: toolfamily/templates/base_generic.html:134
 #: toolfamily/templates/user/applicant.html:115
 #: toolfamily/templates/user/publish.html:290
 #: toolfamily/templates/user/take.html:297
@@ -384,8 +403,8 @@ msgstr ""
 msgid "更改密碼"
 msgstr ""
 
-#: toolfamily/templates/base_generic.html:95
-#: toolfamily/templates/base_generic.html:127
+#: toolfamily/templates/base_generic.html:103
+#: toolfamily/templates/base_generic.html:135
 #: toolfamily/templates/user/applicant.html:116
 #: toolfamily/templates/user/publish.html:291
 #: toolfamily/templates/user/take.html:298
@@ -422,6 +441,8 @@ msgstr ""
 #: toolfamily/templates/case/profile.html:209
 #: toolfamily/templates/case/profile_edit.html:93
 #: toolfamily/templates/user/take.html:330
+#: toolfamily/templates/user/take.html:520
+#: toolfamily/templates/user/take.html:571
 msgid "報酬"
 msgstr ""
 
@@ -742,18 +763,21 @@ msgstr ""
 #: toolfamily/templates/case/profile.html:433
 #: toolfamily/templates/user/publish.html:469
 #: toolfamily/templates/user/publish.html:471
-#: toolfamily/templates/user/publish.html:702
-#: toolfamily/templates/user/publish.html:705
+#: toolfamily/templates/user/publish.html:708
+#: toolfamily/templates/user/publish.html:711
 #: toolfamily/templates/user/take.html:487
 #: toolfamily/templates/user/take.html:489
+#: toolfamily/templates/user/take.html:692
+#: toolfamily/templates/user/take.html:695
 #: toolfamily/templates/user/user_profile.html:68
 msgid "檢舉"
 msgstr ""
 
 #: toolfamily/templates/case/profile.html:438
 #: toolfamily/templates/user/publish.html:475
-#: toolfamily/templates/user/publish.html:711
+#: toolfamily/templates/user/publish.html:717
 #: toolfamily/templates/user/take.html:493
+#: toolfamily/templates/user/take.html:699
 #: toolfamily/templates/user/user_profile.html:73
 msgid "已檢舉"
 msgstr ""
@@ -777,6 +801,7 @@ msgid "檢舉內容"
 msgstr ""
 
 #: toolfamily/templates/case/profile.html:472
+#: toolfamily/templates/user/applicant.html:281
 #: toolfamily/templates/user/publish.html:269
 #: toolfamily/templates/user/take.html:276
 #: toolfamily/templates/user/user.html:187
@@ -792,7 +817,9 @@ msgstr ""
 #: toolfamily/templates/user/applicant.html:152
 #: toolfamily/templates/user/publish.html:270
 #: toolfamily/templates/user/take.html:277
+#: toolfamily/templates/user/user.html:188
 #: toolfamily/templates/user/user_profile.html:109
+#: toolfamily/templates/user/user_reset_pwd.html:185
 msgid "送出"
 msgstr ""
 
@@ -809,7 +836,7 @@ msgstr ""
 #: toolfamily/templates/user/applicant.html:222
 #: toolfamily/templates/user/publish.html:161
 #: toolfamily/templates/user/publish.html:445
-#: toolfamily/templates/user/publish.html:677
+#: toolfamily/templates/user/publish.html:683
 #: toolfamily/templates/user/take.html:151
 #: toolfamily/templates/user/take.html:460
 msgid "上次登入"
@@ -825,9 +852,11 @@ msgstr ""
 #: toolfamily/templates/user/publish.html:522
 #: toolfamily/templates/user/publish.html:528
 #: toolfamily/templates/user/publish.html:534
+#: toolfamily/templates/user/publish.html:627
 #: toolfamily/templates/user/take.html:380
 #: toolfamily/templates/user/take.html:399
 #: toolfamily/templates/user/take.html:406
+#: toolfamily/templates/user/take.html:608
 msgid "完成"
 msgstr ""
 
@@ -873,6 +902,8 @@ msgstr ""
 #: copy.html:24 copy.html:115 toolfamily/templates/user/publish.html:324
 #: toolfamily/templates/user/publish.html:567
 #: toolfamily/templates/user/take.html:328
+#: toolfamily/templates/user/take.html:518
+#: toolfamily/templates/user/take.html:569
 msgid "結束時間"
 msgstr ""
 
@@ -990,6 +1021,7 @@ msgstr ""
 #: toolfamily/templates/user/publish.html:326
 #: toolfamily/templates/user/publish.html:569
 #: toolfamily/templates/user/take.html:333
+#: toolfamily/templates/user/take.html:572
 msgid "狀態"
 msgstr ""
 
@@ -1022,6 +1054,29 @@ msgstr ""
 msgid "熱門案件"
 msgstr ""
 
+#: toolfamily/templates/user/applicant.html:72
+#: toolfamily/templates/user/publish.html:171
+#: toolfamily/templates/user/take.html:163
+msgid "秒"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:73
+#: toolfamily/templates/user/take.html:164
+msgid "分鐘"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:74
+#: toolfamily/templates/user/publish.html:173
+#: toolfamily/templates/user/take.html:165
+msgid "小時"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:75
+#: toolfamily/templates/user/publish.html:174
+#: toolfamily/templates/user/take.html:166
+msgid "天"
+msgstr ""
+
 #: toolfamily/templates/user/applicant.html:122
 #: toolfamily/templates/user/publish.html:401
 msgid "應徵名單"
@@ -1047,6 +1102,11 @@ msgstr ""
 msgid "位"
 msgstr ""
 
+#: toolfamily/templates/user/applicant.html:143
+#: toolfamily/templates/user/applicant.html:152
+msgid "確定送出委託?"
+msgstr ""
+
 #: toolfamily/templates/user/applicant.html:144
 #: toolfamily/templates/user/applicant.html:153
 msgid "重置"
@@ -1059,12 +1119,15 @@ msgstr ""
 #: toolfamily/templates/user/applicant.html:170
 #: toolfamily/templates/user/publish.html:495
 #: toolfamily/templates/user/publish.html:499
-#: toolfamily/templates/user/publish.html:722
-#: toolfamily/templates/user/publish.html:725
+#: toolfamily/templates/user/publish.html:728
+#: toolfamily/templates/user/publish.html:731
+#: toolfamily/templates/user/take.html:711
+#: toolfamily/templates/user/take.html:714
 msgid "評價"
 msgstr ""
 
 #: toolfamily/templates/user/applicant.html:172
+#: toolfamily/templates/user/take.html:521
 msgid "動作"
 msgstr ""
 
@@ -1075,6 +1138,9 @@ msgid "前"
 msgstr ""
 
 #: toolfamily/templates/user/applicant.html:238
+#: toolfamily/templates/user/applicant.html:297
+#: toolfamily/templates/user/applicant.html:308
+#: toolfamily/templates/user/applicant.html:316
 msgid "未選"
 msgstr ""
 
@@ -1084,6 +1150,17 @@ msgstr ""
 
 #: toolfamily/templates/user/applicant.html:242
 msgid "已經徵滿了喔！"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:279
+#: toolfamily/templates/user/applicant.html:295
+#: toolfamily/templates/user/applicant.html:309
+#: toolfamily/templates/user/applicant.html:317
+msgid "選擇"
+msgstr ""
+
+#: toolfamily/templates/user/applicant.html:283
+msgid "已選"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:159
@@ -1096,27 +1173,12 @@ msgid "於"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:163
-#: toolfamily/templates/user/publish.html:742
+#: toolfamily/templates/user/publish.html:748
 msgid "解除委託"
-msgstr ""
-
-#: toolfamily/templates/user/publish.html:171
-#: toolfamily/templates/user/take.html:163
-msgid "秒"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:172
 msgid "分"
-msgstr ""
-
-#: toolfamily/templates/user/publish.html:173
-#: toolfamily/templates/user/take.html:165
-msgid "小時"
-msgstr ""
-
-#: toolfamily/templates/user/publish.html:174
-#: toolfamily/templates/user/take.html:166
-msgid "天"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:233
@@ -1151,7 +1213,7 @@ msgid "標題"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:398
-#: toolfamily/templates/user/publish.html:638
+#: toolfamily/templates/user/publish.html:644
 msgid "已選名單"
 msgstr ""
 
@@ -1159,15 +1221,17 @@ msgstr ""
 #: toolfamily/templates/user/publish.html:535
 #: toolfamily/templates/user/take.html:381
 #: toolfamily/templates/user/take.html:413
+#: toolfamily/templates/user/take.html:610
 msgid "解除"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:498
+#: toolfamily/templates/user/take.html:713
 msgid "確定送出評價？"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:512
-#: toolfamily/templates/user/publish.html:738
+#: toolfamily/templates/user/publish.html:744
 msgid "已完成委託"
 msgstr ""
 
@@ -1206,19 +1270,24 @@ msgid "對方已發起完成請求"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:568
+#: toolfamily/templates/user/take.html:574
 msgid "獲得的評價"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:750
+#: toolfamily/templates/user/publish.html:629
+msgid "關閉"
+msgstr ""
+
+#: toolfamily/templates/user/publish.html:756
 msgid "已解除委託"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:753
+#: toolfamily/templates/user/publish.html:759
 msgid "時間結束"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:753
-#: toolfamily/templates/user/publish.html:755
+#: toolfamily/templates/user/publish.html:759
+#: toolfamily/templates/user/publish.html:761
 msgid "自動完成委託"
 msgstr ""
 
@@ -1229,11 +1298,8 @@ msgid "還剩"
 msgstr ""
 
 #: toolfamily/templates/user/take.html:155
+#: toolfamily/templates/user/take.html:728
 msgid "解除案件"
-msgstr ""
-
-#: toolfamily/templates/user/take.html:164
-msgid "分鐘"
 msgstr ""
 
 #: toolfamily/templates/user/take.html:309
@@ -1241,6 +1307,8 @@ msgid "報名案件"
 msgstr ""
 
 #: toolfamily/templates/user/take.html:329
+#: toolfamily/templates/user/take.html:519
+#: toolfamily/templates/user/take.html:570
 msgid "案件名稱"
 msgstr ""
 
@@ -1277,7 +1345,24 @@ msgid "完成中"
 msgstr ""
 
 #: toolfamily/templates/user/take.html:424
+#: toolfamily/templates/user/take.html:629
 msgid "委託人資訊"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:544
+msgid "取消報名"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:547
+msgid "確定取消報名？"
+msgstr ""
+
+#: toolfamily/templates/user/take.html:665
+msgid "上次登入: "
+msgstr ""
+
+#: toolfamily/templates/user/take.html:728
+msgid "已於"
 msgstr ""
 
 #: toolfamily/templates/user/user.html:51
@@ -1318,6 +1403,10 @@ msgstr ""
 
 #: toolfamily/templates/user/user.html:143
 msgid "選擇圖片"
+msgstr ""
+
+#: toolfamily/templates/user/user.html:145
+msgid "提交圖片"
 msgstr ""
 
 #: toolfamily/templates/user/user.html:148

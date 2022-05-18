@@ -140,7 +140,7 @@
                                 <li style="font-size: 14px;">
                                     <form action="/toolfamily/user/build/" method="post" >
                                         {% csrf_token %}
-                                        <button class="btn btn-primary" type="submit" onClick="return confirm('確定送出委託?');" id="send" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">{% trans "送出" %}</button>
+                                        <button class="btn btn-primary" type="submit" onClick="return confirm('{% trans "確定送出委託?" %}');" id="send" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">{% trans "送出" %}</button>
                                         <button class="btn btn-primary" type="reset" id="reset" style="height: 24px;font-size: 14px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">{% trans "重置" %}</button>
                                     </form>
                                 </li>
@@ -149,7 +149,7 @@
                                 <li class="d-none d-sm-block d-md-none" style="font-size: 14px;">
                                     <form action="/toolfamily/user/build/" method="post" >
                                         {% csrf_token %}
-                                        <button class="btn btn-primary" type="submit" onClick="return confirm('確定送出委託?');" id="send2" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">{% trans "送出" %}</button>
+                                        <button class="btn btn-primary" type="submit" onClick="return confirm('{% trans "確定送出委託?" %}');" id="send2" style="height: 24px;font-size: 14px;line-height: 10px;background: #7b3b20;border-style: none;">{% trans "送出" %}</button>
                                         <button class="btn btn-primary" type="reset" id="reset2" style="height: 24px;font-size: 14px;line-height: 10px;border-color: #7b3b20;background: rgba(13,110,253,0);color: #7b3b20;">{% trans "重置" %}</button>
                                     </form>
                                 </li>
