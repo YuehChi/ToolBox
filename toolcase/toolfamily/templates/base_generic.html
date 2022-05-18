@@ -49,7 +49,7 @@
   {% block header-navbar %}
       <!----------NavBar FixtedTop---------->
       <nav class="d-none d-lg-block navbar navbar-light navbar-expand-lg fixed-top" style="background: rgb(244,244,243);height: 60px;">
-        <div class="container-fluid" style="height: 50px;background: rgb(244,244,243);"><a class="navbar-brand" href="{% url 'index'%}">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container-fluid" style="height: 50px;background: rgb(244,244,243);"><a class="navbar-brand" href="{% url 'index'%}"><img src="/static/images/logo_1.png" style="width: 100px;margin-top: -5px;"></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end align-items-lg-center" style="background: rgb(244,244,243);" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
                 <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
                     <input name="next" type="hidden" value="{{ redirect_to }}">
