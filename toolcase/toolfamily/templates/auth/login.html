@@ -17,14 +17,21 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
     <link rel="stylesheet" href="/static/fonts/material-icons.min.css">
 </head>
-
+<style>
+    #language {
+        background-color: transparent;
+        border-color: transparent;
+        outline: none;
+        font-size: 14px;
+    }
+</style>
 <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="72" style="background: rgb(244, 244, 243);">
-    <nav class="navbar navbar-light navbar-expand-md fixed-top" style="background: rgb(244,244,243);height: 50px;color: rgb(165, 141, 141);border-radius: 0px;border-style: outset;border-top-style: none;border-right-style: none;border-bottom-width: 1px;border-bottom-style: solid;border-left-style: none;border-left-color: rgb(165, 141, 141);">
-        <div class="container-fluid"><a class="navbar-brand" href="/toolfamily/">NTU ToolBox</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+    <nav class="navbar navbar-light navbar-expand-md fixed-top" style="background: rgb(244,244,243);height: 50px;border-radius: 0px;border-style: outset;border-top-style: none;border-right-style: none;border-bottom-width: 1px;border-bottom-style: solid;border-left-style: none;border-left-color: rgb(165, 141, 141);">
+        <div class="container-fluid"><a class="navbar-brand" href="/toolfamily/"><img src="/static/images/logo_1.png" style="width: 100px;margin-top: 0px;"></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
            <div class="collapse navbar-collapse d-md-flex d-lg-flex justify-content-md-end align-items-md-center justify-content-lg-end align-items-lg-center" id="navcol-1"><i class="material-icons" style="font-size: 15px;">language</i>
              <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
                  <input name="next" type="hidden" value="{{ redirect_to }}">
-                 <select name="language" onchange="this.form.submit()">
+                 <select id="language" name="language" onchange="this.form.submit()">
                      {% get_current_language as LANGUAGE_CODE %}
                      {% get_available_languages as LANGUAGES %}
                      {% get_language_info_list for LANGUAGES as languages %}
@@ -53,7 +60,7 @@
         <div class="row justify-content-center align-items-center">
             <div class="col-md-8 col-lg-6" style="width: 600px;">
                 {% load static %}
-                <div class="container" style="width: 500px;margin-right: 0px;margin-left: 39px;margin-top: 111px;padding-right: 24px;"><img src="{% static 'images/NTU%20TOOLBOX.png' %}" style="margin-top: 0px;margin-left: 21px;width: 414px;">
+                <div class="container" style="text-align: center; width: 600px;margin-top: 111px;"><img src="{% static 'images/logo_1.png' %}" style="margin-left: -20px; width: 600px;">
                     <hr style="margin-top: 32px;border-width: 2px;border-top-width: 2px;border-top-color: rgb(165, 141, 141);border-right-width: 2px;border-right-color: rgb(165, 141, 141);border-bottom-width: 2px;border-bottom-color: rgb(165, 141, 141);border-left-width: 2px;border-left-color: rgb(165, 141, 141);">
                     <h5 class="text-center font-weight-light mb-0" style="margin-top: 8px;color: rgb(214, 210, 206);"><strong>{% trans "專屬台大人的委託平台" %}</strong><br></h5>
                 </div>
