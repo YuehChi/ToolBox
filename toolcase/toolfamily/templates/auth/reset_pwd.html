@@ -28,10 +28,10 @@
             var pwd1 = document.getElementById("pwd").value;
             var pwd2 = document.getElementById("confirm").value;
            if(pwd1 == pwd2) {
-               document.getElementById("notice").innerHTML="<font color='green'>{% trans '台大工具箱' %}{% trans '兩次密碼相同' %}</font>";
+               document.getElementById("notice").innerHTML="<font color='green'>{% trans '兩次密碼相同' %}</font>";
                document.getElementById("mySubmit").disabled = false;
             }else {
-                document.getElementById("notice").innerHTML="<font color='Tomato'>{% trans '台大工具箱' %}{% trans '兩次密碼不同' %}</font>";
+                document.getElementById("notice").innerHTML="<font color='Tomato'>{% trans '兩次密碼不同' %}</font>";
                 document.getElementById("mySubmit").disabled = true;
             }
         }
