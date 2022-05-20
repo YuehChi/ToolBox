@@ -131,25 +131,25 @@
         <div c="2"  class="tab-inner hide" style="background: #ffffff;margin-top: 20px;margin-right: 60px;margin-left: 60px;border-radius: .25rem">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-md-6" style="max-width: 70%;width: 250px;margin-top: 20px;margin-right: 10px;">
+                    <div class="col-md-4" style="min-width: 40%;margin-top: 20px;margin-right: 10px;">
                         <form action="{% url 'user-icon-update' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             {% if current_user.icon %}  {# 有圖才顯示 #}
-                                <div id="preview_img" class="img-circular" style="width: 200px;height: 200px;background-image: url({{current_user.icon.url}});margin: auto;margin-top: 15px;margin-bottom: 10px"></div>
+                                <div id="preview_img" class="img-circular" style="width: 190px;height: 190px;background-image: url({{current_user.icon.url}});margin: auto;margin-top: 15px;margin-bottom: 10px"></div>
                             {% else %}
-                                <div id="preview_img" class="img-circular" style="width: 200px;height: 200px;background-image: url('/static/images/default_icon_1.png');margin: auto;margin-top: 15px;margin-bottom: 10px"></div>
+                                <div id="preview_img" class="img-circular" style="width: 190px;height: 190px;background-image: url('/static/images/default_icon_1.png');margin: auto;margin-top: 15px;margin-bottom: 10px"></div>
                             {% endif %}
                             <div style="text-align: center;">  {# 圖片上傳 #}
-                                <label for="id_icon" class="btn btn-primary border rounded" style="background: rgb(134,81,64);">{% trans "選擇圖片" %}</label>
                                 <input type="file" name="icon" accept="image/*" id="id_icon" style="display:none;">
-                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin-left: 20px;"  value='{% trans "提交圖片" %}'>
+                                <label for="id_icon" class="btn btn-primary border rounded" style="background: rgb(134,81,64);">{% trans "選擇圖片" %}</label>
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;margin: 20px;"  value='{% trans "提交圖片" %}'>
                             </div>
                             <div style="text-align: center;">
                                 <p style="margin-top: 10px; color: rgb(134, 81, 64)">{% trans "檔案大小限2.5MB以下" %}</p>
                             </div>
                         </form>
                     </div>
-                    <div class="col-md-6" style="margin-top: 20px;">
+                    <div class="col-md-4" style="min-width: 50%;margin-top: 20px;">
                         <form action="{% url 'user-profile-update' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div>
