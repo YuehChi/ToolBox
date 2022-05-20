@@ -45,8 +45,14 @@ $(document).ready(function() {
     }
 
     $('#link-edit').click(function(){
-        if($('#case-status').text() != "徵求中"){
-            alert('非徵求狀態的委託不可編輯！')
+        if($('#case-status').text() != "徵求中" && $('#case-status').text() != "Solicitation"){
+            if($('#case-status').text() == "Solicitation"){
+                alert('Commissions in non-solicited status cannot be edited!')
+            }
+            else{
+                alert('非徵求狀態的委託不可編輯！')
+            }
+            
         }
         else{
             window.location.href ='./edit/'
@@ -91,7 +97,7 @@ $(document).ready(function() {
 
     console.log($('#language option').filter(':selected').val())
     if($('#language option').filter(':selected').val() == 'en'){
-        $('#case-time').html(startdate + ' ~ ' + enddate + " " + remainday + " " + 'left')
+        $('#case-time').html(startdate + ' ~ ' + enddate + " " + remainday + " " + ' left')
     }
     else{
         $('#case-time').html(startdate + ' ~ ' + enddate + ' 還剩' + remainday)
