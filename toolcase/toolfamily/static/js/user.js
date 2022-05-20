@@ -21,7 +21,7 @@ $(document).ready(function() {
         var target = $(this).attr('m');
         $('.tab').children("[c='"+target+"']").removeClass('hide').siblings().addClass('hide');
     });
-    $('.list-group-item').click(function(){
+    $('.list-group-item a').click(function(){
         $(this).addClass('bold').siblings().removeClass('bold');
     });
 
