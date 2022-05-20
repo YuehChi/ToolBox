@@ -237,7 +237,7 @@
                                         <td style="width: 100px;line-height: 46px;color: rgb(121, 110, 110);" class="select" id="text_{{data.casewillingness_id}}">{% trans "未選" %}</td>
 
                                         <td style="text-align: center; width: 120px;line-height: 40px;padding-bottom: 0px;">
-                                            <input disabled type="button"  class=" btn_select btn btn-primary " value="選擇" id="{{data.casewillingness_id}}" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">
+                                            <input disabled type="button"  class=" btn_select btn btn-primary " value="{% trans '選擇' %}" id="{{data.casewillingness_id}}" style="width: 100px;height: 24px;font-size: 12px;line-height: 10px;background: #ca6c38;border-style: none;">
                                             <p hidden="hidden" id="notic{{data.casewillingness_id}}" style="line-height: 16px; font-size: 12px;color:#ca6c38 ; ">{% trans "你的工具人" %}<br>{% trans "已經徵滿了喔！" %}</p>
                                             <script>
                                                 if ('{{last}}'==0){
