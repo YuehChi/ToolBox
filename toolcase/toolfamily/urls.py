@@ -40,6 +40,7 @@ urlpatterns += [
     path('case/new/',views.case_new, name='case-new'),
     path('case/profile/<int:case_id>/', views.case_profile, name='case-profile' ),
     path('case/profile/<int:case_id>/edit/',views.case_profile_edit, name='case-profile-edit'),
+    path('case/profile/<int:case_id>/delete/',views.case_profile_delete, name='case-profile-delete'),
     path('case/search/', views.case_search,name='case-search'),
 ]
 
@@ -55,7 +56,6 @@ urlpatterns += [
     path('user/delete/<int:commission_id>/', views.delete_commission, name='delete-commission'),
     path('user/finish/<int:commission_id>/', views.finish_commission, name='finish-commission'),
     path('user/rate/', views.rate, name='rate'),
-
     path('case/take/<int:case_id>',views.take_case, name='take-case'),
     path('case/cancel/<int:case_id>', views.cancel_willingess, name='cancel-willingess'),
 ]

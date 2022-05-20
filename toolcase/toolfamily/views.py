@@ -554,6 +554,41 @@ def case_profile_edit(request,case_id):
 
 
 
+
+
+
+
+
+#-------------一個CASE的刪除資訊-------------
+@login_required
+def case_profile_delete(request,case_id):
+    current_user = get_object_or_404(  # 找出這個 user; 找不到則回傳 404 error
+        UserDetail,
+        django_user=request.user,
+        isActive=True)  # 若是被停權的 user，一樣 404
+
+    pk_key = case_id
+    user_id = request.user.user_detail.user_id
+    
+    # 找出哪一筆case
+    case = Case.objects.get(case_id=pk_key)
+    
+    # 確認是不是case的發布人
+    if case.publisher.user_id == user_id and case.case_status.status_id == 1:
+
+        try:
+            # 刪除哪一筆case
+            case.delete()
+            print("Record deleted successfully!")
+        except:
+            print("Record doesn't exists")
+
+        return redirect('index')
+
+
+    return redirect('index')
+
+
 # -------------CASE資訊搜尋-------------
 @login_required
 def case_search(request):
