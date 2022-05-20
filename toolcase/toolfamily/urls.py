@@ -56,6 +56,7 @@ urlpatterns += [
     path('user/delete/<int:commission_id>/', views.delete_commission, name='delete-commission'),
     path('user/finish/<int:commission_id>/', views.finish_commission, name='finish-commission'),
     path('user/rate/', views.rate, name='rate'),
+    path('user/publish/<int:case_id>/delete/',views.user_case_profile_delete, name='user_case-profile-delete'),
     path('case/take/<int:case_id>',views.take_case, name='take-case'),
     path('case/cancel/<int:case_id>', views.cancel_willingess, name='cancel-willingess'),
 ]
