@@ -20,7 +20,12 @@ $(document).ready(function() {
         })
     }
     else if (tbtn_status == '2' &&  case_status != "完成"){
-        $('#button-case-commission').html('取消報名')
+        if($('#language option').filter(':selected').val() == 'en'){
+            $('#button-case-commission').html('Cancel')
+        }
+        else{
+                  $('#button-case-commission').html('取消報名')
+        }
         $('#button-case-commission').removeClass('btn-take-case')
         $('#button-case-commission').addClass('btn-cancel-take-case')
         $('#button-case-commission').click(function(){
@@ -52,7 +57,7 @@ $(document).ready(function() {
             else{
                 alert('非徵求狀態的委託不可編輯！')
             }
-            
+
         }
         else{
             window.location.href ='./edit/'
@@ -193,7 +198,7 @@ $(document).ready(function() {
     // $('#user-icon').attr('style', "background-image:" + $('#get-user-icon').html())
     console.log($('#get-user-lastlogintime').html())
 
-    
+
     // --------------- User Gender ---------------
     var gender = $('#get-user-gender').html()
     if (gender == 0){
@@ -231,7 +236,7 @@ $(document).ready(function() {
     else{
         $('#user-lastlogintime').html('上次登入: ' + llt + ' 前')
     }
-    
+
 
 
     // --------------- User Rate ---------------

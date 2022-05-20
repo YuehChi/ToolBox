@@ -1,6 +1,6 @@
 from calendar import c
 from datetime import timedelta, date
-import os, django, json, smtplib, base64, imaplib, time
+import os, django, json, smtplib, base64, imaplib, time, random
 from email.mime.text import MIMEText
 from urllib import request
 from site import USER_SITE
@@ -1848,7 +1848,8 @@ def register(request):
         # insert user detail into User
         now = datetime.datetime.now()
         temp = now.strftime('%Y%m%d%H%M%S')
-        rand_name = temp + username
+        rand = random.randrange(0, 100)
+        rand_name = temp + username + str(rand)
 
         user = User.objects.create_user(username=rand_name, password=password, email=account, is_active=False)
         user.save()
