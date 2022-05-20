@@ -612,6 +612,7 @@ def user_case_profile_delete(request,case_id):
             # 刪除哪一筆case
             case.delete()
             print("Record deleted successfully!")
+            print("************** user ****************")
         except:
             print("Record doesn't exists")
 
