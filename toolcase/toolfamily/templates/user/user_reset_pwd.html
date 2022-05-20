@@ -14,11 +14,11 @@
 
         if(pwd1 == pwd2) {
             document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:green;'>{% trans "兩次密碼相同" %}</span>";
-            isPwdCheck = true;
+            document.getElementById("mySubmit").disabled = false;
 
         }else if (pwd1 != pwd2){
             document.getElementById("notice").innerHTML="<span style='font-size: 12px; color:Tomato;'>{% trans "兩次密碼不同" %}</span>";
-            isPwdCheck = false;
+            document.getElementById("mySubmit").disabled = true;
         }
     }
     // 密碼強度--------------------------------------------------------------------
@@ -155,6 +155,10 @@
                     <div class="col-md-6" style="max-width: 70%;width: 250px;margin-top: 20px;">
                         <form action="{% url 'user-password-update' %}" method="POST">
                             {% csrf_token %}
+                            <!-- show error info -->
+                            {% for error in messages %}
+                            <div style="color: red">{{ error }}</div>
+                            {% endfor%}
                             <div class="row form-row" style="margin-top: 10px;">
                                 <div class="col-12 form-group">
                                     <label class="form-label" style="font-weight: bold;">
@@ -177,16 +181,12 @@
                                     <label class="form-label" style="font-weight: bold;">
                                         {% trans "請再次輸入新密碼" %}：
                                     <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="password" id="confirm" name="confirmNewPassword" style="width: 100%;" required>
+                                    <input class="form-control" type="password" onkeyup="validate()" id="confirm" name="confirmNewPassword" style="width: 100%;" required>
                                     <span id="notice"></span>
                                 </div>
                             </div>
                             <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
-                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;"  value='{% trans "送出" %}'>
-                                <!-- show error info -->
-                                {% for error in messages %}
-                                <div>{{ error }}</div>
-                                {% endfor%}
+                                <input class="btn btn-primary border rounded" type="submit" style="background: rgb(134,81,64);margin-bottom: 0px;" id="mySubmit" value='{% trans "送出" %}'>
                             </div>
                         </form>
                     </div>
