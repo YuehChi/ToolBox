@@ -88,6 +88,10 @@ $(document).ready(function() {
     // console.log($('#input-work').val())
   }
 
+  if($('#language option').filter(':selected').val() == 'en'){
+    $('#edit_case_icon').attr('src', '/static/images/title_2_en.png')
+  }
+
   //---------------------End Date---------------------
   // console.log($('#get-enddate').html())
   var enddate = $('#get-enddate').html()

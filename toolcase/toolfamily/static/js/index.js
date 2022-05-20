@@ -109,7 +109,13 @@ function userLastLogin(lastlogin){
 
 
     var llt = convertMS(Math.abs((currentdate.getTime() - lastlogin.getTime())))
-    var llt_str = llt + '前登入'
+    if($('#language option').filter(':selected').val() == 'en'){
+        var llt_str = llt + ' ago log in'
+    }
+    else{
+        var llt_str = llt + ' 前登入'
+    }
+    
     return  llt_str 
 }
 

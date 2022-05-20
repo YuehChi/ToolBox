@@ -192,6 +192,8 @@ $(document).ready(function() {
     $('.img-circular').css('background-image', 'url('+$('#get-user-icon').html()+')')
     // $('#user-icon').attr('style', "background-image:" + $('#get-user-icon').html())
     console.log($('#get-user-lastlogintime').html())
+
+    
     // --------------- User Gender ---------------
     var gender = $('#get-user-gender').html()
     if (gender == 0){
@@ -223,7 +225,14 @@ $(document).ready(function() {
 
     var llt = convertMS(Math.abs((currentdate.getTime() - lastlogin.getTime())))
     console.log(llt)
-    $('#user-lastlogintime').html('上次登入: ' + llt + '前')
+    if($('#language option').filter(':selected').val() == 'en'){
+        $('#user-lastlogintime').html('last login: ' + llt + ' ago')
+    }
+    else{
+        $('#user-lastlogintime').html('上次登入: ' + llt + ' 前')
+    }
+    
+
 
     // --------------- User Rate ---------------
     console.log($('#get-user-rate').html())
@@ -283,7 +292,7 @@ function convertMS(millisecondes){
         if (minutes < 60){
             console.log('minutes:' + Math.floor(minutes))
             if($('#language option').filter(':selected').val() == 'en'){
-                return Math.floor(minutes).toString() + ' minutes'
+                return Math.floor(minutes).toString() + ' mins'
             }
             else{
                 return Math.floor(minutes).toString() + ' 分鐘'

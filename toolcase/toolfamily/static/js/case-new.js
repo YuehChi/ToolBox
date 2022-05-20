@@ -27,6 +27,9 @@ $(document).ready(function() {
     upload_img_log.forEach(function(value, index, object){
       uplod_img_submit.push(value[1])
     });
+
+
+
     
     //$('#forminput-images').attr('files', uplod_img_submit)
     // const iii = document.getElementById('forminput-images')
@@ -63,6 +66,9 @@ $(document).ready(function() {
 
   });
 
+  if($('#language option').filter(':selected').val() == 'en'){
+    $('#new_case_icon').attr('src', '/static/images/title_1_en.png')
+  }
 
   //---------------------Uploade Image Preview---------------------
   var counter = 1
