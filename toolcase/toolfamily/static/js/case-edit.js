@@ -9,6 +9,8 @@ $(document).ready(function() {
     $('#forminput-casetype').val($('#select-casetype').val())        // Case Field
     $('#forminput-casefield').val($('#select-casefield').val())        // Case Type
 
+
+    
     var enddate = $('#input-enddate').val().split('/')
     enddate = enddate[2] + '-' + enddate[0] + '-' + enddate[1]
     $('#forminput-enddate').val(enddate)                                 // Ended Datetime
@@ -87,15 +89,20 @@ $(document).ready(function() {
   }
 
   //---------------------End Date---------------------
+  // console.log($('#get-enddate').html())
   var enddate = $('#get-enddate').html()
   // console.log(enddate)
   var year = enddate.split('年')[0]
   var month = enddate.split('年')[1].split('月')[0]
   var date =  enddate.split('年')[1].split('月')[1].split('日')[0]
-  if(parseInt(month) < 10){
-    month = '0' + month
-  }
+  // if(parseInt(month) < 10){
+  //   month = '0' + month
+  // }
   enddate = month + '/' + date + '/' + year
+  // console.log(year)
+  // console.log(month)
+  // console.log(date)
+  // console.log(enddate)
   $('#input-enddate').val(enddate)          // Ended Datetime
 
 
@@ -197,6 +204,8 @@ $(document).ready(function() {
     }
     
   });
+
+  console.log($('#input-enddate').val())
 
 
 
