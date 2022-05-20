@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-20 22:08+0800\n"
+"POT-Creation-Date: 2022-05-20 23:13+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -418,8 +418,7 @@ msgstr ""
 
 #: toolfamily/templates/auth/register.html:320
 msgid "我同意，註冊表示接受本平台上述之聲明"
-msgstr ""
-"I agree, registration means accept ALL."
+msgstr "I agree, registration means accept ALL."
 
 #: toolfamily/templates/auth/reset_pwd.html:156
 msgid "重設密碼"
@@ -1435,7 +1434,7 @@ msgstr "Request initiated"
 
 #: toolfamily/templates/user/take.html:400
 msgid "確認取消"
-msgstr "Confirm Cancel"
+msgstr "Confirm"
 
 #: toolfamily/templates/user/take.html:404
 msgid "等待對方確認取消"
