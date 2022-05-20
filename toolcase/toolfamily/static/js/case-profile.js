@@ -88,16 +88,16 @@ $(document).ready(function() {
 
 
 
-    
+
     console.log($('#language option').filter(':selected').val())
     if($('#language option').filter(':selected').val() == 'en'){
-        $('#case-time').html(startdate + ' ~ ' + enddate + remainday + 'left')
+        $('#case-time').html(startdate + ' ~ ' + enddate + " " + remainday + " " + 'left')
     }
     else{
         $('#case-time').html(startdate + ' ~ ' + enddate + ' 還剩' + remainday)
     }
-    
-    
+
+
 
 
     // --------------- Case Description ---------------
@@ -146,7 +146,7 @@ $(document).ready(function() {
         }
         // console.log(imgitems_html)
         imgitems_html = imgitems_html + '</div></div>'
-            
+
         //     if (i==0){
         //         imgitems_html = '<div class="carousel-item active"><div class="row">'
         //         imgitems_html = imgitems_html + '<div class="col padding-none"><img class="w-100 d-block" src="' + case_images[i].src + '" alt="Slide Image"></div>'
@@ -206,7 +206,7 @@ $(document).ready(function() {
 
     // --------------- User Last Login Time ---------------
     var lastlogin = $('#get-user-lastlogintime').html()
-    
+
     var year = lastlogin.split('年')[0]
     var month = lastlogin.split('年')[1].split('月')[0]
     var date =  lastlogin.split('年')[1].split('月')[1].split('日')[0]
@@ -242,7 +242,7 @@ $(document).ready(function() {
         else{
             rate_html = rate_html + '<i class="material-icons star-color">star_border</i>'
         }
-        starnum = starnum - 1 
+        starnum = starnum - 1
     }
 
     console.log(rate_html)
@@ -270,7 +270,7 @@ function convertMS(millisecondes){
         else{
             return '不到1分鐘'
         }
-        
+
     }
     else{
         let minutes = seconds / 60
@@ -282,7 +282,7 @@ function convertMS(millisecondes){
             else{
                 return Math.floor(minutes).toString() + ' 分鐘'
             }
-            
+
         }
         else{
             let hours = minutes/60
@@ -294,7 +294,7 @@ function convertMS(millisecondes){
                 else{
                     return Math.floor(hours).toString() + ' 小時'
                 }
-                
+
             }
             else{
                 let days = hours/24
@@ -306,7 +306,7 @@ function convertMS(millisecondes){
                     else{
                         return Math.floor(days).toString() + ' 天'
                     }
-                    
+
                 }
                 else{
                     let months = days/30
@@ -318,7 +318,7 @@ function convertMS(millisecondes){
                         else{
                             return Math.floor(months).toString() + ' 個月'
                         }
-                        
+
                     }
                     else{
                         let years = months/12
@@ -330,12 +330,12 @@ function convertMS(millisecondes){
                         else{
                             return Math.floor(years).toString() + ' 年'
                         }
-                        
+
                     }
                 }
             }
         }
 
     }
-    
+
 }
