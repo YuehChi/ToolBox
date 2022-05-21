@@ -165,8 +165,12 @@
                                         </span>
                                         <span id="case-title" style="display: block;font-weight: bold;font-size: 24px;">
                                             {{case.title}}
-                                            <a href="#" class="d-none" style="font-size: small;color: #b94700"
-                                                id="link-edit">{% trans "編輯案件" %}</a>
+                                            <a href="#" class="d-none" style="font-size: small;color: #b94700"id="link-edit">
+                                            {% trans "編輯案件" %}
+                                            </a>
+                                            <a href="#" class="d-none" style="font-size: small;color: #b94700;margin-left:5px" id="link-delete">
+                                            {% trans "刪除案件" %}
+                                            </a>
                                         </span>
 
                                     </div>
@@ -606,7 +610,7 @@
 
                                     <div>
 
-                                    <button><a href="/toolfamily/case/profile/{{case_id}}/delete/">delete</a></button>
+                                    
                                     </div>
 
                                 </div>

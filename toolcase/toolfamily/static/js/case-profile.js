@@ -24,7 +24,7 @@ $(document).ready(function() {
             $('#button-case-commission').html('Cancel')
         }
         else{
-                  $('#button-case-commission').html('取消報名')
+            $('#button-case-commission').html('取消報名')
         }
         $('#button-case-commission').removeClass('btn-take-case')
         $('#button-case-commission').addClass('btn-cancel-take-case')
@@ -46,6 +46,7 @@ $(document).ready(function() {
     // --------------- Case Edit Button ---------------
     if($('#get-user-id').html() == $('#get-loginuser-id').html()){
         $('#link-edit').removeClass('d-none')
+        $('#link-delete').removeClass('d-none')
         $('#case-buttons').addClass('d-none')
     }
 
@@ -61,6 +62,32 @@ $(document).ready(function() {
         }
         else{
             window.location.href ='./edit/'
+        }
+
+    })
+    $('#link-delete').click(function(){
+        if($('#case-status').text() != "徵求中" && $('#case-status').text() != "Solicitation"){
+            if($('#case-status').text() == "Solicitation"){
+                alert('Commissions in non-solicited status cannot be deleted!')
+            }
+            else{
+                alert('非徵求狀態的委託不可刪除！')
+            }
+
+        }
+        else{
+            if($('#case-status').text() == "Solicitation"){
+                if (window.confirm("This action will delete this commission. Continue?")) {
+                    window.location.href ='./delete/'
+                }
+            }
+            else{
+                if (window.confirm("這個動作將會刪除該委託，是否繼續？")) {
+                    window.location.href ='./delete/'
+                }
+            }
+            
+            
         }
 
     })
