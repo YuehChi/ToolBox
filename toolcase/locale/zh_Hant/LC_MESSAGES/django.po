@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-20 23:38+0800\n"
+"POT-Creation-Date: 2022-05-21 23:20+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -444,7 +444,7 @@ msgid "限30字"
 msgstr ""
 
 #: toolfamily/templates/case/new.html:94
-#: toolfamily/templates/case/profile.html:209
+#: toolfamily/templates/case/profile.html:213
 #: toolfamily/templates/case/profile_edit.html:94
 #: toolfamily/templates/user/take.html:330
 #: toolfamily/templates/user/take.html:520
@@ -453,7 +453,7 @@ msgid "報酬"
 msgstr ""
 
 #: toolfamily/templates/case/new.html:105
-#: toolfamily/templates/case/profile.html:292
+#: toolfamily/templates/case/profile.html:296
 #: toolfamily/templates/case/profile_edit.html:105
 #: toolfamily/templates/case/profile_edit_1.html:55
 #: toolfamily/templates/case/search.html:152
@@ -533,7 +533,7 @@ msgid "其他"
 msgstr ""
 
 #: toolfamily/templates/case/new.html:129
-#: toolfamily/templates/case/profile.html:292
+#: toolfamily/templates/case/profile.html:296
 #: toolfamily/templates/case/profile_edit.html:129
 #: toolfamily/templates/case/profile_edit_1.html:39
 #: toolfamily/templates/case/search.html:189
@@ -598,20 +598,20 @@ msgid "月/日/年"
 msgstr ""
 
 #: toolfamily/templates/case/new.html:164
-#: toolfamily/templates/case/profile.html:229
+#: toolfamily/templates/case/profile.html:233
 #: toolfamily/templates/case/profile_edit.html:164
 msgid "人數"
 msgstr ""
 
 #: toolfamily/templates/case/new.html:177
-#: toolfamily/templates/case/profile.html:272
+#: toolfamily/templates/case/profile.html:276
 #: toolfamily/templates/case/profile_edit.html:177
 #: toolfamily/templates/case/search.html:267
 msgid "工作方式"
 msgstr ""
 
 #: toolfamily/templates/case/new.html:185
-#: toolfamily/templates/case/profile.html:278
+#: toolfamily/templates/case/profile.html:282
 #: toolfamily/templates/case/profile_edit.html:185
 #: toolfamily/templates/case/search.html:417
 #: toolfamily/templates/index.html:258 toolfamily/templates/index.html:487
@@ -627,7 +627,7 @@ msgid "線上"
 msgstr ""
 
 #: toolfamily/templates/case/new.html:201
-#: toolfamily/templates/case/profile.html:252
+#: toolfamily/templates/case/profile.html:256
 #: toolfamily/templates/case/profile_edit.html:201
 #: toolfamily/templates/case/search.html:298
 #: toolfamily/templates/case/search_temp.html:44
@@ -655,7 +655,7 @@ msgid "不限"
 msgstr ""
 
 #: toolfamily/templates/case/new.html:219
-#: toolfamily/templates/case/profile.html:321
+#: toolfamily/templates/case/profile.html:325
 #: toolfamily/templates/case/profile_edit.html:219
 #: toolfamily/templates/case/search.html:292
 #: toolfamily/templates/case/search_temp.html:73 toolfamily/templates/index
@@ -731,30 +731,34 @@ msgstr ""
 msgid "編輯案件"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:180
+#: toolfamily/templates/case/profile.html:172
+msgid "刪除案件"
+msgstr ""
+
+#: toolfamily/templates/case/profile.html:184
 #: toolfamily/templates/case/search.html:232
 #: toolfamily/templates/case/search.html:384
 #: toolfamily/templates/index.html:226 toolfamily/templates/index.html:455
-#: toolfamily/templates/user/publish.html:385
+#: toolfamily/templates/user/publish.html:400
 msgid "徵求中"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:183
+#: toolfamily/templates/case/profile.html:187
 #: toolfamily/templates/case/search.html:233
 #: toolfamily/templates/case/search.html:386
 #: toolfamily/templates/index.html:228 toolfamily/templates/index.html:457
-#: toolfamily/templates/user/publish.html:387
+#: toolfamily/templates/user/publish.html:402
 msgid "委託中"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:186
+#: toolfamily/templates/case/profile.html:190
 #: toolfamily/templates/case/search.html:234
 #: toolfamily/templates/case/search.html:388
 #: toolfamily/templates/index.html:230 toolfamily/templates/index.html:459
 msgid "已完成"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:237
+#: toolfamily/templates/case/profile.html:241
 #: toolfamily/templates/case/search.html:245
 #: toolfamily/templates/case/search.html:246
 #: toolfamily/templates/case/search.html:247
@@ -762,15 +766,15 @@ msgstr ""
 msgid "人"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:342
+#: toolfamily/templates/case/profile.html:346
 msgid "委託內容"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:433
-#: toolfamily/templates/user/publish.html:469
-#: toolfamily/templates/user/publish.html:471
-#: toolfamily/templates/user/publish.html:708
-#: toolfamily/templates/user/publish.html:711
+#: toolfamily/templates/case/profile.html:437
+#: toolfamily/templates/user/publish.html:484
+#: toolfamily/templates/user/publish.html:486
+#: toolfamily/templates/user/publish.html:723
+#: toolfamily/templates/user/publish.html:726
 #: toolfamily/templates/user/take.html:487
 #: toolfamily/templates/user/take.html:489
 #: toolfamily/templates/user/take.html:692
@@ -779,34 +783,34 @@ msgstr ""
 msgid "檢舉"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:438
-#: toolfamily/templates/user/publish.html:475
-#: toolfamily/templates/user/publish.html:717
+#: toolfamily/templates/case/profile.html:442
+#: toolfamily/templates/user/publish.html:490
+#: toolfamily/templates/user/publish.html:732
 #: toolfamily/templates/user/take.html:493
 #: toolfamily/templates/user/take.html:699
 #: toolfamily/templates/user/user_profile.html:73
 msgid "已檢舉"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:445
+#: toolfamily/templates/case/profile.html:449
 msgid "檢舉委託"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:454
+#: toolfamily/templates/case/profile.html:458
 #: toolfamily/templates/user/publish.html:251
 #: toolfamily/templates/user/take.html:258
 #: toolfamily/templates/user/user_profile.html:90
 msgid "檢舉類型"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:466
+#: toolfamily/templates/case/profile.html:470
 #: toolfamily/templates/user/publish.html:263
 #: toolfamily/templates/user/take.html:270
 #: toolfamily/templates/user/user_profile.html:102
 msgid "檢舉內容"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:472
+#: toolfamily/templates/case/profile.html:476
 #: toolfamily/templates/user/applicant.html:281
 #: toolfamily/templates/user/publish.html:269
 #: toolfamily/templates/user/take.html:276
@@ -815,7 +819,7 @@ msgstr ""
 msgid "取消"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:473
+#: toolfamily/templates/case/profile.html:477
 #: toolfamily/templates/case/profile_edit_1.html:71
 #: toolfamily/templates/case/search_temp.html:28
 #: toolfamily/templates/case/search_temp.html:52
@@ -829,36 +833,36 @@ msgstr ""
 msgid "送出"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:486
+#: toolfamily/templates/case/profile.html:490
 msgid "我有意願"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:529
+#: toolfamily/templates/case/profile.html:533
 msgid "案主資訊"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:587
+#: toolfamily/templates/case/profile.html:591
 #: toolfamily/templates/user/applicant.html:209
 #: toolfamily/templates/user/applicant.html:222
 #: toolfamily/templates/user/publish.html:161
-#: toolfamily/templates/user/publish.html:445
-#: toolfamily/templates/user/publish.html:683
+#: toolfamily/templates/user/publish.html:460
+#: toolfamily/templates/user/publish.html:698
 #: toolfamily/templates/user/take.html:151
 #: toolfamily/templates/user/take.html:460
 msgid "上次登入"
 msgstr ""
 
-#: toolfamily/templates/case/profile.html:598
-#: toolfamily/templates/case/profile.html:604
+#: toolfamily/templates/case/profile.html:602
+#: toolfamily/templates/case/profile.html:608
 msgid "查看個人空間"
 msgstr ""
 
 #: toolfamily/templates/case/profile_edit.html:258
-#: toolfamily/templates/user/publish.html:482
-#: toolfamily/templates/user/publish.html:522
-#: toolfamily/templates/user/publish.html:528
-#: toolfamily/templates/user/publish.html:534
-#: toolfamily/templates/user/publish.html:627
+#: toolfamily/templates/user/publish.html:497
+#: toolfamily/templates/user/publish.html:537
+#: toolfamily/templates/user/publish.html:543
+#: toolfamily/templates/user/publish.html:549
+#: toolfamily/templates/user/publish.html:642
 #: toolfamily/templates/user/take.html:380
 #: toolfamily/templates/user/take.html:399
 #: toolfamily/templates/user/take.html:406
@@ -906,7 +910,7 @@ msgstr ""
 #: toolfamily/templates/case/search.html:254
 #: toolfamily/templates/case/search_temp.html:75 toolfamily/templates/index
 #: copy.html:24 copy.html:115 toolfamily/templates/user/publish.html:324
-#: toolfamily/templates/user/publish.html:567
+#: toolfamily/templates/user/publish.html:582
 #: toolfamily/templates/user/take.html:328
 #: toolfamily/templates/user/take.html:518
 #: toolfamily/templates/user/take.html:569
@@ -1025,7 +1029,7 @@ msgstr ""
 #: toolfamily/templates/case/search_temp.html:76 toolfamily/templates/index
 #: copy.html:25 copy.html:116 toolfamily/templates/user/applicant.html:171
 #: toolfamily/templates/user/publish.html:326
-#: toolfamily/templates/user/publish.html:569
+#: toolfamily/templates/user/publish.html:584
 #: toolfamily/templates/user/take.html:333
 #: toolfamily/templates/user/take.html:572
 msgid "狀態"
@@ -1084,7 +1088,7 @@ msgid "天"
 msgstr ""
 
 #: toolfamily/templates/user/applicant.html:122
-#: toolfamily/templates/user/publish.html:401
+#: toolfamily/templates/user/publish.html:416
 msgid "應徵名單"
 msgstr ""
 
@@ -1123,10 +1127,10 @@ msgid "工具人資訊"
 msgstr ""
 
 #: toolfamily/templates/user/applicant.html:170
-#: toolfamily/templates/user/publish.html:495
-#: toolfamily/templates/user/publish.html:499
-#: toolfamily/templates/user/publish.html:728
-#: toolfamily/templates/user/publish.html:731
+#: toolfamily/templates/user/publish.html:510
+#: toolfamily/templates/user/publish.html:514
+#: toolfamily/templates/user/publish.html:743
+#: toolfamily/templates/user/publish.html:746
 #: toolfamily/templates/user/take.html:711
 #: toolfamily/templates/user/take.html:714
 msgid "評價"
@@ -1180,7 +1184,7 @@ msgid "於"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:163
-#: toolfamily/templates/user/publish.html:748
+#: toolfamily/templates/user/publish.html:763
 msgid "解除委託"
 msgstr ""
 
@@ -1210,91 +1214,91 @@ msgid "歷史紀錄"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:321
-#: toolfamily/templates/user/publish.html:565
+#: toolfamily/templates/user/publish.html:580
 msgid "發布時間"
 msgstr ""
 
 #: toolfamily/templates/user/publish.html:323
-#: toolfamily/templates/user/publish.html:566
+#: toolfamily/templates/user/publish.html:581
 msgid "標題"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:398
-#: toolfamily/templates/user/publish.html:644
+#: toolfamily/templates/user/publish.html:413
+#: toolfamily/templates/user/publish.html:659
 msgid "已選名單"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:483
-#: toolfamily/templates/user/publish.html:535
+#: toolfamily/templates/user/publish.html:498
+#: toolfamily/templates/user/publish.html:550
 #: toolfamily/templates/user/take.html:381
 #: toolfamily/templates/user/take.html:413
 #: toolfamily/templates/user/take.html:610
 msgid "解除"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:498
+#: toolfamily/templates/user/publish.html:513
 #: toolfamily/templates/user/take.html:713
 msgid "確定送出評價？"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:512
-#: toolfamily/templates/user/publish.html:744
+#: toolfamily/templates/user/publish.html:527
+#: toolfamily/templates/user/publish.html:759
 msgid "已完成委託"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:517
+#: toolfamily/templates/user/publish.html:532
 msgid "已解除"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:520
+#: toolfamily/templates/user/publish.html:535
 msgid "已發起解除請求"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:520
+#: toolfamily/templates/user/publish.html:535
 msgid "等待對方回覆！"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:523
+#: toolfamily/templates/user/publish.html:538
 #: toolfamily/templates/user/take.html:407
 msgid "解除中"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:526
+#: toolfamily/templates/user/publish.html:541
 msgid "對方已發出取消請求"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:526
-#: toolfamily/templates/user/publish.html:532
+#: toolfamily/templates/user/publish.html:541
+#: toolfamily/templates/user/publish.html:547
 msgid "請即時確認！"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:529
+#: toolfamily/templates/user/publish.html:544
 msgid "確認解除"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:532
+#: toolfamily/templates/user/publish.html:547
 msgid "對方已發起完成請求"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:568
+#: toolfamily/templates/user/publish.html:583
 #: toolfamily/templates/user/take.html:574
 msgid "獲得的評價"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:629
+#: toolfamily/templates/user/publish.html:644
 msgid "關閉"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:756
+#: toolfamily/templates/user/publish.html:771
 msgid "已解除委託"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:759
+#: toolfamily/templates/user/publish.html:774
 msgid "時間結束"
 msgstr ""
 
-#: toolfamily/templates/user/publish.html:759
-#: toolfamily/templates/user/publish.html:761
+#: toolfamily/templates/user/publish.html:774
+#: toolfamily/templates/user/publish.html:776
 msgid "自動完成委託"
 msgstr ""
 
