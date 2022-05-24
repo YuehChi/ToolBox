@@ -24,6 +24,58 @@
         outline: none;
         font-size: 14px;
     }
+    #btn_more {
+        background-color: #865140;
+        color: #f4f4f3;
+        width: 120px;
+    }
+    #btn_more:hover {
+        background-color: #5a3224;
+        box-shadow: 1px 2px 3px #d4d3d3;
+    }
+    .introduction_img {
+        display: grid;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100vh;
+        margin: auto;
+    }
+
+    #btn_join {
+        background-color: #f0b401;
+        color: #f4f4f3;
+        width: 169px;
+        font-size: 20px;
+        position: absolute;
+        bottom: 4%;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 1px 2px 3px #d4d3d3;
+    }
+    #btn_join:hover {
+        background-color: #daa000;
+        box-shadow: 1px 2px 3px #d4d3d3;
+    }
+
+    #btn_join_mobile {
+        background-color: #f0b401;
+        color: #f4f4f3;
+        width: 169px;
+        font-size: 20px;
+        position: absolute;
+        bottom: 10%;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 1px 2px 3px #d4d3d3;
+    }
+    #btn_join_mobile:hover {
+        background-color: #daa000;
+        box-shadow: 1px 2px 3px #d4d3d3;
+    }
 </style>
 <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="72" style="background: rgb(244, 244, 243);">
     <nav class="navbar navbar-light navbar-expand-md fixed-top" style="background: rgb(244,244,243);height: 70px;border-radius: 0px;border-style: outset;border-top-style: none;border-right-style: none;border-bottom-width: 1px;border-bottom-style: solid;border-left-style: none;border-left-color: rgb(165, 141, 141);">
@@ -62,7 +114,8 @@
                 {% load static %}
                 <div class="container" style="text-align: center; width: 600px;margin-top: 111px;"><img src="{% static 'images/logo_1.png' %}" style="margin-left: -20px; width: 600px;">
                     <hr style="margin-top: 32px;border-width: 2px;border-top-width: 2px;border-top-color: rgb(165, 141, 141);border-right-width: 2px;border-right-color: rgb(165, 141, 141);border-bottom-width: 2px;border-bottom-color: rgb(165, 141, 141);border-left-width: 2px;border-left-color: rgb(165, 141, 141);">
-                    <h5 class="text-center font-weight-light mb-0" style="margin-top: 8px;color: rgb(214, 210, 206);"><strong>{% trans "專屬台大人的委託平台" %}</strong><br></h5>
+                    <h5 class="text-center font-weight-light mb-0" style="margin-top: 8px;color: rgb(136, 110, 104);"><strong>{% trans "專屬台大人的委託平台" %}</strong><br></h5>
+                    <button class="btn mt-3" id="btn_more">{% trans "了解更多" %}</button>
                 </div>
             </div>
             <div class="col-md-10" style="height: 500px;width: 600px;">
@@ -99,8 +152,67 @@
 
     </section>
 
+    <div id="introduction" class="d-none d-md-block introduction" style="margin-top:200px;position: relative;">
+        <img id="introduction_img_1" class="introduction_img" src="/static/images/login_img_1.jpg" style="padding:0;">
+        <img id="introduction_img_2" class="introduction_img" src="/static/images/login_img_2.jpg" style="padding:0;">
+        <button class="btn mt-3" id="btn_join">{% trans "立即加入" %}</button>
+    </div>
+
+    <div id="introduction_mobile" class="d-md-none introduction" style="margin-top:200px;position: relative;">
+        <img id="introduction_img_mobile_1" class="introduction_img" src="/static/images/login_img_mobile_1.jpg" style="padding:0;">
+        <img id="introduction_img_mobile_2" class="introduction_img" src="/static/images/login_img_mobile_2.jpg" style="padding:0;">
+        <button class="btn mt-3" id="btn_join_mobile">{% trans "立即加入" %}</button>
+    </div>
+
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="/static/js/freelancer.js"></script>
+    <script>
+        $(document).ready(function(){
+    
+            $('#btn_more').click(function(){
+                var windowsize = $(window).width();
+                if (windowsize >= 768) {
+                    var elem = document.getElementById('introduction');
+                    window.scrollTo(0, position(elem))
+                }
+                else{
+                    var elem = document.getElementById('introduction_mobile');
+                    window.scrollTo(0, position(elem))
+                }
+            })
+
+            $('#btn_join').click(function(){
+                window.scrollTo(0, 0)
+            })
+
+            $('#btn_join_mobile').click(function(){
+                window.scrollTo(0, 0)
+            })
+
+            if($('#language option').filter(':selected').val() == 'en'){
+                $('#introduction_img_1').attr('src', '/static/images/login_img_1_en.jpg')
+                $('#introduction_img_2').attr('src', '/static/images/login_img_2_en.jpg')
+                $('#introduction_img_mobile_1').attr('src', '/static/images/login_img_mobile_1_en.jpg')
+                $('#introduction_img_mobile_2').attr('src', '/static/images/login_img_mobile_2_en.jpg')
+            }
+
+        });
+
+        function position(elem) { 
+            var left = 0, 
+                top = 0; 
+
+            do { 
+                left += elem.offsetLeft-elem.scrollLeft; 
+                top += elem.offsetTop-elem.scrollTop; 
+            } while ( elem = elem.offsetParent ); 
+
+            return top-50; 
+            } 
+
+
+    </script>
 
 </body>
 
