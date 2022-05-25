@@ -133,7 +133,7 @@
                                 <div class="row">
                                     <div class="d-inline-block">
                                         <img class="decorate-icon" src="/static/images/icon_2.png">
-                                        <h1 class="d-inline-block" style="margin-left: 70px;font-size: 40px;width: auto;"><span>{% trans "最新案件" %}</span></h1>
+                                        <h1 class="d-inline-block" style="margin-left: 70px;font-size: 30px;width: auto;"><span>{% trans "最新案件" %}</span></h1>
 
 
                                         <!--Pagination-->
@@ -155,7 +155,7 @@
                                                         {{ i }}
                                                         </span>
                                                     </li>
-                                                {% else %}
+                                                {% elif most_case.number != i and i <= 5 %}
                                                     <li class="page-item">
                                                         <a class="page-link new-page-link" href="#" data-value="{{i}}">{{ i }}</a>
                                                     </li>
@@ -367,7 +367,8 @@
 
                                     <div class="d-inline-block">
                                         <img class="decorate-icon" src="/static/images/icon_3.png">
-                                        <h1 class="d-inline-block" style="margin-left: 70px;width: auto;"><span>{% trans "熱門案件" %}</span></h1>
+                                        <h1 class="d-inline-block" style="margin-left: 70px;font-size: 30px;width: auto;"><span>{% trans "熱門案件" %}</span></h1>
+                                        
                                         <!--Pagination-->
                                         <div class="d-inline-block" style="float: right;">
                                             <ul class="pagination" style="width: auto;">
@@ -387,7 +388,7 @@
                                                         {{ i }}
                                                         </span>
                                                     </li>
-                                                {% else %}
+                                                {% elif most_case.number != i and i <= 5 %}
                                                     <li class="page-item">
                                                         <a class="page-link most-page-link" href="#" data-value="{{i}}">{{ i }}</a>
                                                     </li>
