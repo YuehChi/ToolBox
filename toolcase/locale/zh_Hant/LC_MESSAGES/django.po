@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-21 23:20+0800\n"
+"POT-Creation-Date: 2022-05-25 10:55+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,7 @@ msgid "台大工具箱"
 msgstr ""
 
 #: toolfamily/templates/auth/forget_pwd.html:42
-#: toolfamily/templates/auth/login.html:92
+#: toolfamily/templates/auth/login.html:145
 #: toolfamily/templates/auth/register.html:200
 #: toolfamily/templates/auth/reset_pwd.html:145
 msgid "登入"
@@ -62,33 +62,42 @@ msgstr ""
 msgid "發送驗證"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:65
+#: toolfamily/templates/auth/login.html:117
 msgid "專屬台大人的委託平台"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:71
+#: toolfamily/templates/auth/login.html:118
+msgid "了解更多"
+msgstr ""
+
+#: toolfamily/templates/auth/login.html:124
 msgid "會員登入"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:85
+#: toolfamily/templates/auth/login.html:138
 msgid "電子信箱"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:89
+#: toolfamily/templates/auth/login.html:142
 msgid "輸入密碼"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:91
+#: toolfamily/templates/auth/login.html:144
 msgid "忘記密碼？"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:93
+#: toolfamily/templates/auth/login.html:146
 msgid "還不是會員？"
 msgstr ""
 
-#: toolfamily/templates/auth/login.html:93
+#: toolfamily/templates/auth/login.html:146
 #: toolfamily/templates/auth/register.html:326
 msgid "註冊"
+msgstr ""
+
+#: toolfamily/templates/auth/login.html:158
+#: toolfamily/templates/auth/login.html:164
+msgid "立即加入"
 msgstr ""
 
 #: toolfamily/templates/auth/register.html:30
